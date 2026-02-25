@@ -15,7 +15,6 @@ export const apiSlice = createApi({
     },
   }),
   tagTypes: ["Investor"],
+  endpoints: () => ({}),
 });
-
-export const { useGetInvestorsQuery } = apiSlice;
 
