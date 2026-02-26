@@ -61,7 +61,7 @@ export function Table({
           {data.map((row, index) => (
             <tr
               key={getRowKey ? getRowKey(row) : index}
-              className="odd:bg-white even:bg-gray-50 hover:bg-blue-50/40 transition-colors"
+              className="odd:bg-white even:bg-gray-50 hover:bg-primary/5 transition-colors"
             >
               {columns.map((column) => (
                 <td

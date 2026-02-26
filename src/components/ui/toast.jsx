@@ -70,7 +70,7 @@ export function ToastProvider({ children, position = "bottom-right" }) {
             )}
             <button
               type="button"
-              className="mt-2 text-xs font-medium text-blue-600 underline underline-offset-2"
+              className="mt-2 text-xs font-medium text-primary underline underline-offset-2"
               onClick={() => removeToast(toast.id)}
             >
               Close

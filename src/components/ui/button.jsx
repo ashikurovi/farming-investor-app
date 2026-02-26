@@ -2,15 +2,16 @@ import React from "react";
 
 const baseClasses =
   "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors " +
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 " +
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary " +
   "disabled:pointer-events-none disabled:opacity-50";
 
 const variantClasses = {
-  primary: "bg-blue-600 text-white hover:bg-blue-700",
-  secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200",
+  primary: "bg-primary text-primary-foreground hover:opacity-90",
+  secondary:
+    "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-secondary-foreground",
   outline:
-    "border border-gray-300 bg-white text-gray-900 hover:bg-gray-50 shadow-sm",
-  ghost: "bg-transparent hover:bg-gray-100 text-gray-900",
+    "border border-secondary bg-background text-foreground hover:bg-secondary/60 shadow-sm",
+  ghost: "bg-transparent hover:bg-secondary/60 text-foreground",
   destructive: "bg-red-600 text-white hover:bg-red-700",
 };
 
