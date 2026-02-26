@@ -14,7 +14,7 @@ export function AppShell({ children }) {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
+    <div className="relative flex min-h-screen flex-col bg-background text-foreground">
       <MainNavbar />
       <main className="flex-1">{children}</main>
       <MainFooter />

@@ -29,7 +29,47 @@ const impactStories = [
 export default function GalleryPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-50/40 via-white to-emerald-50/10 text-zinc-900 dark:from-black dark:via-zinc-950 dark:to-black dark:text-zinc-50">
-      <main className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <section className="relative h-[260px] overflow-hidden bg-zinc-900 sm:h-[320px] lg:h-[360px]">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage:
+              "url('https://images.pexels.com/photos/158827/farm-sunset-wheat-sky-158827.jpeg?auto=compress&cs=tinysrgb&w=1920')",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/90 via-emerald-900/75 to-emerald-800/70 mix-blend-multiply" />
+
+        <div className="relative z-10 mx-auto flex h-full max-w-6xl items-center px-4 sm:px-6 lg:px-8">
+          <div className="space-y-3 sm:space-y-4">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-emerald-300">
+              Gallery
+            </p>
+            <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+              Stories behind the numbers
+            </h1>
+            <p className="max-w-xl text-xs leading-relaxed text-emerald-50/90 sm:text-sm">
+              Pair the portfolio views in the Investor app with a visual layer:
+              farms, teams, and projects that bring each position to life.
+            </p>
+            <p className="pt-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-emerald-200/90">
+              Home <span className="mx-2 text-emerald-400">/</span> Gallery
+            </p>
+            <div className="pt-3">
+              <a
+                href="#gallery-content"
+                className="inline-flex items-center justify-center rounded-full border border-white/80 bg-white/10 px-9 py-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-white shadow-md backdrop-blur transition hover:bg-white/20"
+              >
+                Discover
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <main
+        id="gallery-content"
+        className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 sm:px-6 lg:px-8 lg:py-14"
+      >
         <section className="space-y-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-600">
             Gallery

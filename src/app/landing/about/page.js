@@ -5,14 +5,55 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-50/40 via-white to-emerald-50/20 text-zinc-900 dark:from-black dark:via-zinc-950 dark:to-black dark:text-zinc-50">
-      <main className="mx-auto flex max-w-6xl flex-col gap-12 px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <section className="relative h-[260px] overflow-hidden bg-zinc-900 sm:h-[320px] lg:h-[360px]">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage:
+              "url('https://images.pexels.com/photos/158827/farm-sunset-wheat-sky-158827.jpeg?auto=compress&cs=tinysrgb&w=1920')",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-900/90 via-amber-900/75 to-amber-800/70 mix-blend-multiply" />
+
+        <div className="relative z-10 mx-auto flex h-full max-w-6xl items-center px-4 sm:px-6 lg:px-8">
+          <div className="space-y-3 sm:space-y-4">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-amber-300">
+              About
+            </p>
+            <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+              Company
+            </h1>
+            <p className="max-w-xl text-xs leading-relaxed text-amber-100/90 sm:text-sm">
+              The point of using lorem ipsum is that it has a more-or-less normal
+              distribution of letters, as opposed to using &quot;Content here,
+              content here&quot;, making it look like readable English.
+            </p>
+            <p className="pt-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-amber-200/90">
+              Home <span className="mx-2 text-amber-400">/</span> About
+            </p>
+            <div className="pt-3">
+              <a
+                href="#about-content"
+                className="inline-flex items-center justify-center rounded-full border border-white/80 bg-white/10 px-9 py-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-white shadow-md backdrop-blur transition hover:bg-white/20"
+              >
+                Discover
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <main
+        id="about-content"
+        className="mx-auto flex max-w-6xl flex-col gap-12 px-4 py-10 sm:px-6 lg:px-8 lg:py-14"
+      >
         <section className="max-w-3xl space-y-5">
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-600">
             About Framing
           </p>
-          <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+          <h2 className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
             Building the operating system for modern farm investing.
-          </h1>
+          </h2>
           <p className="text-sm leading-relaxed text-zinc-600 sm:text-base dark:text-zinc-400">
             Framing is an agri-finance platform focused on connecting long-term
             capital with resilient, real-world farm projects. We bring together
