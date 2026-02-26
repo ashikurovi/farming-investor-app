@@ -2,32 +2,7 @@ export const metadata = {
   title: "Projects | Framing Investor App",
 };
 
-const sampleProjects = [
-  {
-    name: "Riverside Citrus Expansion",
-    region: "Delta valley",
-    ticket: "From $5,000",
-    term: "24–30 months",
-    targetYield: "8–11% IRR (modelled)",
-    status: "Accepting interest",
-  },
-  {
-    name: "Highland Coffee Renovation",
-    region: "Upland estates",
-    ticket: "From $10,000",
-    term: "36–48 months",
-    targetYield: "10–13% IRR (modelled)",
-    status: "Pipeline",
-  },
-  {
-    name: "Grain Storage & Working Capital",
-    region: "Central grain belt",
-    ticket: "From $2,500",
-    term: "12–18 months",
-    targetYield: "7–9% IRR (modelled)",
-    status: "Live in demo",
-  },
-];
+import { projects as liveProjects } from "../../../data/projects";
 
 export default function ProjectsPage() {
   return (
@@ -115,30 +90,30 @@ export default function ProjectsPage() {
           </div>
 
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {sampleProjects.map((project) => (
+            {liveProjects.map((project) => (
               <article
-                key={project.name}
+                key={project.projectId}
                 className="flex flex-col justify-between rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-950"
               >
                 <div className="space-y-2">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-600">
-                    {project.region}
+                    {project.location}
                   </p>
                   <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-                    {project.name}
+                    {project.title}
                   </h3>
                   <p className="text-[11px] font-medium text-emerald-700 dark:text-emerald-300">
-                    {project.status}
+                    {project.code} • {project.roi}% ROI
                   </p>
                 </div>
 
                 <dl className="mt-4 grid grid-cols-2 gap-3 text-[11px] text-zinc-600 dark:text-zinc-400">
                   <div>
                     <dt className="font-medium text-zinc-500 dark:text-zinc-400">
-                      Ticket size
+                      Amount
                     </dt>
                     <dd className="mt-1 text-xs font-semibold text-zinc-900 dark:text-zinc-50">
-                      {project.ticket}
+                      BDT {Number(project.amount || 0).toLocaleString()}
                     </dd>
                   </div>
                   <div>
@@ -146,23 +121,24 @@ export default function ProjectsPage() {
                       Duration
                     </dt>
                     <dd className="mt-1 text-xs font-semibold text-zinc-900 dark:text-zinc-50">
-                      {project.term}
+                      {project.duration} months
                     </dd>
                   </div>
                   <div>
                     <dt className="font-medium text-zinc-500 dark:text-zinc-400">
-                      Target yield
+                      Category
                     </dt>
                     <dd className="mt-1 text-xs font-semibold text-zinc-900 dark:text-zinc-50">
-                      {project.targetYield}
+                      {project.category}
                     </dd>
                   </div>
                   <div>
                     <dt className="font-medium text-zinc-500 dark:text-zinc-400">
-                      Risk notes
+                      Highlight
                     </dt>
                     <dd className="mt-1 text-xs">
-                      Weather, market access, and operator track record.
+                      {project.investment_highlight?.[0] ??
+                        "Monitored operations with transparent reporting."}
                     </dd>
                   </div>
                 </dl>
