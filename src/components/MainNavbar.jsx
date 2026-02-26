@@ -17,7 +17,7 @@ function MainNavLinks() {
   return (
     <nav className="flex items-center gap-3 text-xs font-medium sm:gap-4 sm:text-[13px]">
       <MainNavItem href="/" label="Home" icon={Home} />
-      <MainNavItem href="/gallery" label="Gallery" icon={Image} />
+      <MainNavItem href="/landing/gallery" label="Gallery" icon={Image} />
       <MainNavItem href="/landing/about" label="About" icon={Info} />
       <MainNavItem href="/landing/project" label="Project" icon={Folder} />
 
