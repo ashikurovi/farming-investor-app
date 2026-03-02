@@ -63,19 +63,17 @@ export function MainNavbar() {
     <>
       {/* Desktop/Laptop Navbar - Premium Solid Design - Hidden on Mobile */}
       <header
-        className={`hidden md:block fixed inset-x-0 top-0 z-40 transition-all duration-500 ${
-          scrolled
-            ? "bg-white shadow-sm border-b border-zinc-100 py-0"
-            : "bg-transparent py-4"
+        className={`hidden md:block fixed inset-x-0 top-0 z-40 transition-all duration-500 bg-white shadow-sm border-b border-zinc-100 ${
+          scrolled ? "py-0" : "py-4"
         }`}
       >
         <div className="max-w-7xl mx-auto flex h-20 items-center justify-between px-6 lg:px-12">
           <Link href="/" className="flex items-center group">
             <div className="flex items-center gap-3">
-              <div className={`flex h-10 w-10 items-center justify-center rounded-sm transition-colors duration-300 ${scrolled ? "bg-zinc-900 text-white" : "bg-white text-zinc-900"}`}>
+              <div className="flex h-10 w-10 items-center justify-center rounded-sm transition-colors duration-300 bg-zinc-900 text-white">
                 <span className="text-xs font-bold">AG</span>
               </div>
-              <span className={`text-sm font-bold uppercase tracking-[0.2em] transition-colors duration-300 ${scrolled ? "text-zinc-900" : "text-white"}`}>
+              <span className="text-sm font-bold uppercase tracking-[0.2em] transition-colors duration-300 text-zinc-900">
                 Framing
               </span>
             </div>
@@ -83,29 +81,25 @@ export function MainNavbar() {
 
           <div className="flex items-center gap-8">
             <div className="hidden md:flex">
-              <MainNavLinks isScrolled={scrolled} />
+              <MainNavLinks isScrolled={true} />
             </div>
 
             <div className="hidden items-center gap-4 sm:flex">
               <Link
                 href="/admin"
-                className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-colors hover:text-amber-500 ${scrolled ? "text-zinc-600" : "text-zinc-300"}`}
+                className="text-[10px] font-bold uppercase tracking-[0.2em] transition-colors hover:text-amber-500 text-zinc-600"
               >
                 Admin
               </Link>
               <Link
                 href="/investor"
-                className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-colors hover:text-amber-500 ${scrolled ? "text-zinc-600" : "text-zinc-300"}`}
+                className="text-[10px] font-bold uppercase tracking-[0.2em] transition-colors hover:text-amber-500 text-zinc-600"
               >
                 Investor
               </Link>
               <Link
                 href="/login"
-                className={`rounded-none px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 ${
-                  scrolled 
-                    ? "bg-zinc-900 text-white hover:bg-zinc-800" 
-                    : "bg-white text-zinc-900 hover:bg-zinc-100"
-                }`}
+                className="rounded-none px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 bg-zinc-900 text-white hover:bg-zinc-800"
               >
                 Login
               </Link>
