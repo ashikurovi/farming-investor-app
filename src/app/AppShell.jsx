@@ -7,7 +7,11 @@ import { MainFooter } from "../components/MainFooter";
 export function AppShell({ children }) {
   const pathname = usePathname();
   const isDashboardRoute =
-    pathname.startsWith("/admin") || pathname.startsWith("/investor");
+    pathname.startsWith("/admin") || 
+    pathname.startsWith("/investor") ||
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/register") ||
+    pathname.startsWith("/forgot-password");
 
   if (isDashboardRoute) {
     return <>{children}</>;
