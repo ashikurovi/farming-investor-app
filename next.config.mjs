@@ -12,6 +12,16 @@ const nextConfig = {
   },
   // React Compiler disabled for now
   reactCompiler: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;
