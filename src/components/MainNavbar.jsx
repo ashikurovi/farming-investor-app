@@ -61,44 +61,51 @@ export function MainNavbar() {
 
   return (
     <>
-      {/* Desktop/Laptop Navbar - Glassy Effect - Hidden on Mobile */}
+      {/* Desktop/Laptop Navbar - Premium Solid Design - Hidden on Mobile */}
       <header
-        className={`hidden md:block fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
+        className={`hidden md:block fixed inset-x-0 top-0 z-40 transition-all duration-500 ${
           scrolled
-            ? "border-b border-white/20 bg-white/70 backdrop-blur-xl shadow-lg text-zinc-900"
-            : "bg-transparent text-white"
+            ? "bg-white shadow-sm border-b border-zinc-100 py-0"
+            : "bg-transparent py-4"
         }`}
       >
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:h-16 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex h-20 items-center justify-between px-6 lg:px-12">
           <Link href="/" className="flex items-center group">
-            <div className="flex h-10 w-10 items-center justify-center bg-amber-400 shadow-lg sm:h-12 sm:w-12 transition-transform group-hover:scale-105">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zinc-900">
-                AGRO
+            <div className="flex items-center gap-3">
+              <div className={`flex h-10 w-10 items-center justify-center rounded-sm transition-colors duration-300 ${scrolled ? "bg-zinc-900 text-white" : "bg-white text-zinc-900"}`}>
+                <span className="text-xs font-bold">AG</span>
+              </div>
+              <span className={`text-sm font-bold uppercase tracking-[0.2em] transition-colors duration-300 ${scrolled ? "text-zinc-900" : "text-white"}`}>
+                Framing
               </span>
             </div>
           </Link>
 
-          <div className="flex items-center gap-4 sm:gap-6">
+          <div className="flex items-center gap-8">
             <div className="hidden md:flex">
               <MainNavLinks isScrolled={scrolled} />
             </div>
 
-            <div className="hidden items-center gap-3 sm:flex">
+            <div className="hidden items-center gap-4 sm:flex">
               <Link
                 href="/admin"
-                className="rounded-full bg-amber-400 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-zinc-900 shadow-md transition hover:bg-amber-300 hover:scale-105"
+                className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-colors hover:text-amber-500 ${scrolled ? "text-zinc-600" : "text-zinc-300"}`}
               >
                 Admin
               </Link>
               <Link
                 href="/investor"
-                className="rounded-full bg-amber-400 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-zinc-900 shadow-md transition hover:bg-amber-300 hover:scale-105"
+                className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-colors hover:text-amber-500 ${scrolled ? "text-zinc-600" : "text-zinc-300"}`}
               >
                 Investor
               </Link>
               <Link
                 href="/login"
-                className="rounded-full bg-zinc-900 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-amber-100 shadow-md transition hover:bg-zinc-800 hover:scale-105"
+                className={`rounded-none px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 ${
+                  scrolled 
+                    ? "bg-zinc-900 text-white hover:bg-zinc-800" 
+                    : "bg-white text-zinc-900 hover:bg-zinc-100"
+                }`}
               >
                 Login
               </Link>
