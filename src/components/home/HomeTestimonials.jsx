@@ -1,123 +1,123 @@
+"use client";
+
+import { Star, Quote, UserCheck, CheckCircle } from "lucide-react";
+
+const testimonials = [
+  {
+    initials: "AM",
+    name: "Amina M.",
+    role: "Individual Investor",
+    rating: 5,
+    quote: "The dashboard makes it easy to understand where my capital is, what changed this month, and what to expect next. Everything feels structured.",
+    verified: true
+  },
+  {
+    initials: "JC",
+    name: "James C.",
+    role: "Portfolio Manager",
+    rating: 5,
+    quote: "Reporting is finally consistent. The structure helps us compare projects, spot risks earlier, and communicate updates to LPs without spreadsheets.",
+    verified: true
+  },
+  {
+    initials: "SK",
+    name: "Sofia K.",
+    role: "Farm Operator",
+    rating: 4,
+    quote: "The process is straightforward—milestones, updates, and documents are all in one place. It saves time and keeps everyone aligned.",
+    verified: true
+  }
+];
+
 export default function HomeTestimonials() {
   return (
-    <section className="bg-gradient-to-b from-zinc-50 via-white to-emerald-50/30 py-12 dark:from-zinc-950 dark:via-black dark:to-emerald-950/10">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-2xl space-y-3">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-700 dark:text-emerald-300">
+    <section className="py-24 bg-zinc-50 border-t border-zinc-200">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 shadow-sm mx-auto">
+            <UserCheck className="w-3 h-3 text-emerald-600" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-800">
               Testimonials
-            </p>
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-              Trusted by investors and operators.
-            </h2>
-            <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-              What stakeholders say about clarity, reporting, and day-to-day
-              experience.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-2 text-xs">
-            <span className="rounded-full bg-emerald-100 px-3 py-1 font-medium text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-200">
-              Mock testimonials
-            </span>
-            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-300">
-              Swap in real quotes later
             </span>
           </div>
+          
+          <h2 className="text-3xl md:text-5xl font-light text-zinc-900 leading-tight tracking-tight">
+            Trusted by <span className="font-serif italic text-emerald-700">investors</span> and operators.
+          </h2>
+          
+          <p className="text-zinc-500 text-base md:text-lg leading-relaxed">
+            What stakeholders say about clarity, reporting, and day-to-day experience.
+          </p>
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          <figure className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-sm font-semibold text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-200">
-                  AM
-                </div>
-                <div>
-                  <figcaption className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-                    Amina M.
-                  </figcaption>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    Individual Investor
-                  </p>
-                </div>
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {testimonials.map((testimonial, index) => (
+            <figure 
+              key={index}
+              className="relative flex flex-col p-8 bg-white rounded-3xl border border-zinc-100 shadow-sm hover:shadow-xl hover:border-emerald-100 transition-all duration-300 hover:-translate-y-1"
+            >
+              {/* Quote Icon Background */}
+              <div className="absolute top-6 right-8 text-zinc-100">
+                <Quote className="w-12 h-12 opacity-20 transform rotate-180" />
               </div>
-              <p
-                className="text-[11px] font-semibold tracking-tight text-emerald-700 dark:text-emerald-300"
-                aria-label="Rating: 5 out of 5"
-                title="5 out of 5"
-              >
-                ★★★★★
-              </p>
-            </div>
-            <blockquote className="mt-4 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
-              “The dashboard makes it easy to understand where my capital is,
-              what changed this month, and what to expect next. Everything feels
-              structured.”
-            </blockquote>
-          </figure>
 
-          <figure className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-sm font-semibold text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-200">
-                  JC
-                </div>
-                <div>
-                  <figcaption className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-                    James C.
-                  </figcaption>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    Portfolio Manager
-                  </p>
-                </div>
+              {/* Rating */}
+              <div className="flex gap-1 mb-6 text-emerald-500">
+                {[...Array(5)].map((_, i) => (
+                  <Star 
+                    key={i} 
+                    className={`w-4 h-4 ${i < testimonial.rating ? "fill-emerald-500" : "fill-zinc-200 text-zinc-200"}`} 
+                  />
+                ))}
               </div>
-              <p
-                className="text-[11px] font-semibold tracking-tight text-emerald-700 dark:text-emerald-300"
-                aria-label="Rating: 5 out of 5"
-                title="5 out of 5"
-              >
-                ★★★★★
-              </p>
-            </div>
-            <blockquote className="mt-4 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
-              “Reporting is finally consistent. The structure helps us compare
-              projects, spot risks earlier, and communicate updates to LPs
-              without spreadsheets.”
-            </blockquote>
-          </figure>
 
-          <figure className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-sm font-semibold text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-200">
-                  SK
+              {/* Quote */}
+              <blockquote className="flex-grow mb-8">
+                <p className="text-zinc-600 leading-relaxed font-medium">
+                  "{testimonial.quote}"
+                </p>
+              </blockquote>
+
+              {/* Author */}
+              <div className="flex items-center gap-4 pt-6 border-t border-zinc-50 mt-auto">
+                <div className="relative">
+                  <div className="h-12 w-12 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-sm">
+                    {testimonial.initials}
+                  </div>
+                  {testimonial.verified && (
+                    <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm">
+                      <CheckCircle className="w-4 h-4 text-emerald-500 fill-white" />
+                    </div>
+                  )}
                 </div>
                 <div>
-                  <figcaption className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-                    Sofia K.
-                  </figcaption>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    Farm Operator
-                  </p>
+                  <div className="font-bold text-zinc-900 text-sm">
+                    {testimonial.name}
+                  </div>
+                  <div className="text-xs text-zinc-400 font-medium uppercase tracking-wide">
+                    {testimonial.role}
+                  </div>
                 </div>
               </div>
-              <p
-                className="text-[11px] font-semibold tracking-tight text-emerald-700 dark:text-emerald-300"
-                aria-label="Rating: 4 out of 5"
-                title="4 out of 5"
-              >
-                ★★★★☆
-              </p>
-            </div>
-            <blockquote className="mt-4 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
-              “The process is straightforward—milestones, updates, and documents
-              are all in one place. It saves time and keeps everyone aligned.”
-            </blockquote>
-          </figure>
+            </figure>
+          ))}
         </div>
+
+        {/* Social Proof Strip */}
+        <div className="mt-20 pt-10 border-t border-zinc-200/60">
+           <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+              {/* Fake Logos for "Trusted By" effect - using text for now or simple svgs */}
+              <div className="text-lg font-serif font-bold text-zinc-400">Agri<span className="text-zinc-600">Bank</span></div>
+              <div className="text-lg font-sans font-black tracking-tighter text-zinc-400">FARM<span className="font-light">FUND</span></div>
+              <div className="text-lg font-mono font-semibold text-zinc-400">Green<span className="italic">Yield</span></div>
+              <div className="text-lg font-serif italic font-bold text-zinc-400">Harvest<span className="text-zinc-600">Capital</span></div>
+           </div>
+        </div>
+
       </div>
     </section>
   );
 }
-
