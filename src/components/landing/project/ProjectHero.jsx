@@ -1,58 +1,76 @@
-import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { MoveRight, Sprout } from "lucide-react";
 
 export function ProjectHero() {
   return (
-    <section className="relative h-[60vh] min-h-[500px] w-full overflow-hidden bg-zinc-900">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 transition-transform duration-1000 hover:scale-105"
-        style={{
-          backgroundImage: "url('https://images.pexels.com/photos/158827/farm-sunset-wheat-sky-158827.jpeg?auto=compress&cs=tinysrgb&w=1920')"
-        }}
-      />
-      
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/60 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/90 via-transparent to-transparent" />
+    <div className="relative h-[70vh] min-h-[600px] w-full overflow-hidden bg-zinc-950">
+      {/* Background Image with Parallax-like feel */}
+      <div className="absolute inset-0">
+        <Image
+          src="https://images.pexels.com/photos/158827/farm-sunset-wheat-sky-158827.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          alt="Project Hero - Cultivate Wealth"
+          fill
+          priority
+          className="object-cover opacity-50 scale-105 animate-slow-zoom"
+          quality={90}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-900/20 via-zinc-950/40 to-zinc-950/80" />
+      </div>
 
       {/* Content */}
-      <div className="relative h-full max-w-7xl mx-auto px-6 lg:px-8 flex flex-col justify-center">
-        <div className="max-w-2xl space-y-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-md">
-            <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
-              Investment Opportunities
-            </span>
+      <div className="absolute inset-0 flex items-center justify-center text-center">
+        <div className="mx-auto max-w-5xl px-6 lg:px-8">
+          {/* Badge */}
+          <div className="mb-8 inline-flex animate-fade-in-up opacity-0 [animation-delay:200ms] items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-4 py-1.5 text-sm font-medium text-emerald-300 backdrop-blur-md shadow-[0_0_15px_-3px_rgba(16,185,129,0.15)] hover:bg-emerald-500/10 transition-colors">
+            <Sprout className="h-4 w-4 text-emerald-400" />
+            <span className="tracking-wide">Investment Opportunities</span>
           </div>
-          
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white leading-tight">
-            Cultivate <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">Wealth</span> <br />
-            <span className="font-serif italic font-light">from the ground up.</span>
+
+          {/* Title */}
+          <h1 className="mb-6 animate-fade-in-up opacity-0 [animation-delay:400ms] text-5xl font-bold tracking-tight text-white sm:text-4xl lg:text-6xl font-display">
+            Cultivate{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+              Wealth
+            </span>
           </h1>
-          
-          <p className="text-lg text-zinc-300 max-w-xl leading-relaxed">
-            Discover high-yield agricultural projects vetted for sustainability and profitability. 
-            From seasonal crops to livestock, diversify your portfolio with tangible assets.
+
+          {/* Description */}
+          <p className="mx-auto mb-10 max-w-2xl animate-fade-in-up opacity-0 [animation-delay:600ms] text-lg leading-relaxed text-zinc-300/90 sm:text-md font-light">
+            Discover high-yield agricultural projects vetted for sustainability
+            and profitability. From seasonal crops to livestock, diversify your
+            portfolio with{" "}
+            <span className="text-emerald-200 font-medium">
+              tangible assets
+            </span>
+            .
           </p>
-          
-          <div className="flex flex-wrap gap-4">
-            <button className="px-8 py-4 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-all shadow-lg shadow-emerald-900/20 hover:shadow-emerald-500/30 flex items-center gap-2 group">
-              View Active Projects
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </button>
-            <button className="px-8 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold backdrop-blur-sm transition-all">
+
+          {/* CTA */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up opacity-0 [animation-delay:800ms]">
+            <Link
+              href="#project-feed"
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-emerald-600 px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-emerald-500 hover:shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)]"
+            >
+              <span className="relative z-10">View Active Projects</span>
+              <MoveRight className="h-4 w-4 transition-transform group-hover:translate-x-1 relative z-10" />
+              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer" />
+            </Link>
+
+            <button className="group inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-medium text-zinc-300 transition-colors hover:text-white hover:bg-white/5">
               How it works
             </button>
           </div>
         </div>
       </div>
-      
+
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 rounded-full border-2 border-zinc-500 flex justify-center pt-2">
-          <div className="w-1 h-2 rounded-full bg-zinc-500" />
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-zinc-500/50">
+        <div className="h-10 w-6 rounded-full border-2 border-current flex justify-center p-1">
+          <div className="h-1.5 w-1 rounded-full bg-current animate-scroll-down" />
         </div>
       </div>
-    </section>
+    </div>
   );
 }

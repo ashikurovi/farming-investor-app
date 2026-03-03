@@ -30,12 +30,12 @@ export function GalleryHero() {
           </div>
 
           {/* Title */}
-          <h1 className="mb-6 animate-fade-in-up opacity-0 [animation-delay:400ms] text-5xl font-bold tracking-tight text-white sm:text-7xl lg:text-8xl font-display">
+          <h1 className="mb-6 animate-fade-in-up opacity-0 [animation-delay:400ms] text-5xl font-bold tracking-tight text-white sm:text-4xl lg:text-6xl font-display">
             Life on the <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Farm</span>
           </h1>
 
           {/* Description */}
-          <p className="mx-auto mb-10 max-w-2xl animate-fade-in-up opacity-0 [animation-delay:600ms] text-lg leading-relaxed text-zinc-300/90 sm:text-xl font-light">
+          <p className="mx-auto mb-10 max-w-2xl animate-fade-in-up opacity-0 [animation-delay:600ms] text-lg leading-relaxed text-zinc-300/90 sm:text-md font-light">
             Explore the vibrant moments from our sustainable farming projects. 
             From golden harvests to community gatherings, witness the <span className="text-emerald-200 font-medium">real impact</span> of your investments.
           </p>

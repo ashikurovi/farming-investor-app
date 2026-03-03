@@ -25,7 +25,7 @@ export function ProjectFeed({ initialProjects }) {
   });
 
   return (
-    <section className="py-24 bg-zinc-50 min-h-screen">
+    <section id="project-feed" className="py-24 bg-zinc-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         
         {/* Filter Bar */}
