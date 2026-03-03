@@ -3,7 +3,7 @@ import { Sprout, Facebook, Twitter, Linkedin, Instagram, ArrowRight, Mail, Phone
 
 export function MainFooter() {
   return (
-    <footer id="footer" className="bg-zinc-900 text-white pt-20 pb-10 border-t border-emerald-900/30 relative overflow-hidden">
+    <footer  className="bg-zinc-900 text-white pt-20 pb-10 border-t border-emerald-900/30 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-900/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-emerald-900/10 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />

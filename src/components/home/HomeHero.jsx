@@ -8,7 +8,8 @@ import { ArrowDown } from "lucide-react";
 
 const slides = [
   {
-    image: "https://images.pexels.com/photos/2132257/pexels-photo-2132257.jpeg?auto=compress&cs=tinysrgb&w=1920", // Wheat field/Farming
+    image:
+      "https://images.pexels.com/photos/2132257/pexels-photo-2132257.jpeg?auto=compress&cs=tinysrgb&w=1920", // Wheat field/Farming
     title: "SMART FARMING",
     subtitle: "Invest in Sustainable Agriculture",
     description:
@@ -28,7 +29,7 @@ const slides = [
 
 export default function HomeHero() {
   const scrollToContent = () => {
-    const element = document.getElementById("footer");
+    const element = document.getElementById("live-kpis");
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
@@ -77,13 +78,15 @@ export default function HomeHero() {
                       <p className="text-zinc-100 text-sm md:text-xl mb-10 max-w-2xl mx-auto font-medium leading-relaxed drop-shadow-md animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
                         {slide.description}
                       </p>
-                      
+
                       <button
                         onClick={scrollToContent}
                         className="group relative inline-flex items-center gap-2 md:gap-3 bg-emerald-600 text-white px-6 py-3 md:px-10 md:py-4 font-bold text-xs md:text-sm hover:bg-emerald-500 transition-all uppercase tracking-widest shadow-lg hover:shadow-emerald-600/30 rounded-full animate-in fade-in zoom-in duration-700 delay-500 hover:-translate-y-1"
                       >
                         <span className="md:hidden">Discover</span>
-                        <span className="hidden md:inline">Discover Opportunities</span>
+                        <span className="hidden md:inline">
+                          Discover Opportunities
+                        </span>
                         <ArrowDown className="w-3 h-3 md:w-4 md:h-4 animate-bounce" />
                       </button>
                     </div>
