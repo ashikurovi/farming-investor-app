@@ -2,7 +2,7 @@ import { Sprout, Users, Map, Wallet, ArrowRight, Activity, TrendingUp } from "lu
 
 export function AboutMission() {
   return (
-    <section id="mission" className="relative py-24 sm:py-32 bg-white overflow-hidden">
+    <section id="mission" className="relative mt-10 bg-white overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           
