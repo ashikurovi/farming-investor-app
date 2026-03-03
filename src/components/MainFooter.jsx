@@ -3,7 +3,7 @@ import { Sprout, Facebook, Twitter, Linkedin, Instagram, ArrowRight, Mail, Phone
 
 export function MainFooter() {
   return (
-    <footer id="footer" className="bg-zinc-900 text-white pt-20 pb-10 border-t border-emerald-900/30 relative overflow-hidden">
+    <footer  className="bg-zinc-900 text-white pt-20 pb-10 border-t border-emerald-900/30 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-900/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-emerald-900/10 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
@@ -123,8 +123,8 @@ export function MainFooter() {
             <p>© {new Date().getFullYear()} Farming Investor. All rights reserved.</p>
             <div className="hidden md:block h-3 w-px bg-zinc-800" />
             <div className="flex gap-4">
-               <a href="#" className="hover:text-emerald-400 transition-colors">Privacy Policy</a>
-               <a href="#" className="hover:text-emerald-400 transition-colors">Terms of Service</a>
+               <Link href="/privacy-policy" className="hover:text-emerald-400 transition-colors">Privacy Policy</Link>
+               <Link href="/terms" className="hover:text-emerald-400 transition-colors">Terms of Service</Link>
             </div>
           </div>
           

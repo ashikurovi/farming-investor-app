@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Sprout } from "lucide-react";
+import { Sprout, ArrowLeft } from "lucide-react";
 import { LoginForm } from "@/components/auth/LoginForm";
+import { LoginImageSlider } from "@/components/auth/LoginImageSlider";
 
 export const metadata = {
   title: "Login | Framing Investor App",
@@ -10,61 +11,73 @@ export const metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen w-full bg-white lg:grid lg:grid-cols-2">
-      {/* Left Column: Image & Branding */}
-      <div className="relative hidden h-full flex-col bg-zinc-900 p-10 text-white lg:flex dark:border-r">
-        <div className="absolute inset-0 z-0">
-          <Image
+    <div className="relative min-h-screen w-full flex lg:grid lg:grid-cols-2">
+      {/* Mobile Background Image */}
+      <div className="absolute inset-0 z-0 lg:hidden">
+         <Image
             src="https://images.pexels.com/photos/2132126/pexels-photo-2132126.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             alt="Farm Landscape"
             fill
-            className="object-cover opacity-40 mix-blend-overlay"
+            className="object-cover"
             priority
-            sizes="50vw"
+            quality={90}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/40 to-zinc-900/10" />
-        </div>
-        
-        <div className="relative z-10 flex items-center gap-2 text-lg font-medium">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white">
-            <Sprout className="h-5 w-5" />
-          </div>
-          <span className="font-display font-bold tracking-tight">Framing</span>
-        </div>
-        
-        <div className="relative z-10 mt-auto">
-          <blockquote className="space-y-2">
-            <p className="text-lg font-medium leading-relaxed">
-              &ldquo;This platform has completely transformed how we manage our agricultural portfolio. 
-              The transparency and real-time data are unmatched in the industry.&rdquo;
-            </p>
-            <footer className="text-sm text-zinc-400">
-              Sofia Davis, Sustainable Fund Manager
-            </footer>
-          </blockquote>
-        </div>
+          <div className="absolute inset-0 bg-zinc-900/60 backdrop-blur-[2px]" />
       </div>
 
-      {/* Right Column: Login Form */}
-      <div className="flex flex-col items-center justify-center p-6 lg:p-10">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-8 sm:w-[380px]">
-          {/* Mobile Logo (visible only on small screens) */}
-          <div className="flex flex-col space-y-2 text-center lg:text-left">
-            <div className="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600 text-white lg:hidden">
+      {/* Left Column: Login Form Container */}
+      <div className="relative z-10 flex w-full flex-col items-center justify-center p-4 sm:p-6 lg:p-12">
+        {/* Back to Home (Mobile) */}
+         <div className="absolute top-6 left-6 lg:hidden">
+          <Link href="/" className="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white transition-colors bg-black/20 px-3 py-1.5 rounded-full backdrop-blur-md">
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </Link>
+        </div>
+
+        {/* Desktop Branding (Logo only) */}
+        <div className="absolute top-8 left-8 hidden lg:block">
+           <Link href="/" className="flex items-center gap-2 text-lg font-medium hover:opacity-80 transition-opacity">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600/10 border border-emerald-600/20 text-emerald-600 backdrop-blur-md">
               <Sprout className="h-6 w-6" />
             </div>
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 font-display">
+            <span className="font-display font-bold tracking-tight text-xl text-zinc-900">Framing</span>
+          </Link>
+        </div>
+
+        {/* Card */}
+        <div className="w-full max-w-[420px] bg-white p-8 sm:p-10 rounded-3xl shadow-2xl lg:shadow-none lg:bg-transparent lg:p-0">
+          <div className="flex flex-col space-y-2 text-center lg:text-left mb-8">
+            <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-lg lg:hidden">
+              <Sprout className="h-7 w-7" />
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-display">
               Welcome back
             </h1>
-            <p className="text-sm text-zinc-500">
-              Enter your email to sign in to your account
+            <p className="text-zinc-500 text-sm sm:text-base">
+              Enter your credentials to access your portfolio
             </p>
           </div>
 
           <LoginForm />
-
           
+           <p className="mt-8 text-center text-xs text-zinc-400 lg:text-left">
+            By clicking continue, you agree to our{" "}
+            <Link href="/terms" className="underline underline-offset-4 hover:text-zinc-900 transition-colors">
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" className="underline underline-offset-4 hover:text-zinc-900 transition-colors">
+              Privacy Policy
+            </Link>
+            .
+          </p>
         </div>
+      </div>
+
+      {/* Right Column: Image Slider */}
+      <div className="relative hidden h-full w-full lg:block overflow-hidden">
+        <LoginImageSlider />
       </div>
     </div>
   );

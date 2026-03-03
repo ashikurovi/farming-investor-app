@@ -1,6 +1,7 @@
 import { getRecentProjects } from "../data/projects";
 import HomeFaq from "../components/home/HomeFaq";
 import HomeGalleryPreview from "../components/home/HomeGalleryPreview";
+import HomeBlogSection from "../components/home/HomeBlogSection";
 import HomeHero from "../components/home/HomeHero";
 import HomeHowItWorks from "../components/home/HomeHowItWorks";
 import HomeLiveKpis from "../components/home/HomeLiveKpis";
@@ -14,15 +15,16 @@ export default function Home() {
   const recentProjects = getRecentProjects(4);
 
   return (
-    <div className="bg-white space-y-8  md:space-y-16  ">
+    <div className="bg-white space-y-8  md:space-y-20  ">
       <HomeHero />
       {/* <HomeStatsSnapshot /> */}
       <HomeLiveKpis />
-      {/* <HomeBloge /> */}
       <HomeHowItWorks />
       <HomeWhyChooseUs />
       <HomeRecentProjects projects={recentProjects} />
       <HomeGalleryPreview />
+      <HomeBlogSection />
+      {/* Blog */}
       <HomeTestimonials />
       <HomeFaq />
     </div>

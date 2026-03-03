@@ -74,8 +74,8 @@ export function LoginForm() {
           >
             Email
           </label>
-          <div className="relative">
-            <Mail className="absolute left-3 top-3 h-4 w-4 text-zinc-400 pointer-events-none" />
+          <div className="relative group">
+            <Mail className="absolute left-3 top-3 h-5 w-5 text-zinc-400 group-focus-within:text-emerald-500 transition-colors pointer-events-none" />
             <Input
               id="email"
               placeholder="name@example.com"
@@ -85,7 +85,7 @@ export function LoginForm() {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              className="pl-9 h-11 bg-zinc-50 border-zinc-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+              className="pl-10 h-12 bg-zinc-50 border-zinc-200 focus:border-emerald-500 focus:ring-emerald-500/20 rounded-xl transition-all duration-200 shadow-sm focus:shadow-emerald-500/10"
               required
             />
           </div>
@@ -106,8 +106,8 @@ export function LoginForm() {
               Forgot password?
             </Link>
           </div>
-          <div className="relative">
-            <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 pointer-events-none" />
+          <div className="relative group">
+            <Lock className="absolute left-3 top-3 h-5 w-5 text-zinc-400 group-focus-within:text-emerald-500 transition-colors pointer-events-none" />
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
@@ -115,13 +115,13 @@ export function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
-              className="pl-9 pr-10 h-11 bg-zinc-50 border-zinc-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+              className="pl-10 pr-10 h-12 bg-zinc-50 border-zinc-200 focus:border-emerald-500 focus:ring-emerald-500/20 rounded-xl transition-all duration-200 shadow-sm focus:shadow-emerald-500/10"
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3 text-zinc-400 hover:text-zinc-600 focus:outline-none transition-colors"
+              className="absolute right-3 top-3 text-zinc-400 hover:text-emerald-600 focus:outline-none transition-colors"
             >
               {showPassword ? (
                 <EyeOff className="h-4 w-4" />
@@ -145,10 +145,10 @@ export function LoginForm() {
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full h-11 bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm transition-all hover:shadow-emerald-900/20 text-base font-medium disabled:opacity-70 disabled:cursor-not-allowed"
+        className="w-full h-12 bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/40 transition-all text-base font-semibold rounded-xl group disabled:opacity-70 disabled:cursor-not-allowed"
       >
         {isLoading ? "Signing in..." : "Sign In"}
-        {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
+        {!isLoading && <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />}
       </Button>
     </form>
   );
