@@ -143,7 +143,7 @@ export function GalleryFeed() {
             </div>
             <h3 className="text-xl font-semibold text-zinc-900">No moments found</h3>
             <p className="mt-2 text-zinc-500 max-w-xs mx-auto">
-              We couldn't find any photos matching your current filters.
+              We couldn&apos;t find any photos matching your current filters.
             </p>
             <button 
               onClick={() => {setActiveCategory("All"); setSearchQuery("");}}

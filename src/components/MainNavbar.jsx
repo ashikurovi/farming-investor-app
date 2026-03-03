@@ -20,14 +20,23 @@ function MainNavItem({ href, label, isScrolled, className = "" }) {
   return (
     <Link
       href={href}
-      className={`inline-flex items-center px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em] transition ${
+      className={`group inline-flex items-center gap-2 rounded-full px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.26em] transition-all ${
         isActive
-          ? "text-emerald-600 font-bold"
+          ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/60"
           : isScrolled
-            ? "text-zinc-800 hover:text-amber-600"
-            : "text-white/80 hover:text-amber-300"
+            ? "text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100/70"
+            : "text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100/70"
       } ${className}`}
     >
+      <span
+        className={`h-1.5 w-1.5 rounded-full transition-colors ${
+          isActive
+            ? "bg-emerald-500"
+            : isScrolled
+              ? "bg-zinc-300 group-hover:bg-zinc-400"
+              : "bg-white/40 group-hover:bg-white/70"
+        }`}
+      />
       <span>{label}</span>
     </Link>
   );
@@ -83,17 +92,20 @@ export function MainNavbar() {
     <>
       {/* Desktop/Laptop Navbar - Premium Solid Design - Hidden on Mobile */}
       <header
-        className={`hidden md:block fixed inset-x-0 top-0 z-40 transition-all duration-500 bg-white shadow-sm border-b border-zinc-100 ${
-          scrolled ? "py-0" : "py-4"
+        className={`hidden md:block fixed inset-x-0 top-0 z-40 transition-all duration-500 ${
+          scrolled
+            ? "bg-white/85 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.08)] border-b border-zinc-200/60"
+            : "bg-white/70 backdrop-blur-xl shadow-[0_10px_35px_rgba(0,0,0,0.06)] border-b border-zinc-200/40"
         }`}
       >
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/60 to-transparent" />
         <div className="max-w-7xl mx-auto flex h-20 items-center justify-between px-6 lg:px-12">
           <Link href="/" className="flex items-center group">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-sm transition-colors duration-300 bg-zinc-900 text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-indigo-500 text-white shadow-[0_10px_30px_rgba(16,185,129,0.20)] ring-1 ring-white/20 transition-transform duration-300 group-hover:scale-[1.03]">
                 <span className="text-xs font-bold">AG</span>
               </div>
-              <span className="text-sm font-bold uppercase tracking-[0.2em] transition-colors duration-300 text-zinc-900">
+              <span className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-900">
                 Framing
               </span>
             </div>
@@ -101,33 +113,33 @@ export function MainNavbar() {
 
           <div className="flex items-center gap-8">
             <div className="hidden md:flex">
-              <MainNavLinks isScrolled={true} />
+              <MainNavLinks isScrolled={scrolled} />
             </div>
 
             <div className="hidden items-center gap-4 sm:flex">
               <Link
                 href="/admin"
-                className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-colors ${
+                className={`inline-flex items-center rounded-full px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${
                   pathname.startsWith("/admin")
-                    ? "text-emerald-600 font-extrabold"
-                    : "text-zinc-600 hover:text-amber-500"
+                    ? "bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200/60"
+                    : "text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100/70"
                 }`}
               >
                 Admin
               </Link>
               <Link
                 href="/investor"
-                className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-colors ${
+                className={`inline-flex items-center rounded-full px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${
                   pathname.startsWith("/investor")
-                    ? "text-emerald-600 font-extrabold"
-                    : "text-zinc-600 hover:text-amber-500"
+                    ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/60"
+                    : "text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100/70"
                 }`}
               >
                 Investor
               </Link>
               <Link
                 href="/login"
-                className="rounded-none px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 bg-zinc-900 text-white hover:bg-zinc-800"
+                className="rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white transition-all duration-300 bg-gradient-to-r from-zinc-900 to-zinc-800 shadow-[0_12px_35px_rgba(0,0,0,0.18)] ring-1 ring-zinc-950/20 hover:from-zinc-800 hover:to-zinc-700 hover:shadow-[0_14px_45px_rgba(0,0,0,0.22)] active:scale-[0.99]"
               >
                 Login
               </Link>

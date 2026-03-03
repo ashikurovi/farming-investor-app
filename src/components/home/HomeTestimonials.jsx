@@ -47,7 +47,9 @@ export default function HomeTestimonials() {
 
           <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
             Trusted by <span className="font-serif italic">investors</span> and{" "}
-            <span className="font-serif italic text-emerald-700">operators</span>
+            <span className="font-serif italic text-emerald-700">
+              operators
+            </span>
             .
           </h2>
 
@@ -82,7 +84,7 @@ export default function HomeTestimonials() {
               {/* Quote */}
               <blockquote className="flex-grow mb-8">
                 <p className="text-zinc-600 leading-relaxed font-medium">
-                  "{testimonial.quote}"
+                  &ldquo;{testimonial.quote}&rdquo;
                 </p>
               </blockquote>
 

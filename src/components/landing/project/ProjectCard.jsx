@@ -27,9 +27,18 @@ const getCategoryLabel = (type) => {
   return map[type] || type;
 };
 
+const stablePercentFromSeed = (seed, min = 40, max = 95) => {
+  const str = String(seed ?? "");
+  let hash = 0;
+  for (let i = 0; i < str.length; i += 1) {
+    hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
+  }
+  const range = Math.max(1, max - min + 1);
+  return min + (hash % range);
+};
+
 export function ProjectCard({ project }) {
-  // Mock funding percentage for visual interest
-  const fundingPercent = Math.floor(Math.random() * (95 - 40) + 40);
+  const fundingPercent = stablePercentFromSeed(project?.projectId, 40, 95);
   
   return (
     <Link href={`/landing/project/${project.projectId}`} className="group relative bg-white rounded-3xl overflow-hidden border border-zinc-200 shadow-sm hover:shadow-xl hover:shadow-emerald-900/5 transition-all duration-500 hover:-translate-y-1 flex flex-col h-full block">

@@ -46,7 +46,7 @@ export default function HomeLiveKpis() {
   ];
 
   return (
-    <section className="relative ">
+    <section id="live-kpis" className="relative  ">
       {/* Background Image with Overlay
       <div className="absolute inset-0 z-0">
         <Image
@@ -58,8 +58,7 @@ export default function HomeLiveKpis() {
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-50/80 via-transparent to-zinc-50/80"></div>
       </div> */}
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        
+      <div className="max-w-7xl  mx-auto px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="space-y-4 max-w-2xl">
@@ -70,8 +69,10 @@ export default function HomeLiveKpis() {
               </span>
             </div>
             <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
-              Built for <span className="font-serif italic">trust</span>, designed for{" "}
-              <span className="font-serif italic text-emerald-700">growth</span>.
+              Built for <span className="font-serif italic">trust</span>,
+              designed for{" "}
+              <span className="font-serif italic text-emerald-700">growth</span>
+              .
             </h2>
           </div>
 

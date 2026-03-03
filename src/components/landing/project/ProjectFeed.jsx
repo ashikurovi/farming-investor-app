@@ -80,7 +80,7 @@ export function ProjectFeed({ initialProjects }) {
             </div>
             <h3 className="text-lg font-medium text-zinc-900">No projects found</h3>
             <p className="text-zinc-500 max-w-md mt-2">
-              Try adjusting your filters or search query to find what you're looking for.
+              Try adjusting your filters or search query to find what you&apos;re looking for.
             </p>
             <button 
               onClick={() => {setActiveCategory("ALL"); setSearchQuery("");}}

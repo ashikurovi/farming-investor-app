@@ -35,7 +35,7 @@ export function ContactForm() {
           Send us a message
         </h3>
         <p className="text-zinc-500 text-sm mt-2">
-          We'll get back to you within 24 hours.
+          We&apos;ll get back to you within 24 hours.
         </p>
       </div>
 
