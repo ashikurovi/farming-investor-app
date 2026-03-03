@@ -8,9 +8,11 @@ import { ArrowRight, Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLoginMutation } from "@/features/auth/authApiSlice";
+import { useToast } from "@/components/ui/toast";
 
 export function LoginForm() {
   const router = useRouter();
+  const { addToast } = useToast();
   const user = useSelector((state) => state.auth?.user);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -25,23 +27,27 @@ export function LoginForm() {
     try {
       const result = await login({ email, password }).unwrap();
 
-      if (!result) {
-        setError("Login failed. Please try again.");
-        return;
-      }
-
       const roleFromResult =
         result?.data?.user?.role ||
         result?.user?.role ||
         user?.role ||
         null;
 
+      addToast({
+        title: "Login successful",
+        description:
+          roleFromResult === "admin"
+            ? "Welcome back, admin!"
+            : "Welcome back to your dashboard.",
+        variant: "success",
+      });
+
       if (roleFromResult === "admin") {
-        router.push("/admin/dashboard");
+        router.push("/admin");
       } else if (roleFromResult === "investor") {
-        router.push("/investor/dashboard");
+        router.push("/investor");
       } else {
-        router.push("/dashboard");
+        router.push("/");
       }
     } catch (err) {
       const message =
@@ -49,6 +55,12 @@ export function LoginForm() {
         (Array.isArray(err?.data?.message) ? err.data.message[0] : null) ||
         "Login failed. Please check your credentials and try again.";
       setError(message);
+
+      addToast({
+        title: "Login failed",
+        description: message,
+        variant: "error",
+      });
     }
   };
 

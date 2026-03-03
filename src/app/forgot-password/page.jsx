@@ -6,6 +6,7 @@ import { Mail, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForgotPasswordMutation } from "@/features/auth/authApiSlice";
+import { useToast } from "@/components/ui/toast";
 
 export const metadata = {
   title: "Forgot Password | Framing Investor App",
@@ -17,6 +18,7 @@ export default function ForgotPasswordPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+  const { addToast } = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,16 +28,29 @@ export default function ForgotPasswordPage() {
     try {
       const data = await forgotPassword({ email }).unwrap();
 
-      setSuccess(
+      const message =
         data?.message ||
-          "If an account exists for this email, password reset instructions have been sent."
-      );
+        "If an account exists for this email, password reset instructions have been sent.";
+
+      setSuccess(message);
+
+      addToast({
+        title: "Reset link sent",
+        description: message,
+        variant: "success",
+      });
     } catch (err) {
       const message =
         err?.data?.message ||
         (Array.isArray(err?.data?.message) ? err.data.message[0] : null) ||
         "Failed to send reset instructions. Please try again.";
       setError(message);
+
+      addToast({
+        title: "Unable to send reset link",
+        description: message,
+        variant: "error",
+      });
     }
   };
 
