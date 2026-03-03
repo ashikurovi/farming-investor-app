@@ -4,10 +4,9 @@ import { useState } from "react";
 import { Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/toast";
+import { toast } from "sonner";
 
 export function ContactForm() {
-  const { addToast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -18,10 +17,8 @@ export function ContactForm() {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     setIsSubmitting(false);
-    addToast({
-      title: "Message Sent Successfully!",
+    toast.success("Message sent successfully!", {
       description: "Thank you for reaching out. We'll get back to you within 24 hours.",
-      variant: "success",
     });
 
     // Optional: Reset form

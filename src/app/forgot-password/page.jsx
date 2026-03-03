@@ -6,6 +6,7 @@ import { Mail, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForgotPasswordMutation } from "@/features/auth/authApiSlice";
+import { toast } from "sonner";
 
 export const metadata = {
   title: "Forgot Password | Framing Investor App",
@@ -26,16 +27,25 @@ export default function ForgotPasswordPage() {
     try {
       const data = await forgotPassword({ email }).unwrap();
 
-      setSuccess(
+      const message =
         data?.message ||
-          "If an account exists for this email, password reset instructions have been sent."
-      );
+        "If an account exists for this email, password reset instructions have been sent.";
+
+      setSuccess(message);
+
+      toast.success("Reset link sent", {
+        description: message,
+      });
     } catch (err) {
       const message =
         err?.data?.message ||
         (Array.isArray(err?.data?.message) ? err.data.message[0] : null) ||
         "Failed to send reset instructions. Please try again.";
       setError(message);
+
+      toast.error("Unable to send reset link", {
+        description: message,
+      });
     }
   };
 

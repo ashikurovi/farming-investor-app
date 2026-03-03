@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 import {
   Home,
   FolderGit2,
@@ -11,7 +12,10 @@ import {
   User,
   LayoutDashboard,
   LayoutGrid,
+  LogOut,
 } from "lucide-react";
+import { useLogoutMutation } from "@/features/auth/authApiSlice";
+import { toast } from "sonner";
 
 function MainNavItem({ href, label, icon: Icon, isScrolled, className = "" }) {
   const pathname = usePathname();
@@ -78,8 +82,29 @@ function MainNavLinks({ isScrolled }) {
 
 export function MainNavbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const token = useSelector((state) => state.auth?.token);
+  const user = useSelector((state) => state.auth?.user);
+  const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
+
+  const isAuthenticated = Boolean(token);
+  const role = user?.role;
+  const dashboardHref =
+    role === "admin" ? "/admin" : role === "investor" ? "/investor" : "/";
+
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+    } catch {
+      // ignore API/logout errors, state is cleared in slice
+    } finally {
+      toast.success("Logged out");
+      router.push("/");
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -118,36 +143,33 @@ export function MainNavbar() {
               </div>
 
               <div className="hidden items-center gap-4 sm:flex">
-                <Link
-                  href="/admin"
-                  className={`inline-flex items-center rounded-full px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${
-                    pathname.startsWith("/admin")
-                      ? "bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200/60"
-                      : scrolled
-                        ? "text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100/70"
-                        : "text-white/90 hover:text-white hover:bg-white/10"
-                  }`}
-                >
-                  Admin
-                </Link>
-                <Link
-                  href="/investor"
-                  className={`inline-flex items-center rounded-full px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${
-                    pathname.startsWith("/investor")
-                      ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/60"
-                      : scrolled
-                        ? "text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100/70"
-                        : "text-white/90 hover:text-white hover:bg-white/10"
-                  }`}
-                >
-                  Investor
-                </Link>
-                <Link
-                  href="/login"
-                  className="rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white transition-all duration-300 bg-gradient-to-r from-emerald-600 to-emerald-500 shadow-[0_10px_20px_rgba(16,185,129,0.2)] hover:shadow-[0_14px_25px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 active:scale-[0.98]"
-                >
-                  Login
-                </Link>
+                {isAuthenticated ? (
+                  <>
+                    <Link
+                      href={dashboardHref}
+                      className="inline-flex items-center rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white transition-all duration-300 bg-gradient-to-r from-emerald-600 to-emerald-500 shadow-[0_10px_20px_rgba(16,185,129,0.2)] hover:shadow-[0_14px_25px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 active:scale-[0.98]"
+                    >
+                      {role === "admin" ? "Admin Dashboard" : "Investor Dashboard"}
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      disabled={isLoggingOut}
+                      className="inline-flex items-center justify-center rounded-full px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all bg-red-500 hover:bg-red-600 text-white shadow-[0_6px_16px_rgba(239,68,68,0.35)] disabled:opacity-60 disabled:cursor-not-allowed"
+                      aria-label={isLoggingOut ? "Logging out" : "Logout"}
+                      title={isLoggingOut ? "Logging out" : "Logout"}
+                    >
+                      <LogOut className="h-4 w-4 text-white" />
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white transition-all duration-300 bg-gradient-to-r from-emerald-600 to-emerald-500 shadow-[0_10px_20px_rgba(16,185,129,0.2)] hover:shadow-[0_14px_25px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 active:scale-[0.98]"
+                  >
+                    Login
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -231,38 +253,41 @@ export function MainNavbar() {
 
               <div className="h-px bg-zinc-100 mx-4"></div>
 
-              {/* Investor & Admin Links - Premium Style */}
-              <Link
-                href="/investor"
-                className="flex items-center gap-4 px-4 py-4 text-zinc-600 hover:bg-zinc-50 hover:text-amber-600 rounded-2xl transition group"
-              >
-                <LayoutGrid className="h-5 w-5 text-zinc-400 group-hover:text-amber-500 transition-colors" />
-                <span className="text-xs font-bold uppercase tracking-[0.15em]">
-                  Investor
-                </span>
-              </Link>
-
-              <Link
-                href="/admin"
-                className="flex items-center gap-4 px-4 py-4 text-zinc-600 hover:bg-zinc-50 hover:text-amber-600 rounded-2xl transition group"
-              >
-                <LayoutDashboard className="h-5 w-5 text-zinc-400 group-hover:text-amber-500 transition-colors" />
-                <span className="text-xs font-bold uppercase tracking-[0.15em]">
-                  Admin
-                </span>
-              </Link>
-
               <div className="h-px bg-zinc-100 mx-4 mb-1"></div>
 
-              {/* Login Button - Prominent */}
-              <Link
-                href="/login"
-                className="flex items-center justify-center gap-2 mx-1 px-4 py-4 bg-zinc-900 text-white hover:bg-zinc-800 rounded-2xl transition shadow-lg shadow-zinc-200 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <span className="text-xs font-bold uppercase tracking-[0.2em]">
-                  Login
-                </span>
-              </Link>
+              {/* Auth actions */}
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    href={dashboardHref}
+                    className="flex items-center gap-4 px-4 py-4 text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 rounded-2xl transition group"
+                  >
+                    <LayoutDashboard className="h-5 w-5 text-zinc-400 group-hover:text-emerald-500 transition-colors" />
+                    <span className="text-xs font-bold uppercase tracking-[0.15em]">
+                      {role === "admin" ? "Admin Dashboard" : "Investor Dashboard"}
+                    </span>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    className="flex items-center justify-center gap-2 mx-1 px-4 py-4 bg-zinc-900 text-white hover:bg-zinc-800 rounded-2xl transition shadow-lg shadow-zinc-200 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    <span className="text-xs font-bold uppercase tracking-[0.2em]">
+                      {isLoggingOut ? "Logging out..." : "Logout"}
+                    </span>
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  className="flex items-center justify-center gap-2 mx-1 px-4 py-4 bg-zinc-900 text-white hover:bg-zinc-800 rounded-2xl transition shadow-lg shadow-zinc-200 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <span className="text-xs font-bold uppercase tracking-[0.2em]">
+                    Login
+                  </span>
+                </Link>
+              )}
             </div>
           </div>
         </div>

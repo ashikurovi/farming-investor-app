@@ -1,8 +1,8 @@
 import { Bai_Jamjuree } from "next/font/google";
 import "./globals.css";
 import { ReduxProvider } from "./providers";
-import { ToastProvider } from "@/components/ui/toast";
 import { AppShell } from "@/app/AppShell";
+import { ToasterProvider } from "@/components/ToasterProvider";
 
 const baiJamjuree = Bai_Jamjuree({
   variable: "--font-bai-jamjuree",
@@ -22,9 +22,8 @@ export default function RootLayout({ children }) {
         className={`${baiJamjuree.variable} antialiased font-sans`}
       >
         <ReduxProvider>
-          <ToastProvider>
-            <AppShell>{children}</AppShell>
-          </ToastProvider>
+          <ToasterProvider />
+          <AppShell>{children}</AppShell>
         </ReduxProvider>
       </body>
     </html>

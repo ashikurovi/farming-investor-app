@@ -8,6 +8,7 @@ import { ArrowRight, Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLoginMutation } from "@/features/auth/authApiSlice";
+import { toast } from "sonner";
 
 export function LoginForm() {
   const router = useRouter();
@@ -25,16 +26,18 @@ export function LoginForm() {
     try {
       const result = await login({ email, password }).unwrap();
 
-      if (!result) {
-        setError("Login failed. Please try again.");
-        return;
-      }
-
       const roleFromResult =
         result?.data?.user?.role ||
         result?.user?.role ||
         user?.role ||
         null;
+
+      toast.success("Login successful", {
+        description:
+          roleFromResult === "admin"
+            ? "Welcome back, admin!"
+            : "Welcome back to your dashboard.",
+      });
 
       if (roleFromResult === "admin") {
         router.push("/admin");
@@ -49,6 +52,10 @@ export function LoginForm() {
         (Array.isArray(err?.data?.message) ? err.data.message[0] : null) ||
         "Login failed. Please check your credentials and try again.";
       setError(message);
+
+      toast.error("Login failed", {
+        description: message,
+      });
     }
   };
 

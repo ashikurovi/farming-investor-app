@@ -20,6 +20,24 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'uwxmykxoxviixovh.private.blob.vercel-storage.com',
+        port: '',
+        pathname: '/uploads/**',
+      },
     ],
   },
 };

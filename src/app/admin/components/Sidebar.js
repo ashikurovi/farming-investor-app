@@ -1,17 +1,34 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ChevronsLeft, ChevronsRight, LogOut } from "lucide-react";
+import { toast } from "sonner";
+import { useLogoutMutation } from "@/features/auth/authApiSlice";
 import { sidebarNavigation } from "./sidebarNavigation";
+import Link from "next/link";
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
+  const router = useRouter();
+  const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
 
   const sidebarWidth = collapsed ? "w-20" : "w-64";
 
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+    } catch {
+      // ignore API/logout errors, state is cleared in slice
+    } finally {
+      toast.success("Logged out");
+      router.push("/");
+    }
+  };
+
   return (
     <aside
-      className={`hidden h-screen ${sidebarWidth} flex-col border-r border-zinc-200 bg-white/80 px-3 py-6 shadow-sm backdrop-blur transition-all duration-300 ease-in-out lg:flex`}
+      className={`hidden min-h-screen ${sidebarWidth} flex-col border-r border-zinc-200 bg-white/80 px-3 py-6 shadow-sm backdrop-blur transition-all duration-300 ease-in-out lg:flex`}
     >
       <div className="mb-6 flex items-center justify-between px-1">
         <div className="flex items-center gap-2">
@@ -45,7 +62,7 @@ export default function Sidebar() {
 
       <nav className="flex-1 space-y-1 text-sm">
         {sidebarNavigation.map((item) => (
-          <a
+          <Link
             key={item.name}
             href={item.href}
             className={`flex items-center gap-3 rounded-md px-2 py-2 font-medium text-zinc-600 transition hover:bg-emerald-50 hover:text-emerald-700 ${
@@ -58,24 +75,23 @@ export default function Sidebar() {
               </span>
             )}
             {!collapsed && <span>{item.name}</span>}
-          </a>
+          </Link>
         ))}
       </nav>
 
       <div className="mt-4 space-y-3 border-t border-zinc-200 pt-4">
         <button
           type="button"
-          className={`flex items-center justify-center rounded-md border border-red-100 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 transition hover:border-red-200 hover:bg-red-100 ${
+          disabled={isLoggingOut}
+          className={`flex items-center justify-center rounded-md border border-red-100 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 transition hover:border-red-200 hover:bg-red-100 disabled:opacity-60 disabled:cursor-not-allowed ${
             collapsed ? "w-8 px-0" : "w-full gap-2"
           }`}
-          onClick={() => {
-            if (typeof window !== "undefined") {
-              window.location.href = "/logout";
-            }
-          }}
+          onClick={handleLogout}
         >
           <LogOut className="h-3.5 w-3.5" />
-          {!collapsed && <span>Logout</span>}
+          {!collapsed && (
+            <span>{isLoggingOut ? "Logging out..." : "Logout"}</span>
+          )}
         </button>
         {!collapsed && (
           <div className="text-center text-[11px] text-zinc-500">
