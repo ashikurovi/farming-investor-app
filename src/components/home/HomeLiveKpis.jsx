@@ -1,3 +1,5 @@
+"use client";
+
 import {
   TrendingUp,
   ArrowUpRight,
@@ -6,10 +8,75 @@ import {
   Droplets,
   Sun,
   Wind,
+  Cloud,
+  CloudRain,
+  Snowflake,
 } from "lucide-react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function HomeLiveKpis() {
+  const [weather, setWeather] = useState({
+    temp: 24,
+    condition: "Sunny",
+    humidity: 42,
+    wind: 12,
+    isLoaded: false,
+  });
+
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        // Fetching weather for a farming region (e.g., Fresno, CA)
+        // Using Open-Meteo API (No key required)
+        const response = await fetch(
+          "https://api.open-meteo.com/v1/forecast?latitude=36.7378&longitude=-119.7871&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=auto",
+        );
+        const data = await response.json();
+
+        if (data.current) {
+          setWeather({
+            temp: Math.round(data.current.temperature_2m),
+            condition: getWeatherCondition(data.current.weather_code),
+            humidity: data.current.relative_humidity_2m,
+            wind: Math.round(data.current.wind_speed_10m),
+            code: data.current.weather_code,
+            isLoaded: true,
+          });
+        }
+      } catch (error) {
+        console.error("Failed to fetch weather data", error);
+        // Fallback is already set in initial state
+      }
+    };
+
+    fetchWeather();
+
+    // Refresh every 30 minutes
+    const interval = setInterval(fetchWeather, 30 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const getWeatherCondition = (code) => {
+    if (code === 0) return "Clear";
+    if (code === 1 || code === 2 || code === 3) return "Partly Cloudy";
+    if (code >= 45 && code <= 48) return "Foggy";
+    if (code >= 51 && code <= 67) return "Rainy";
+    if (code >= 71 && code <= 77) return "Snowy";
+    if (code >= 80 && code <= 82) return "Rain Showers";
+    if (code >= 95) return "Thunderstorm";
+    return "Sunny";
+  };
+
+  const WeatherIcon = ({ code, className }) => {
+    if (code === undefined) return <Sun className={className} />;
+    if (code === 0) return <Sun className={className} />; // Clear
+    if (code >= 1 && code <= 3) return <Cloud className={className} />; // Cloudy
+    if (code >= 51) return <CloudRain className={className} />; // Rain
+    if (code >= 71) return <Snowflake className={className} />; // Snow
+    return <Sun className={className} />;
+  };
+
   const kpis = [
     {
       label: "Average Annual Yield",
@@ -47,17 +114,6 @@ export default function HomeLiveKpis() {
 
   return (
     <section id="live-kpis" className="relative  ">
-      {/* Background Image with Overlay
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt="Agriculture Data Background"
-          fill
-          className="object-cover opacity-[0.03]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-zinc-50/80 via-transparent to-zinc-50/80"></div>
-      </div> */}
-
       <div className="max-w-7xl  mx-auto px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
@@ -77,30 +133,41 @@ export default function HomeLiveKpis() {
           </div>
 
           {/* Live Weather Widget */}
-          <div className="flex flex-wrap gap-4 p-4 rounded-2xl bg-white border border-zinc-100 shadow-sm">
-            <div className="flex items-center gap-3 pr-4 border-r border-zinc-100">
-              <Sun className="w-8 h-8 text-amber-500" />
+          <div className="flex flex-wrap gap-4 p-4 rounded-2xl bg-white border border-zinc-100 shadow-sm transition-all hover:shadow-md">
+            <div className="flex items-center gap-3 pr-4 border-r border-zinc-100 min-w-[140px]">
+              <WeatherIcon
+                code={weather.code}
+                className="w-8 h-8 text-amber-500"
+              />
               <div>
-                <div className="text-sm font-medium text-zinc-500">
+                <div className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
                   Field Conditions
                 </div>
                 <div className="text-lg font-bold text-zinc-900">
-                  Sunny, 24°C
+                  {weather.condition}, {weather.temp}°C
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Droplets className="w-6 h-6 text-blue-500" />
+            <div className="flex items-center gap-3 px-2">
+              <Droplets className="w-5 h-5 text-blue-500" />
               <div>
-                <div className="text-xs text-zinc-500">Humidity</div>
-                <div className="font-semibold text-zinc-900">42%</div>
+                <div className="text-[10px] uppercase tracking-wider text-zinc-500">
+                  Humidity
+                </div>
+                <div className="font-semibold text-zinc-900">
+                  {weather.humidity}%
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Wind className="w-6 h-6 text-zinc-500" />
+            <div className="flex items-center gap-3 px-2 border-l border-zinc-100 pl-4">
+              <Wind className="w-5 h-5 text-zinc-500" />
               <div>
-                <div className="text-xs text-zinc-500">Wind</div>
-                <div className="font-semibold text-zinc-900">12km/h</div>
+                <div className="text-[10px] uppercase tracking-wider text-zinc-500">
+                  Wind
+                </div>
+                <div className="font-semibold text-zinc-900">
+                  {weather.wind}km/h
+                </div>
               </div>
             </div>
           </div>
@@ -108,53 +175,38 @@ export default function HomeLiveKpis() {
 
         {/* KPI Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {kpis.map((kpi, index) => {
-            const Icon = kpi.icon;
-            return (
-              <div
-                key={index}
-                className="group relative p-6 rounded-3xl bg-white border border-zinc-100 hover:shadow-xl hover:border-emerald-100 transition-all duration-300"
-              >
-                <div className="flex justify-between items-start mb-8">
-                  <div className="p-3 rounded-2xl bg-emerald-50 text-emerald-600 transition-all duration-300">
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  {/* Decorative Chart Line */}
-                  <div className="flex items-end gap-1 h-8">
-                    <div
-                      className={`w-1 rounded-t-sm ${kpi.chart} opacity-20 group-hover:opacity-40 h-3 transition-all duration-300`}
-                    ></div>
-                    <div
-                      className={`w-1 rounded-t-sm ${kpi.chart} opacity-40 group-hover:opacity-60 h-5 transition-all duration-300`}
-                    ></div>
-                    <div
-                      className={`w-1 rounded-t-sm ${kpi.chart} opacity-60 group-hover:opacity-80 h-4 transition-all duration-300`}
-                    ></div>
-                    <div
-                      className={`w-1 rounded-t-sm ${kpi.chart} opacity-80 group-hover:opacity-100 h-7 transition-all duration-300`}
-                    ></div>
-                  </div>
+          {kpis.map((kpi, index) => (
+            <div
+              key={index}
+              className="p-6 rounded-2xl bg-zinc-50 border border-zinc-100 hover:bg-white hover:shadow-lg hover:shadow-emerald-900/5 transition-all duration-300 group"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-2 rounded-lg bg-white border border-zinc-100 group-hover:border-emerald-100 group-hover:bg-emerald-50 transition-colors">
+                  <kpi.icon className="w-5 h-5 text-zinc-400 group-hover:text-emerald-600 transition-colors" />
                 </div>
+                <span
+                  className={`text-xs font-medium px-2 py-1 rounded-full bg-white border border-zinc-100 ${kpi.trendColor}`}
+                >
+                  {kpi.trend}
+                </span>
+              </div>
 
-                <div className="space-y-1">
-                  <h3 className="text-sm font-medium text-zinc-500 tracking-wide uppercase">
-                    {kpi.label}
-                  </h3>
-                  <div className="flex items-baseline gap-2">
-                    <p className="text-4xl font-bold text-zinc-900 tracking-tight font-display">
-                      {kpi.value}
-                    </p>
-                  </div>
-                  <div
-                    className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-lg bg-emerald-50 ${kpi.trendColor} w-fit mt-2`}
-                  >
-                    <TrendingUp className="w-3 h-3" />
-                    {kpi.trend}
-                  </div>
+              <div className="space-y-1">
+                <div className="text-sm text-zinc-500 font-medium">
+                  {kpi.label}
+                </div>
+                <div className="text-2xl font-bold text-zinc-900">
+                  {kpi.value}
                 </div>
               </div>
-            );
-          })}
+
+              <div className="mt-4 h-1.5 w-full bg-zinc-100 rounded-full overflow-hidden">
+                <div
+                  className={`h-full w-[70%] rounded-full ${kpi.chart} opacity-20 group-hover:opacity-100 transition-opacity duration-500`}
+                ></div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
