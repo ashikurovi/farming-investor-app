@@ -8,15 +8,17 @@ import HomeRecentProjects from "../components/home/HomeRecentProjects";
 import HomeStatsSnapshot from "../components/home/HomeStatsSnapshot";
 import HomeTestimonials from "../components/home/HomeTestimonials";
 import HomeWhyChooseUs from "../components/home/HomeWhyChooseUs";
+import HomeBloge from "@/components/home/HomeBloge";
 
 export default function Home() {
   const recentProjects = getRecentProjects(4);
 
   return (
-    <div className="bg-white space-y-8  md:space-y-16  text-zinc-900 dark:bg-black dark:text-zinc-50">
+    <div className="bg-white space-y-8  md:space-y-16  ">
       <HomeHero />
       {/* <HomeStatsSnapshot /> */}
       <HomeLiveKpis />
+      {/* <HomeBloge /> */}
       <HomeHowItWorks />
       <HomeWhyChooseUs />
       <HomeRecentProjects projects={recentProjects} />
