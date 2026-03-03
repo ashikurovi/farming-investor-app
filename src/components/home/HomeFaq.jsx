@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import {
-  HelpCircle,
   ChevronDown,
   MessageCircle,
   Phone,
@@ -48,26 +47,23 @@ export default function HomeFaq() {
 
   return (
     <section className="">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="max-w-7xl mb-6 mx-auto px-6 lg:px-8">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-          <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 w-fit animate-in fade-in slide-in-from-bottom-4 duration-700">
-              <HelpCircle className="w-3 h-3 text-emerald-600" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-800">
+          <div className="space-y-4 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
                 Support & FAQ
               </span>
             </div>
 
-            <h2 className="text-3xl md:text-5xl font-light text-zinc-900 leading-tight tracking-tight animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
+            <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
               Common questions,{" "}
-              <span className="font-serif italic text-emerald-700">
-                clarified
-              </span>
-              .
+              <span className="font-serif italic text-emerald-700">clarified</span>.
             </h2>
 
-            <p className="text-zinc-500 text-base md:text-lg leading-relaxed max-w-xl animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+            <p className="text-zinc-500 text-xs md:text-lg leading-relaxed max-w-xl">
               Everything you need to know about investing in sustainable
               agriculture and growing your wealth with us.
             </p>

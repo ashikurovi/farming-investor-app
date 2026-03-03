@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Instagram, Camera, MapPin } from "lucide-react";
 
@@ -55,20 +54,21 @@ export default function HomeGalleryPreview() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header Section */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
-          <div className="max-w-2xl space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 w-fit">
-              <Camera className="w-3 h-3 text-emerald-600" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-800">
+          <div className="space-y-4 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
                 Field Gallery
               </span>
             </div>
 
-            <h2 className="text-3xl md:text-5xl font-light text-zinc-900 leading-tight tracking-tight">
-              Life on the{" "}
-              <span className="font-serif italic text-emerald-700">farm</span>.
+            <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
+              Life on the <span className="font-serif italic">farm</span> in our{" "}
+              <span className="font-serif italic text-emerald-700">gallery</span>
+              .
             </h2>
 
-            <p className="text-zinc-500 text-base md:text-lg leading-relaxed">
+            <p className="text-zinc-500 text-xs md:text-lg leading-relaxed">
               Transparent visual reporting from our active project sites across
               the country.
             </p>
@@ -96,11 +96,11 @@ export default function HomeGalleryPreview() {
               className="group relative h-80 w-full overflow-hidden rounded-3xl bg-zinc-100 cursor-pointer"
             >
               {/* Image */}
-              <image
+              <img
                 src={image.src}
                 alt={image.alt}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                loading="lazy"
               />
 
               {/* Overlay */}

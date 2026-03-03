@@ -46,8 +46,8 @@ export default function HomeLiveKpis() {
   ];
 
   return (
-    <section className=" ">
-      {/* Background Image with Overlay */}
+    <section className="relative ">
+      {/* Background Image with Overlay
       <div className="absolute inset-0 z-0">
         <Image
           src="https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
@@ -56,24 +56,22 @@ export default function HomeLiveKpis() {
           className="object-cover opacity-[0.03]"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-50/80 via-transparent to-zinc-50/80"></div>
-      </div>
+      </div> */}
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+        
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-emerald-100 w-fit shadow-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700">
-                Live Market Data
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
+                Why Choose Us
               </span>
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-900 font-display">
-              Real-time agricultural <br />
-              <span className="text-emerald-600">performance metrics.</span>
+            <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
+              Built for <span className="font-serif italic">trust</span>, designed for{" "}
+              <span className="font-serif italic text-emerald-700">growth</span>.
             </h2>
           </div>
 

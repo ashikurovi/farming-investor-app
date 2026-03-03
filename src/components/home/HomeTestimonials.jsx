@@ -1,6 +1,6 @@
 "use client";
 
-import { Star, Quote, UserCheck, CheckCircle } from "lucide-react";
+import { Star, Quote, CheckCircle } from "lucide-react";
 
 const testimonials = [
   {
@@ -37,23 +37,21 @@ export default function HomeTestimonials() {
     <section className="">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 shadow-sm mx-auto">
-            <UserCheck className="w-3 h-3 text-emerald-600" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-800">
+        <div className=" max-w-2xl  text-left mb-16 space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit mx-auto">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
               Testimonials
             </span>
           </div>
 
-          <h2 className="text-3xl md:text-5xl font-light text-zinc-900 leading-tight tracking-tight">
-            Trusted by{" "}
-            <span className="font-serif italic text-emerald-700">
-              investors
-            </span>{" "}
-            and operators.
+          <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
+            Trusted by <span className="font-serif italic">investors</span> and{" "}
+            <span className="font-serif italic text-emerald-700">operators</span>
+            .
           </h2>
 
-          <p className="text-zinc-500 text-base md:text-lg leading-relaxed">
+          <p className="text-zinc-500  text-xs md:text-lg leading-relaxed">
             What stakeholders say about clarity, reporting, and day-to-day
             experience.
           </p>

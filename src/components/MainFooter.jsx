@@ -128,10 +128,7 @@ export function MainFooter() {
             </div>
           </div>
           
-          <div className="flex items-center gap-2">
-            <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="font-medium text-emerald-500">System Operational</span>
-          </div>
+         
         </div>
       </div>
     </footer>

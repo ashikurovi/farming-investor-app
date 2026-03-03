@@ -1,11 +1,9 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import {
   ArrowUpRight,
   MapPin,
   Calendar,
-  Banknote,
   TrendingUp,
   ArrowRight,
   Sprout,
@@ -24,31 +22,41 @@ export default function HomeRecentProjects({ projects = [] }) {
     "https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=1000&auto=format&fit=crop",
   ];
 
+  const getStableFundingPercent = (project, index) => {
+    const explicit = Number(project?.fundingPercent);
+    if (Number.isFinite(explicit) && explicit > 0) return Math.min(100, Math.max(0, explicit));
+
+    const seed = String(project?.projectId ?? project?.code ?? project?.title ?? index);
+    let hash = 0;
+    for (let i = 0; i < seed.length; i += 1) {
+      hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+    }
+
+    return (hash % 56) + 40;
+  };
+
   return (
     <section className="">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-          <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 shadow-sm w-fit">
-              <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
+          <div className="space-y-4 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
                 Opportunities
               </span>
             </div>
 
-            <h2 className="text-3xl md:text-5xl font-light text-zinc-900 leading-tight tracking-tight">
-              Latest{" "}
+            <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
+              Latest <span className="font-serif italic">investment</span>{" "}
               <span className="font-serif italic text-emerald-700">
-                investment
-              </span>{" "}
-              opportunities.
+                opportunities
+              </span>
+              .
             </h2>
 
-            <p className="text-zinc-500 text-base md:text-lg leading-relaxed max-w-xl">
+            <p className="text-zinc-500 text-xs md:text-lg leading-relaxed max-w-xl">
               Curated agricultural assets offering stable yields and long-term
               capital appreciation.
             </p>
@@ -66,10 +74,7 @@ export default function HomeRecentProjects({ projects = [] }) {
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {safeProjects.slice(0, 4).map((project, index) => {
-            // Calculate pseudo-random funding percentage for demo realism if not provided
-            const fundingPercent =
-              project.fundingPercent ||
-              Math.floor(Math.random() * (95 - 40 + 1) + 40);
+            const fundingPercent = getStableFundingPercent(project, index);
 
             return (
               <div

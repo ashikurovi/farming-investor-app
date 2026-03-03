@@ -43,29 +43,20 @@ export default function HomeWhyChooseUs() {
           {/* Left Content */}
           <div className="space-y-10">
             <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-50 border border-zinc-200 w-fit">
-                <span className="flex h-2 w-2 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                 <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
                   Why Choose Us
                 </span>
               </div>
 
-              <h2 className="text-3xl md:text-5xl font-light text-zinc-900 leading-tight tracking-tight">
-                Built for{" "}
-                <span className="font-serif italic text-emerald-700">
-                  trust
-                </span>
-                , designed for{" "}
-                <span className="font-serif italic text-emerald-700">
-                  growth
-                </span>
-                .
+              <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
+                Built for <span className="font-serif italic">trust</span>,
+                designed for{" "}
+                <span className="font-serif italic text-emerald-700">growth</span>.
               </h2>
 
-              <p className="text-zinc-500 text-base md:text-lg leading-relaxed max-w-xl">
+              <p className="text-zinc-500 text-xs md:text-lg leading-relaxed max-w-xl">
                 We combine traditional agricultural expertise with modern
                 financial technology to offer a secure, transparent, and
                 high-yield investment platform.

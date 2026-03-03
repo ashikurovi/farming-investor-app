@@ -70,35 +70,20 @@ export default function HomeHowItWorks() {
   return (
     <section className="">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-emerald-100 shadow-sm mb-8">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <span className="text-xs font-bold uppercase tracking-widest text-zinc-600">
-              Simple Process
-            </span>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+          <div className="space-y-4 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
+                Simple Process
+              </span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
+              Cultivate <span className="font-serif italic">wealth</span> in
+              four simple{" "}
+              <span className="font-serif italic text-emerald-700">steps</span>.
+            </h2>
           </div>
-
-          <h2 className="text-2xl md:text-4xl font-bold text-zinc-900 mb-6 tracking-tight font-display">
-            Cultivate wealth in <br className="hidden md:block" />
-            <span className="relative inline-block text-emerald-600">
-              four simple steps
-              <svg
-                className="absolute w-full h-3 -bottom-1 left-0 text-emerald-200 -z-10"
-                viewBox="0 0 100 10"
-                preserveAspectRatio="none"
-              >
-                <path
-                  d="M0 5 Q 50 10 100 5"
-                  stroke="currentColor"
-                  strokeWidth="8"
-                  fill="none"
-                />
-              </svg>
-            </span>
-          </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
