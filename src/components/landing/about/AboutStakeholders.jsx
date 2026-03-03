@@ -29,17 +29,24 @@ export function AboutStakeholders() {
   ];
 
   return (
-    <section className="relative py-24 sm:py-32 bg-zinc-50 border-t border-zinc-200">
+    <section id="stakeholders" className="relative py-24 sm:py-32 ">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid gap-16 lg:grid-cols-[1.5fr_1fr] items-start">
           
           {/* Stakeholders Grid */}
           <div>
-            <div className="mb-10">
-              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl font-display mb-4">
-                Our <span className="text-emerald-600">Stakeholders</span>
+            <div className="space-y-6 mb-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
+                  Stakeholders
+                </span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
+                Built for <span className="font-serif italic">everyone</span> in the{" "}
+                <span className="font-serif italic text-emerald-700">value chain</span>.
               </h2>
-              <p className="text-lg text-zinc-600 max-w-2xl">
+              <p className="text-zinc-500 text-xs md:text-lg leading-relaxed max-w-xl">
                 Framing is built for everyone in the value chain, not just one side of the table.
                 We create shared value through transparency.
               </p>

@@ -1,15 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
-import { MoveRight, Users } from "lucide-react";
+import { MoveRight, Mail } from "lucide-react";
 
-export function AboutHero() {
+export function ContactHero() {
   return (
     <div className="relative h-[70vh] min-h-[600px] w-full overflow-hidden bg-zinc-950">
       {/* Background Image with Parallax-like feel */}
       <div className="absolute inset-0">
         <Image
-          src="https://images.pexels.com/photos/1267338/pexels-photo-1267338.jpeg?auto=compress&cs=tinysrgb&w=1920"
-          alt="About Hero - Farming Team"
+          src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          alt="Contact Hero - Sustainable Investing Conversation"
           fill
           priority
           className="object-cover opacity-50 scale-105 animate-slow-zoom"
@@ -25,38 +25,38 @@ export function AboutHero() {
           
           {/* Badge */}
           <div className="mb-8 inline-flex animate-fade-in-up opacity-0 [animation-delay:200ms] items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-4 py-1.5 text-sm font-medium text-emerald-300 backdrop-blur-md shadow-[0_0_15px_-3px_rgba(16,185,129,0.15)] hover:bg-emerald-500/10 transition-colors">
-            <Users className="h-4 w-4 text-emerald-400" />
-            <span className="tracking-wide">Who We Are</span>
+            <Mail className="h-4 w-4 text-emerald-400" />
+            <span className="tracking-wide">Get in Touch</span>
           </div>
 
           {/* Title */}
           <h1 className="mb-6 animate-fade-in-up opacity-0 [animation-delay:400ms] text-5xl font-bold tracking-tight text-white sm:text-4xl lg:text-6xl font-display">
-            Redefining <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Agricultural Investment</span>
+            Let&apos;s start a conversation about <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">sustainable investing</span>
           </h1>
 
           {/* Description */}
           <p className="mx-auto mb-10 max-w-2xl animate-fade-in-up opacity-0 [animation-delay:600ms] text-lg leading-relaxed text-zinc-300/90 sm:text-md font-light">
-            We are building the operating system for modern farm investing. 
-            Connecting long-term capital with resilient, real-world farm projects 
-            in a <span className="text-emerald-200 font-medium">transparent ecosystem</span>.
+            Have questions about our projects or want to discuss investment
+            opportunities? Our team is ready to help you grow your portfolio
+            with <span className="text-emerald-200 font-medium">purpose</span>.
           </p>
 
           {/* CTA */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up opacity-0 [animation-delay:800ms]">
             <Link
-              href="#mission"
+              href="#contact-form"
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-emerald-600 px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-emerald-500 hover:shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)]"
             >
-              <span className="relative z-10">Our Mission</span>
+              <span className="relative z-10">Send a Message</span>
               <MoveRight className="h-4 w-4 transition-transform group-hover:translate-x-1 relative z-10" />
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer" />
             </Link>
             
             <Link 
-              href="#stakeholders"
+              href="/"
               className="group inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-medium text-zinc-300 transition-colors hover:text-white hover:bg-white/5"
             >
-              Meet Stakeholders
+              Back to Home
             </Link>
           </div>
         </div>

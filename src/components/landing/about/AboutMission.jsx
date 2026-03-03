@@ -8,13 +8,16 @@ export function AboutMission() {
           
           {/* Mission Text */}
           <div className="space-y-8 animate-fade-in-up">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-3 py-1 text-sm font-medium text-emerald-600 mb-6">
-                <Sprout className="h-4 w-4" />
-                <span>Our Mission</span>
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
+                  Our Mission
+                </span>
               </div>
-              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl lg:text-5xl font-display">
-                Building the <span className="text-emerald-600">operating system</span> for modern farm investing.
+              <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
+                Building the <span className="font-serif italic">operating system</span> for{" "}
+                <span className="font-serif italic text-emerald-700">modern farm investing</span>.
               </h2>
             </div>
             
