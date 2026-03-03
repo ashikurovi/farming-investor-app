@@ -123,8 +123,8 @@ export function MainFooter() {
             <p>© {new Date().getFullYear()} Farming Investor. All rights reserved.</p>
             <div className="hidden md:block h-3 w-px bg-zinc-800" />
             <div className="flex gap-4">
-               <a href="#" className="hover:text-emerald-400 transition-colors">Privacy Policy</a>
-               <a href="#" className="hover:text-emerald-400 transition-colors">Terms of Service</a>
+               <Link href="/privacy-policy" className="hover:text-emerald-400 transition-colors">Privacy Policy</Link>
+               <Link href="/terms" className="hover:text-emerald-400 transition-colors">Terms of Service</Link>
             </div>
           </div>
           

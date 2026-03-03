@@ -53,7 +53,10 @@ export default function HomeWhyChooseUs() {
                 Built for <span className="font-serif italic">trust</span>,
                 <br />
                 designed for{" "}
-                <span className="font-serif italic text-emerald-700">growth</span>.
+                <span className="font-serif italic text-emerald-700">
+                  growth
+                </span>
+                .
               </h2>
 
               <p className="text-zinc-500 text-lg leading-relaxed max-w-xl font-light">
@@ -105,9 +108,9 @@ export default function HomeWhyChooseUs() {
 
           {/* Right Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 relative">
-             {/* Decorative background element */}
-             <div className="absolute -inset-4 bg-gradient-to-tr from-emerald-50/50 to-transparent rounded-[3rem] -z-10 opacity-0 lg:opacity-100"></div>
-             
+            {/* Decorative background element */}
+            <div className="absolute -inset-4 bg-gradient-to-tr from-emerald-50/50 to-transparent rounded-[3rem] -z-10 opacity-0 lg:opacity-100"></div>
+
             {features.map((feature, index) => (
               <div
                 key={index}

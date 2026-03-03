@@ -60,7 +60,10 @@ export default function HomeFaq() {
 
             <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
               Common questions,{" "}
-              <span className="font-serif italic text-emerald-700">clarified</span>.
+              <span className="font-serif italic text-emerald-700">
+                clarified
+              </span>
+              .
             </h2>
 
             <p className="text-zinc-500 text-xs md:text-lg leading-relaxed max-w-xl">
@@ -172,19 +175,21 @@ export default function HomeFaq() {
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-emerald-50/50 border border-emerald-100 text-emerald-900 hover:bg-emerald-50 transition-colors">
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-white rounded-2xl shadow-sm border border-emerald-100/50">
-                  <Phone className="w-5 h-5 text-emerald-600" />
+            <div className="p-8 rounded-3xl bg-white border border-zinc-100 shadow-lg shadow-emerald-900/5 hover:shadow-emerald-900/10 hover:border-emerald-100 transition-all duration-300 group">
+              <div className="flex items-start gap-5">
+                <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-emerald-50 rounded-2xl text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-emerald-500/25 group-hover:scale-110 group-hover:-rotate-3">
+                  <Phone className="w-6 h-6" strokeWidth={2} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm mb-1">Call for inquiries</h4>
-                  <p className="text-xs text-emerald-700/80 mb-2">
+                  <h4 className="font-bold text-zinc-900 mb-1.5 text-base group-hover:text-emerald-900 transition-colors">
+                    Call for inquiries
+                  </h4>
+                  <p className="text-xs font-medium text-zinc-500 mb-3 uppercase tracking-wide">
                     Mon-Fri from 9am to 6pm
                   </p>
                   <a
                     href="tel:+8801234567890"
-                    className="text-lg font-bold tracking-tight hover:underline decoration-emerald-500 underline-offset-4 decoration-2"
+                    className="text-xl font-bold tracking-tight text-emerald-600 hover:text-emerald-700 transition-colors flex items-center gap-2"
                   >
                     +880 1234 567 890
                   </a>
