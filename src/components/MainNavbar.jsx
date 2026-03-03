@@ -34,6 +34,11 @@ function MainNavLinks({ isScrolled }) {
         isScrolled={isScrolled}
       />
       <MainNavItem
+        href="/landing/contact"
+        label="Contact"
+        isScrolled={isScrolled}
+      />
+      <MainNavItem
         href="/landing/about"
         label="About"
         isScrolled={isScrolled}
@@ -111,34 +116,34 @@ export function MainNavbar() {
       {/* Mobile Bottom Navigation - Fixed Bottom - Hidden on Desktop */}
       <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
         {/* Bottom Bar */}
-        <div className="bg-zinc-900 border-t border-zinc-800 pb-2 pt-2 px-6 shadow-[0_-5px_20px_rgba(0,0,0,0.3)]">
+        <div className="bg-white border-t border-zinc-200 pb-safe pt-2 px-6 shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
           <div className="flex items-center justify-between h-14">
-            <Link href="/" className="flex flex-col items-center gap-1 text-zinc-400 hover:text-white transition group">
+            <Link href="/" className="flex flex-col items-center gap-1 text-zinc-400 hover:text-emerald-600 transition group">
               <Home className="h-5 w-5 group-hover:scale-110 transition-transform" />
               <span className="text-[10px] font-medium">Home</span>
             </Link>
             
-            <Link href="/landing/project" className="flex flex-col items-center gap-1 text-zinc-400 hover:text-white transition group">
+            <Link href="/landing/project" className="flex flex-col items-center gap-1 text-zinc-400 hover:text-emerald-600 transition group">
               <FolderGit2 className="h-5 w-5 group-hover:scale-110 transition-transform" />
               <span className="text-[10px] font-medium">Project</span>
             </Link>
 
             {/* Applications Icon (Center) */}
-            <Link href="/applications" className="flex flex-col items-center gap-1 text-zinc-400 hover:text-white transition group">
-              <div className="h-10 w-10 bg-zinc-800 rounded-full flex items-center justify-center -mt-5 border-4 border-zinc-900 shadow-lg group-hover:scale-110 transition-transform">
-                 <LayoutGrid className="h-5 w-5 text-amber-400" />
+            <Link href="/landing/contact" className="flex flex-col items-center gap-1 text-zinc-400 hover:text-emerald-600 transition group">
+              <div className="h-10 w-10 bg-emerald-500 rounded-full flex items-center justify-center -mt-5 border-4 border-white shadow-lg group-hover:scale-110 transition-transform">
+                 <User className="h-5 w-5 text-white" />
               </div>
-              <span className="text-[10px] font-medium">Apps</span>
+              <span className="text-[10px] font-medium text-emerald-600">Contact</span>
             </Link>
 
-            <Link href="/landing/gallery" className="flex flex-col items-center gap-1 text-zinc-400 hover:text-white transition group">
+            <Link href="/landing/gallery" className="flex flex-col items-center gap-1 text-zinc-400 hover:text-emerald-600 transition group">
               <Images className="h-5 w-5 group-hover:scale-110 transition-transform" />
               <span className="text-[10px] font-medium">Gallery</span>
             </Link>
 
             <button 
               onClick={() => setMobileOpen(!mobileOpen)}
-              className={`flex flex-col items-center gap-1 transition group ${mobileOpen ? 'text-amber-400' : 'text-zinc-400 hover:text-white'}`}
+              className={`flex flex-col items-center gap-1 transition group ${mobileOpen ? 'text-emerald-600' : 'text-zinc-400 hover:text-emerald-600'}`}
             >
               <Menu className="h-5 w-5 group-hover:scale-110 transition-transform" />
               <span className="text-[10px] font-medium">More</span>
@@ -151,19 +156,19 @@ export function MainNavbar() {
       {mobileOpen && (
         <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden" onClick={() => setMobileOpen(false)}>
           <div 
-            className="absolute bottom-20 right-4 w-48 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-xl overflow-hidden"
+            className="absolute bottom-20 right-4 w-48 bg-white border border-zinc-200 rounded-2xl shadow-xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex flex-col p-2">
-              <Link href="/landing/about" className="flex items-center gap-3 px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white rounded-xl transition">
+              <Link href="/landing/about" className="flex items-center gap-3 px-4 py-3 text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 rounded-xl transition">
                 <User className="h-4 w-4" />
                 <span className="text-xs font-semibold uppercase tracking-wider">About</span>
               </Link>
-              <Link href="/admin" className="flex items-center gap-3 px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white rounded-xl transition">
+              <Link href="/admin" className="flex items-center gap-3 px-4 py-3 text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 rounded-xl transition">
                 <LayoutDashboard className="h-4 w-4" />
                 <span className="text-xs font-semibold uppercase tracking-wider">Admin</span>
               </Link>
-              <Link href="/login" className="flex items-center gap-3 px-4 py-3 text-amber-400 hover:bg-zinc-800 hover:text-amber-300 rounded-xl transition">
+              <Link href="/login" className="flex items-center gap-3 px-4 py-3 text-emerald-600 hover:bg-zinc-50 hover:text-emerald-700 rounded-xl transition">
                 <User className="h-4 w-4" />
                 <span className="text-xs font-semibold uppercase tracking-wider">Login</span>
               </Link>

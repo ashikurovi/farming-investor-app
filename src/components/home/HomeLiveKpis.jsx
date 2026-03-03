@@ -1,4 +1,13 @@
-import { TrendingUp, ArrowUpRight, Activity, Sprout } from "lucide-react";
+import {
+  TrendingUp,
+  ArrowUpRight,
+  Activity,
+  Sprout,
+  Droplets,
+  Sun,
+  Wind,
+} from "lucide-react";
+import Image from "next/image";
 
 export default function HomeLiveKpis() {
   const kpis = [
@@ -8,6 +17,7 @@ export default function HomeLiveKpis() {
       trend: "+2.1% vs last year",
       icon: TrendingUp,
       trendColor: "text-emerald-600",
+      chart: "bg-emerald-500",
     },
     {
       label: "Total Assets Managed",
@@ -15,6 +25,7 @@ export default function HomeLiveKpis() {
       trend: "+$5.2M this quarter",
       icon: Activity,
       trendColor: "text-emerald-600",
+      chart: "bg-emerald-500",
     },
     {
       label: "Active Hectares",
@@ -22,6 +33,7 @@ export default function HomeLiveKpis() {
       trend: "1,200 ha added 2024",
       icon: Sprout,
       trendColor: "text-emerald-600",
+      chart: "bg-emerald-500",
     },
     {
       label: "Sustainability Score",
@@ -29,16 +41,28 @@ export default function HomeLiveKpis() {
       trend: "Top 5% Global Index",
       icon: ArrowUpRight,
       trendColor: "text-emerald-600",
+      chart: "bg-emerald-500",
     },
   ];
 
   return (
-    <section className="w-full bg-white py-12 sm:py-16 lg:py-20 border-b border-zinc-100">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className=" ">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          alt="Agriculture Data Background"
+          fill
+          className="object-cover opacity-[0.03]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-zinc-50/80 via-transparent to-zinc-50/80"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12 sm:mb-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 w-fit">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-emerald-100 w-fit shadow-sm">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -47,46 +71,88 @@ export default function HomeLiveKpis() {
                 Live Market Data
               </span>
             </div>
-            <h2 className="text-3xl font-light text-zinc-900 sm:text-4xl tracking-tight">
-              Real-time <span className="font-serif italic text-zinc-500">agricultural</span> performance.
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-900 font-display">
+              Real-time agricultural <br />
+              <span className="text-emerald-600">performance metrics.</span>
             </h2>
           </div>
-          <div className="text-right hidden sm:block">
-            <p className="text-xs font-medium text-zinc-400 uppercase tracking-widest">
-              Last Updated: Just Now
-            </p>
+
+          {/* Live Weather Widget */}
+          <div className="flex flex-wrap gap-4 p-4 rounded-2xl bg-white border border-zinc-100 shadow-sm">
+            <div className="flex items-center gap-3 pr-4 border-r border-zinc-100">
+              <Sun className="w-8 h-8 text-amber-500" />
+              <div>
+                <div className="text-sm font-medium text-zinc-500">
+                  Field Conditions
+                </div>
+                <div className="text-lg font-bold text-zinc-900">
+                  Sunny, 24°C
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Droplets className="w-6 h-6 text-blue-500" />
+              <div>
+                <div className="text-xs text-zinc-500">Humidity</div>
+                <div className="font-semibold text-zinc-900">42%</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Wind className="w-6 h-6 text-zinc-500" />
+              <div>
+                <div className="text-xs text-zinc-500">Wind</div>
+                <div className="font-semibold text-zinc-900">12km/h</div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* KPI Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8 sm:gap-x-8 sm:gap-y-12 lg:gap-x-12 relative mx-auto">
-          {/* Dividers for Desktop */}
-          <div className="hidden lg:block absolute top-0 bottom-0 left-1/4 w-px bg-zinc-100" />
-          <div className="hidden lg:block absolute top-0 bottom-0 left-1/2 w-px bg-zinc-100" />
-          <div className="hidden lg:block absolute top-0 bottom-0 left-3/4 w-px bg-zinc-100" />
-
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {kpis.map((kpi, index) => {
             const Icon = kpi.icon;
             return (
-              <div key={index} className="relative group text-center sm:text-left">
-                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 mb-4">
-                  <div className="p-2 rounded-lg bg-zinc-50 text-zinc-400 group-hover:text-emerald-600 group-hover:bg-emerald-50 transition-colors duration-300">
-                    <Icon className="w-5 h-5" />
+              <div
+                key={index}
+                className="group relative p-6 rounded-3xl bg-white border border-zinc-100 hover:shadow-xl hover:border-emerald-100 transition-all duration-300"
+              >
+                <div className="flex justify-between items-start mb-8">
+                  <div className="p-3 rounded-2xl bg-emerald-50 text-emerald-600 transition-all duration-300">
+                    <Icon className="w-6 h-6" />
                   </div>
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500 mt-1 sm:mt-0">
+                  {/* Decorative Chart Line */}
+                  <div className="flex items-end gap-1 h-8">
+                    <div
+                      className={`w-1 rounded-t-sm ${kpi.chart} opacity-20 group-hover:opacity-40 h-3 transition-all duration-300`}
+                    ></div>
+                    <div
+                      className={`w-1 rounded-t-sm ${kpi.chart} opacity-40 group-hover:opacity-60 h-5 transition-all duration-300`}
+                    ></div>
+                    <div
+                      className={`w-1 rounded-t-sm ${kpi.chart} opacity-60 group-hover:opacity-80 h-4 transition-all duration-300`}
+                    ></div>
+                    <div
+                      className={`w-1 rounded-t-sm ${kpi.chart} opacity-80 group-hover:opacity-100 h-7 transition-all duration-300`}
+                    ></div>
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <h3 className="text-sm font-medium text-zinc-500 tracking-wide uppercase">
                     {kpi.label}
                   </h3>
+                  <div className="flex items-baseline gap-2">
+                    <p className="text-4xl font-bold text-zinc-900 tracking-tight font-display">
+                      {kpi.value}
+                    </p>
+                  </div>
+                  <div
+                    className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-lg bg-emerald-50 ${kpi.trendColor} w-fit mt-2`}
+                  >
+                    <TrendingUp className="w-3 h-3" />
+                    {kpi.trend}
+                  </div>
                 </div>
-                
-                <div className="flex justify-center sm:justify-start items-baseline gap-2">
-                  <p className="text-3xl sm:text-4xl lg:text-5xl font-light text-zinc-900 tracking-tight">
-                    {kpi.value}
-                  </p>
-                </div>
-                
-                <p className={`mt-3 text-[10px] sm:text-xs font-medium ${kpi.trendColor} flex justify-center sm:justify-start items-center gap-1`}>
-                  {kpi.trend}
-                </p>
               </div>
             );
           })}

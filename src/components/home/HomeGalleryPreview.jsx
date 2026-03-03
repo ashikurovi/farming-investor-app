@@ -10,50 +10,49 @@ const galleryImages = [
     src: "https://images.unsplash.com/photo-1625246333195-58197bd47d26?q=80&w=1000&auto=format&fit=crop",
     alt: "Golden wheat harvest",
     category: "Harvest",
-    location: "Rajshahi, BD"
+    location: "Rajshahi, BD",
   },
   {
     id: 2,
     src: "https://images.unsplash.com/photo-1586771107445-d3ca888129ff?q=80&w=1000&auto=format&fit=crop",
     alt: "Agricultural drone technology",
     category: "Tech",
-    location: "Dhaka, BD"
+    location: "Dhaka, BD",
   },
   {
     id: 3,
     src: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=1000&auto=format&fit=crop",
     alt: "Modern greenhouse interior",
     category: "Infrastructure",
-    location: "Gazipur, BD"
+    location: "Gazipur, BD",
   },
   {
     id: 4,
     src: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1000&auto=format&fit=crop",
     alt: "Lush green fields",
     category: "Landscape",
-    location: "Sylhet, BD"
+    location: "Sylhet, BD",
   },
   {
     id: 5,
     src: "https://images.unsplash.com/photo-1595814433582-e29fd8054a75?q=80&w=1000&auto=format&fit=crop",
     alt: "Farmer inspecting crops",
     category: "Community",
-    location: "Bogura, BD"
+    location: "Bogura, BD",
   },
   {
     id: 6,
     src: "https://images.unsplash.com/photo-1530267981375-f0de93cdf5b8?q=80&w=1000&auto=format&fit=crop",
     alt: "Tractor in field",
     category: "Machinery",
-    location: "Jessore, BD"
-  }
+    location: "Jessore, BD",
+  },
 ];
 
 export default function HomeGalleryPreview() {
   return (
-    <section className="py-24 bg-white border-t border-zinc-100">
+    <section className="">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        
         {/* Header Section */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
           <div className="max-w-2xl space-y-6">
@@ -63,13 +62,15 @@ export default function HomeGalleryPreview() {
                 Field Gallery
               </span>
             </div>
-            
+
             <h2 className="text-3xl md:text-5xl font-light text-zinc-900 leading-tight tracking-tight">
-              Life on the <span className="font-serif italic text-emerald-700">farm</span>.
+              Life on the{" "}
+              <span className="font-serif italic text-emerald-700">farm</span>.
             </h2>
-            
+
             <p className="text-zinc-500 text-base md:text-lg leading-relaxed">
-              Transparent visual reporting from our active project sites across the country.
+              Transparent visual reporting from our active project sites across
+              the country.
             </p>
           </div>
 
@@ -79,7 +80,9 @@ export default function HomeGalleryPreview() {
               href="/landing/gallery"
               className="group inline-flex items-center gap-3 px-8 py-4 bg-zinc-900 text-white rounded-full hover:bg-emerald-600 transition-all duration-300 shadow-xl shadow-zinc-900/20 hover:shadow-emerald-600/20"
             >
-              <span className="text-xs font-bold uppercase tracking-widest">View Full Gallery</span>
+              <span className="text-xs font-bold uppercase tracking-widest">
+                View Full Gallery
+              </span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
@@ -88,7 +91,7 @@ export default function HomeGalleryPreview() {
         {/* Gallery Grid */}
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
           {galleryImages.map((image) => (
-            <div 
+            <div
               key={image.id}
               className="group relative h-80 w-full overflow-hidden rounded-3xl bg-zinc-100 cursor-pointer"
             >
@@ -99,7 +102,7 @@ export default function HomeGalleryPreview() {
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              
+
               {/* Overlay */}
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
@@ -141,20 +144,6 @@ export default function HomeGalleryPreview() {
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
-
-        {/* Instagram/Social Strip (Optional 'Real' touch) */}
-        <div className="mt-20 pt-10 border-t border-zinc-100 flex flex-col sm:flex-row items-center justify-between gap-6 text-zinc-400">
-          <div className="flex items-center gap-2 text-sm">
-            <Instagram className="w-4 h-4" />
-            <span>Follow us on Instagram @farming_investor</span>
-          </div>
-          <div className="flex gap-2">
-            {[1,2,3,4].map(i => (
-              <div key={i} className="h-2 w-2 rounded-full bg-zinc-200" />
-            ))}
-          </div>
-        </div>
-
       </div>
     </section>
   );

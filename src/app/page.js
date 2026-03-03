@@ -13,7 +13,7 @@ export default function Home() {
   const recentProjects = getRecentProjects(4);
 
   return (
-    <div className="bg-white text-zinc-900 dark:bg-black dark:text-zinc-50">
+    <div className="bg-white space-y-8  md:space-y-16  text-zinc-900 dark:bg-black dark:text-zinc-50">
       <HomeHero />
       {/* <HomeStatsSnapshot /> */}
       <HomeLiveKpis />
