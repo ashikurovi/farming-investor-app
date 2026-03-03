@@ -5,7 +5,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
-        url: "/auth/login", // adjust to your actual login URL
+        url: "/users/login",
         method: "POST",
         body: credentials,
       }),
@@ -13,7 +13,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         try {
           const { data } = await queryFulfilled;
 
-          const token = data?.token ?? data?.accessToken;
+          const token =
+            data?.data?.accessToken ??
+            data?.data?.token ??
+            data?.data?.jwt ??
+            data?.token ??
+            data?.accessToken ??
+            null;
 
           if (token) {
             if (typeof window !== "undefined") {
@@ -23,7 +29,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
             dispatch(
               setCredentials({
                 token,
-                user: data?.user ?? null,
+                user: data?.data?.user ?? data?.user ?? null,
               })
             );
           }
@@ -34,7 +40,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
     logout: builder.mutation({
       query: () => ({
-        url: "/auth/logout", // adjust if your API uses a different route
+        url: "/users/logout",
         method: "POST",
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
@@ -50,7 +56,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
     me: builder.query({
       query: () => ({
-        url: "/auth/me", // adjust to your "current user" endpoint
+        url: "/users/me",
         method: "GET",
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled, getState }) {
@@ -62,7 +68,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
           dispatch(
             setCredentials({
               token: existingToken,
-              user: data?.user ?? data ?? null,
+              user: data?.data ?? data ?? null,
             })
           );
         } catch (err) {
@@ -72,14 +78,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
     forgotPassword: builder.mutation({
       query: (body) => ({
-        url: "/auth/forgot-password", // adjust to your forgot password endpoint
+        url: "/users/forgot-password",
         method: "POST",
         body,
       }),
     }),
     resetPassword: builder.mutation({
       query: (body) => ({
-        url: "/auth/reset-password", // adjust to your reset password endpoint
+        url: "/users/reset-password",
         method: "POST",
         body,
       }),

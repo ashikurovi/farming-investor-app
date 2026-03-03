@@ -2,19 +2,54 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 import { ArrowRight, Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useLoginMutation } from "@/features/auth/authApiSlice";
 
 export function LoginForm() {
+  const router = useRouter();
+  const user = useSelector((state) => state.auth?.user);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [login, { isLoading }] = useLoginMutation();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login with:", { email, password });
+    setError("");
+
+    try {
+      const result = await login({ email, password }).unwrap();
+
+      if (!result) {
+        setError("Login failed. Please try again.");
+        return;
+      }
+
+      const roleFromResult =
+        result?.data?.user?.role ||
+        result?.user?.role ||
+        user?.role ||
+        null;
+
+      if (roleFromResult === "admin") {
+        router.push("/admin");
+      } else if (roleFromResult === "investor") {
+        router.push("/investor");
+      } else {
+        router.push("/");
+      }
+    } catch (err) {
+      const message =
+        err?.data?.message ||
+        (Array.isArray(err?.data?.message) ? err.data.message[0] : null) ||
+        "Login failed. Please check your credentials and try again.";
+      setError(message);
+    }
   };
 
   return (
