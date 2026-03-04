@@ -19,6 +19,7 @@ import { AdminInvestorFormModal } from "@/app/admin/components/investor/AdminInv
 import { DataTable } from "@/components/ui/data-table";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { toast } from "sonner";
+import { useGetInvestorTypesQuery } from "@/features/admin/investorType/investorTypeApiSlice";
 
 const PAGE_SIZE = 10;
 
@@ -47,6 +48,7 @@ export default function AdminInvestorPage() {
     password: "",
     role: "investor",
     photo: null,
+    investorTypeId: "",
   });
 
   const { data, isLoading, isFetching } = useGetUsersQuery({
@@ -60,6 +62,13 @@ export default function AdminInvestorPage() {
   const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
   const [banUser] = useBanUserMutation();
   const [unbanUser] = useUnbanUserMutation();
+
+  const { data: investorTypesData, isLoading: isInvestorTypesLoading } =
+    useGetInvestorTypesQuery({
+      page: 1,
+      limit: 100,
+      search: "",
+    });
 
   const investors = useMemo(() => {
     const items = data?.items ?? [];
@@ -76,6 +85,7 @@ export default function AdminInvestorPage() {
       password: "",
       role: "investor",
       photo: null,
+      investorTypeId: "",
     });
     setEditingUser(null);
   };
@@ -93,6 +103,8 @@ export default function AdminInvestorPage() {
       password: "",
       role: user.role ?? "investor",
       photo: null,
+      investorTypeId:
+        user.investorTypeId != null ? String(user.investorTypeId) : "",
     });
     setEditingUser(user);
     setIsModalOpen(true);
@@ -120,6 +132,9 @@ export default function AdminInvestorPage() {
       formData.append("role", formValues.role || "investor");
       if (formValues.password) {
         formData.append("password", formValues.password);
+      }
+      if (formValues.investorTypeId) {
+        formData.append("investorTypeId", String(formValues.investorTypeId));
       }
       if (formValues.photo) {
         formData.append("photo", formValues.photo);
@@ -279,24 +294,23 @@ export default function AdminInvestorPage() {
                 cell: (user) => user.phone || "-",
               },
               {
+                key: "investorType",
+                header: "Investor type",
+                tdClassName:
+                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
+                cell: (user) =>
+                  user.investorType
+                    ? `${user.investorType.type} (${user.investorType.percentage}%)`
+                    : user.investorTypeId
+                      ? `Type #${user.investorTypeId}`
+                      : "-",
+              },
+              {
                 key: "investmentCount",
                 header: "Investments",
                 tdClassName:
                   "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
                 cell: (user) => user.investments?.length ?? 0,
-              },
-              {
-                key: "projectCount",
-                header: "Projects invested",
-                tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                cell: (user) => {
-                  const investments = user.investments ?? [];
-                  const uniqueProjectIds = new Set(
-                    investments.map((inv) => inv.projectId),
-                  );
-                  return uniqueProjectIds.size;
-                },
               },
               {
                 key: "status",
@@ -393,6 +407,8 @@ export default function AdminInvestorPage() {
         onClose={closeModal}
         onChange={handleFormChange}
         onSubmit={handleSubmit}
+        investorTypes={investorTypesData?.items ?? investorTypesData ?? []}
+        isInvestorTypesLoading={isInvestorTypesLoading}
       />
       <ConfirmDialog
         isOpen={confirmState.isOpen}

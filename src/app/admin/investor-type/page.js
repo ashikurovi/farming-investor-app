@@ -1,32 +1,35 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash2, Edit2 } from "lucide-react";
+import { Edit2, Trash2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
 import { DataTable } from "@/components/ui/data-table";
 import { AdminSearchBar } from "@/app/admin/components/AdminSearchBar";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
-import { AdminPeriodFormModal } from "@/app/admin/components/period/AdminPeriodFormModal";
+import { AdminInvestorTypeFormModal } from "@/app/admin/components/investorType/AdminInvestorTypeFormModal";
 import {
-  useGetProjectPeriodsQuery,
-  useCreateProjectPeriodMutation,
-  useUpdateProjectPeriodMutation,
-  useDeleteProjectPeriodMutation,
-} from "@/features/admin/project-periods/projectPeriodsApiSlice";
+  useGetInvestorTypesQuery,
+  useCreateInvestorTypeMutation,
+  useUpdateInvestorTypeMutation,
+  useDeleteInvestorTypeMutation,
+} from "@/features/admin/investorType/investorTypeApiSlice";
 import { toast } from "sonner";
 
 const PAGE_SIZE = 10;
 
-export default function AdminPeriodPage() {
+export default function AdminInvestorTypePage() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingPeriod, setEditingPeriod] = useState(null);
-  const [duration, setDuration] = useState("");
+  const [editingItem, setEditingItem] = useState(null);
+  const [formValues, setFormValues] = useState({
+    type: "",
+    percentage: "",
+  });
 
   const [confirmState, setConfirmState] = useState({
     isOpen: false,
@@ -37,25 +40,46 @@ export default function AdminPeriodPage() {
     onConfirm: null,
   });
 
-  const { data, isLoading, isFetching } = useGetProjectPeriodsQuery({
+  const { data, isLoading, isFetching } = useGetInvestorTypesQuery({
     page,
     limit: pageSize,
     search,
   });
 
-  const [createProjectPeriod, { isLoading: isCreating }] =
-    useCreateProjectPeriodMutation();
-  const [updateProjectPeriod, { isLoading: isUpdating }] =
-    useUpdateProjectPeriodMutation();
-  const [deleteProjectPeriod, { isLoading: isDeleting }] =
-    useDeleteProjectPeriodMutation();
+  const [createInvestorType, { isLoading: isCreating }] =
+    useCreateInvestorTypeMutation();
+  const [updateInvestorType, { isLoading: isUpdating }] =
+    useUpdateInvestorTypeMutation();
+  const [deleteInvestorType, { isLoading: isDeleting }] =
+    useDeleteInvestorTypeMutation();
 
-  const periods = data?.items ?? [];
-  const meta = data?.meta ?? { page: 1, pageCount: 1, total: 0 };
+  const items = data?.items ?? data ?? [];
+  const meta =
+    data?.meta ??
+    (Array.isArray(items)
+      ? {
+          page,
+          pageCount: 1,
+          total: items.length,
+        }
+      : { page: 1, pageCount: 1, total: 0 });
+
+  const handleSearchChange = (value) => {
+    setSearchInput(value);
+    setSearch(value.trim());
+    setPage(1);
+  };
+
+  const handleFormChange = (field, value) => {
+    setFormValues((prev) => ({ ...prev, [field]: value }));
+  };
 
   const resetForm = () => {
-    setDuration("");
-    setEditingPeriod(null);
+    setFormValues({
+      type: "",
+      percentage: "",
+    });
+    setEditingItem(null);
   };
 
   const openCreateModal = () => {
@@ -63,9 +87,15 @@ export default function AdminPeriodPage() {
     setIsModalOpen(true);
   };
 
-  const openEditModal = (period) => {
-    setDuration(period.duration ?? "");
-    setEditingPeriod(period);
+  const openEditModal = (item) => {
+    setFormValues({
+      type: item.type ?? "",
+      percentage:
+        item.percentage != null
+          ? String(item.percentage)
+          : "",
+    });
+    setEditingItem(item);
     setIsModalOpen(true);
   };
 
@@ -77,20 +107,36 @@ export default function AdminPeriodPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!duration.trim()) {
-      toast.error("Duration is required");
+    const trimmedType = formValues.type.trim();
+    const percentageValue = Number(formValues.percentage);
+
+    if (!trimmedType) {
+      toast.error("Type name is required");
+      return;
+    }
+
+    if (Number.isNaN(percentageValue)) {
+      toast.error("Percentage must be a number");
+      return;
+    }
+
+    if (percentageValue < 0 || percentageValue > 100) {
+      toast.error("Percentage must be between 0 and 100");
       return;
     }
 
     try {
-      const payload = { duration: duration.trim() };
+      const payload = {
+        type: trimmedType,
+        percentage: percentageValue,
+      };
 
-      if (editingPeriod) {
-        await updateProjectPeriod({ id: editingPeriod.id, payload }).unwrap();
-        toast.success("Period updated successfully");
+      if (editingItem) {
+        await updateInvestorType({ id: editingItem.id, body: payload }).unwrap();
+        toast.success("Investor type updated successfully");
       } else {
-        await createProjectPeriod(payload).unwrap();
-        toast.success("Period created successfully");
+        await createInvestorType(payload).unwrap();
+        toast.success("Investor type created successfully");
       }
 
       closeModal();
@@ -99,9 +145,12 @@ export default function AdminPeriodPage() {
         error?.data?.message ||
         (Array.isArray(error?.data?.message) ? error.data.message[0] : null) ||
         "Something went wrong. Please try again.";
-      toast.error("Operation failed", { description: message });
+      toast.error("Save failed", { description: message });
     }
   };
+
+  const isBusy =
+    isLoading || isFetching || isCreating || isUpdating || isDeleting;
 
   const closeConfirm = () =>
     setConfirmState((prev) => ({ ...prev, isOpen: false, onConfirm: null }));
@@ -117,22 +166,22 @@ export default function AdminPeriodPage() {
       ...options,
     });
 
-  const confirmDelete = (period) => {
+  const confirmDelete = (item) => {
     openConfirm({
-      title: "Delete period",
-      description: `Delete period "${period.duration}"? This action cannot be undone.`,
+      title: "Delete investor type",
+      description: `Delete investor type "${item.type}"? This action cannot be undone.`,
       confirmLabel: "Delete",
       onConfirm: async () => {
         try {
-          await deleteProjectPeriod(period.id).unwrap();
-          toast.success("Period deleted successfully");
+          await deleteInvestorType(item.id).unwrap();
+          toast.success("Investor type deleted successfully");
         } catch (error) {
           const message =
             error?.data?.message ||
             (Array.isArray(error?.data?.message)
               ? error.data.message[0]
               : null) ||
-            "Failed to delete period.";
+            "Failed to delete investor type.";
           toast.error("Delete failed", { description: message });
         } finally {
           closeConfirm();
@@ -141,23 +190,15 @@ export default function AdminPeriodPage() {
     });
   };
 
-  const handleSearchChange = (value) => {
-    setSearchInput(value);
-    setSearch(value.trim());
-    setPage(1);
-  };
-
-  const isBusy = isLoading || isFetching || isCreating || isUpdating || isDeleting;
-
   return (
     <div className="space-y-6">
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-xl font-semibold tracking-tight text-zinc-900">
-            Project periods
+            Investor types
           </h1>
           <p className="text-sm text-zinc-500">
-            Manage project investment periods and durations.
+            Manage investor types and their percentage values.
           </p>
         </div>
 
@@ -165,9 +206,8 @@ export default function AdminPeriodPage() {
           <AdminSearchBar
             value={searchInput}
             onChange={handleSearchChange}
-            placeholder="Search periods..."
+            placeholder="Search by type..."
           />
-
           <Button
             type="button"
             size="sm"
@@ -175,7 +215,7 @@ export default function AdminPeriodPage() {
             className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-md hover:bg-emerald-500"
           >
             <Plus className="h-3.5 w-3.5" />
-            <span>Add period</span>
+            <span>Add type</span>
           </Button>
         </div>
       </header>
@@ -189,34 +229,42 @@ export default function AdminPeriodPage() {
                 header: "SL",
                 tdClassName:
                   "whitespace-nowrap px-4 py-3 text-sm text-zinc-500",
-                cell: (period) =>
-                  periods.findIndex((p) => p.id === period.id) + 1,
+                cell: (item) =>
+                  items.findIndex((i) => i.id === item.id) + 1,
               },
               {
-                key: "duration",
-                header: "Duration",
+                key: "type",
+                header: "Type",
                 tdClassName:
                   "whitespace-nowrap px-4 py-3 text-sm font-medium text-zinc-900",
-                cell: (period) => period.duration || "-",
+                cell: (item) => item.type || "-",
+              },
+              {
+                key: "percentage",
+                header: "Percentage",
+                tdClassName:
+                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
+                cell: (item) =>
+                  item.percentage != null ? `${item.percentage}%` : "-",
               },
             ]}
-            data={periods}
+            data={items}
             isLoading={isBusy}
-            emptyMessage="No periods found."
-            loadingLabel="Loading periods..."
-            getRowKey={(period) => period.id}
-            renderActions={(period) => (
+            emptyMessage="No investor types found."
+            loadingLabel="Loading investor types..."
+            getRowKey={(item) => item.id}
+            renderActions={(item) => (
               <div className="flex items-center justify-end gap-2">
                 <button
                   type="button"
-                  onClick={() => openEditModal(period)}
+                  onClick={() => openEditModal(item)}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
                 >
                   <Edit2 className="h-3.5 w-3.5" />
                 </button>
                 <button
                   type="button"
-                  onClick={() => confirmDelete(period)}
+                  onClick={() => confirmDelete(item)}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-white text-red-600 hover:bg-red-50"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -247,17 +295,6 @@ export default function AdminPeriodPage() {
         />
       </section>
 
-      <AdminPeriodFormModal
-        isOpen={isModalOpen}
-        editingPeriod={editingPeriod}
-        duration={duration}
-        isCreating={isCreating}
-        isUpdating={isUpdating}
-        onClose={closeModal}
-        onChange={setDuration}
-        onSubmit={handleSubmit}
-      />
-
       <ConfirmDialog
         isOpen={confirmState.isOpen}
         title={confirmState.title}
@@ -266,6 +303,17 @@ export default function AdminPeriodPage() {
         cancelLabel={confirmState.cancelLabel}
         onConfirm={confirmState.onConfirm}
         onCancel={closeConfirm}
+      />
+
+      <AdminInvestorTypeFormModal
+        isOpen={isModalOpen}
+        editingItem={editingItem}
+        formValues={formValues}
+        isCreating={isCreating}
+        isUpdating={isUpdating}
+        onClose={closeModal}
+        onChange={handleFormChange}
+        onSubmit={handleSubmit}
       />
     </div>
   );

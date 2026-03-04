@@ -3,10 +3,14 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useGetContactsQuery } from "@/features/contact/contactApiSlice";
 import { sidebarNavigation } from "./sidebarNavigation";
 
 export default function TopNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { data: contactsData } = useGetContactsQuery();
+
+  const contactsCount = Array.isArray(contactsData) ? contactsData.length : 0;
 
   return (
     <>
@@ -91,21 +95,35 @@ export default function TopNavbar() {
           </div>
 
             <nav className="flex-1 space-y-1 text-sm">
-              {sidebarNavigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="flex items-center gap-3 rounded-md px-2 py-2 font-medium text-zinc-600 transition hover:bg-emerald-50 hover:text-emerald-700"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item.icon && (
-                    <span className="flex h-8 w-8 items-center justify-center rounded-md bg-emerald-50 text-emerald-700">
-                      <item.icon className="h-4 w-4" />
-                    </span>
-                  )}
-                  <span>{item.name}</span>
-                </a>
-              ))}
+              {sidebarNavigation.map((item) => {
+                const isContactItem = item.href === "/admin/contact";
+
+                return (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className="flex items-center gap-3 rounded-md px-2 py-2 font-medium text-zinc-600 transition hover:bg-emerald-50 hover:text-emerald-700"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.icon && (
+                      <span className="relative flex h-8 w-8 items-center justify-center rounded-md bg-emerald-50 text-emerald-700">
+                        <item.icon className="h-4 w-4" />
+                        {isContactItem && contactsCount > 0 && (
+                          <span className="absolute -right-0.5 -top-0.5 inline-flex h-3.5 min-w-[0.875rem] items-center justify-center rounded-full bg-red-500 px-0.5 text-[8px] font-semibold text-white">
+                            {contactsCount}
+                          </span>
+                        )}
+                      </span>
+                    )}
+                    <span>{item.name}</span>
+                    {isContactItem && contactsCount > 0 && (
+                      <span className="ml-auto inline-flex min-w-[1.5rem] items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                        {contactsCount}
+                      </span>
+                    )}
+                  </a>
+                );
+              })}
             </nav>
           </div>
 

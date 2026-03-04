@@ -1,28 +1,47 @@
 "use client";
 
-import { useState } from "react";
 import { Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { useCreateContactMutation } from "@/features/contact/contactApiSlice";
 
 export function ContactForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [createContact, { isLoading: isSubmitting }] =
+    useCreateContactMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    const formData = new FormData(e.target);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const payload = {
+      firstName: formData.get("firstName")?.toString().trim() || "",
+      lastName: formData.get("lastName")?.toString().trim() || "",
+      email: formData.get("email")?.toString().trim() || "",
+      phone: formData.get("phone")?.toString().trim() || "",
+      country: formData.get("country")?.toString().trim() || "",
+      investorType: formData.get("investorType")?.toString().trim() || "",
+      investmentRange:
+        formData.get("investmentRange")?.toString().trim() || "",
+      subject: formData.get("subject")?.toString().trim() || "",
+      message: formData.get("message")?.toString().trim() || "",
+    };
 
-    setIsSubmitting(false);
-    toast.success("Message sent successfully!", {
-      description: "Thank you for reaching out. We'll get back to you within 24 hours.",
-    });
+    try {
+      await createContact(payload).unwrap();
 
-    // Optional: Reset form
-    e.target.reset();
+      toast.success("Message sent successfully!", {
+        description:
+          "Thank you for reaching out. We'll get back to you within 24 hours.",
+      });
+
+      e.target.reset();
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong", {
+        description: "We couldn't send your message. Please try again later.",
+      });
+    }
   };
 
   return (
@@ -48,6 +67,7 @@ export function ContactForm() {
             </label>
             <Input
               id="firstName"
+              name="firstName"
               placeholder="John"
               required
               className="h-12 bg-zinc-50/50 border-zinc-200 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500/10 transition-all rounded-xl"
@@ -64,6 +84,7 @@ export function ContactForm() {
             </label>
             <Input
               id="lastName"
+              name="lastName"
               placeholder="Doe"
               required
               className="h-12 bg-zinc-50/50 border-zinc-200 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500/10 transition-all rounded-xl"
@@ -82,6 +103,7 @@ export function ContactForm() {
             </label>
             <Input
               id="email"
+              name="email"
               type="email"
               placeholder="john@example.com"
               required
@@ -99,6 +121,7 @@ export function ContactForm() {
             </label>
             <Input
               id="phone"
+              name="phone"
               type="tel"
               placeholder="+1 (555) 000-0000"
               className="h-12 bg-zinc-50/50 border-zinc-200 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500/10 transition-all rounded-xl"
@@ -117,6 +140,7 @@ export function ContactForm() {
             </label>
             <Input
               id="country"
+              name="country"
               placeholder="United States"
               className="h-12 bg-zinc-50/50 border-zinc-200 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500/10 transition-all rounded-xl"
             />
@@ -132,13 +156,12 @@ export function ContactForm() {
             </label>
             <select
               id="investorType"
+              name="investorType"
               className="flex h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3 py-2 text-sm transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 appearance-none cursor-pointer"
             >
               <option value="">Select Type...</option>
-              <option>Individual Investor</option>
-              <option>Institutional Investor</option>
-              <option>Farm Owner</option>
-              <option>Agri-Business</option>
+              <option>Investor</option>
+              <option>Trustee</option>
               <option>Other</option>
             </select>
           </div>
@@ -154,6 +177,7 @@ export function ContactForm() {
             </label>
             <select
               id="investmentRange"
+              name="investmentRange"
               className="flex h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3 py-2 text-sm transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 appearance-none cursor-pointer"
             >
               <option value="">Select Range...</option>
@@ -175,6 +199,7 @@ export function ContactForm() {
           </label>
           <select
             id="subject"
+            name="subject"
             className="flex h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3 py-2 text-sm transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 appearance-none cursor-pointer"
           >
             <option>General Inquiry</option>
@@ -194,6 +219,7 @@ export function ContactForm() {
           </label>
           <textarea
             id="message"
+            name="message"
             placeholder="Tell us how we can help..."
             rows={5}
             required

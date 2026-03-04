@@ -29,16 +29,6 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         };
       },
       transformResponse: (response) => response?.data ?? response,
-      providesTags: (result) =>
-        result?.items
-          ? [
-              ...result.items.map((investment) => ({
-                type: "Investment",
-                id: investment.id,
-              })),
-              { type: "Investment", id: "LIST" },
-            ]
-          : [{ type: "Investment", id: "LIST" }],
     }),
 
     getMyInvestments: builder.query({
@@ -58,16 +48,6 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         };
       },
       transformResponse: (response) => response?.data ?? response,
-      providesTags: (result) =>
-        result?.items
-          ? [
-              ...result.items.map((investment) => ({
-                type: "Investment",
-                id: investment.id,
-              })),
-              { type: "Investment", id: "MY_LIST" },
-            ]
-          : [{ type: "Investment", id: "MY_LIST" }],
     }),
 
     getInvestmentsStats: builder.query({
@@ -76,7 +56,6 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => response?.data ?? response,
-      providesTags: () => [{ type: "Investment", id: "STATS" }],
     }),
 
     getInvestment: builder.query({
@@ -85,7 +64,6 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => response?.data ?? response,
-      providesTags: (result, error, id) => [{ type: "Investment", id }],
     }),
 
     updateInvestment: builder.mutation({
@@ -95,11 +73,6 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         body: { amount },
       }),
       transformResponse: (response) => response?.data ?? response,
-      invalidatesTags: (result, error, { id }) => [
-        { type: "Investment", id },
-        { type: "Investment", id: "LIST" },
-        { type: "Investment", id: "STATS" },
-      ],
     }),
 
     createInvestment: builder.mutation({
@@ -109,16 +82,6 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         body: { userId, projectId, amount },
       }),
       transformResponse: (response) => response?.data ?? response,
-      invalidatesTags: (result, error, { projectId }) => [
-        { type: "Investment", id: "LIST" },
-        { type: "Investment", id: "STATS" },
-        ...(projectId
-          ? [
-              { type: "Project", id: projectId },
-              { type: "Project", id: "LIST" },
-            ]
-          : []),
-      ],
     }),
 
     deleteInvestment: builder.mutation({
@@ -127,11 +90,6 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
       transformResponse: (response) => response?.data ?? response,
-      invalidatesTags: (result, error, id) => [
-        { type: "Investment", id },
-        { type: "Investment", id: "LIST" },
-        { type: "Investment", id: "STATS" },
-      ],
     }),
   }),
 });

@@ -3,9 +3,10 @@ import {
   Users,
   Sprout,
   ReceiptIndianRupee,
-  Wallet2,
-  Settings,
-  Calendar,
+  Images,
+  Image,
+  Percent,
+  MessageCircle,
 } from "lucide-react";
 
 export const sidebarNavigation = [
@@ -13,7 +14,10 @@ export const sidebarNavigation = [
   { name: "Investors", href: "/admin/investor", icon: Users },
   { name: "Projects", href: "/admin/projects", icon: Sprout },
   { name: "Investments", href: "/admin/investment", icon: ReceiptIndianRupee },
-  { name: "Periods", href: "/admin/period", icon: Calendar },
+  { name: "Glarry", href: "/admin/glarry", icon: Images },
+  { name: "Banners", href: "/admin/banner", icon: Image },
+  { name: "Investor Types", href: "/admin/investor-type", icon: Percent },
+  { name: "Contact", href: "/admin/contact", icon: MessageCircle },
 
 ];
 

@@ -17,16 +17,6 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         };
       },
       transformResponse: (response) => response?.data ?? response,
-      providesTags: (result) =>
-        result?.items
-          ? [
-              ...result.items.map((project) => ({
-                type: "Project",
-                id: project.id,
-              })),
-              { type: "Project", id: "LIST" },
-            ]
-          : [{ type: "Project", id: "LIST" }],
     }),
 
     getProjectsStats: builder.query({
@@ -43,7 +33,6 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => response?.data ?? response,
-      providesTags: (result, error, id) => [{ type: "Project", id }],
     }),
 
     getProject: builder.query({
@@ -52,7 +41,6 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => response?.data ?? response,
-      providesTags: (result, error, id) => [{ type: "Project", id }],
     }),
 
     getProjectInvestmentInfo: builder.query({
@@ -61,7 +49,6 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => response?.data ?? response,
-      providesTags: (result, error, id) => [{ type: "Project", id }],
     }),
 
     getProjectInvestors: builder.query({
@@ -86,7 +73,6 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         body: payload,
       }),
       transformResponse: (response) => response?.data ?? response,
-      invalidatesTags: [{ type: "Project", id: "LIST" }],
     }),
 
     updateProject: builder.mutation({
@@ -96,10 +82,6 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         body: payload,
       }),
       transformResponse: (response) => response?.data ?? response,
-      invalidatesTags: (result, error, { id }) => [
-        { type: "Project", id },
-        { type: "Project", id: "LIST" },
-      ],
     }),
 
     deleteProject: builder.mutation({
@@ -107,10 +89,7 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         url: `/projects/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, id) => [
-        { type: "Project", id },
-        { type: "Project", id: "LIST" },
-      ],
+      invalidatesTags: undefined,
     }),
   }),
 });

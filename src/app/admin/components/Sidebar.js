@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ChevronsLeft, ChevronsRight, LogOut } from "lucide-react";
 import { toast } from "sonner";
 import { useLogoutMutation } from "@/features/auth/authApiSlice";
+import { useGetContactsQuery } from "@/features/contact/contactApiSlice";
 import { sidebarNavigation } from "./sidebarNavigation";
 import Link from "next/link";
 
@@ -12,6 +13,7 @@ export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const router = useRouter();
   const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
+  const { data: contactsData } = useGetContactsQuery();
 
   const sidebarWidth = collapsed ? "w-20" : "w-64";
 
@@ -25,6 +27,8 @@ export default function Sidebar() {
       router.push("/");
     }
   };
+
+  const contactsCount = Array.isArray(contactsData) ? contactsData.length : 0;
 
   return (
     <aside
@@ -61,22 +65,40 @@ export default function Sidebar() {
       </div>
 
       <nav className="flex-1 space-y-1 text-sm">
-        {sidebarNavigation.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            className={`flex items-center gap-3 rounded-md px-2 py-2 font-medium text-zinc-600 transition hover:bg-emerald-50 hover:text-emerald-700 ${
-              collapsed ? "justify-center" : ""
-            }`}
-          >
-            {item.icon && (
-              <span className="flex h-8 w-8 items-center justify-center rounded-md bg-emerald-50 text-emerald-700">
-                <item.icon className="h-4 w-4" />
-              </span>
-            )}
-            {!collapsed && <span>{item.name}</span>}
-          </Link>
-        ))}
+        {sidebarNavigation.map((item) => {
+          const isContactItem = item.href === "/admin/contact";
+
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={`flex items-center gap-3 rounded-md px-2 py-2 font-medium text-zinc-600 transition hover:bg-emerald-50 hover:text-emerald-700 ${
+                collapsed ? "justify-center" : ""
+              }`}
+            >
+              {item.icon && (
+                <span className="relative flex h-8 w-8 items-center justify-center rounded-md bg-emerald-50 text-emerald-700">
+                  <item.icon className="h-4 w-4" />
+                  {isContactItem && contactsCount > 0 && collapsed && (
+                    <span className="absolute -right-0.5 -top-0.5 inline-flex h-3.5 min-w-[0.875rem] items-center justify-center rounded-full bg-red-500 px-0.5 text-[8px] font-semibold text-white">
+                      {contactsCount}
+                    </span>
+                  )}
+                </span>
+              )}
+              {!collapsed && (
+                <>
+                  <span>{item.name}</span>
+                  {isContactItem && contactsCount > 0 && (
+                    <span className="ml-auto inline-flex min-w-[1.5rem] items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                      {contactsCount}
+                    </span>
+                  )}
+                </>
+              )}
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="mt-4 space-y-3 border-t border-zinc-200 pt-4">

@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://farming-investor-api.vercel.app",
+    baseUrl: "http://localhost:8000",
     prepareHeaders: (headers) => {
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("token");
@@ -14,7 +14,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Investor", "Admin", "User", "ProjectPeriod", "Project", "Investment"],
+  tagTypes: ["Investor", "Admin", "User", "Glarry", "Banner", "Contact"],
   endpoints: () => ({}),
 });
 
