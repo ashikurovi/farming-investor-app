@@ -1,48 +1,52 @@
-const statCards = [
-  {
-    label: "Total invested",
-    value: "$2.4M",
-    change: "+8.3% this month",
-  },
-  {
-    label: "Active investors",
-    value: "128",
-    change: "+12 new",
-  },
-  {
-    label: "Active farms",
-    value: "34",
-    change: "3 onboarding",
-  },
-  {
-    label: "Avg. yield (12m)",
-    value: "9.4%",
-    change: "+0.7 pts",
-  },
-];
+'use client';
 
-const recentActivity = [
-  {
-    investor: "Green Horizon Fund",
-    farm: "Riverside Citrus",
-    amount: "$120,000",
-    status: "Completed",
-  },
-  {
-    investor: "Harvest Capital",
-    farm: "Northfield Grains",
-    amount: "$80,500",
-    status: "Pending",
-  },
-  {
-    investor: "Aurora Ventures",
-    farm: "Sunrise Berries",
-    amount: "$45,200",
-    status: "Completed",
-  },
-];
+import { useGetProjectsStatsQuery } from "@/features/admin/projects/projectsApiSlice";
+import { useGetRecentInvestmentsQuery } from "@/features/investor/investments/investmentsApiSlice";
+
+function formatNumber(n) {
+  const num = Number(n ?? 0);
+  return num.toLocaleString(undefined, {
+    maximumFractionDigits: 0,
+  });
+}
+
+function formatCurrencyBDT(n) {
+  const num = Number(n ?? 0);
+  return `৳${num.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
+}
 
 export default function AdminDashboardPage() {
+  const { data: stats, isLoading: statsLoading } = useGetProjectsStatsQuery();
+  const {
+    data: recent,
+    isLoading: recentLoading,
+  } = useGetRecentInvestmentsQuery({ limit: 5 });
+
+  const statCards = [
+    {
+      label: "Total invested",
+      value: statsLoading ? "—" : formatCurrencyBDT(stats?.totalInvestment),
+      change: "",
+    },
+    {
+      label: "Active investors",
+      value: statsLoading ? "—" : formatNumber(stats?.activeInvestors),
+      change: "",
+    },
+    {
+      label: "Active farms",
+      value: statsLoading ? "—" : formatNumber(stats?.totalProjects),
+      change: "",
+    },
+    {
+      label: "Avg. yield (12m)",
+      value: statsLoading
+        ? "—"
+        : `${(Number(stats?.avgYieldPercent ?? 0)).toFixed(1)}%`,
+      change: "",
+    },
+  ];
+
   return (
     <div className="space-y-8">
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -57,9 +61,11 @@ export default function AdminDashboardPage() {
             <p className="mt-3 text-2xl font-semibold tracking-tight text-zinc-900">
               {card.value}
             </p>
-            <p className="mt-1 text-xs font-medium text-emerald-600">
-              {card.change}
-            </p>
+            {card.change ? (
+              <p className="mt-1 text-xs font-medium text-emerald-600">
+                {card.change}
+              </p>
+            ) : null}
           </div>
         ))}
       </section>
@@ -71,7 +77,7 @@ export default function AdminDashboardPage() {
               <h2 className="text-sm font-semibold text-zinc-900">
                 Investment activity
               </h2>
-              <p className="text-xs text-zinc-500">Last 7 days (mock data)</p>
+              <p className="text-xs text-zinc-500">Last updates</p>
             </div>
             <span className="rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-medium text-emerald-700">
               Coming soon: charts
@@ -94,26 +100,33 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="space-y-3 text-xs">
-            {recentActivity.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex items-center justify-between rounded-lg border border-zinc-100 bg-zinc-50 px-3 py-2"
-              >
-                <div>
-                  <p className="font-medium text-zinc-900">{item.investor}</p>
-                  <p className="text-[11px] text-zinc-500">
-                    {item.farm} • {item.status}
+            {recentLoading ? (
+              <div className="text-zinc-500">Loading…</div>
+            ) : (recent ?? []).length === 0 ? (
+              <div className="text-zinc-500">No recent investments</div>
+            ) : (
+              recent.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between rounded-lg border border-zinc-100 bg-zinc-50 px-3 py-2"
+                >
+                  <div>
+                    <p className="font-medium text-zinc-900">
+                      {item.investorName ?? `Investor #${item.investorId}`}
+                    </p>
+                    <p className="text-[11px] text-zinc-500">
+                      {item.date ?? ""} {item.time ?? ""}
+                    </p>
+                  </div>
+                  <p className="text-sm font-semibold text-zinc-900">
+                    {formatCurrencyBDT(item.amount)}
                   </p>
                 </div>
-                <p className="text-sm font-semibold text-zinc-900">
-                  {item.amount}
-                </p>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </section>
     </div>
   );
 }
-

@@ -99,7 +99,7 @@ export function AdminGlarryFormModal({
               </option>
               {projects.map((project) => (
                 <option key={project.id} value={project.id}>
-                  {project.title}
+                  {project.title || project.name || `Project #${project.id}`}
                 </option>
               ))}
             </select>
@@ -170,4 +170,3 @@ export function AdminGlarryFormModal({
     </Modal>
   );
 }
-

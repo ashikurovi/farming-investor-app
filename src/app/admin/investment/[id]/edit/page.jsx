@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
-  useGetInvestmentQuery,
-  useUpdateInvestmentMutation,
-  useDeleteInvestmentMutation,
+  useGetInvestmentAdminQuery,
+  useUpdateInvestmentAdminMutation,
+  useDeleteInvestmentAdminMutation,
 } from "@/features/investor/investments/investmentsApiSlice";
 
 export default function AdminInvestmentEditPage() {
@@ -22,19 +22,20 @@ export default function AdminInvestmentEditPage() {
     isLoading,
     isFetching,
     isError,
-  } = useGetInvestmentQuery(id, {
+  } = useGetInvestmentAdminQuery(id, {
     skip: !id,
   });
 
   const [formValues, setFormValues] = useState({
     amount: "",
+    photoFile: null,
   });
 
   const [updateInvestment, { isLoading: isUpdating }] =
-    useUpdateInvestmentMutation();
+    useUpdateInvestmentAdminMutation();
 
   const [deleteInvestment, { isLoading: isDeleting }] =
-    useDeleteInvestmentMutation();
+    useDeleteInvestmentAdminMutation();
 
   const isBusy = isLoading || isFetching;
 
@@ -42,6 +43,7 @@ export default function AdminInvestmentEditPage() {
     if (investment) {
       setFormValues({
         amount: investment.amount != null ? String(investment.amount) : "",
+        photoFile: null,
       });
     }
   }, [investment]);
@@ -60,7 +62,11 @@ export default function AdminInvestmentEditPage() {
     }
 
     try {
-      await updateInvestment({ id, amount: amountNumber }).unwrap();
+      await updateInvestment({
+        id,
+        amount: amountNumber,
+        photoFile: formValues.photoFile || undefined,
+      }).unwrap();
       toast.success("Investment updated successfully");
       router.push("/admin/investment");
     } catch (error) {
@@ -75,7 +81,7 @@ export default function AdminInvestmentEditPage() {
   const handleDelete = async () => {
     if (!investment) return;
     const confirmed = window.confirm(
-      `Delete ${investment.amount} BDT investment for project #${investment.projectId}? This action cannot be undone.`,
+      `Delete ${investment.amount} BDT investment for investor #${investment.investorId}? This action cannot be undone.`,
     );
     if (!confirmed) return;
 
@@ -141,8 +147,7 @@ export default function AdminInvestmentEditPage() {
                 <Input
                   id="project"
                   value={
-                    investment.project?.title ??
-                    `Project #${investment.projectId}`
+                    investment.project?.title ?? `Project #${investment.projectId}`
                   }
                   readOnly
                   className="h-10 rounded-xl border-zinc-200 bg-zinc-50 text-sm text-zinc-900"
@@ -186,6 +191,23 @@ export default function AdminInvestmentEditPage() {
                   className="h-10 rounded-xl border-zinc-200 bg-zinc-50 focus:border-emerald-500 focus:bg-white focus:ring-emerald-500/20"
                 />
               </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="photo"
+                  className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500"
+                >
+                  Photo
+                </label>
+                <input
+                  id="photo"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) =>
+                    handleChange("photoFile", e.target.files?.[0] ?? null)
+                  }
+                  className="h-10 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm text-zinc-900 file:mr-4 file:rounded-full file:border-0 file:bg-emerald-50 file:px-3 file:py-1 file:text-xs file:font-semibold file:text-emerald-700 hover:file:bg-emerald-100 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                />
+              </div>
             </div>
 
             <div className="flex items-center justify-end gap-3">
@@ -220,4 +242,3 @@ export default function AdminInvestmentEditPage() {
     </div>
   );
 }
-

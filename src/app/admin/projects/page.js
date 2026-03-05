@@ -2,18 +2,20 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Edit2, Trash2, Eye, Layers, Wallet2, Users } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
-import { DataTable } from "@/components/ui/data-table";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { AdminSearchBar } from "@/app/admin/components/AdminSearchBar";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { AdminDailyReportFormModal } from "@/app/admin/components/projects/AdminDailyReportFormModal";
+import { AdminProjectsStats } from "@/app/admin/components/projects/AdminProjectsStats";
+import { AdminProjectsGrid } from "@/app/admin/components/projects/AdminProjectsGrid";
 import {
   useGetProjectsQuery,
   useDeleteProjectMutation,
   useGetProjectsStatsQuery,
 } from "@/features/admin/projects/projectsApiSlice";
+import { useCreateDailyReportMutation } from "@/features/admin/dailyReport/dailyReportApiSlice";
 import { toast } from "sonner";
 
 const PAGE_SIZE = 10;
@@ -25,6 +27,16 @@ export default function AdminProjectsPage() {
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const [dailyModalOpen, setDailyModalOpen] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState(null);
+  const [dailyValues, setDailyValues] = useState({
+    dailyCost: "",
+    dailySell: "",
+    reason: "",
+    photoFile: null,
+    date: "",
+    time: "",
+  });
 
   const [confirmState, setConfirmState] = useState({
     isOpen: false,
@@ -39,12 +51,10 @@ export default function AdminProjectsPage() {
 
   const projectStats = {
     totalProjects: stats?.totalProjects ?? 0,
-    openProjects: stats?.openProjects ?? 0,
-    closedProjects: stats?.closedProjects ?? 0,
-    totalTargetAmount: stats?.totalTargetAmount ?? 0,
-    totalCollectedAmount: stats?.totalCollectedAmount ?? 0,
-    totalRemainingAmount: stats?.totalRemainingAmount ?? 0,
-    totalInvestors: stats?.totalInvestors ?? 0,
+    totalInvestment: stats?.totalInvestment ?? 0,
+    totalSell: stats?.totalSell ?? 0,
+    totalCost: stats?.totalCost ?? 0,
+    totalProfit: stats?.totalProfit ?? 0,
   };
 
   const formatNumber = (value) =>
@@ -59,9 +69,16 @@ export default function AdminProjectsPage() {
   });
 
   const [deleteProject, { isLoading: isDeleting }] = useDeleteProjectMutation();
+  const [createDailyReport, { isLoading: isPostingDaily }] = useCreateDailyReportMutation();
 
-  const projects = data?.items ?? [];
-  const meta = data?.meta ?? { page: 1, pageCount: 1, total: 0 };
+  const projects = Array.isArray(data) ? data : data?.items ?? [];
+  const meta =
+    data?.meta ??
+    { page: 1, pageCount: Math.max(1, Math.ceil((projects.length || 1) / pageSize)), total: projects.length || 0 };
+  const serverPaginated = Boolean(data?.meta);
+  const visibleProjects = serverPaginated
+    ? projects
+    : projects.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
 
   const handleSearchChange = (value) => {
     setSearchInput(value);
@@ -88,7 +105,7 @@ export default function AdminProjectsPage() {
   const confirmDelete = (project) => {
     openConfirm({
       title: "Delete project",
-      description: `Delete project "${project.title}"? This action cannot be undone.`,
+      description: `Delete project "${project.name}"? This action cannot be undone.`,
       confirmLabel: "Delete",
       onConfirm: async () => {
         try {
@@ -107,6 +124,81 @@ export default function AdminProjectsPage() {
         }
       },
     });
+  };
+
+  const openDailyReportModal = (project) => {
+    setSelectedProjectId(project.id);
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const date = `${year}-${month}-${day}`;
+    const hh = String(now.getHours()).padStart(2, "0");
+    const mm = String(now.getMinutes()).padStart(2, "0");
+    const ss = String(now.getSeconds()).padStart(2, "0");
+    const time = `${hh}:${mm}:${ss}`;
+    setDailyValues({
+      dailyCost: "",
+      dailySell: "",
+      reason: "",
+      photoFile: null,
+      date,
+      time,
+    });
+    setDailyModalOpen(true);
+  };
+
+  const closeDailyReportModal = () => {
+    setDailyModalOpen(false);
+    setSelectedProjectId(null);
+    setDailyValues({
+      dailyCost: "",
+      dailySell: "",
+      reason: "",
+      photoFile: null,
+      date: "",
+      time: "",
+    });
+  };
+
+  const onDailyChange = (key, value) =>
+    setDailyValues((prev) => ({ ...prev, [key]: value }));
+
+  const submitDailyReport = async (e) => {
+    e.preventDefault();
+    if (!selectedProjectId) return;
+    try {
+      const projectId = Number(selectedProjectId);
+      const jsonBody = {
+        projectId,
+        dailyCost: Number(dailyValues.dailyCost || 0),
+        dailySell: Number(dailyValues.dailySell || 0),
+        reason: dailyValues.reason || undefined,
+        date: dailyValues.date,
+        time: dailyValues.time,
+      };
+      let payload = jsonBody;
+      if (dailyValues.photoFile) {
+        const form = new FormData();
+        form.set("projectId", String(jsonBody.projectId));
+        form.set("dailyCost", String(jsonBody.dailyCost));
+        form.set("dailySell", String(jsonBody.dailySell));
+        if (jsonBody.reason) form.set("reason", jsonBody.reason);
+        form.set("date", jsonBody.date);
+        form.set("time", jsonBody.time);
+        form.set("photo", dailyValues.photoFile);
+        payload = form;
+      }
+      await createDailyReport({ payload, projectId }).unwrap();
+      toast.success("Daily report posted");
+      closeDailyReportModal();
+    } catch (error) {
+      const message =
+        error?.data?.message ||
+        (Array.isArray(error?.data?.message) ? error.data.message[0] : null) ||
+        "Failed to post daily report.";
+      toast.error("Post failed", { description: message });
+    }
   };
 
   return (
@@ -140,199 +232,44 @@ export default function AdminProjectsPage() {
         </div>
       </header>
 
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <Card>
-          <CardHeader className="space-y-1">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Projects
-              </CardTitle>
-              <Layers className="h-4 w-4 text-emerald-500" />
-            </div>
-            <p className="text-2xl font-semibold text-zinc-900">
-              {isStatsLoading ? "—" : projectStats.totalProjects}
-            </p>
-            <CardDescription>
-              {isStatsLoading
-                ? "Loading project stats..."
-                : `${projectStats.openProjects} open · ${projectStats.closedProjects} closed`}
-            </CardDescription>
-          </CardHeader>
-        </Card>
+      <AdminProjectsStats stats={projectStats} isLoading={isStatsLoading} />
 
-        <Card>
-          <CardHeader className="space-y-1">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Target amount
-              </CardTitle>
-              <Wallet2 className="h-4 w-4 text-emerald-500" />
-            </div>
-            <p className="text-2xl font-semibold text-zinc-900">
-              {isStatsLoading ? "—" : formatNumber(projectStats.totalTargetAmount)}
-            </p>
-            <CardDescription>
-              {isStatsLoading
-                ? "Loading amounts..."
-                : `Collected ${formatNumber(
-                    projectStats.totalCollectedAmount,
-                  )} · Remaining ${formatNumber(projectStats.totalRemainingAmount)}`}
-            </CardDescription>
-          </CardHeader>
-        </Card>
+      <AdminProjectsGrid
+        projects={visibleProjects}
+        isBusy={isBusy}
+        onView={(p) => router.push(`/admin/projects/${p.id}`)}
+        onEdit={(p) => router.push(`/admin/projects/${p.id}/edit`)}
+        onDelete={confirmDelete}
+        onAddDailyReport={openDailyReportModal}
+      />
+      <Pagination
+        page={meta.page}
+        pageCount={meta.pageCount}
+        total={meta.total}
+        pageSize={pageSize}
+        onPageChange={(newPage) =>
+          setPage((p) =>
+            newPage < 1
+              ? 1
+              : meta.pageCount
+              ? Math.min(meta.pageCount, newPage)
+              : newPage
+          )
+        }
+        onPageSizeChange={(newSize) => {
+          setPageSize(newSize);
+          setPage(1);
+        }}
+      />
 
-        <Card>
-          <CardHeader className="space-y-1">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Collected vs remaining
-              </CardTitle>
-              <Wallet2 className="h-4 w-4 rotate-180 text-emerald-500" />
-            </div>
-            <p className="text-2xl font-semibold text-zinc-900">
-              {isStatsLoading ? "—" : formatNumber(projectStats.totalCollectedAmount)}
-            </p>
-            <CardDescription>
-              {isStatsLoading
-                ? "Loading..."
-                : `${formatNumber(
-                    projectStats.totalRemainingAmount,
-                  )} remaining across all projects`}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card>
-          <CardHeader className="space-y-1">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Investors
-              </CardTitle>
-              <Users className="h-4 w-4 text-emerald-500" />
-            </div>
-            <p className="text-2xl font-semibold text-zinc-900">
-              {isStatsLoading ? "—" : projectStats.totalInvestors}
-            </p>
-            <CardDescription>
-              {isStatsLoading
-                ? "Loading investors..."
-                : "Total unique investors across all projects"}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </section>
-
-      <section className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-        <div className="overflow-x-auto">
-          <DataTable
-            columns={[
-              {
-                key: "sl",
-                header: "SL",
-                tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-500",
-                cell: (project) =>
-                  projects.findIndex((p) => p.id === project.id) + 1,
-              },
-              {
-                key: "title",
-                header: "Title",
-                tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm font-medium text-zinc-900",
-                cell: (project) => project.title || "-",
-              },
-              {
-                key: "status",
-                header: "Status",
-                tdClassName: "whitespace-nowrap px-4 py-3 text-xs",
-                cell: (project) => (
-                  <span
-                    className={`inline-flex items-center rounded-full px-2 py-1 font-medium ${
-                      project.status === "open"
-                        ? "bg-emerald-50 text-emerald-700"
-                        : "bg-zinc-100 text-zinc-600"
-                    }`}
-                  >
-                    {project.status ?? "—"}
-                  </span>
-                ),
-              },
-              {
-                key: "period",
-                header: "Period",
-                tdClassName: "whitespace-nowrap px-4 py-3 text-sm text-zinc-600",
-                cell: (project) =>
-                  project.projectPeriod?.duration
-                    ? project.projectPeriod.duration
-                    : "-",
-              },
-              {
-                key: "dates",
-                header: "Start / End",
-                tdClassName: "whitespace-nowrap px-4 py-3 text-xs text-zinc-600",
-                cell: (project) => (
-                  <div className="flex flex-col">
-                    <span>{project.startDate || "-"}</span>
-                    <span className="text-zinc-400">{project.endDate || "-"}</span>
-                  </div>
-                ),
-              },
-            ]}
-            data={projects}
-            isLoading={isBusy}
-            emptyMessage="No projects found."
-            loadingLabel="Loading projects..."
-            getRowKey={(project) => project.id}
-            renderActions={(project) => (
-              <div className="flex items-center justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => router.push(`/admin/projects/${project.id}`)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
-                >
-                  <Eye className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() =>
-                    router.push(`/admin/projects/${project.id}/edit`)
-                  }
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
-                >
-                  <Edit2 className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => confirmDelete(project)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-white text-red-600 hover:bg-red-50"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            )}
-          />
-        </div>
-
-        <Pagination
-          page={meta.page}
-          pageCount={meta.pageCount}
-          total={meta.total}
-          pageSize={pageSize}
-          onPageChange={(newPage) =>
-            setPage((p) =>
-              newPage < 1
-                ? 1
-                : meta.pageCount
-                  ? Math.min(meta.pageCount, newPage)
-                  : newPage,
-            )
-          }
-          onPageSizeChange={(newSize) => {
-            setPageSize(newSize);
-            setPage(1);
-          }}
-        />
-      </section>
+      <AdminDailyReportFormModal
+        isOpen={dailyModalOpen}
+        values={dailyValues}
+        isSubmitting={isPostingDaily}
+        onClose={closeDailyReportModal}
+        onChange={onDailyChange}
+        onSubmit={submitDailyReport}
+      />
 
       <ConfirmDialog
         isOpen={confirmState.isOpen}
@@ -346,4 +283,3 @@ export default function AdminProjectsPage() {
     </div>
   );
 }
-

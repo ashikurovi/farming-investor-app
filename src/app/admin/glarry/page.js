@@ -120,7 +120,7 @@ export default function AdminGlarryPage() {
       return;
     }
 
-    if (!formValues.photo && !formValues.photoUrl) {
+    if (!editingGlarry && !formValues.photo && !formValues.photoUrl) {
       toast.error("Please upload a photo or provide a photo URL");
       return;
     }
@@ -245,7 +245,8 @@ export default function AdminGlarryPage() {
                 tdClassName:
                   "whitespace-nowrap px-4 py-3 text-sm font-medium text-zinc-900",
                 cell: (item) =>
-                  item?.project?.title ||
+                  item?.projectName ||
+                  item?.project?.name ||
                   (item.projectId ? `Project #${item.projectId}` : "-"),
               },
               {
@@ -341,10 +342,9 @@ export default function AdminGlarryPage() {
         onClose={closeModal}
         onChange={handleFormChange}
         onSubmit={handleSubmit}
-        projects={projectsData?.items ?? []}
+        projects={Array.isArray(projectsData) ? projectsData : projectsData?.items ?? []}
         isProjectsLoading={isProjectsLoading}
       />
     </div>
   );
 }
-

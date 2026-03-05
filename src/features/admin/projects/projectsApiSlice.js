@@ -41,6 +41,7 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => response?.data ?? response,
+      providesTags: (result, error, id) => [{ type: "Project", id }],
     }),
 
     getProjectInvestmentInfo: builder.query({
@@ -49,6 +50,16 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => response?.data ?? response,
+    }),
+
+    createProjectDailyReport: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/projects/${id}/daily-reports`,
+        method: "POST",
+        body,
+      }),
+      transformResponse: (response) => response?.data ?? response,
+      invalidatesTags: (result, error, { id }) => [{ type: "Project", id }],
     }),
 
     getProjectInvestors: builder.query({
@@ -101,8 +112,8 @@ export const {
   useGetProjectStatsQuery,
   useGetProjectInvestmentInfoQuery,
   useGetProjectInvestorsQuery,
+  useCreateProjectDailyReportMutation,
   useCreateProjectMutation,
   useUpdateProjectMutation,
   useDeleteProjectMutation,
 } = projectsApiSlice;
-

@@ -21,6 +21,9 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { toast } from "sonner";
 import { useGetInvestorTypesQuery } from "@/features/admin/investorType/investorTypeApiSlice";
 
+const cleanUrl = (u) =>
+  typeof u === "string" ? u.replace(/`/g, "").trim() : "";
+
 const PAGE_SIZE = 10;
 
 export default function AdminInvestorPage() {
@@ -289,11 +292,6 @@ export default function AdminInvestorPage() {
                 header: "Email",
               },
               {
-                key: "phone",
-                header: "Phone",
-                cell: (user) => user.phone || "-",
-              },
-              {
                 key: "investorType",
                 header: "Investor type",
                 tdClassName:
@@ -306,11 +304,33 @@ export default function AdminInvestorPage() {
                       : "-",
               },
               {
-                key: "investmentCount",
-                header: "Investments",
+                key: "totalInvestment",
+                header: "Investment (BDT)",
                 tdClassName:
                   "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                cell: (user) => user.investments?.length ?? 0,
+                cell: (user) =>
+                  Number(user.totalInvestment ?? 0).toFixed(2),
+              },
+              {
+                key: "totalProfit",
+                header: "Profit (BDT)",
+                tdClassName:
+                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
+                cell: (user) => Number(user.totalProfit ?? 0).toFixed(2),
+              },
+              {
+                key: "balance",
+                header: "Balance (BDT)",
+                tdClassName:
+                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
+                cell: (user) => Number(user.balance ?? 0).toFixed(2),
+              },
+              {
+                key: "totalCost",
+                header: "Total Cost (BDT)",
+                tdClassName:
+                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
+                cell: (user) => Number(user.totalCost ?? 0).toFixed(2),
               },
               {
                 key: "status",

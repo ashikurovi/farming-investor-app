@@ -16,13 +16,11 @@ import {
 import { AdminSearchBar } from "@/app/admin/components/AdminSearchBar";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import {
-  useGetInvestmentsQuery,
-  useGetInvestmentsStatsQuery,
-  useCreateInvestmentMutation,
-  useDeleteInvestmentMutation,
+  useGetInvestmentsAdminQuery,
+  useCreateInvestmentAdminMutation,
+  useDeleteInvestmentAdminMutation,
 } from "@/features/investor/investments/investmentsApiSlice";
 import { useGetUsersQuery } from "@/features/admin/users/usersApiSlice";
-import { useGetProjectsQuery } from "@/features/admin/projects/projectsApiSlice";
 import { toast } from "sonner";
 
 const PAGE_SIZE = 10;
@@ -35,10 +33,19 @@ export default function AdminInvestmentsPage() {
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  const defaultDate = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(
+    now.getDate(),
+  )}`;
+  const defaultTime = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
   const [formValues, setFormValues] = useState({
-    userId: "",
-    projectId: "",
+    investorId: "",
     amount: "",
+    date: defaultDate,
+    time: defaultTime,
+    reference: "",
+    photoFile: null,
   });
 
   const [confirmState, setConfirmState] = useState({
@@ -50,31 +57,17 @@ export default function AdminInvestmentsPage() {
     onConfirm: null,
   });
 
-  const { data: stats, isLoading: isStatsLoading } =
-    useGetInvestmentsStatsQuery();
-
-  const investmentStats = {
-    totalInvestments: stats?.totalInvestments ?? 0,
-    totalAmountInvested: stats?.totalAmountInvested ?? 0,
-    uniqueInvestors: stats?.uniqueInvestors ?? 0,
-    uniqueProjectsInvested: stats?.uniqueProjectsInvested ?? 0,
-  };
-
   const formatNumber = (value) =>
     Number(value || 0).toLocaleString("en-US", {
       maximumFractionDigits: 0,
     });
 
-  const { data, isLoading, isFetching } = useGetInvestmentsQuery({
-    page,
-    limit: pageSize,
-    search,
-  });
+  const { data, isLoading, isFetching } = useGetInvestmentsAdminQuery();
 
   const [createInvestment, { isLoading: isCreating }] =
-    useCreateInvestmentMutation();
+    useCreateInvestmentAdminMutation();
   const [deleteInvestment, { isLoading: isDeleting }] =
-    useDeleteInvestmentMutation();
+    useDeleteInvestmentAdminMutation();
 
   const { data: usersData, isLoading: isUsersLoading } = useGetUsersQuery({
     page: 1,
@@ -82,23 +75,38 @@ export default function AdminInvestmentsPage() {
     search: "",
   });
 
-  const { data: projectsData, isLoading: isProjectsLoading } =
-    useGetProjectsQuery({
-      page: 1,
-      limit: 100,
-      search: "",
-    });
-
   const investors =
     usersData?.items?.filter(
       (user) => user.role === "investor" && !user.isBanned,
     ) ?? [];
 
-  const openProjects =
-    projectsData?.items?.filter((project) => project.status === "open") ?? [];
+  const usersById = new Map(
+    (usersData?.items ?? []).map((u) => [u.id, u]),
+  );
 
-  const investments = data?.items ?? [];
-  const meta = data?.meta ?? { page: 1, pageCount: 1, total: 0 };
+  const allInvestments = Array.isArray(data) ? data : [];
+  const filteredInvestments = search
+    ? allInvestments.filter((inv) => {
+        const user = usersById.get(inv.investorId);
+        const haystack = [
+          String(inv.id ?? ""),
+          String(inv.investorId ?? ""),
+          String(inv.amount ?? ""),
+          String(inv.reference ?? ""),
+          user?.name ?? "",
+          user?.email ?? "",
+        ]
+          .join(" ")
+          .toLowerCase();
+        return haystack.includes(search.toLowerCase());
+      })
+    : allInvestments;
+  const total = filteredInvestments.length;
+  const pageCount = pageSize > 0 ? Math.max(1, Math.ceil(total / pageSize)) : 1;
+  const startIndex = (page - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const investments = filteredInvestments.slice(startIndex, endIndex);
+  const meta = { page, pageCount, total };
 
   const handleSearchChange = (value) => {
     setSearchInput(value);
@@ -113,12 +121,8 @@ export default function AdminInvestmentsPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formValues.userId) {
+    if (!formValues.investorId) {
       toast.error("Investor is required");
-      return;
-    }
-    if (!formValues.projectId) {
-      toast.error("Project is required");
       return;
     }
     const amountNumber = Number(formValues.amount);
@@ -126,16 +130,34 @@ export default function AdminInvestmentsPage() {
       toast.error("Amount must be greater than 0");
       return;
     }
+    if (!formValues.date) {
+      toast.error("Date is required");
+      return;
+    }
+    if (!formValues.time) {
+      toast.error("Time is required");
+      return;
+    }
 
     try {
       await createInvestment({
-        userId: Number(formValues.userId),
-        projectId: Number(formValues.projectId),
+        investorId: Number(formValues.investorId),
         amount: amountNumber,
+        date: formValues.date,
+        time: formValues.time,
+        reference: formValues.reference || undefined,
+        photoFile: formValues.photoFile || undefined,
       }).unwrap();
 
       toast.success("Investment created successfully");
-      setFormValues({ userId: "", projectId: "", amount: "" });
+      setFormValues({
+        investorId: "",
+        amount: "",
+        date: defaultDate,
+        time: defaultTime,
+        reference: "",
+        photoFile: null,
+      });
       setIsFormOpen(false);
     } catch (error) {
       const message =
@@ -163,16 +185,14 @@ export default function AdminInvestmentsPage() {
     });
 
   const confirmDelete = (investment) => {
-    const projectTitle =
-      investment?.project?.title || `Project #${investment.projectId}`;
-    const investorName =
-      investment?.user?.name || investment?.user?.email || "Investor";
+    const user = usersById.get(investment?.investorId);
+    const investorName = user?.name || user?.email || `Investor #${investment?.investorId}`;
 
     openConfirm({
       title: "Delete investment",
       description: `Delete ${formatNumber(
         investment.amount,
-      )} BDT investment by "${investorName}" in "${projectTitle}"? This action cannot be undone.`,
+      )} BDT investment by "${investorName}"? This action cannot be undone.`,
       confirmLabel: "Delete",
       onConfirm: async () => {
         try {
@@ -234,15 +254,15 @@ export default function AdminInvestmentsPage() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <div className="space-y-2">
                 <label
-                  htmlFor="investor"
+                  htmlFor="investorId"
                   className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500"
                 >
                   Investor
                 </label>
                 <select
-                  id="investor"
-                  value={formValues.userId}
-                  onChange={(e) => handleFormChange("userId", e.target.value)}
+                  id="investorId"
+                  value={formValues.investorId}
+                  onChange={(e) => handleFormChange("investorId", e.target.value)}
                   className="h-10 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm text-zinc-900 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                   disabled={isUsersLoading || isCreating}
                   required
@@ -254,34 +274,6 @@ export default function AdminInvestmentsPage() {
                     <option key={user.id} value={user.id}>
                       {user.name || user.email}{" "}
                       {user.email ? `(${user.email})` : ""}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="project"
-                  className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500"
-                >
-                  Project
-                </label>
-                <select
-                  id="project"
-                  value={formValues.projectId}
-                  onChange={(e) =>
-                    handleFormChange("projectId", e.target.value)
-                  }
-                  className="h-10 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm text-zinc-900 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
-                  disabled={isProjectsLoading || isCreating}
-                  required
-                >
-                  <option value="">
-                    {isProjectsLoading ? "Loading projects..." : "Select project"}
-                  </option>
-                  {openProjects.map((project) => (
-                    <option key={project.id} value={project.id}>
-                      {project.title}
                     </option>
                   ))}
                 </select>
@@ -305,6 +297,73 @@ export default function AdminInvestmentsPage() {
                   className="h-10 rounded-xl border-zinc-200 bg-zinc-50 focus:border-emerald-500 focus:bg-white focus:ring-emerald-500/20"
                 />
               </div>
+
+              <div className="space-y-2">
+                <label
+                  htmlFor="date"
+                  className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500"
+                >
+                  Date
+                </label>
+                <Input
+                  id="date"
+                  type="date"
+                  value={formValues.date}
+                  onChange={(e) => handleFormChange("date", e.target.value)}
+                  className="h-10 rounded-xl border-zinc-200 bg-zinc-50 focus:border-emerald-500 focus:bg-white focus:ring-emerald-500/20"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <div className="space-y-2">
+                <label
+                  htmlFor="time"
+                  className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500"
+                >
+                  Time
+                </label>
+                <Input
+                  id="time"
+                  type="time"
+                  value={formValues.time}
+                  onChange={(e) => handleFormChange("time", e.target.value)}
+                  className="h-10 rounded-xl border-zinc-200 bg-zinc-50 focus:border-emerald-500 focus:bg-white focus:ring-emerald-500/20"
+                />
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="reference"
+                  className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500"
+                >
+                  Reference
+                </label>
+                <Input
+                  id="reference"
+                  type="text"
+                  value={formValues.reference}
+                  onChange={(e) => handleFormChange("reference", e.target.value)}
+                  placeholder="Optional note"
+                  className="h-10 rounded-xl border-zinc-200 bg-zinc-50 focus:border-emerald-500 focus:bg-white focus:ring-emerald-500/20"
+                />
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="photo"
+                  className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500"
+                >
+                  Photo
+                </label>
+                <input
+                  id="photo"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) =>
+                    handleFormChange("photoFile", e.target.files?.[0] ?? null)
+                  }
+                  className="h-10 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm text-zinc-900 file:mr-4 file:rounded-full file:border-0 file:bg-emerald-50 file:px-3 file:py-1 file:text-xs file:font-semibold file:text-emerald-700 hover:file:bg-emerald-100 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                />
+              </div>
             </div>
 
             <div className="flex items-center justify-end gap-3">
@@ -313,7 +372,14 @@ export default function AdminInvestmentsPage() {
                 variant="outline"
                 onClick={() => {
                   setIsFormOpen(false);
-                  setFormValues({ userId: "", projectId: "", amount: "" });
+                  setFormValues({
+                    investorId: "",
+                    amount: "",
+                    date: defaultDate,
+                    time: defaultTime,
+                    reference: "",
+                    photoFile: null,
+                  });
                 }}
                 className="h-9 rounded-full border-zinc-200 text-xs"
               >
@@ -341,12 +407,10 @@ export default function AdminInvestmentsPage() {
               <Users className="h-4 w-4 text-emerald-500" />
             </div>
             <p className="text-2xl font-semibold text-zinc-900">
-              {isStatsLoading ? "—" : investmentStats.totalInvestments}
+              {isLoading ? "—" : total}
             </p>
             <CardDescription>
-              {isStatsLoading
-                ? "Loading investment stats..."
-                : "Number of individual investment records"}
+              {isLoading ? "Loading investment stats..." : "Number of individual investment records"}
             </CardDescription>
           </CardHeader>
         </Card>
@@ -360,14 +424,17 @@ export default function AdminInvestmentsPage() {
               <Wallet2 className="h-4 w-4 text-emerald-500" />
             </div>
             <p className="text-2xl font-semibold text-zinc-900">
-              {isStatsLoading
+              {isLoading
                 ? "—"
-                : `${formatNumber(investmentStats.totalAmountInvested)} BDT`}
+                : `${formatNumber(
+                    filteredInvestments.reduce(
+                      (sum, inv) => sum + Number(inv.amount || 0),
+                      0,
+                    ),
+                  )} BDT`}
             </p>
             <CardDescription>
-              {isStatsLoading
-                ? "Loading amounts..."
-                : "Sum of all investment amounts"}
+              {isLoading ? "Loading amounts..." : "Sum of all investment amounts"}
             </CardDescription>
           </CardHeader>
         </Card>
@@ -381,12 +448,12 @@ export default function AdminInvestmentsPage() {
               <Users className="h-4 w-4 text-emerald-500" />
             </div>
             <p className="text-2xl font-semibold text-zinc-900">
-              {isStatsLoading ? "—" : investmentStats.uniqueInvestors}
+              {isLoading
+                ? "—"
+                : new Set(filteredInvestments.map((inv) => inv.investorId)).size}
             </p>
             <CardDescription>
-              {isStatsLoading
-                ? "Loading..."
-                : "Distinct users who have invested"}
+              {isLoading ? "Loading..." : "Distinct users who have invested"}
             </CardDescription>
           </CardHeader>
         </Card>
@@ -395,17 +462,24 @@ export default function AdminInvestmentsPage() {
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-between">
               <CardTitle className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Projects invested
+                Average investment amount
               </CardTitle>
               <Wallet2 className="h-4 w-4 rotate-180 text-emerald-500" />
             </div>
             <p className="text-2xl font-semibold text-zinc-900">
-              {isStatsLoading ? "—" : investmentStats.uniqueProjectsInvested}
+              {isLoading
+                ? "—"
+                : formatNumber(
+                    total > 0
+                      ? filteredInvestments.reduce(
+                          (sum, inv) => sum + Number(inv.amount || 0),
+                          0,
+                        ) / total
+                      : 0,
+                  )}
             </p>
             <CardDescription>
-              {isStatsLoading
-                ? "Loading..."
-                : "Projects that have received investments"}
+              {isLoading ? "Loading..." : "Average per investment"}
             </CardDescription>
           </CardHeader>
         </Card>
@@ -424,25 +498,20 @@ export default function AdminInvestmentsPage() {
                   investments.findIndex((i) => i.id === investment.id) + 1,
               },
               {
-                key: "project",
-                header: "Project",
-                tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm font-medium text-zinc-900",
-                cell: (investment) =>
-                  investment?.project?.title ||
-                  `Project #${investment.projectId}` ||
-                  "-",
-              },
-              {
                 key: "investor",
                 header: "Investor",
                 tdClassName:
                   "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                cell: (investment) =>
-                  investment?.user?.name ||
-                  investment?.user?.email ||
-                  `User #${investment.userId}` ||
-                  "-",
+                cell: (investment) => {
+                  const user = usersById.get(investment.investorId);
+                  return (
+                    user?.name ||
+                    user?.email ||
+                    (investment.investorId != null
+                      ? `Investor #${investment.investorId}`
+                      : "-")
+                  );
+                },
               },
               {
                 key: "amount",
@@ -455,14 +524,18 @@ export default function AdminInvestmentsPage() {
                     : "-",
               },
               {
-                key: "createdAt",
+                key: "date",
                 header: "Date",
                 tdClassName:
                   "whitespace-nowrap px-4 py-3 text-xs text-zinc-600",
-                cell: (investment) =>
-                  investment?.createdAt
-                    ? new Date(investment.createdAt).toLocaleDateString()
-                    : "-",
+                cell: (investment) => investment?.date ?? "-",
+              },
+              {
+                key: "time",
+                header: "Time",
+                tdClassName:
+                  "whitespace-nowrap px-4 py-3 text-xs text-zinc-600",
+                cell: (investment) => investment?.time ?? "-",
               },
             ]}
             data={investments}
@@ -511,8 +584,8 @@ export default function AdminInvestmentsPage() {
             setPage((p) =>
               newPage < 1
                 ? 1
-                : meta.pageCount
-                ? Math.min(meta.pageCount, newPage)
+                : pageCount
+                ? Math.min(pageCount, newPage)
                 : newPage,
             )
           }
@@ -535,4 +608,3 @@ export default function AdminInvestmentsPage() {
     </div>
   );
 }
-

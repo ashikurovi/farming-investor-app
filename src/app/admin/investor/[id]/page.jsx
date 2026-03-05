@@ -38,6 +38,11 @@ export default function AdminInvestorDetailPage() {
   }, [user]);
 
   const investments = user?.investments ?? [];
+  const photo = user?.photoUrl
+    ? (typeof user.photoUrl === "string"
+        ? user.photoUrl.replace(/`/g, "").trim()
+        : "")
+    : "";
 
   const totalInvestedAmount = useMemo(() => {
     if (!investments.length) return 0;
@@ -115,11 +120,11 @@ export default function AdminInvestorDetailPage() {
             {!isBusy && !isError && user && (
               <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
                 <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-emerald-50 text-lg font-semibold text-emerald-700 ring-1 ring-emerald-100">
-                  {user.photoUrl ? (
+                  {photo ? (
                     <Image
                       width={64}
                       height={64}
-                      src={user.photoUrl}
+                      src={photo}
                       alt={user.name || user.email}
                       className="h-16 w-16 rounded-2xl object-cover"
                       unoptimized
@@ -201,6 +206,15 @@ export default function AdminInvestorDetailPage() {
 
                 <div className="space-y-1">
                   <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                    Location
+                  </dt>
+                  <dd className="text-sm text-zinc-900">
+                    {user.location || "-"}
+                  </dd>
+                </div>
+
+                <div className="space-y-1">
+                  <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
                     Total investments
                   </dt>
                   <dd className="text-sm text-zinc-900">
@@ -216,62 +230,49 @@ export default function AdminInvestorDetailPage() {
                     {totalInvestedAmount}
                   </dd>
                 </div>
+
+                <div className="space-y-1">
+                  <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                    Investment (BDT)
+                  </dt>
+                  <dd className="text-sm text-zinc-900">
+                    {Number(user.totalInvestment ?? 0).toFixed(2)}
+                  </dd>
+                </div>
+
+                <div className="space-y-1">
+                  <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                    Profit (BDT)
+                  </dt>
+                  <dd className="text-sm text-zinc-900">
+                    {Number(user.totalProfit ?? 0).toFixed(2)}
+                  </dd>
+                </div>
+
+                <div className="space-y-1">
+                  <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                    Balance (BDT)
+                  </dt>
+                  <dd className="text-sm text-zinc-900">
+                    {Number(user.balance ?? 0).toFixed(2)}
+                  </dd>
+                </div>
+
+                <div className="space-y-1">
+                  <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                    Total Cost (BDT)
+                  </dt>
+                  <dd className="text-sm text-zinc-900">
+                    {Number(user.totalCost ?? 0).toFixed(2)}
+                  </dd>
+                </div>
               </dl>
             </div>
           )}
         </div>
 
-        <div className="space-y-4">
-          <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
-              Investments by project
-            </h3>
-
-            {isBusy && (
-              <div className="flex h-24 items-center justify-center text-xs text-zinc-500">
-                Loading investments...
-              </div>
-            )}
-
-            {!isBusy && !investments.length && (
-              <p className="text-xs text-zinc-500">
-                This investor has not invested in any projects yet.
-              </p>
-            )}
-
-            {!isBusy && investments.length > 0 && (
-              <div className="overflow-x-auto">
-                <table className="min-w-full text-left text-xs">
-                  <thead className="border-b border-zinc-200 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500">
-                    <tr>
-                      <th className="py-2 pr-4">Project</th>
-                      <th className="py-2 pr-4">Amount (BDT)</th>
-                      <th className="py-2">Date</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-zinc-100 text-xs text-zinc-700">
-                    {investments.map((inv) => (
-                      <tr key={inv.id}>
-                        <td className="py-2 pr-4">
-                          {inv.project?.title ??
-                            `Project #${inv.projectId}`}
-                        </td>
-                        <td className="py-2 pr-4">{inv.amount}</td>
-                        <td className="py-2">
-                          {inv.createdAt
-                            ? new Date(inv.createdAt).toLocaleDateString()
-                            : "-"}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        </div>
+ 
       </section>
     </div>
   );
 }
-

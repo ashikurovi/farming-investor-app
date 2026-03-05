@@ -91,6 +91,88 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
       }),
       transformResponse: (response) => response?.data ?? response,
     }),
+
+    getInvestmentsAdmin: builder.query({
+      query: () => ({
+        url: "/investment",
+        method: "GET",
+      }),
+      transformResponse: (response) => response?.data ?? response,
+    }),
+    getRecentInvestments: builder.query({
+      query: ({ limit = 5 } = {}) => ({
+        url: `/investment/recent`,
+        method: "GET",
+      }),
+      transformResponse: (response) => response?.data ?? response,
+    }),
+
+    getInvestmentAdmin: builder.query({
+      query: (id) => ({
+        url: `/investment/${id}`,
+        method: "GET",
+      }),
+      transformResponse: (response) => response?.data ?? response,
+    }),
+
+    createInvestmentAdmin: builder.mutation({
+      query: ({ investorId, amount, reference, photoFile, date, time }) => {
+        const hasFile = typeof FormData !== "undefined" && photoFile instanceof File;
+        if (hasFile) {
+          const form = new FormData();
+          form.append("investorId", String(investorId));
+          form.append("amount", String(amount));
+          form.append("date", date);
+          form.append("time", time);
+          if (reference) form.append("reference", reference);
+          form.append("photo", photoFile);
+          return {
+            url: "/investment",
+            method: "POST",
+            body: form,
+          };
+        }
+        return {
+          url: "/investment",
+          method: "POST",
+          body: { investorId, amount, reference, date, time },
+        };
+      },
+      transformResponse: (response) => response?.data ?? response,
+    }),
+
+    updateInvestmentAdmin: builder.mutation({
+      query: ({ id, amount, reference, photoFile, date, time }) => {
+        const hasFile = typeof FormData !== "undefined" && photoFile instanceof File;
+        if (hasFile) {
+          const form = new FormData();
+          if (amount != null) form.append("amount", String(amount));
+          if (reference) form.append("reference", reference);
+          if (date) form.append("date", date);
+          if (time) form.append("time", time);
+          form.append("photo", photoFile);
+          return {
+            url: `/investment/${id}`,
+            method: "PATCH",
+            body: form,
+          };
+        }
+        return {
+          url: `/investment/${id}`,
+          method: "PATCH",
+          body: { amount, reference, date, time },
+        };
+      },
+      transformResponse: (response) => response?.data ?? response,
+    }),
+
+    deleteInvestmentAdmin: builder.mutation({
+      query: (id) => ({
+        url: `/investment/${id}`,
+        method: "DELETE",
+      }),
+      transformResponse: (response) => response?.data ?? response,
+    }),
   }),
 });
 
@@ -102,5 +184,10 @@ export const {
   useCreateInvestmentMutation,
   useUpdateInvestmentMutation,
   useDeleteInvestmentMutation,
+  useGetInvestmentsAdminQuery,
+  useGetInvestmentAdminQuery,
+  useCreateInvestmentAdminMutation,
+  useUpdateInvestmentAdminMutation,
+  useDeleteInvestmentAdminMutation,
+  useGetRecentInvestmentsQuery,
 } = investmentsApiSlice;
-

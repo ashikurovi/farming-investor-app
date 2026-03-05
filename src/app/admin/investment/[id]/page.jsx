@@ -5,7 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, Wallet2, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { useGetInvestmentQuery, useDeleteInvestmentMutation } from "@/features/investor/investments/investmentsApiSlice";
+import { useGetInvestmentAdminQuery, useDeleteInvestmentAdminMutation } from "@/features/investor/investments/investmentsApiSlice";
+import { useGetUserQuery } from "@/features/admin/users/usersApiSlice";
 import { toast } from "sonner";
 
 export default function AdminInvestmentDetailPage() {
@@ -18,58 +19,34 @@ export default function AdminInvestmentDetailPage() {
     isLoading,
     isFetching,
     isError,
-  } = useGetInvestmentQuery(id, {
+  } = useGetInvestmentAdminQuery(id, {
     skip: !id,
   });
 
   const isBusy = isLoading || isFetching;
 
   const [deleteInvestment, { isLoading: isDeleting }] =
-    useDeleteInvestmentMutation();
+    useDeleteInvestmentAdminMutation();
 
   const formatNumber = (value) =>
     Number(value || 0).toLocaleString("en-US", {
       maximumFractionDigits: 0,
     });
 
-  const project = investment?.project;
-  const user = investment?.user;
+  const investorId = investment?.investorId;
+  const { data: user } = useGetUserQuery(investorId, { skip: !investorId });
 
-  const projectStatusConfig = useMemo(() => {
-    if (!project) return null;
-
-    const status = project.status ?? "unknown";
-
-    if (status === "open") {
-      return {
-        label: "Open",
-        className: "bg-emerald-50 text-emerald-700 ring-emerald-100",
-      };
-    }
-
-    if (status === "closed") {
-      return {
-        label: "Closed",
-        className: "bg-zinc-100 text-zinc-700 ring-zinc-200",
-      };
-    }
-
-    return {
-      label: status,
-      className: "bg-zinc-100 text-zinc-700 ring-zinc-200",
-    };
-  }, [project]);
+  
 
   const investmentDate =
-    investment?.createdAt &&
-    new Date(investment.createdAt).toLocaleString();
+    investment?.date && investment?.time
+      ? `${investment.date} ${investment.time}`
+      : investment?.date ?? "-";
 
   const handleDelete = async () => {
     if (!investment) return;
     const confirmed = window.confirm(
-      `Delete ${formatNumber(investment.amount)} BDT investment for project #${
-        investment.projectId
-      }? This action cannot be undone.`,
+      `Delete ${formatNumber(investment.amount)} BDT investment for investor #${investment.investorId}? This action cannot be undone.`,
     );
     if (!confirmed) return;
 
@@ -110,15 +87,7 @@ export default function AdminInvestmentDetailPage() {
           </div>
         </div>
 
-        {projectStatusConfig && (
-          <div className="inline-flex items-center gap-2 rounded-full bg-zinc-50 px-3 py-1.5 text-xs font-medium text-zinc-700 ring-1 ring-zinc-200">
-            <span
-              className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[0.16em] ${projectStatusConfig.className}`}
-            >
-              {projectStatusConfig.label}
-            </span>
-          </div>
-        )}
+        
       </header>
 
       <section className="grid gap-6 lg:grid-cols-[minmax(0,_2fr)_minmax(0,_1.1fr)]">
@@ -158,7 +127,7 @@ export default function AdminInvestmentDetailPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                      Date
+                      Date & time
                     </dt>
                     <dd>{investmentDate || "-"}</dd>
                   </div>
@@ -166,13 +135,7 @@ export default function AdminInvestmentDetailPage() {
                     <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
                       Investor ID
                     </dt>
-                    <dd>#{investment.userId}</dd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                      Project ID
-                    </dt>
-                    <dd>#{investment.projectId}</dd>
+                    <dd>#{investment.investorId}</dd>
                   </div>
                 </dl>
               )}
@@ -234,83 +197,6 @@ export default function AdminInvestmentDetailPage() {
           <Card>
             <CardHeader className="space-y-1">
               <CardTitle className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                Project
-              </CardTitle>
-              <CardDescription>
-                The project this investment is associated with.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {!isBusy && !isError && project ? (
-                <>
-                  <div className="space-y-2">
-                    <p className="text-sm font-semibold text-zinc-900">
-                      {project.title || "Untitled project"}
-                    </p>
-                    <p className="text-xs text-zinc-600 line-clamp-3">
-                      {project.description || "No description provided."}
-                    </p>
-                  </div>
-
-                  <dl className="space-y-2 text-sm text-zinc-900">
-                    <div className="flex items-center justify-between">
-                      <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                        Total amount (BDT)
-                      </dt>
-                      <dd>{project.totalPrice ?? "-"}</dd>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                        Collected amount (BDT)
-                      </dt>
-                      <dd>{project.collectedAmount ?? "-"}</dd>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                        Profit percentage (%)
-                      </dt>
-                      <dd>{project.profitPercentage ?? "-"}</dd>
-                    </div>
-                  </dl>
-
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() =>
-                        router.push(`/admin/projects/${project.id}`)
-                      }
-                      className="h-8 rounded-full border-zinc-200 text-xs"
-                    >
-                      View project
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() =>
-                        router.push(`/admin/investment/${investment.id}/edit`)
-                      }
-                      className="h-8 rounded-full border-emerald-200 text-xs text-emerald-700 hover:bg-emerald-50"
-                    >
-                      Edit investment
-                    </Button>
-                  </div>
-                </>
-              ) : (
-                <p className="text-xs text-zinc-500">
-                  {isBusy
-                    ? "Loading project..."
-                    : "No project information available."}
-                </p>
-              )}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="space-y-1">
-              <CardTitle className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
                 Tips
               </CardTitle>
             </CardHeader>
@@ -339,4 +225,3 @@ export default function AdminInvestmentDetailPage() {
     </div>
   );
 }
-
