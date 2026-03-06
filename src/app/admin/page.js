@@ -10,6 +10,14 @@ function formatNumber(n) {
   });
 }
 
+function formatTwo(n) {
+  const num = Number(n ?? 0);
+  return num.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
 function formatCurrencyBDT(n) {
   const num = Number(n ?? 0);
   return `৳${num.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
@@ -24,25 +32,28 @@ export default function AdminDashboardPage() {
 
   const statCards = [
     {
-      label: "Total invested",
-      value: statsLoading ? "—" : formatCurrencyBDT(stats?.totalInvestment),
+      label: "Total investment",
+      value: statsLoading ? "—" : formatTwo(stats?.totalInvestment),
       change: "",
     },
     {
-      label: "Active investors",
-      value: statsLoading ? "—" : formatNumber(stats?.activeInvestors),
-      change: "",
-    },
-    {
-      label: "Active farms",
+      label: "Total projects",
       value: statsLoading ? "—" : formatNumber(stats?.totalProjects),
       change: "",
     },
     {
-      label: "Avg. yield (12m)",
-      value: statsLoading
-        ? "—"
-        : `${(Number(stats?.avgYieldPercent ?? 0)).toFixed(1)}%`,
+      label: "Total cost",
+      value: statsLoading ? "—" : formatTwo(stats?.totalCost),
+      change: "",
+    },
+    {
+      label: "Total sell",
+      value: statsLoading ? "—" : formatTwo(stats?.totalSell),
+      change: "",
+    },
+    {
+      label: "Total profit",
+      value: statsLoading ? "—" : formatTwo(stats?.totalProfit),
       change: "",
     },
   ];

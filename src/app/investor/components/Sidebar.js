@@ -6,6 +6,9 @@ import { ChevronsLeft, ChevronsRight, LogOut } from "lucide-react";
 import { toast } from "sonner";
 import { useLogoutMutation } from "@/features/auth/authApiSlice";
 import { sidebarNavigation } from "./sidebarNavigation";
+import Link from "next/link";
+
+
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -61,7 +64,7 @@ export default function Sidebar() {
 
       <nav className="flex-1 space-y-1 text-sm">
         {sidebarNavigation.map((item) => (
-          <a
+          <Link 
             key={item.name}
             href={item.href}
             className={`flex items-center gap-3 rounded-md px-2 py-2 font-medium text-zinc-600 transition hover:bg-emerald-50 hover:text-emerald-700 ${
@@ -74,7 +77,7 @@ export default function Sidebar() {
               </span>
             )}
             {!collapsed && <span>{item.name}</span>}
-          </a>
+          </Link>
         ))}
       </nav>
 
