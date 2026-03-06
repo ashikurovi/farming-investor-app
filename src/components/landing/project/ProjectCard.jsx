@@ -102,7 +102,7 @@ export function ProjectCard({ project }) {
         </p>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-4 py-4 border-t border-zinc-100 mb-4">
+        {/* <div className="grid grid-cols-2 gap-4 py-4 border-t border-zinc-100 mb-4">
           <div>
             <div className="flex items-center gap-1.5 text-zinc-400 mb-1">
               <Clock className="w-3.5 h-3.5" />
@@ -117,7 +117,7 @@ export function ProjectCard({ project }) {
             </div>
             <div className="text-sm font-semibold text-zinc-800">BDT {Number(project.amount).toLocaleString()}</div>
           </div>
-        </div>
+        </div> */}
 
         {/* Funding Progress */}
         <div className="space-y-2 mb-6">

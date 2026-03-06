@@ -1,5 +1,6 @@
 import Sidebar from "./components/Sidebar";
 import TopNavbar from "./components/TopNavbar";
+import GlobalApiLoader from "./components/GlobalApiLoader";
 
 export const metadata = {
   title: "Admin Dashboard | Framing Investor App",
@@ -8,6 +9,7 @@ export const metadata = {
 export default function AdminLayout({ children }) {
   return (
     <div className="flex min-h-screen bg-zinc-100 text-zinc-900">
+      <GlobalApiLoader />
       <Sidebar />
       <div className="flex flex-1 flex-col">
         <TopNavbar />
