@@ -9,7 +9,6 @@ import HomeRecentProjects from "../components/home/HomeRecentProjects";
 import HomeStatsSnapshot from "../components/home/HomeStatsSnapshot";
 import HomeTestimonials from "../components/home/HomeTestimonials";
 import HomeWhyChooseUs from "../components/home/HomeWhyChooseUs";
-import HomeBloge from "@/components/home/HomeBloge";
 
 export default function Home() {
   const recentProjects = getRecentProjects(4);
@@ -19,9 +18,9 @@ export default function Home() {
       <HomeHero />
       {/* <HomeStatsSnapshot /> */}
       <HomeLiveKpis />
+      <HomeRecentProjects projects={recentProjects} />
       <HomeHowItWorks />
       <HomeWhyChooseUs />
-      <HomeRecentProjects projects={recentProjects} />
       <HomeGalleryPreview />
       <HomeBlogSection />
       {/* Blog */}

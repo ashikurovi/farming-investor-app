@@ -27,10 +27,7 @@ export function LoginForm() {
       const result = await login({ email, password }).unwrap();
 
       const roleFromResult =
-        result?.data?.user?.role ||
-        result?.user?.role ||
-        user?.role ||
-        null;
+        result?.data?.user?.role || result?.user?.role || user?.role || null;
 
       toast.success("Login successful", {
         description:
@@ -60,7 +57,7 @@ export function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div className="space-y-4">
         <div className="space-y-2">
           <label
@@ -70,7 +67,7 @@ export function LoginForm() {
             Email
           </label>
           <div className="relative group">
-            <Mail className="absolute left-3 top-3 h-5 w-5 text-zinc-400 group-focus-within:text-emerald-500 transition-colors pointer-events-none" />
+            <Mail className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-400 group-focus-within:text-emerald-600 transition-colors pointer-events-none" />
             <Input
               id="email"
               placeholder="name@example.com"
@@ -80,7 +77,7 @@ export function LoginForm() {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              className="pl-10 h-12 bg-zinc-50 border-zinc-200 focus:border-emerald-500 focus:ring-emerald-500/20 rounded-xl transition-all duration-200 shadow-sm focus:shadow-emerald-500/10"
+              className="pl-10 h-11 bg-white border-zinc-200 focus:border-emerald-600 focus:ring-emerald-600/20 rounded-lg shadow-sm transition-all"
             />
           </div>
         </div>
@@ -101,7 +98,7 @@ export function LoginForm() {
             </Link>
           </div>
           <div className="relative group">
-            <Lock className="absolute left-3 top-3 h-5 w-5 text-zinc-400 group-focus-within:text-emerald-500 transition-colors pointer-events-none" />
+            <Lock className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-400 group-focus-within:text-emerald-600 transition-colors pointer-events-none" />
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
@@ -109,12 +106,12 @@ export function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
-              className="pl-10 pr-10 h-12 bg-zinc-50 border-zinc-200 focus:border-emerald-500 focus:ring-emerald-500/20 rounded-xl transition-all duration-200 shadow-sm focus:shadow-emerald-500/10"
+              className="pl-10 pr-10 h-11 bg-white border-zinc-200 focus:border-emerald-600 focus:ring-emerald-600/20 rounded-lg shadow-sm transition-all"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3 text-zinc-400 hover:text-emerald-600 focus:outline-none transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-emerald-700 focus:outline-none transition-colors"
             >
               {showPassword ? (
                 <EyeOff className="h-4 w-4" />
@@ -129,8 +126,17 @@ export function LoginForm() {
         </div>
       </div>
 
-      <Button className="w-full h-12 bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/40 transition-all text-base font-semibold rounded-xl group">
-        Sign In
+      {error ? (
+        <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 ring-1 ring-red-200">
+          {error}
+        </div>
+      ) : null}
+
+      <Button
+        disabled={isLoading}
+        className="w-full h-12 bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/40 transition-all text-base font-semibold rounded-xl group disabled:opacity-70 disabled:cursor-not-allowed"
+      >
+        {isLoading ? "Signing in..." : "Sign In"}
         <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
       </Button>
     </form>
