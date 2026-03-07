@@ -75,6 +75,7 @@ export default function AdminInvestorDetailPage() {
       bg: "bg-violet-50",
       border: "border-violet-100",
     },
+    // ggg
     {
       label: "Total Cost",
       value: `৳${Number(user?.totalCost ?? 0).toLocaleString("en-US")}`,
