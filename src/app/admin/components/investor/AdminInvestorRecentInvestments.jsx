@@ -70,7 +70,7 @@ export function AdminInvestorRecentInvestments({ investments = [] }) {
               </div>
               <div className="text-right">
                 <p className="font-semibold text-zinc-900">
-                  ৳{Number(inv.amount).toLocaleString()}
+                  ৳{Number(inv.amount).toLocaleString("en-US")}
                 </p>
                 <p className="text-xs font-medium text-zinc-500">Completed</p>
               </div>

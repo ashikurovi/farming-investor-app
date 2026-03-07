@@ -25,7 +25,7 @@ export default function AdminContactDetailPage() {
     if (!value) return "-";
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return "-";
-    return date.toLocaleString();
+    return date.toLocaleString("en-US", { timeZone: "UTC" });
   };
 
   const fullName =
@@ -168,4 +168,3 @@ export default function AdminContactDetailPage() {
     </div>
   );
 }
-

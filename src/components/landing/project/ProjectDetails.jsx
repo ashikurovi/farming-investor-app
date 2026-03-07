@@ -222,7 +222,7 @@ export function ProjectDetails({ project }) {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center py-3 border-b border-zinc-100">
                       <span className="text-sm text-zinc-500">Min. Investment</span>
-                      <span className="font-bold text-zinc-900">BDT {Number(project.amount).toLocaleString()}</span>
+                      <span className="font-bold text-zinc-900">BDT {Number(project.amount).toLocaleString("en-US")}</span>
                     </div>
                     <div className="flex justify-between items-center py-3 border-b border-zinc-100">
                       <span className="text-sm text-zinc-500">Risk Level</span>

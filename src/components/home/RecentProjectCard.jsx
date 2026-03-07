@@ -107,7 +107,7 @@ export default function RecentProjectCard({ project, index }) {
                 Target
               </p>
               <p className="text-sm font-bold text-zinc-900">
-                BDT {amount.toLocaleString()}
+                BDT {amount.toLocaleString("en-US")}
               </p>
             </div>
             <Link
