@@ -1,4 +1,3 @@
-import { projects } from "../../../data/projects";
 import { ProjectHero } from "../../../components/landing/project/ProjectHero";
 import { ProjectFeed } from "../../../components/landing/project/ProjectFeed";
 
@@ -11,7 +10,7 @@ export default function ProjectsPage() {
   return (
     <main className="min-h-screen bg-zinc-50">
       <ProjectHero />
-      <ProjectFeed initialProjects={projects} />
+      <ProjectFeed />
     </main>
   );
 }

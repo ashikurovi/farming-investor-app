@@ -21,7 +21,7 @@ export function GalleryHero() {
 
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-    }, 6000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [heroImages.length]);
