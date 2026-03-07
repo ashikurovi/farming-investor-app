@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Wallet2, Leaf } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Wallet2 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+// Removed invest UI
 import { Pagination } from "@/components/ui/pagination";
 import {
   Card,
@@ -15,17 +16,18 @@ import {
 } from "@/components/ui/card";
 import { SearchBar } from "@/components/ui/search-bar";
 import { useGetProjectsQuery } from "@/features/admin/projects/projectsApiSlice";
-import { useCreateInvestmentMutation } from "@/features/investor/investments/investmentsApiSlice";
-import { toast } from "sonner";
+// Removed invest action import
 
 const PAGE_SIZE = 6;
+const cleanUrl = (u) =>
+  typeof u === "string" ? u.replace(/[`"'()]/g, "").trim() : "";
 
 export default function InvestorProjectsPage() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
-  const [amounts, setAmounts] = useState({});
+  // Removed invest amount state
 
   const user = useSelector((state) => state.auth?.user);
   const userId = user?.id ?? user?.userId ?? null;
@@ -36,11 +38,27 @@ export default function InvestorProjectsPage() {
     search,
   });
 
-  const [createInvestment, { isLoading: isCreating }] =
-    useCreateInvestmentMutation();
+  // Removed createInvestment mutation
 
-  const projects = data?.items ?? [];
-  const meta = data?.meta ?? { page: 1, pageCount: 1, total: 0 };
+  const raw = Array.isArray(data) ? data : data?.items ?? [];
+  const filtered = search
+    ? raw.filter((p) => {
+        const hay = [
+          p?.name ?? "",
+          p?.location ?? "",
+          p?.description ?? "",
+        ]
+          .join(" ")
+          .toLowerCase();
+        return hay.includes(search.toLowerCase());
+      })
+    : raw;
+  const total = filtered.length;
+  const pageCount = pageSize > 0 ? Math.max(1, Math.ceil(total / pageSize)) : 1;
+  const startIndex = (page - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const projects = filtered.slice(startIndex, endIndex);
+  const meta = { page, pageCount, total };
 
   const isBusy = isLoading || isFetching;
 
@@ -50,72 +68,14 @@ export default function InvestorProjectsPage() {
     setPage(1);
   };
 
-  const handleAmountChange = (projectId, value) => {
-    setAmounts((prev) => ({
-      ...prev,
-      [projectId]: value,
-    }));
-  };
+  // Removed handleAmountChange
 
   const formatNumber = (value) =>
     Number(value || 0).toLocaleString("en-US", {
       maximumFractionDigits: 0,
     });
 
-  const handleInvest = async (project) => {
-    if (!userId) {
-      toast.error("You need to be logged in as an investor to invest.");
-      return;
-    }
-
-    if (project.status !== "open") {
-      toast.error("This project is not open for investment.");
-      return;
-    }
-
-    const rawAmount = amounts[project.id];
-    const amountNumber = Number(rawAmount);
-
-    if (!amountNumber || amountNumber <= 0) {
-      toast.error("Please enter a valid investment amount.");
-      return;
-    }
-
-    if (
-      project.minInvestmentAmount != null &&
-      amountNumber < Number(project.minInvestmentAmount)
-    ) {
-      toast.error(
-        `Minimum investment for this project is ${formatNumber(
-          project.minInvestmentAmount,
-        )} BDT.`,
-      );
-      return;
-    }
-
-    try {
-      await createInvestment({
-        userId: Number(userId),
-        projectId: Number(project.id),
-        amount: amountNumber,
-      }).unwrap();
-
-      toast.success("Investment successful.");
-      setAmounts((prev) => ({
-        ...prev,
-        [project.id]: "",
-      }));
-    } catch (error) {
-      const message =
-        error?.data?.message ||
-        (Array.isArray(error?.data?.message) ? error.data.message[0] : null) ||
-        "Something went wrong. Please try again.";
-
-      toast.error("Investment failed", {
-        description: message,
-      });
-    }
-  };
+  // Removed handleInvest
 
   return (
     <div className="space-y-6">
@@ -159,47 +119,45 @@ export default function InvestorProjectsPage() {
 
         {!isBusy &&
           projects.map((project) => {
-            const projectImageUrl = project.image;
-            const isOpen = project.status === "open";
-            const amountValue = amounts[project.id] ?? "";
+            const projectImageUrl = cleanUrl(project.photoUrl);
+            const isOpen = true;
 
             return (
               <Card
                 key={project.id}
                 className="flex h-full flex-col overflow-hidden border-zinc-200 bg-white shadow-sm"
               >
-                {projectImageUrl && (
-                  <div className="relative w-full overflow-hidden border-b border-zinc-100">
-                    <div className="aspect-[16/9] w-full bg-zinc-100">
-                      <img
+                <Link href={`/investor/projects/${project.id}`} className="relative w-full overflow-hidden border-b border-zinc-100">
+                  <div className="aspect-[16/9] w-full bg-zinc-100">
+                    {projectImageUrl ? (
+                      <Image
                         src={projectImageUrl}
-                        alt={project.title || "Project image"}
-                        className="h-full w-full object-cover"
+                        alt={project.name || "Project image"}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover"
                       />
-                    </div>
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-xs text-zinc-400">
+                        No image
+                      </div>
+                    )}
                   </div>
-                )}
+                </Link>
 
                 <CardHeader className="space-y-2">
-                  <div className="flex items-center justify-between gap-2">
+                  <Link href={`/investor/projects/${project.id}`} className="flex items-center justify-between gap-2">
                     <CardTitle className="text-base font-semibold text-zinc-900">
-                      {project.title || "Untitled project"}
+                      {project.name || "Untitled project"}
                     </CardTitle>
-                    <span
-                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] ${
-                        isOpen
-                          ? "bg-emerald-50 text-emerald-700"
-                          : "bg-zinc-100 text-zinc-600"
-                      }`}
-                    >
-                      {project.status || "Unknown"}
+                    <span className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-700">
+                      Active
                     </span>
-                  </div>
+                  </Link>
 
-                  {project.projectPeriod?.duration && (
-                    <p className="flex items-center gap-1 text-xs font-medium uppercase tracking-[0.18em] text-emerald-600">
-                      <Leaf className="h-3 w-3" />
-                      {project.projectPeriod.duration}
+                  {project.location && (
+                    <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-emerald-600">
+                      {project.location}
                     </p>
                   )}
 
@@ -212,82 +170,50 @@ export default function InvestorProjectsPage() {
                   <div className="grid grid-cols-2 gap-3 text-xs">
                     <div>
                       <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500">
-                        Target amount
+                        Total cost
                       </p>
                       <p className="mt-1 text-sm font-semibold text-zinc-900">
-                        {project.totalPrice != null
-                          ? `${formatNumber(project.totalPrice)} BDT`
+                        {project.totalCost != null
+                          ? `${formatNumber(project.totalCost)} BDT`
                           : "—"}
                       </p>
                     </div>
                     <div>
                       <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500">
-                        Min. investment
+                        Total sell
                       </p>
                       <p className="mt-1 text-sm font-semibold text-zinc-900">
-                        {project.minInvestmentAmount != null
-                          ? `${formatNumber(project.minInvestmentAmount)} BDT`
+                        {project.totalSell != null
+                          ? `${formatNumber(project.totalSell)} BDT`
                           : "—"}
                       </p>
                     </div>
                     <div>
                       <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500">
-                        Profit (%)
+                        Profit (BDT)
                       </p>
                       <p className="mt-1 text-sm font-semibold text-zinc-900">
-                        {project.profitPercentage != null
-                          ? `${project.profitPercentage}%`
-                          : "—"}
+                        {project.totalProfit != null
+                          ? `${formatNumber(project.totalProfit)} BDT`
+                          : `${formatNumber(
+                              Number(project.totalSell || 0) -
+                                Number(project.totalCost || 0),
+                            )} BDT`}
                       </p>
                     </div>
                     <div>
                       <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500">
-                        Period
+                        Investment collected
                       </p>
                       <p className="mt-1 text-sm text-zinc-900">
-                        {project.startDate || "-"}{" "}
-                        <span className="text-zinc-400">→</span>{" "}
-                        {project.endDate || "-"}
+                        {project.totalInvestment != null
+                          ? `${formatNumber(project.totalInvestment)} BDT`
+                          : "—"}
                       </p>
                     </div>
                   </div>
 
-                  <div className="space-y-2 rounded-xl border border-zinc-100 bg-zinc-50/60 p-3">
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500">
-                        <Wallet2 className="h-3 w-3 text-emerald-500" />
-                        Your investment
-                      </p>
-                      {project.minInvestmentAmount != null && (
-                        <p className="text-[11px] text-zinc-500">
-                          Min {formatNumber(project.minInvestmentAmount)} BDT
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <Input
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={amountValue}
-                        onChange={(e) =>
-                          handleAmountChange(project.id, e.target.value)
-                        }
-                        placeholder="Enter amount"
-                        className="h-9 flex-1 rounded-full border-zinc-200 bg-white text-sm"
-                      />
-                      <Button
-                        type="button"
-                        size="sm"
-                        onClick={() => handleInvest(project)}
-                        disabled={!isOpen || isCreating}
-                        className="h-9 rounded-full bg-emerald-600 px-4 text-xs font-semibold uppercase tracking-[0.18em] text-white hover:bg-emerald-500 disabled:opacity-70"
-                      >
-                        {isOpen ? "Invest" : "Closed"}
-                      </Button>
-                    </div>
-                  </div>
+                  {/* Invest UI removed as requested */}
                 </CardContent>
               </Card>
             );
@@ -316,4 +242,3 @@ export default function InvestorProjectsPage() {
     </div>
   );
 }
-

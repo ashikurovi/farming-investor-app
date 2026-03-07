@@ -4,9 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye } from "lucide-react";
 import { useMeQuery } from "@/features/auth/authApiSlice";
-import { useGetMyInvestmentsQuery } from "@/features/investor/investments/investmentsApiSlice";
+import { useGetProjectsStatsQuery } from "@/features/admin/projects/projectsApiSlice";
+import { useGetMyInvestmentsQuery, useGetInvestmentsStatsQuery } from "@/features/investor/investments/investmentsApiSlice";
+import { useGetUsersQuery } from "@/features/admin/users/usersApiSlice";
 import { DataTable } from "@/components/ui/data-table";
 import { Pagination } from "@/components/ui/pagination";
+import { Modal } from "@/components/ui/modal";
+import { Button } from "@/components/ui/button";
 
 const PAGE_SIZE = 5;
 
@@ -32,7 +36,9 @@ export default function InvestorDashboardPage() {
     isError: isInvestmentsError,
   } = useGetMyInvestmentsQuery({ page, limit: pageSize });
 
-  const recentInvestments = allInvestments;
+  const { data: stats, isLoading: statsLoading } = useGetProjectsStatsQuery();
+  const { data: invStats, isLoading: invStatsLoading } = useGetInvestmentsStatsQuery();
+
   const investments = myInvestments?.items ?? [];
   const meta =
     myInvestments?.meta ?? {
@@ -43,68 +49,49 @@ export default function InvestorDashboardPage() {
 
   const isInvestmentsBusy = isInvestmentsLoading || isInvestmentsFetching;
 
-  const totalInvested = recentInvestments.reduce((sum, inv) => {
-    const amount = Number(inv.amount) || 0;
-    return sum + amount;
-  }, 0);
-
-  const activeFarms = Array.from(
-    new Set(
-      recentInvestments.map((inv) => inv.projectId ?? inv.project?.id).filter(Boolean)
-    )
-  ).length;
-
-  const realizedReturns = recentInvestments.reduce((sum, inv) => {
-    const amount = Number(inv.amount) || 0;
-    const profitPercentage = inv.project?.profitPercentage
-      ? Number(inv.project.profitPercentage)
-      : 0;
-    return sum + (amount * profitPercentage) / 100;
-  }, 0);
-
-  const avgYield =
-    recentInvestments.length > 0
-      ? recentInvestments.reduce((sum, inv) => {
-          const profitPercentage = inv.project?.profitPercentage
-            ? Number(inv.project.profitPercentage)
-            : 0;
-          return sum + profitPercentage;
-        }, 0) / recentInvestments.length
-      : 0;
-
-  const statCards = [
-    {
-      label: "Total invested",
-      value: totalInvested.toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD",
-      }),
-      change: "",
-    },
-    {
-      label: "Active projects",
-      value: String(activeFarms),
-      change: "",
-    },
-    {
-      label: "Realized returns",
-      value: realizedReturns.toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD",
-      }),
-      change: "",
-    },
-    {
-      label: "Avg. yield (12m)",
-      value: `${avgYield.toFixed(1)}%`,
-      change: "",
-    },
-  ];
+  const [investorPage, setInvestorPage] = useState(1);
+  const [investorPageSize, setInvestorPageSize] = useState(10);
+  const {
+    data: usersData,
+    isLoading: isUsersLoading,
+    isFetching: isUsersFetching,
+  } = useGetUsersQuery({ page: investorPage, limit: investorPageSize, search: "" });
+  const allUsers = usersData?.items ?? [];
+  const investors = allUsers.filter((u) => u.role === "investor");
+  const investorsMeta =
+    usersData?.meta ?? {
+      page: investorPage,
+      pageCount: 1,
+      total: investors.length,
+    };
+  const isInvestorsBusy = isUsersLoading || isUsersFetching;
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [selectedInvestor, setSelectedInvestor] = useState(null);
+  const openDetail = (user) => {
+    setSelectedInvestor(user);
+    setDetailOpen(true);
+  };
+  const closeDetail = () => {
+    setDetailOpen(false);
+    setSelectedInvestor(null);
+  };
 
   return (
     <div className="space-y-8">
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {statCards.map((card) => (
+      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+           
+          { label: "Collect Investment", value: invStats?.totalInvestmentCollect },
+            { label: "Total Investor", value: invStats?.totalInvestorCount },
+            {label : "New Investor", value : invStats?.newInvestorCount},
+
+           { label: "Total projects", value: stats?.totalProjects },
+          { label: "Project Investment", value: stats?.totalInvestment},
+         
+          { label: "Total cost", value: stats?.totalCost },
+          { label: "Total sell", value: stats?.totalSell },
+          { label: "Total profit", value: stats?.totalProfit },
+        ].map((card) => (
           <div
             key={card.label}
             className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm"
@@ -113,22 +100,23 @@ export default function InvestorDashboardPage() {
               {card.label}
             </p>
             <p className="mt-3 text-2xl font-semibold tracking-tight text-zinc-900">
-              {card.value}
+              {(card.loading ?? statsLoading) || card.value == null
+                ? "—"
+                : Number(card.value).toLocaleString(undefined, {
+                    maximumFractionDigits: 0,
+                  })}
             </p>
-            {card.change && (
-              <p className="mt-1 text-xs font-medium text-emerald-600">
-                {card.change}
-              </p>
-            )}
           </div>
         ))}
       </section>
+
+      
 
       <section className="grid gap-6">
         <div className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm lg:p-5">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-zinc-900">
-              My investments
+              All investors
             </h2>
           </div>
 
@@ -140,75 +128,51 @@ export default function InvestorDashboardPage() {
                   header: "SL",
                   tdClassName:
                     "whitespace-nowrap px-4 py-3 text-sm text-zinc-500",
-                  cell: (investment) =>
-                    investments.findIndex((i) => i.id === investment.id) + 1,
+                  cell: (user) => investors.findIndex((u) => u.id === user.id) + 1,
                 },
                 {
-                  key: "project",
-                  header: "Project",
+                  key: "name",
+                  header: "Name",
                   tdClassName:
                     "whitespace-nowrap px-4 py-3 text-sm font-medium text-zinc-900",
-                  cell: (investment) =>
-                    investment?.project?.title ||
-                    `Project #${investment.projectId}` ||
-                    "-",
+                  cell: (user) => user.name || "-",
                 },
                 {
-                  key: "amount",
-                  header: "Amount (BDT)",
+                  key: "email",
+                  header: "Email",
                   tdClassName:
                     "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                  cell: (investment) =>
-                    investment?.amount != null
-                      ? Number(investment.amount || 0).toLocaleString("en-US", {
-                          maximumFractionDigits: 0,
-                        })
-                      : "-",
+                  cell: (user) => user.email || "-",
                 },
                 {
-                  key: "profit",
-                  header: "Profit %",
+                  key: "phone",
+                  header: "Phone",
                   tdClassName:
                     "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                  cell: (investment) =>
-                    investment.project?.profitPercentage != null
-                      ? `${Number(
-                          investment.project.profitPercentage,
-                        ).toFixed(1)}%`
-                      : "-",
+                  cell: (user) => user.phone || "-",
                 },
                 {
-                  key: "status",
-                  header: "Status",
-                  tdClassName: "whitespace-nowrap px-4 py-3 text-xs",
-                  cell: (investment) => (
-                    <span className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-1 text-[11px] font-medium text-emerald-700">
-                      {investment.project?.status ?? "pending"}
-                    </span>
-                  ),
-                },
-                {
-                  key: "createdAt",
-                  header: "Date",
+                  key: "investorType",
+                  header: "Type",
                   tdClassName:
-                    "whitespace-nowrap px-4 py-3 text-xs text-zinc-600",
-                  cell: (investment) =>
-                    investment?.createdAt
-                      ? new Date(investment.createdAt).toLocaleDateString()
-                      : "-",
+                    "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
+                  cell: (user) =>
+                    user.investorType
+                      ? user.investorType.type
+                      : user.investorTypeId
+                        ? `Type #${user.investorTypeId}`
+                        : "-",
                 },
               ]}
-              data={investments}
-              isLoading={isInvestmentsBusy}
-              emptyMessage="You have no investments yet."
-              loadingLabel="Loading your investments..."
-              getRowKey={(investment) => investment.id}
-              renderActions={(investment) => (
+              data={investors}
+              isLoading={isInvestorsBusy}
+              emptyMessage="No investors found."
+              loadingLabel="Loading investors..."
+              getRowKey={(user) => user.id}
+              renderActions={(user) => (
                 <button
                   type="button"
-                  onClick={() =>
-                    router.push(`/investor/investments/${investment.id}`)
-                  }
+                  onClick={() => openDetail(user)}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
                 >
                   <Eye className="h-3.5 w-3.5" />
@@ -216,28 +180,110 @@ export default function InvestorDashboardPage() {
               )}
             />
             <Pagination
-              page={meta.page}
-              pageCount={meta.pageCount}
-              total={meta.total}
-              pageSize={pageSize}
+              page={investorsMeta.page}
+              pageCount={investorsMeta.pageCount}
+              total={investorsMeta.total}
+              pageSize={investorPageSize}
               onPageChange={(newPage) =>
-                setPage((currentPage) =>
+                setInvestorPage((currentPage) =>
                   newPage < 1
                     ? 1
-                    : meta.pageCount
-                    ? Math.min(meta.pageCount, newPage)
+                    : investorsMeta.pageCount
+                    ? Math.min(investorsMeta.pageCount, newPage)
                     : newPage,
                 )
               }
               onPageSizeChange={(newSize) => {
-                setPageSize(newSize);
-                setPage(1);
+                setInvestorPageSize(newSize);
+                setInvestorPage(1);
               }}
             />
           </div>
         </div>
       </section>
+
+      <Modal
+        isOpen={detailOpen}
+        onClose={closeDetail}
+        title="Investor details"
+        size="md"
+        footer={
+          <div className="flex items-center justify-end">
+            <Button type="button" variant="outline" onClick={closeDetail} className="h-8 rounded-full text-xs">
+              Close
+            </Button>
+          </div>
+        }
+      >
+        {selectedInvestor ? (
+          <>
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-emerald-50 text-lg font-semibold text-emerald-700 ring-1 ring-emerald-100">
+                {selectedInvestor?.photoUrl ? (
+                  <img
+                    src={
+                      typeof selectedInvestor.photoUrl === "string"
+                        ? selectedInvestor.photoUrl.replace(/`/g, "").trim()
+                        : ""
+                    }
+                    alt={selectedInvestor.name || selectedInvestor.email || "Investor"}
+                    className="h-16 w-16 rounded-2xl object-cover"
+                  />
+                ) : (
+                  <span>
+                    {(selectedInvestor.name || selectedInvestor.email || "?")
+                      .substring(0, 2)
+                      .toUpperCase()}
+                  </span>
+                )}
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-zinc-900">
+                  {selectedInvestor.name || "Investor"}
+                </h3>
+                <p className="text-xs text-zinc-500">{selectedInvestor.email || "-"}</p>
+              </div>
+            </div>
+
+            <dl className="space-y-3 text-sm text-zinc-900">
+            <div className="flex items-center justify-between">
+              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                Name
+              </dt>
+              <dd>{selectedInvestor.name || "-"}</dd>
+            </div>
+            <div className="flex items-center justify-between">
+              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                Email
+              </dt>
+              <dd>{selectedInvestor.email || "-"}</dd>
+            </div>
+            <div className="flex items-center justify-between">
+              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                Phone
+              </dt>
+              <dd>{selectedInvestor.phone || "-"}</dd>
+            </div>
+            <div className="flex items-center justify-between">
+              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                Location
+              </dt>
+              <dd>{selectedInvestor.location || "-"}</dd>
+            </div>
+            <div className="flex items-center justify-between">
+              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                Type
+              </dt>
+              <dd>{selectedInvestor.investorType?.type || selectedInvestor.investorTypeId || "-"}</dd>
+            </div>
+            </dl>
+          </>
+        ) : (
+          <div className="flex h-24 items-center justify-center text-sm text-zinc-500">
+            No investor selected.
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }
-
