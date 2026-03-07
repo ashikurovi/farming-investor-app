@@ -281,7 +281,7 @@ export function MainNavbar() {
               ) : (
                 <Link
                   href="/login"
-                  className="flex items-center justify-center gap-2 mx-1 px-4 py-4 bg-zinc-900 text-white hover:bg-zinc-800 rounded-2xl transition shadow-lg shadow-zinc-200 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+                  className="flex items-center justify-center gap-2 mx-1 px-4 py-4 bg-zinc-900 text-white hover:bg-zinc-800 rounded-lg transition shadow-lg shadow-zinc-200 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <span className="text-xs font-bold uppercase tracking-[0.2em]">
                     Login

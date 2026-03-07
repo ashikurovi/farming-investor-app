@@ -1,0 +1,6 @@
+Redesign admin dashboard with premium styling and animations
+
+- Updated stat cards with gradient backgrounds and hover effects
+- Right-aligned numbers on desktop, optimized font size for mobile
+- Enhanced activity and recent investment panels
+- Added stagger animations for card entrance
