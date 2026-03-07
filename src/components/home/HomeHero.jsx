@@ -61,7 +61,7 @@ export default function HomeHero() {
 
   return (
     <section className="w-full ">
-      <div className="relative w-full h-[500px] md:h-[600px] overflow-hidden">
+      <div className="relative w-full h-[500px] md:h-[700px] overflow-hidden">
         <Swiper
           modules={[Autoplay, Pagination]}
           slidesPerView={1}

@@ -28,7 +28,10 @@ export function ProjectHero() {
     })
     .filter(Boolean);
 
-  const displayImages = images.length > 0 ? images : " ";
+  const displayImages =
+    images.length > 0
+      ? images
+      : "";
 
   useEffect(() => {
     if (displayImages.length <= 1) return;
