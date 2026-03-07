@@ -1,14 +1,40 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Camera, MoveRight } from "lucide-react";
+import { useGetGlarryQuery } from "@/features/admin/glarry/glarryApiSlice";
 
 export function GalleryHero() {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { data: galleryData } = useGetGlarryQuery({ limit: 10 });
+  
+  const items = galleryData?.items ?? galleryData ?? [];
+  const images = items.map((item) => item.photo || item.photoUrl).filter(Boolean);
+  
+  const fallbackImage = "https://images.pexels.com/photos/2132227/pexels-photo-2132227.jpeg?auto=compress&cs=tinysrgb&w=1920";
+  const heroImages = images.length > 0 ? images : [fallbackImage];
+
+  useEffect(() => {
+    if (heroImages.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
+
+  const currentImage = heroImages[currentImageIndex];
+
   return (
     <div className="relative h-[70vh] min-h-[600px] w-full overflow-hidden bg-zinc-950">
       {/* Background Image with Parallax-like feel */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 transition-opacity duration-1000 ease-in-out">
         <Image
-          src="https://images.pexels.com/photos/2132227/pexels-photo-2132227.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          key={currentImage}
+          src={currentImage}
           alt="Gallery Hero - Sustainable Farming"
           fill
           priority
