@@ -8,7 +8,10 @@ export default function HomeGalleryPreview() {
   const { data: galleryData, isLoading } = useGetGlarryQuery({ limit: 9 });
   const items = galleryData?.items ?? galleryData ?? [];
 
-  const cleanUrl = (u) => (typeof u === "string" ? u.replace(/[`]/g, "").trim() : u);
+  console.log(galleryData);
+
+  const cleanUrl = (u) =>
+    typeof u === "string" ? u.replace(/[`]/g, "").trim() : u;
 
   const displayImages = items.map((item) => ({
     id: item.id,
@@ -23,14 +26,14 @@ export default function HomeGalleryPreview() {
     return (
       <section className="">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-           <div className="animate-pulse space-y-8">
-             <div className="h-32 bg-zinc-100 rounded-xl w-full max-w-2xl"></div>
-             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-               {[...Array(6)].map((_, i) => (
-                 <div key={i} className="h-80 bg-zinc-100 rounded-3xl"></div>
-               ))}
-             </div>
-           </div>
+          <div className="animate-pulse space-y-8">
+            <div className="h-32 bg-zinc-100 rounded-xl w-full max-w-2xl"></div>
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="h-80 bg-zinc-100 rounded-3xl"></div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
     );
@@ -51,7 +54,9 @@ export default function HomeGalleryPreview() {
 
             <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
               Life on the <span className="font-serif italic">farm</span> in our{" "}
-              <span className="font-serif italic text-emerald-700">gallery</span>
+              <span className="font-serif italic text-emerald-700">
+                gallery
+              </span>
               .
             </h2>
 
