@@ -15,6 +15,15 @@ import {
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
+function WeatherIcon({ code, className }) {
+  if (code === undefined) return <Sun className={className} />;
+  if (code === 0) return <Sun className={className} />;
+  if (code >= 1 && code <= 3) return <Cloud className={className} />;
+  if (code >= 51) return <CloudRain className={className} />;
+  if (code >= 71) return <Snowflake className={className} />;
+  return <Sun className={className} />;
+}
+
 export default function HomeLiveKpis() {
   const [weather, setWeather] = useState({
     temp: 24,
@@ -23,6 +32,17 @@ export default function HomeLiveKpis() {
     wind: 12,
     isLoaded: false,
   });
+
+  function getWeatherCondition(code) {
+    if (code === 0) return "Clear";
+    if (code === 1 || code === 2 || code === 3) return "Partly Cloudy";
+    if (code >= 45 && code <= 48) return "Foggy";
+    if (code >= 51 && code <= 67) return "Rainy";
+    if (code >= 71 && code <= 77) return "Snowy";
+    if (code >= 80 && code <= 82) return "Rain Showers";
+    if (code >= 95) return "Thunderstorm";
+    return "Sunny";
+  }
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -57,25 +77,9 @@ export default function HomeLiveKpis() {
     return () => clearInterval(interval);
   }, []);
 
-  const getWeatherCondition = (code) => {
-    if (code === 0) return "Clear";
-    if (code === 1 || code === 2 || code === 3) return "Partly Cloudy";
-    if (code >= 45 && code <= 48) return "Foggy";
-    if (code >= 51 && code <= 67) return "Rainy";
-    if (code >= 71 && code <= 77) return "Snowy";
-    if (code >= 80 && code <= 82) return "Rain Showers";
-    if (code >= 95) return "Thunderstorm";
-    return "Sunny";
-  };
+  
 
-  const WeatherIcon = ({ code, className }) => {
-    if (code === undefined) return <Sun className={className} />;
-    if (code === 0) return <Sun className={className} />; // Clear
-    if (code >= 1 && code <= 3) return <Cloud className={className} />; // Cloudy
-    if (code >= 51) return <CloudRain className={className} />; // Rain
-    if (code >= 71) return <Snowflake className={className} />; // Snow
-    return <Sun className={className} />;
-  };
+  
 
   const kpis = [
     {

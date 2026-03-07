@@ -1,19 +1,22 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { MainNavbar } from "../components/MainNavbar";
 import { MainFooter } from "../components/MainFooter";
 import { useMeQuery } from "@/features/auth/authApiSlice";
 import { toast } from "sonner";
+import { setCredentials } from "@/features/auth/authSlice";
 
 export function AppShell({ children }) {
   const pathname = usePathname();
   const router = useRouter();
-
+  const dispatch = useDispatch();
+// ...App
   const token = useSelector((state) => state.auth?.token);
   const user = useSelector((state) => state.auth?.user);
+  const [authHydrated, setAuthHydrated] = useState(false);
 
   const isAuthRoute =
     pathname.startsWith("/login") ||
@@ -25,11 +28,19 @@ export function AppShell({ children }) {
   const isProtectedRoute = isAdminRoute || isInvestorRoute;
 
   const { isFetching } = useMeQuery(undefined, {
-    skip: !isProtectedRoute || !token,
+    skip: !isProtectedRoute || !authHydrated || !token,
   });
 
   useEffect(() => {
-    if (!isProtectedRoute) return;
+    const t = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    if (t && !token) {
+      dispatch(setCredentials({ token: t, user: user ?? null }));
+    }
+    setAuthHydrated(true);
+  }, [dispatch, token, user]);
+
+  useEffect(() => {
+    if (!isProtectedRoute || !authHydrated) return;
 
     if (!token) {
       toast.error("Please log in to continue.");
@@ -64,6 +75,7 @@ export function AppShell({ children }) {
     user,
     isFetching,
     router,
+    authHydrated,
   ]);
 
   const isBareLayoutRoute = isProtectedRoute || isAuthRoute;
@@ -80,4 +92,3 @@ export function AppShell({ children }) {
     </div>
   );
 }
-

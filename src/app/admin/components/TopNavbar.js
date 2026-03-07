@@ -28,7 +28,7 @@ export default function TopNavbar() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState([]);
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState(null);
 
   const { data: contactsData } = useGetContactsQuery();
   const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
@@ -55,19 +55,22 @@ export default function TopNavbar() {
   };
 
   useEffect(() => {
+    setCurrentTime(new Date());
     const timer = setInterval(() => setCurrentTime(new Date()), 60000);
     return () => clearInterval(timer);
   }, []);
 
-  const formattedDate = currentTime.toLocaleDateString("en-US", {
+  const formattedDate = currentTime?.toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
     day: "numeric",
+    timeZone: "UTC",
   });
 
-  const formattedTime = currentTime.toLocaleTimeString("en-US", {
+  const formattedTime = currentTime?.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "UTC",
   });
 
   const notifications = [
@@ -152,10 +155,10 @@ export default function TopNavbar() {
           {/* Date/Time */}
           <div className="hidden xl:flex flex-col items-end mr-2">
             <span className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider">
-              {formattedDate}
+              {formattedDate || "—"}
             </span>
             <span className="text-xs font-semibold text-zinc-900 tabular-nums">
-              {formattedTime}
+              {formattedTime || "—"}
             </span>
           </div>
 

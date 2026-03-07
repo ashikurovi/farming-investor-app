@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   ChevronsLeft,
@@ -19,6 +19,7 @@ import Link from "next/link";
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState([]);
+  const [yearText, setYearText] = useState("");
 
   const router = useRouter();
   const pathname = usePathname();
@@ -45,6 +46,11 @@ export default function Sidebar() {
       prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title],
     );
   };
+
+  useEffect(() => {
+    const y = new Date().getUTCFullYear();
+    setYearText(String(y));
+  }, []);
 
   const renderNavItem = (item, isNested = false) => {
     const isContactItem = item.href === "/admin/contact";
@@ -298,7 +304,7 @@ export default function Sidebar() {
 
         {!collapsed && (
           <p className="text-center text-[10px] text-black tracking-wide">
-            © {new Date().getFullYear()} Farming Intel
+            © {yearText || "—"} Farming Intel
           </p>
         )}
       </div>

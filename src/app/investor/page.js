@@ -102,7 +102,7 @@ export default function InvestorDashboardPage() {
             <p className="mt-3 text-2xl font-semibold tracking-tight text-zinc-900">
               {(card.loading ?? statsLoading) || card.value == null
                 ? "—"
-                : Number(card.value).toLocaleString(undefined, {
+                : Number(card.value).toLocaleString("en-US", {
                     maximumFractionDigits: 0,
                   })}
             </p>

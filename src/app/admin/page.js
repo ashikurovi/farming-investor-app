@@ -13,14 +13,14 @@ import {
 
 function formatNumber(n) {
   const num = Number(n ?? 0);
-  return num.toLocaleString(undefined, {
+  return num.toLocaleString("en-US", {
     maximumFractionDigits: 0,
   });
 }
 
 function formatCurrencyBDT(n) {
   const num = Number(n ?? 0);
-  return `৳${num.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
+  return `৳${num.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
 }
 
 export default function AdminDashboardPage() {

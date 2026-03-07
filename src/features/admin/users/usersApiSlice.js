@@ -35,6 +35,20 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "User", id }],
     }),
 
+    getUserInvestments: builder.query({
+      query: ({ id, page = 1, limit = 10 } = {}) => {
+        const params = new URLSearchParams();
+        params.set("page", String(page));
+        params.set("limit", String(limit));
+        return {
+          url: `/users/${id}/investments?${params.toString()}`,
+          method: "GET",
+        };
+      },
+      transformResponse: (response) => response?.data ?? response,
+      providesTags: (result, error, { id }) => [{ type: "User", id }],
+    }),
+
     createUser: builder.mutation({
       query: (formData) => ({
         url: "/users",
@@ -98,10 +112,10 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetUsersQuery,
   useGetUserQuery,
+  useGetUserInvestmentsQuery,
   useCreateUserMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,
   useBanUserMutation,
   useUnbanUserMutation,
 } = usersApiSlice;
-

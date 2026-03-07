@@ -381,10 +381,7 @@ export default function AdminInvestorPage() {
                 cell: (user) => (
                   <span className="font-medium text-gray-900">
                     ৳
-                    {Number(user.totalInvestment ?? 0).toLocaleString(
-                      undefined,
-                      { minimumFractionDigits: 2 },
-                    )}
+                    {Number(user.totalInvestment ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
                   </span>
                 ),
               },
@@ -395,7 +392,7 @@ export default function AdminInvestorPage() {
                 tdClassName:
                   "whitespace-nowrap px-6 py-4 text-sm text-emerald-600 font-mono text-right font-medium",
                 cell: (user) =>
-                  `৳${Number(user.totalProfit ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`,
+                  `৳${Number(user.totalProfit ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
               },
               {
                 key: "balance",
@@ -404,7 +401,7 @@ export default function AdminInvestorPage() {
                 tdClassName:
                   "whitespace-nowrap px-6 py-4 text-sm text-blue-600 font-mono text-right font-medium",
                 cell: (user) =>
-                  `৳${Number(user.balance ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`,
+                  `৳${Number(user.balance ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
               },
               {
                 key: "totalCost",
@@ -413,7 +410,7 @@ export default function AdminInvestorPage() {
                 tdClassName:
                   "whitespace-nowrap px-6 py-4 text-sm text-gray-500 font-mono text-right",
                 cell: (user) =>
-                  `৳${Number(user.totalCost ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`,
+                  `৳${Number(user.totalCost ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
               },
               {
                 key: "status",
