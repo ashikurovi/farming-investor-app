@@ -1,5 +1,8 @@
+"use client";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Sprout, Facebook, Twitter, Linkedin, Instagram, ArrowRight, Mail, Phone, MapPin } from "lucide-react";
+const YearText = dynamic(() => import("./YearText"), { ssr: false });
 
 export function MainFooter() {
   return (
@@ -120,7 +123,7 @@ export function MainFooter() {
         {/* Newsletter / Bottom Strip */}
         <div className="border-t border-zinc-800 pt-8 mt-8 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-zinc-500">
           <div className="flex flex-col md:flex-row items-center gap-4">
-            <p>© {new Date().getFullYear()} Farming Investor. All rights reserved.</p>
+            <p>© <YearText /> Farming Investor. All rights reserved.</p>
             <div className="hidden md:block h-3 w-px bg-zinc-800" />
             <div className="flex gap-4">
                <Link href="/privacy-policy" className="hover:text-emerald-400 transition-colors">Privacy Policy</Link>
