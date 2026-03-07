@@ -435,7 +435,7 @@ export default function AdminInvestorDetailPage() {
         </div>
       </div>
 
-      {/* Recent Investments */}
+      {/* Recent Investme*/}
       <div className="rounded-2xl border border-zinc-200 bg-white shadow-sm transition-all hover:shadow-md">
         <div className="flex items-center justify-between border-b border-zinc-100 bg-zinc-50/50 px-6 py-4">
           <h3 className="flex items-center gap-2 text-base font-semibold text-zinc-900">
