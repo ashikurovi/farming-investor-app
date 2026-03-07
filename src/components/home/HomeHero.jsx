@@ -5,8 +5,10 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { ArrowDown } from "lucide-react";
+import { useGetBannersQuery } from "@/features/admin/banner/bannerApiSlice";
+import { Loader } from "@/components/ui/loader";
 
-const slides = [
+const defaultSlides = [
   {
     image:
       "https://images.pexels.com/photos/2132257/pexels-photo-2132257.jpeg?auto=compress&cs=tinysrgb&w=1920", // Wheat field/Farming
@@ -28,12 +30,34 @@ const slides = [
 ];
 
 export default function HomeHero() {
+  const { data: bannerData, isLoading } = useGetBannersQuery();
+  const banners = bannerData?.items ?? bannerData ?? [];
+
+  const slides =
+    banners.length > 0
+      ? banners.map((b) => ({
+          image: b.photo || b.photoUrl,
+          title: b.title,
+          subtitle: b.title,
+          description: b.shortDescription,
+          highlight: "AGRICULTURE",
+        }))
+      : defaultSlides;
+
   const scrollToContent = () => {
     const element = document.getElementById("live-kpis");
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  if (isLoading) {
+    return (
+      <section className="w-full bg-white h-[500px] md:h-[800px] flex items-center justify-center">
+        <Loader size="lg" />
+      </section>
+    );
+  }
 
   return (
     <section className="w-full bg-white">
