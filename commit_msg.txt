@@ -1,6 +1,6 @@
-fix: Update ProjectCard to use img tag with correct photoUrl
+feat: Integrate admin API into HomeGalleryPreview
 
-- Replaced placeholder with actual img tag implementation
-- Used project.images[0] directly as source (clean URL passed from parent)
-- Added fallback image handling
-- Added category and status badges back to the image container
+- Fetch gallery images from admin API using useGetGlarryQuery
+- Limit display to 9 images (increased from 6)
+- Map API data to component structure
+- Add loading skeleton
