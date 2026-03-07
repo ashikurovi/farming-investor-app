@@ -17,19 +17,16 @@ export default function HomeRecentProjects() {
     limit: 4,
     page: 1,
   });
+  console.log(projectsData);
+  
 
   const projects = Array.isArray(projectsData)
     ? projectsData
     : projectsData?.items || projectsData?.data || [];
 
   const getStableFundingPercent = (project, index) => {
-    // Generate a pseudo-random stable percentage based on ID
-    const seed = String(project.id || index);
-    let hash = 0;
-    for (let i = 0; i < seed.length; i += 1) {
-      hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
-    }
-    return (hash % 40) + 60; // Returns between 60% and 100%
+
+    return 0;
   };
 
   if (isLoading) {
@@ -79,17 +76,21 @@ export default function HomeRecentProjects() {
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {projects.map((project, index) => {
-            const fundingPercent = getStableFundingPercent(project, index);
+            const cleanUrl = (u) => (typeof u === "string" ? u.replace(/[`]/g, "").trim() : u);
+            const totalCost = Number(project.totalCost || 0);
+            const totalInvestment = Number(project.totalInvestment || 0);
+            
+            // Calculate funding percent based on API data
+            const fundingPercent = totalCost > 0 
+              ? Math.min(100, Math.round((totalInvestment / totalCost) * 100)) 
+              : 0;
+              
             const title = project.name || "Untitled Project";
             const location = project.location || "Bangladesh";
-            const amount = Number(
-              project.totalInvestment || project.totalCost || 0,
-            );
+            const amount = totalCost; // Target amount is usually total cost
+            
             const image =
-              project.photoUrl || fallbackImages[index % fallbackImages.length];
-            const roi =
-              project.roi || Math.floor(Math.random() * (15 - 8 + 1) + 8); // Fallback ROI
-            const duration = project.duration || 12; // Fallback duration
+              cleanUrl(project.photoUrl) || fallbackImages[index % fallbackImages.length];
 
             return (
               <div
@@ -136,9 +137,6 @@ export default function HomeRecentProjects() {
                       <span className="text-[10px] font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
                         INV-{project.id}
                       </span>
-                      <span className="flex items-center gap-1 text-[10px] font-medium text-zinc-400">
-                        <ShieldCheck className="w-3 h-3" /> Vetted
-                      </span>
                     </div>
                     <h3 className="text-lg font-bold text-zinc-900 leading-snug group-hover:text-emerald-800 transition-colors line-clamp-2 min-h-[3.5rem]">
                       {title}
@@ -164,32 +162,7 @@ export default function HomeRecentProjects() {
                     </div>
                   </div>
 
-                  {/* Metrics Grid */}
-                  <div className="grid grid-cols-2 gap-4 pt-4 border-t border-dashed border-zinc-200">
-                    <div>
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">
-                        Est. ROI
-                      </p>
-                      <div className="flex items-center gap-1.5 text-emerald-600">
-                        <TrendingUp className="w-4 h-4" />
-                        <span className="text-lg font-bold">{roi}%</span>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">
-                        Duration
-                      </p>
-                      <div className="flex items-center justify-end gap-1.5 text-zinc-900">
-                        <Calendar className="w-4 h-4 text-zinc-400" />
-                        <span className="text-lg font-bold">{duration}</span>
-                        <span className="text-xs font-medium text-zinc-400">
-                          mo
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 pt-4 border-t border-dashed border-zinc-200">
+                  <div className="mt-auto pt-4 border-t border-dashed border-zinc-200">
                     <div className="flex justify-between items-end">
                       <div>
                         <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-0.5">

@@ -1,4 +1,6 @@
-fix: Ensure robust project data extraction in HomeRecentProjects
+fix: Remove non-API data fields from HomeRecentProjects
 
-- Handle both array and object response structures
-- Remove temporary console logging
+- Remove ROI and Duration sections (not in API)
+- Remove Vetted badge (not in API)
+- Calculate funding percentage from totalInvestment/totalCost
+- Set target amount to totalCost
