@@ -1,5 +1,5 @@
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Layers, Wallet2, Users } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Layers, Wallet2, Users, TrendingUp, TrendingDown, DollarSign, Minus } from "lucide-react";
 
 export function AdminProjectsStats({ stats, isLoading }) {
   const formatNumber = (value) =>
@@ -7,90 +7,93 @@ export function AdminProjectsStats({ stats, isLoading }) {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-  const profitValue = Number(stats?.totalProfit ?? 0);
-  const profitClass =
-    profitValue < 0
-      ? "text-red-600"
-      : profitValue > 0
-        ? "text-emerald-700"
-        : "text-zinc-900";
+
+  const totalCost = Number(stats?.totalCost || 0);
+  const totalInvestment = Number(stats?.totalInvestment || 0);
+  const totalProfit = Number(stats?.totalProfit || 0);
+
+  const investmentProgress = totalCost > 0 ? (totalInvestment / totalCost) * 100 : 0;
+  const profitMargin = totalInvestment > 0 ? (totalProfit / totalInvestment) * 100 : 0;
+
+  const StatCard = ({ title, value, icon: Icon, trend = "neutral", trendValue = "0%", trendLabel = "from last month", colorClass, bgClass }) => (
+    <Card className="relative overflow-hidden border-zinc-100 bg-white shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] transition-all hover:shadow-[0_4px_20px_-3px_rgba(0,0,0,0.08)]">
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-zinc-500">{title}</p>
+            <h3 className="text-2xl font-bold tracking-tight text-zinc-900">
+              {isLoading ? (
+                <div className="h-8 w-24 animate-pulse rounded bg-zinc-100" />
+              ) : (
+                value
+              )}
+            </h3>
+          </div>
+          <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${bgClass}`}>
+            <Icon className={`h-6 w-6 ${colorClass}`} />
+          </div>
+        </div>
+        <div className="mt-4 flex items-center gap-2">
+          {trend === "up" && <TrendingUp className="h-4 w-4 text-emerald-500" />}
+          {trend === "down" && <TrendingDown className="h-4 w-4 text-rose-500" />}
+          {trend === "neutral" && <Minus className="h-4 w-4 text-zinc-400" />}
+          <span 
+            className={`text-xs font-medium ${
+              trend === "up" ? "text-emerald-600" : 
+              trend === "down" ? "text-rose-600" : 
+              "text-zinc-500"
+            }`}
+          >
+            {trendValue}
+          </span>
+          {trendLabel && <span className="text-xs text-zinc-400">{trendLabel}</span>}
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   return (
-    <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-      <Card>
-        <CardHeader className="space-y-1">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-              Projects
-            </CardTitle>
-            <Layers className="h-4 w-4 text-emerald-500" />
-          </div>
-          <p className="text-2xl font-semibold text-zinc-900">
-            {isLoading ? "—" : stats.totalProjects}
-          </p>
-          <CardDescription>Project count</CardDescription>
-        </CardHeader>
-      </Card>
-
-      <Card>
-        <CardHeader className="space-y-1">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-              Total investment
-            </CardTitle>
-            <Wallet2 className="h-4 w-4 text-emerald-500" />
-          </div>
-          <p className="text-2xl font-semibold text-zinc-900">
-            {isLoading ? "—" : formatNumber(stats.totalInvestment)}
-          </p>
-          <CardDescription>Across all projects</CardDescription>
-        </CardHeader>
-      </Card>
-
-      <Card>
-        <CardHeader className="space-y-1">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-              Total sell
-            </CardTitle>
-            <Wallet2 className="h-4 w-4 text-emerald-500" />
-          </div>
-          <p className="text-2xl font-semibold text-zinc-900">
-            {isLoading ? "—" : formatNumber(stats.totalSell)}
-          </p>
-          <CardDescription>Across all projects</CardDescription>
-        </CardHeader>
-      </Card>
-
-      <Card>
-        <CardHeader className="space-y-1">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-              Total cost
-            </CardTitle>
-            <Wallet2 className="h-4 w-4 rotate-180 text-emerald-500" />
-          </div>
-          <p className="text-2xl font-semibold text-zinc-900">
-            {isLoading ? "—" : formatNumber(stats.totalCost)}
-          </p>
-          <CardDescription>Across all projects</CardDescription>
-        </CardHeader>
-      </Card>
-
-      <Card>
-        <CardHeader className="space-y-1">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-              Total profit
-            </CardTitle>
-            <Users className="h-4 w-4 text-emerald-500" />
-          </div>
-          <p className={`text-2xl font-semibold ${isLoading ? "text-zinc-900" : profitClass}`}>
-            {isLoading ? "—" : formatNumber(stats.totalProfit)}
-          </p>
-          <CardDescription>Summed across projects</CardDescription>
-        </CardHeader>
-      </Card>
+    <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+      <StatCard
+        title="Total Projects"
+        value={stats?.totalProjects ?? 0}
+        icon={Layers}
+        trend="neutral"
+        trendValue="0%"
+        trendLabel="Growth"
+        colorClass="text-blue-600"
+        bgClass="bg-blue-50"
+      />
+      <StatCard
+        title="Total Investment"
+        value={`৳${formatNumber(stats?.totalInvestment)}`}
+        icon={Wallet2}
+        trend="up"
+        trendValue={`+${investmentProgress.toFixed(1)}%`}
+        trendLabel="Funded"
+        colorClass="text-emerald-600"
+        bgClass="bg-emerald-50"
+      />
+      <StatCard
+        title="Total Sell"
+        value={`৳${formatNumber(stats?.totalSell)}`}
+        icon={DollarSign}
+        trend="neutral"
+        trendValue="0%"
+        trendLabel="Growth"
+        colorClass="text-amber-600"
+        bgClass="bg-amber-50"
+      />
+      <StatCard
+        title="Net Profit"
+        value={`৳${formatNumber(stats?.totalProfit)}`}
+        icon={Users}
+        trend={totalProfit >= 0 ? "up" : "down"}
+        trendValue={`${totalProfit >= 0 ? "+" : ""}${profitMargin.toFixed(1)}%`}
+        trendLabel="ROI"
+        colorClass="text-violet-600"
+        bgClass="bg-violet-50"
+      />
     </section>
   );
 }

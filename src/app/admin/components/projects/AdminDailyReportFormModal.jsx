@@ -17,7 +17,6 @@ export function AdminDailyReportFormModal({
       isOpen={isOpen}
       onClose={onClose}
       title="Add daily report"
-      description="Post a new daily report update for this project."
       size="md"
       footer={
         <div className="flex items-center justify-end gap-3">
@@ -25,14 +24,14 @@ export function AdminDailyReportFormModal({
             type="button"
             variant="outline"
             onClick={onClose}
-            className="h-9 rounded-full border-zinc-200 text-xs"
+            className="h-8 rounded-full border-zinc-200 text-xs"
           >
             Cancel
           </Button>
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="h-9 rounded-full bg-emerald-600 px-5 text-xs font-semibold uppercase tracking-[0.18em] text-white hover:bg-emerald-500 disabled:opacity-70"
+            className="h-8 rounded-full bg-emerald-600 px-5 text-xs font-semibold uppercase tracking-[0.18em] text-white hover:bg-emerald-500 disabled:opacity-70"
             form="admin-daily-report-form"
           >
             {isSubmitting ? "Posting..." : "Post report"}
@@ -40,6 +39,11 @@ export function AdminDailyReportFormModal({
         </div>
       }
     >
+      <div className="mb-6">
+        <p className="text-sm text-zinc-500">
+          Post a new daily report update for this project.
+        </p>
+      </div>
       <form id="admin-daily-report-form" onSubmit={onSubmit} className="space-y-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">

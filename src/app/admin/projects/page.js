@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { Plus, LayoutGrid } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
 import { AdminSearchBar } from "@/app/admin/components/AdminSearchBar";
-import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { AdminProjectConfirmDialog } from "@/app/admin/components/projects/AdminProjectConfirmDialog";
 import { AdminDailyReportFormModal } from "@/app/admin/components/projects/AdminDailyReportFormModal";
 import { AdminProjectsStats } from "@/app/admin/components/projects/AdminProjectsStats";
 import { AdminProjectsGrid } from "@/app/admin/components/projects/AdminProjectsGrid";
@@ -69,12 +69,15 @@ export default function AdminProjectsPage() {
   });
 
   const [deleteProject, { isLoading: isDeleting }] = useDeleteProjectMutation();
-  const [createDailyReport, { isLoading: isPostingDaily }] = useCreateDailyReportMutation();
+  const [createDailyReport, { isLoading: isPostingDaily }] =
+    useCreateDailyReportMutation();
 
-  const projects = Array.isArray(data) ? data : data?.items ?? [];
-  const meta =
-    data?.meta ??
-    { page: 1, pageCount: Math.max(1, Math.ceil((projects.length || 1) / pageSize)), total: projects.length || 0 };
+  const projects = Array.isArray(data) ? data : (data?.items ?? []);
+  const meta = data?.meta ?? {
+    page: 1,
+    pageCount: Math.max(1, Math.ceil((projects.length || 1) / pageSize)),
+    total: projects.length || 0,
+  };
   const serverPaginated = Boolean(data?.meta);
   const visibleProjects = serverPaginated
     ? projects
@@ -202,65 +205,97 @@ export default function AdminProjectsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight text-zinc-900">
-            Projects
-          </h1>
-          <p className="text-sm text-zinc-500">
-            Manage investment projects, timelines and returns.
-          </p>
+    <div className="space-y-8 -mt-6 p-4 md:p-5 max-w-[1600px] mx-auto">
+      {/* Header Section */}
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50/50 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-700">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+            </span>
+            Live Portfolio
+          </div>
+          
+          <div className="max-w-2xl">
+            <h1 className="flex items-center gap-3 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600 shadow-sm">
+                <LayoutGrid className="h-5 w-5" />
+              </div>
+              Projects Overview
+            </h1>
+            <p className="mt-2 text-sm text-zinc-500 leading-relaxed max-w-lg">
+              Manage your agricultural investment portfolio. Track growth, analyze returns, and generate reports.
+            </p>
+          </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <AdminSearchBar
-            value={searchInput}
-            onChange={handleSearchChange}
-            placeholder="Search projects..."
-          />
+        <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+          <div className="w-full sm:w-72 relative group">
+            <AdminSearchBar
+              value={searchInput}
+              onChange={handleSearchChange}
+              placeholder="Search projects..."
+            />
+          </div>
 
           <Button
             type="button"
-            size="sm"
             onClick={() => router.push("/admin/projects/new")}
-            className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-md hover:bg-emerald-500"
+            className="inline-flex h-10 w-full sm:w-auto items-center justify-center gap-2 rounded-lg bg-zinc-900 px-5 text-sm font-medium text-white shadow-sm transition-all hover:bg-zinc-800 hover:shadow-md active:scale-[0.98]"
           >
-            <Plus className="h-3.5 w-3.5" />
-            <span>Add project</span>
+            <Plus className="h-4 w-4" />
+            <span>New Project</span>
           </Button>
         </div>
-      </header>
+      </div>
 
+      <div className="h-px w-full bg-zinc-100" />
+
+      {/* Stats Section */}
       <AdminProjectsStats stats={projectStats} isLoading={isStatsLoading} />
 
-      <AdminProjectsGrid
-        projects={visibleProjects}
-        isBusy={isBusy}
-        onView={(p) => router.push(`/admin/projects/${p.id}`)}
-        onEdit={(p) => router.push(`/admin/projects/${p.id}/edit`)}
-        onDelete={confirmDelete}
-        onAddDailyReport={openDailyReportModal}
-      />
-      <Pagination
-        page={meta.page}
-        pageCount={meta.pageCount}
-        total={meta.total}
-        pageSize={pageSize}
-        onPageChange={(newPage) =>
-          setPage((p) =>
-            newPage < 1
-              ? 1
-              : meta.pageCount
-              ? Math.min(meta.pageCount, newPage)
-              : newPage
-          )
-        }
-        onPageSizeChange={(newSize) => {
-          setPageSize(newSize);
-          setPage(1);
-        }}
-      />
+      {/* Grid Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-zinc-900">Active Projects</h2>
+          <div className="text-xs font-medium text-zinc-500">
+            Showing {visibleProjects.length} of {meta.total} projects
+          </div>
+        </div>
+        
+        <AdminProjectsGrid
+          projects={visibleProjects}
+          isBusy={isBusy}
+          onView={(p) => router.push(`/admin/projects/${p.id}`)}
+          onEdit={(p) => router.push(`/admin/projects/${p.id}/edit`)}
+          onDelete={confirmDelete}
+          onAddDailyReport={openDailyReportModal}
+        />
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center pt-8">
+        <Pagination
+          page={meta.page}
+          pageCount={meta.pageCount}
+          total={meta.total}
+          pageSize={pageSize}
+          onPageChange={(newPage) =>
+            setPage((p) =>
+              newPage < 1
+                ? 1
+                : meta.pageCount
+                  ? Math.min(meta.pageCount, newPage)
+                  : newPage,
+            )
+          }
+          onPageSizeChange={(newSize) => {
+            setPageSize(newSize);
+            setPage(1);
+          }}
+        />
+      </div>
 
       <AdminDailyReportFormModal
         isOpen={dailyModalOpen}
@@ -271,14 +306,15 @@ export default function AdminProjectsPage() {
         onSubmit={submitDailyReport}
       />
 
-      <ConfirmDialog
+      <AdminProjectConfirmDialog
         isOpen={confirmState.isOpen}
         title={confirmState.title}
         description={confirmState.description}
         confirmLabel={confirmState.confirmLabel}
         cancelLabel={confirmState.cancelLabel}
         onConfirm={confirmState.onConfirm}
-        onCancel={closeConfirm}
+        onClose={closeConfirm}
+        isConfirming={isDeleting}
       />
     </div>
   );
