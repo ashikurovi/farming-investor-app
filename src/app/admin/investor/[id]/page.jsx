@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
   ShieldBan,
@@ -19,9 +19,13 @@ import { AdminInvestorAccountInfo } from "@/app/admin/components/investor/AdminI
 import { AdminInvestorRecentInvestments } from "@/app/admin/components/investor/AdminInvestorRecentInvestments";
 
 export default function AdminInvestorDetailPage() {
+  const [mounted, setMounted] = useState(false);
   const params = useParams();
   const router = useRouter();
   const id = params?.id;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const {
     data: user,
@@ -81,14 +85,12 @@ export default function AdminInvestorDetailPage() {
     },
   ];
 
-  if (isBusy) {
+  if (!mounted || isBusy) {
     return (
       <div className="flex h-[calc(100vh-200px)] items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="h-10 w-10 animate-spin rounded-full border-4 border-emerald-200 border-t-emerald-600"></div>
-          <p className="animate-pulse text-sm font-medium text-emerald-600">
-            Loading investor profile...
-          </p>
+          <p className="animate-pulse text-sm font-medium text-emerald-600">Loading…</p>
         </div>
       </div>
     );
