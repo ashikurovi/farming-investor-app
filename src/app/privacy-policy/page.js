@@ -16,11 +16,17 @@ import {
 import { cn } from "@/lib/utils";
 
 export default function PrivacyPolicy() {
-  const lastUpdated = new Date().toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  const [lastUpdated, setLastUpdated] = useState("");
+  useEffect(() => {
+    const d = new Date();
+    const s = d.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      timeZone: "UTC",
+    });
+    setLastUpdated(s);
+  }, []);
   const [activeSection, setActiveSection] = useState("introduction");
 
   // Handle scroll spy

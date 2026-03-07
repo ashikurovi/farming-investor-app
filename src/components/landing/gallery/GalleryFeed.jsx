@@ -22,7 +22,9 @@ export function GalleryFeed() {
     category: item.project?.category || "All",
     image: item.photo || item.photoUrl,
     description: item.project?.shortDescription || "",
-    date: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : "",
+    date: item.createdAt
+      ? new Date(item.createdAt).toLocaleDateString("en-US", { timeZone: "UTC" })
+      : "",
     location: item.project?.location || "Farm Location",
   }));
 

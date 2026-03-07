@@ -2,15 +2,17 @@
 
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { MainNavbar } from "../components/MainNavbar";
 import { MainFooter } from "../components/MainFooter";
 import { useMeQuery } from "@/features/auth/authApiSlice";
 import { toast } from "sonner";
+import { setCredentials } from "@/features/auth/authSlice";
 
 export function AppShell({ children }) {
   const pathname = usePathname();
   const router = useRouter();
+  const dispatch = useDispatch();
 // ...App
   const token = useSelector((state) => state.auth?.token);
   const user = useSelector((state) => state.auth?.user);
@@ -27,6 +29,13 @@ export function AppShell({ children }) {
   const { isFetching } = useMeQuery(undefined, {
     skip: !isProtectedRoute || !token,
   });
+
+  useEffect(() => {
+    const t = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    if (t && !token) {
+      dispatch(setCredentials({ token: t, user: user ?? null }));
+    }
+  }, [dispatch, token, user]);
 
   useEffect(() => {
     if (!isProtectedRoute) return;
@@ -80,4 +89,3 @@ export function AppShell({ children }) {
     </div>
   );
 }
-

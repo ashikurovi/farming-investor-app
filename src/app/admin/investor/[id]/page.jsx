@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
   ShieldBan,
@@ -39,45 +39,11 @@ export default function AdminInvestorDetailPage() {
 
   const isBusy = isLoading || isFetching;
 
-  const statusConfig = useMemo(() => {
-    if (!user) return null;
-
-    const isBanned = user.isBanned;
-
-    return {
-      label: isBanned ? "Banned" : "Active",
-      className: isBanned
-        ? "bg-red-50 text-red-700 ring-red-100"
-        : "bg-emerald-50 text-emerald-700 ring-emerald-100",
-      Icon: isBanned ? ShieldBan : ShieldCheck,
-      containerClass: isBanned ? "bg-red-50/50" : "bg-emerald-50/50",
-    };
-  }, [user]);
-
   const investments = invData?.items ?? [];
-  const photo = user?.photoUrl
-    ? typeof user.photoUrl === "string"
-      ? user.photoUrl.replace(/`/g, "").trim()
-      : ""
-    : "";
 
   const totalInvestedAmount = useMemo(() => {
     if (!investments.length) return 0;
     return investments.reduce((sum, inv) => sum + Number(inv.amount ?? 0), 0);
-  }, [investments]);
-
-  const uniqueProjects = useMemo(() => {
-    const map = new Map();
-    for (const inv of investments) {
-      const key = inv.projectId;
-      if (!map.has(key)) {
-        map.set(key, {
-          id: inv.projectId,
-          title: inv.project?.title ?? `Project #${inv.projectId}`,
-        });
-      }
-    }
-    return Array.from(map.values());
   }, [investments]);
 
   const stats = [

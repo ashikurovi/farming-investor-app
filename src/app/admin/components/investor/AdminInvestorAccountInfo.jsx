@@ -60,7 +60,9 @@ export function AdminInvestorAccountInfo({ user }) {
                 Joined Date
               </p>
               <p className="text-sm font-semibold text-zinc-900">
-                {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : "-"}
+                {user?.createdAt
+                  ? new Date(user.createdAt).toLocaleDateString("en-US", { timeZone: "UTC" })
+                  : "-"}
               </p>
             </div>
           </div>

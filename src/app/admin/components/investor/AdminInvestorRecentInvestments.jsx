@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { useState } from "react";
 import { Wallet, TrendingUp } from "lucide-react";
@@ -60,7 +61,9 @@ export function AdminInvestorRecentInvestments({ investments = [] }) {
                     {inv.reference || `Investment #${inv.id}`}
                   </p>
                   <p className="text-sm text-zinc-500">
-                    {inv.date ? new Date(inv.date).toLocaleDateString() : "-"}
+                    {inv.date
+                      ? new Date(inv.date).toLocaleDateString("en-US", { timeZone: "UTC" })
+                      : "-"}
                     {inv.time ? ` • ${inv.time}` : ""}
                   </p>
                 </div>
