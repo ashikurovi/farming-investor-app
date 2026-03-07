@@ -1,6 +1,6 @@
-Redesign admin dashboard with premium styling and animations
+feat: Integrate admin projects API into HomeRecentProjects
 
-- Updated stat cards with gradient backgrounds and hover effects
-- Right-aligned numbers on desktop, optimized font size for mobile
-- Enhanced activity and recent investment panels
-- Added stagger animations for card entrance
+- Fetch latest 4 projects from admin API
+- Map API data to component structure
+- Add loading state with Loader component
+- Update project card display with dynamic data

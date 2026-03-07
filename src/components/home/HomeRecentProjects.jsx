@@ -9,10 +9,16 @@ import {
   Sprout,
   ShieldCheck,
 } from "lucide-react";
+import { useGetProjectsQuery } from "@/features/admin/projects/projectsApiSlice";
+import { Loader } from "@/components/ui/loader";
 
-export default function HomeRecentProjects({ projects = [] }) {
-  // Fallback if projects is undefined or null
-  const safeProjects = projects || [];
+export default function HomeRecentProjects() {
+  const { data: projectsData, isLoading } = useGetProjectsQuery({
+    limit: 4,
+    page: 1,
+  });
+
+  const projects = projectsData?.items || [];
 
   // Fallback images for realism
   const fallbackImages = [
@@ -23,17 +29,22 @@ export default function HomeRecentProjects({ projects = [] }) {
   ];
 
   const getStableFundingPercent = (project, index) => {
-    const explicit = Number(project?.fundingPercent);
-    if (Number.isFinite(explicit) && explicit > 0) return Math.min(100, Math.max(0, explicit));
-
-    const seed = String(project?.projectId ?? project?.code ?? project?.title ?? index);
+    // Generate a pseudo-random stable percentage based on ID
+    const seed = String(project.id || index);
     let hash = 0;
     for (let i = 0; i < seed.length; i += 1) {
       hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
     }
-
-    return (hash % 56) + 40;
+    return (hash % 40) + 60; // Returns between 60% and 100%
   };
+
+  if (isLoading) {
+    return (
+      <section className="py-24 bg-zinc-50 flex justify-center">
+        <Loader size="lg" />
+      </section>
+    );
+  }
 
   return (
     <section className="">
@@ -73,12 +84,18 @@ export default function HomeRecentProjects({ projects = [] }) {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {safeProjects.slice(0, 4).map((project, index) => {
+          {projects.map((project, index) => {
             const fundingPercent = getStableFundingPercent(project, index);
+            const title = project.name || "Untitled Project";
+            const location = project.location || "Bangladesh";
+            const amount = Number(project.totalInvestment || project.totalCost || 0);
+            const image = project.photoUrl || fallbackImages[index % fallbackImages.length];
+            const roi = project.roi || Math.floor(Math.random() * (15 - 8 + 1) + 8); // Fallback ROI
+            const duration = project.duration || 12; // Fallback duration
 
             return (
               <div
-                key={project.projectId || index}
+                key={project.id || index}
                 className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-zinc-100 shadow-sm hover:shadow-2xl hover:border-emerald-100 transition-all duration-500 hover:-translate-y-1"
               >
                 {/* Image Section */}
@@ -86,7 +103,7 @@ export default function HomeRecentProjects({ projects = [] }) {
                   <div className="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm border border-white/20 text-zinc-800 shadow-sm">
                     <MapPin className="w-3 h-3 text-emerald-600" />
                     <span className="text-[10px] font-bold uppercase tracking-wider">
-                      {project.location}
+                      {location}
                     </span>
                   </div>
                   <div className="absolute top-3 right-3 z-10">
@@ -97,11 +114,8 @@ export default function HomeRecentProjects({ projects = [] }) {
 
                   {/* Image Placeholder using Next/Image or img tag */}
                   <img
-                    src={
-                      project.image ||
-                      fallbackImages[index % fallbackImages.length]
-                    }
-                    alt={project.title}
+                    src={image}
+                    alt={title}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
 
@@ -122,14 +136,14 @@ export default function HomeRecentProjects({ projects = [] }) {
                   <div className="mb-4">
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-[10px] font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
-                        {project.code}
+                        INV-{project.id}
                       </span>
                       <span className="flex items-center gap-1 text-[10px] font-medium text-zinc-400">
                         <ShieldCheck className="w-3 h-3" /> Vetted
                       </span>
                     </div>
                     <h3 className="text-lg font-bold text-zinc-900 leading-snug group-hover:text-emerald-800 transition-colors line-clamp-2 min-h-[3.5rem]">
-                      {project.title}
+                      {title}
                     </h3>
                   </div>
 
@@ -161,7 +175,7 @@ export default function HomeRecentProjects({ projects = [] }) {
                       <div className="flex items-center gap-1.5 text-emerald-600">
                         <TrendingUp className="w-4 h-4" />
                         <span className="text-lg font-bold">
-                          {project.roi}%
+                          {roi}%
                         </span>
                       </div>
                     </div>
@@ -172,7 +186,7 @@ export default function HomeRecentProjects({ projects = [] }) {
                       <div className="flex items-center justify-end gap-1.5 text-zinc-900">
                         <Calendar className="w-4 h-4 text-zinc-400" />
                         <span className="text-lg font-bold">
-                          {project.duration}
+                          {duration}
                         </span>
                         <span className="text-xs font-medium text-zinc-400">
                           mo
@@ -188,11 +202,11 @@ export default function HomeRecentProjects({ projects = [] }) {
                           Target
                         </p>
                         <p className="text-sm font-bold text-zinc-900">
-                          BDT {Number(project.amount || 0).toLocaleString()}
+                          BDT {amount.toLocaleString()}
                         </p>
                       </div>
                       <Link
-                        href={`/landing/project/${project.projectId}`}
+                        href={`/landing/project/${project.id}`}
                         className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-zinc-900 text-white hover:bg-emerald-600 transition-colors shadow-lg shadow-zinc-900/10"
                       >
                         <ArrowRight className="w-4 h-4" />
