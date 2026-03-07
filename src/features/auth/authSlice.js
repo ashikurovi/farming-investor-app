@@ -13,6 +13,11 @@ const authSlice = createSlice({
       const { token, user } = action.payload;
       state.token = token;
       state.user = user || null;
+      if (typeof window !== "undefined" && token) {
+        try {
+          localStorage.setItem("token", token);
+        } catch {}
+      }
     },
     logOut: (state) => {
       state.token = null;

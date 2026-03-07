@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { MainNavbar } from "../components/MainNavbar";
@@ -16,6 +16,7 @@ export function AppShell({ children }) {
 // ...App
   const token = useSelector((state) => state.auth?.token);
   const user = useSelector((state) => state.auth?.user);
+  const [authHydrated, setAuthHydrated] = useState(false);
 
   const isAuthRoute =
     pathname.startsWith("/login") ||
@@ -27,7 +28,7 @@ export function AppShell({ children }) {
   const isProtectedRoute = isAdminRoute || isInvestorRoute;
 
   const { isFetching } = useMeQuery(undefined, {
-    skip: !isProtectedRoute || !token,
+    skip: !isProtectedRoute || !authHydrated || !token,
   });
 
   useEffect(() => {
@@ -35,10 +36,11 @@ export function AppShell({ children }) {
     if (t && !token) {
       dispatch(setCredentials({ token: t, user: user ?? null }));
     }
+    setAuthHydrated(true);
   }, [dispatch, token, user]);
 
   useEffect(() => {
-    if (!isProtectedRoute) return;
+    if (!isProtectedRoute || !authHydrated) return;
 
     if (!token) {
       toast.error("Please log in to continue.");
@@ -73,6 +75,7 @@ export function AppShell({ children }) {
     user,
     isFetching,
     router,
+    authHydrated,
   ]);
 
   const isBareLayoutRoute = isProtectedRoute || isAuthRoute;
