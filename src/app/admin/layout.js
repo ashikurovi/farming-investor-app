@@ -1,5 +1,4 @@
-import Sidebar from "./components/Sidebar";
-import TopNavbar from "./components/TopNavbar";
+import AdminChrome from "./AdminChrome";
 // import GlobalApiLoader from "./components/GlobalApiLoader";
 
 export const metadata = {
@@ -8,16 +7,6 @@ export const metadata = {
 
 export default function AdminLayout({ children }) {
   return (
-    <div className="flex min-h-screen bg-zinc-100 text-zinc-900">
-      {/* <GlobalApiLoader /> */}
-      <Sidebar />
-      <div className="flex flex-1 flex-col">
-        <TopNavbar />
-        <main className="flex-1 overflow-y-auto px-6 py-6 lg:px-10 lg:py-8">
-          {children}
-        </main>
-      </div>
-    </div>
+    <AdminChrome>{children}</AdminChrome>
   );
 }
-
