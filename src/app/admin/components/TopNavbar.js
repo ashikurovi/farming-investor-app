@@ -63,11 +63,13 @@ export default function TopNavbar() {
     weekday: "short",
     month: "short",
     day: "numeric",
+    timeZone: "UTC",
   });
 
   const formattedTime = currentTime.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "UTC",
   });
 
   const notifications = [

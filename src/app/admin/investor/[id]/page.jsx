@@ -49,7 +49,7 @@ export default function AdminInvestorDetailPage() {
   const stats = [
     {
       label: "Total Investment",
-      value: `৳${Number(totalInvestedAmount).toLocaleString()}`,
+      value: `৳${Number(totalInvestedAmount).toLocaleString("en-US")}`,
       icon: Wallet,
       color: "text-blue-600",
       bg: "bg-blue-50",
@@ -57,7 +57,7 @@ export default function AdminInvestorDetailPage() {
     },
     {
       label: "Total Profit",
-      value: `৳${Number(user?.totalProfit ?? 0).toLocaleString()}`,
+      value: `৳${Number(user?.totalProfit ?? 0).toLocaleString("en-US")}`,
       icon: TrendingUp,
       color: "text-emerald-600",
       bg: "bg-emerald-50",
@@ -65,7 +65,7 @@ export default function AdminInvestorDetailPage() {
     },
     {
       label: "Current Balance",
-      value: `৳${Number(user?.balance ?? 0).toLocaleString()}`,
+      value: `৳${Number(user?.balance ?? 0).toLocaleString("en-US")}`,
       icon: DollarSign,
       color: "text-violet-600",
       bg: "bg-violet-50",
@@ -73,7 +73,7 @@ export default function AdminInvestorDetailPage() {
     },
     {
       label: "Total Cost",
-      value: `৳${Number(user?.totalCost ?? 0).toLocaleString()}`,
+      value: `৳${Number(user?.totalCost ?? 0).toLocaleString("en-US")}`,
       icon: CreditCard,
       color: "text-orange-600",
       bg: "bg-orange-50",
