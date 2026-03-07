@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { galleryItems } from "../../../data/gallery";
 import { Search, Filter, Calendar, MapPin, ArrowUpRight, X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import { useGetGlarryQuery } from "@/features/admin/glarry/glarryApiSlice";
+import { Loader } from "@/components/ui/loader";
 
 const categories = ["All", "Harvest", "Community", "Technology", "Produce", "Livestock"];
 
@@ -12,8 +13,21 @@ export function GalleryFeed() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
+  const { data: galleryData, isLoading } = useGetGlarryQuery({ limit: 100 });
+  const items = galleryData?.items ?? galleryData ?? [];
+
+  const mappedItems = items.map((item) => ({
+    id: item.id,
+    title: item.project?.title || "Gallery Image",
+    category: item.project?.category || "All",
+    image: item.photo || item.photoUrl,
+    description: item.project?.shortDescription || "",
+    date: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : "",
+    location: item.project?.location || "Farm Location",
+  }));
+
   // Filter items
-  const filteredItems = galleryItems.filter((item) => {
+  const filteredItems = mappedItems.filter((item) => {
     const matchesCategory = activeCategory === "All" || item.category === activeCategory;
     const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           item.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -45,6 +59,14 @@ export function GalleryFeed() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedImageIndex, filteredItems.length]);
+
+  if (isLoading) {
+    return (
+      <div id="gallery-feed" className="bg-zinc-50 min-h-screen py-16 px-6 lg:px-8 flex items-center justify-center">
+        <Loader size="lg" />
+      </div>
+    );
+  }
 
   return (
     <div id="gallery-feed" className="bg-zinc-50 min-h-screen py-16 px-6 lg:px-8 relative">
