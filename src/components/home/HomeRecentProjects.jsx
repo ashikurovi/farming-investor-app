@@ -18,15 +18,9 @@ export default function HomeRecentProjects() {
     page: 1,
   });
 
-  const projects = projectsData?.items || [];
-
-  // Fallback images for realism
-  const fallbackImages = [
-    "https://images.unsplash.com/photo-1625246333195-58197bd47d26?q=80&w=1000&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1000&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?q=80&w=1000&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=1000&auto=format&fit=crop",
-  ];
+  const projects = Array.isArray(projectsData)
+    ? projectsData
+    : projectsData?.items || projectsData?.data || [];
 
   const getStableFundingPercent = (project, index) => {
     // Generate a pseudo-random stable percentage based on ID
@@ -88,9 +82,13 @@ export default function HomeRecentProjects() {
             const fundingPercent = getStableFundingPercent(project, index);
             const title = project.name || "Untitled Project";
             const location = project.location || "Bangladesh";
-            const amount = Number(project.totalInvestment || project.totalCost || 0);
-            const image = project.photoUrl || fallbackImages[index % fallbackImages.length];
-            const roi = project.roi || Math.floor(Math.random() * (15 - 8 + 1) + 8); // Fallback ROI
+            const amount = Number(
+              project.totalInvestment || project.totalCost || 0,
+            );
+            const image =
+              project.photoUrl || fallbackImages[index % fallbackImages.length];
+            const roi =
+              project.roi || Math.floor(Math.random() * (15 - 8 + 1) + 8); // Fallback ROI
             const duration = project.duration || 12; // Fallback duration
 
             return (
@@ -174,9 +172,7 @@ export default function HomeRecentProjects() {
                       </p>
                       <div className="flex items-center gap-1.5 text-emerald-600">
                         <TrendingUp className="w-4 h-4" />
-                        <span className="text-lg font-bold">
-                          {roi}%
-                        </span>
+                        <span className="text-lg font-bold">{roi}%</span>
                       </div>
                     </div>
                     <div className="text-right">
@@ -185,9 +181,7 @@ export default function HomeRecentProjects() {
                       </p>
                       <div className="flex items-center justify-end gap-1.5 text-zinc-900">
                         <Calendar className="w-4 h-4 text-zinc-400" />
-                        <span className="text-lg font-bold">
-                          {duration}
-                        </span>
+                        <span className="text-lg font-bold">{duration}</span>
                         <span className="text-xs font-medium text-zinc-400">
                           mo
                         </span>

@@ -1,6 +1,4 @@
-feat: Integrate admin projects API into HomeRecentProjects
+fix: Ensure robust project data extraction in HomeRecentProjects
 
-- Fetch latest 4 projects from admin API
-- Map API data to component structure
-- Add loading state with Loader component
-- Update project card display with dynamic data
+- Handle both array and object response structures
+- Remove temporary console logging
