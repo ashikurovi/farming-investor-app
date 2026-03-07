@@ -60,8 +60,8 @@ export default function HomeHero() {
   }
 
   return (
-    <section className="w-full bg-white">
-      <div className="relative w-full h-[500px] md:h-[800px] overflow-hidden">
+    <section className="w-full ">
+      <div className="relative w-full h-[500px] md:h-[600px] overflow-hidden">
         <Swiper
           modules={[Autoplay, Pagination]}
           slidesPerView={1}
@@ -81,7 +81,7 @@ export default function HomeHero() {
                   }}
                 >
                   {/* Overlay for better text readability - Darker for centered white text */}
-                  <div className="absolute inset-0 bg-black/40 md:bg-black/30" />
+                  <div className="absolute inset-0 bg-black/50" />
                 </div>
 
                 {/* 2. Text Content (Centered) */}

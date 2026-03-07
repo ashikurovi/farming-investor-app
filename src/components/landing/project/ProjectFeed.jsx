@@ -23,7 +23,6 @@ export function ProjectFeed() {
     limit: 100,
     page: 1,
   });
-  console.log(projectsData);
 
   const rawProjects = Array.isArray(projectsData)
     ? projectsData

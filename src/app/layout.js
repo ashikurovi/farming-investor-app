@@ -20,6 +20,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body
         className={`${baiJamjuree.variable} antialiased font-sans`}
+        suppressHydrationWarning={true}
       >
         <ReduxProvider>
           <ToasterProvider />

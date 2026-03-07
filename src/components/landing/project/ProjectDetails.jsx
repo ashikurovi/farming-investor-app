@@ -3,9 +3,7 @@
 import { ArrowLeft, MapPin, CheckCircle, Info, Share2, Heart, ShieldCheck, Sprout } from "lucide-react";
 import Link from "next/link";
 import { useState, useMemo } from "react";
-import { projects } from "../../../data/projects";
-
-export function ProjectDetails({ project }) {
+export function ProjectDetails({ project, similarProjects = [] }) {
   const [isLiked, setIsLiked] = useState(false);
 
   // Format paragraphs
@@ -16,13 +14,6 @@ export function ProjectDetails({ project }) {
     const hash = project.projectId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return (hash % 55) + 40; // Range 40-95
   }, [project.projectId]);
-
-  // Find similar projects (same category, excluding current)
-  const similarProjects = useMemo(() => {
-    return projects
-      .filter(p => p.category === project.category && p.projectId !== project.projectId)
-      .slice(0, 3);
-  }, [project]);
 
   return (
     <div className="bg-zinc-50 min-h-screen pb-20">
