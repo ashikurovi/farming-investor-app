@@ -2,53 +2,40 @@
 
 import Link from "next/link";
 import { ArrowRight, Instagram, Camera, MapPin } from "lucide-react";
-
-const galleryImages = [
-  {
-    id: 1,
-    src: "https://images.unsplash.com/photo-1625246333195-58197bd47d26?q=80&w=1000&auto=format&fit=crop",
-    alt: "Golden wheat harvest",
-    category: "Harvest",
-    location: "Rajshahi, BD",
-  },
-  {
-    id: 2,
-    src: "https://images.unsplash.com/photo-1586771107445-d3ca888129ff?q=80&w=1000&auto=format&fit=crop",
-    alt: "Agricultural drone technology",
-    category: "Tech",
-    location: "Dhaka, BD",
-  },
-  {
-    id: 3,
-    src: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=1000&auto=format&fit=crop",
-    alt: "Modern greenhouse interior",
-    category: "Infrastructure",
-    location: "Gazipur, BD",
-  },
-  {
-    id: 4,
-    src: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1000&auto=format&fit=crop",
-    alt: "Lush green fields",
-    category: "Landscape",
-    location: "Sylhet, BD",
-  },
-  {
-    id: 5,
-    src: "https://images.unsplash.com/photo-1595814433582-e29fd8054a75?q=80&w=1000&auto=format&fit=crop",
-    alt: "Farmer inspecting crops",
-    category: "Community",
-    location: "Bogura, BD",
-  },
-  {
-    id: 6,
-    src: "https://images.unsplash.com/photo-1530267981375-f0de93cdf5b8?q=80&w=1000&auto=format&fit=crop",
-    alt: "Tractor in field",
-    category: "Machinery",
-    location: "Jessore, BD",
-  },
-];
+import { useGetGlarryQuery } from "@/features/admin/glarry/glarryApiSlice";
 
 export default function HomeGalleryPreview() {
+  const { data: galleryData, isLoading } = useGetGlarryQuery({ limit: 9 });
+  const items = galleryData?.items ?? galleryData ?? [];
+
+  const cleanUrl = (u) => (typeof u === "string" ? u.replace(/[`]/g, "").trim() : u);
+
+  const displayImages = items.map((item) => ({
+    id: item.id,
+    src: cleanUrl(item.photoUrl || item.photo),
+    alt: item.project?.title || "Gallery Image",
+    category: item.project?.category || "General",
+    location: item.project?.location || "Bangladesh",
+  }));
+
+  // Show loading skeleton or empty state if needed
+  if (isLoading) {
+    return (
+      <section className="">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+           <div className="animate-pulse space-y-8">
+             <div className="h-32 bg-zinc-100 rounded-xl w-full max-w-2xl"></div>
+             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+               {[...Array(6)].map((_, i) => (
+                 <div key={i} className="h-80 bg-zinc-100 rounded-3xl"></div>
+               ))}
+             </div>
+           </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -90,7 +77,7 @@ export default function HomeGalleryPreview() {
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-          {galleryImages.map((image) => (
+          {displayImages.map((image) => (
             <div
               key={image.id}
               className="group relative h-80 w-full overflow-hidden rounded-3xl bg-zinc-100 cursor-pointer"
