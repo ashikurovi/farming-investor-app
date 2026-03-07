@@ -263,7 +263,7 @@ export default function AdminInvestorDetailPage() {
                 <dt className="truncate text-sm font-medium text-gray-500">
                   {stat.label}
                 </dt>
-                <dd className=" text md md:text-2xl font-bold tracking-tight text-gray-900">
+                <dd className="  md:text-2xl font-bold tracking-tight text-gray-900">
                   {stat.value}
                 </dd>
               </div>
@@ -498,7 +498,11 @@ export default function AdminInvestorDetailPage() {
         </div>
         {investments.length > 5 && (
           <div className="border-t border-zinc-100 bg-zinc-50/30 p-4 text-center">
-            <Button variant="ghost" size="sm" className="text-xs text-zinc-500 hover:text-zinc-900">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs text-zinc-500 hover:text-zinc-900"
+            >
               View All Investments
             </Button>
           </div>
