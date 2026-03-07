@@ -24,13 +24,15 @@ export function ConfirmDialog({
       icon: AlertTriangle,
       iconBg: "bg-amber-100",
       iconColor: "text-amber-600",
-      buttonBg: "bg-amber-600 hover:bg-amber-500 focus-visible:outline-amber-600",
+      buttonBg:
+        "bg-amber-600 hover:bg-amber-500 focus-visible:outline-amber-600",
     },
     success: {
       icon: CheckCircle,
       iconBg: "bg-emerald-100",
       iconColor: "text-emerald-600",
-      buttonBg: "bg-emerald-600 hover:bg-emerald-500 focus-visible:outline-emerald-600",
+      buttonBg:
+        "bg-emerald-600 hover:bg-emerald-500 focus-visible:outline-emerald-600",
     },
     info: {
       icon: Info,
