@@ -1,8 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Edit2, Eye, Trash2, ShieldBan, ShieldCheck } from "lucide-react";
+import {
+  Plus,
+  Pencil,
+  Eye,
+  Trash2,
+  ShieldBan,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -71,7 +79,7 @@ export default function AdminInvestorPage() {
       page: 1,
       limit: 100,
       search: "",
-    });
+    }, { skip: !isModalOpen });
 
   const investors = useMemo(() => {
     const items = data?.items ?? [];
@@ -80,7 +88,7 @@ export default function AdminInvestorPage() {
 
   const meta = data?.meta ?? { page: 1, pageCount: 1, total: 0 };
 
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setFormValues({
       name: "",
       email: "",
@@ -91,14 +99,14 @@ export default function AdminInvestorPage() {
       investorTypeId: "",
     });
     setEditingUser(null);
-  };
+  }, []);
 
-  const openCreateModal = () => {
+  const openCreateModal = useCallback(() => {
     resetForm();
     setIsModalOpen(true);
-  };
+  }, [resetForm]);
 
-  const openEditModal = (user) => {
+  const openEditModal = useCallback((user) => {
     setFormValues({
       name: user.name ?? "",
       email: user.email ?? "",
@@ -111,18 +119,18 @@ export default function AdminInvestorPage() {
     });
     setEditingUser(user);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
     resetForm();
-  };
+  }, [resetForm]);
 
-  const handleFormChange = (field, value) => {
+  const handleFormChange = useCallback((field, value) => {
     setFormValues((prev) => ({ ...prev, [field]: value }));
-  };
+  }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
 
     try {
@@ -159,12 +167,12 @@ export default function AdminInvestorPage() {
         "Something went wrong. Please try again.";
       toast.error("Operation failed", { description: message });
     }
-  };
+  }, [formValues, editingUser, updateUser, createUser, closeModal]);
 
-  const closeConfirm = () =>
-    setConfirmState((prev) => ({ ...prev, isOpen: false, onConfirm: null }));
+  const closeConfirm = useCallback(() =>
+    setConfirmState((prev) => ({ ...prev, isOpen: false, onConfirm: null })), []);
 
-  const openConfirm = (options) =>
+  const openConfirm = useCallback((options) =>
     setConfirmState({
       isOpen: true,
       title: "",
@@ -172,14 +180,16 @@ export default function AdminInvestorPage() {
       confirmLabel: "Confirm",
       cancelLabel: "Cancel",
       onConfirm: null,
+      variant: "danger",
       ...options,
-    });
+    }), []);
 
-  const confirmDelete = (user) => {
+  const confirmDelete = useCallback((user) => {
     openConfirm({
       title: "Delete investor",
       description: `Delete investor "${user.name || user.email}"? This action cannot be undone.`,
       confirmLabel: "Delete",
+      variant: "danger",
       onConfirm: async () => {
         try {
           await deleteUser(user.id).unwrap();
@@ -197,11 +207,12 @@ export default function AdminInvestorPage() {
         }
       },
     });
-  };
+  }, [openConfirm, deleteUser, closeConfirm]);
 
-  const confirmToggleBan = (user) => {
+  const confirmToggleBan = useCallback((user) => {
     const isCurrentlyBanned = user.isBanned;
     const actionLabel = isCurrentlyBanned ? "Unban" : "Ban";
+    const variant = isCurrentlyBanned ? "success" : "danger";
 
     openConfirm({
       title: `${actionLabel} investor`,
@@ -209,6 +220,7 @@ export default function AdminInvestorPage() {
         ? `Unban investor "${user.name || user.email}" and restore access?`
         : `Ban investor "${user.name || user.email}" and revoke access?`,
       confirmLabel: actionLabel,
+      variant: variant,
       onConfirm: async () => {
         try {
           if (isCurrentlyBanned) {
@@ -231,7 +243,7 @@ export default function AdminInvestorPage() {
         }
       },
     });
-  };
+  }, [openConfirm, unbanUser, banUser, closeConfirm]);
 
   const handleSearchChange = (value) => {
     setSearchInput(value);
@@ -239,196 +251,309 @@ export default function AdminInvestorPage() {
     setPage(1);
   };
 
-  const isBusy = isLoading || isFetching || isCreating || isUpdating || isDeleting;
+  const handleRowClick = (user) => {
+    router.push(`/admin/investor/${user.id}`);
+  };
+
+  const isBusy =
+    isLoading || isFetching || isCreating || isUpdating || isDeleting;
 
   return (
-    <div className="space-y-6">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight text-zinc-900">
-            Investors
-          </h1>
-          <p className="text-sm text-zinc-500">
-            Manage investor profiles, access and status.
+    <div className="space-y-8 p-2">
+      <header className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100/50 text-emerald-600">
+              <Users className="h-5 w-5" />
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+              Investors
+            </h1>
+          </div>
+          <p className="text-sm text-gray-500 max-w-2xl">
+            Manage your investor profiles, track their investments, and oversee
+            account status efficiently.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <AdminSearchBar value={searchInput} onChange={handleSearchChange} />
 
           <Button
             type="button"
             size="sm"
             onClick={openCreateModal}
-            className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-md hover:bg-emerald-500"
+            className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-emerald-700 hover:shadow-md active:scale-95"
           >
-            <Plus className="h-3.5 w-3.5" />
-            <span>Add investor</span>
+            <Plus className="h-4 w-4" />
+            <span>Add New Investor</span>
           </Button>
         </div>
       </header>
 
-      <section className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+      <section className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm ring-1 ring-gray-950/5">
         <div className="overflow-x-auto">
           <DataTable
             columns={[
               {
                 key: "sl",
                 header: "SL",
+                className: "hidden sm:table-cell",
                 tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-500",
-                cell: (user) =>
-                  investors.findIndex((u) => u.id === user.id) + 1,
+                  "whitespace-nowrap px-6 py-4 text-xs font-medium text-gray-500 w-[50px]",
+                cell: (user) => (
+                  <span className="text-gray-400 font-mono">
+                    {String(
+                      investors.findIndex((u) => u.id === user.id) + 1,
+                    ).padStart(2, "0")}
+                  </span>
+                ),
               },
               {
                 key: "name",
                 header: "Name",
                 tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm font-medium text-zinc-900",
-                cell: (user) => user.name || "-",
+                  "whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900",
+                cell: (user) => (
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold ring-2 ring-white shadow-sm">
+                      {user.photo ? (
+                        <img
+                          src={
+                            typeof user.photo === "string"
+                              ? user.photo
+                              : URL.createObjectURL(user.photo)
+                          }
+                          alt={user.name}
+                          className="h-full w-full rounded-full object-cover"
+                        />
+                      ) : (
+                        (user.name || "U").charAt(0).toUpperCase()
+                      )}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-semibold text-gray-900">
+                        {user.name || "Unknown"}
+                      </span>
+                      <span className="text-xs text-gray-400 font-normal">
+                        {user.email}
+                      </span>
+                    </div>
+                  </div>
+                ),
               },
               {
                 key: "email",
-                header: "Email",
+                header: "Contact Info", // Changed header to be more descriptive if showing more
+                tdClassName: "hidden", // Hiding original email column as it's now under Name
+                cell: () => null,
               },
               {
                 key: "investorType",
-                header: "Investor type",
-                tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                cell: (user) =>
-                  user.investorType
-                    ? `${user.investorType.type} (${user.investorType.percentage}%)`
-                    : user.investorTypeId
-                      ? `Type #${user.investorTypeId}`
-                      : "-",
+                header: "Investor Type",
+                className: "hidden lg:table-cell",
+                tdClassName: "whitespace-nowrap px-6 py-4 text-sm",
+                cell: (user) => (
+                  <div className="flex flex-col gap-1">
+                    {user.investorType ? (
+                      <>
+                        <span className="font-medium text-gray-700">
+                          {user.investorType.type}
+                        </span>
+                        <span className="text-xs text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full w-fit">
+                          {user.investorType.percentage}% Share
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-gray-400 text-xs italic">
+                        No Type Assigned
+                      </span>
+                    )}
+                  </div>
+                ),
               },
               {
                 key: "totalInvestment",
-                header: "Investment (BDT)",
+                header: "Investment",
+                className: "hidden md:table-cell",
                 tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                cell: (user) =>
-                  Number(user.totalInvestment ?? 0).toFixed(2),
+                  "whitespace-nowrap px-6 py-4 text-sm text-gray-700 font-mono text-right",
+                cell: (user) => (
+                  <span className="font-medium text-gray-900">
+                    ৳
+                    {Number(user.totalInvestment ?? 0).toLocaleString(
+                      undefined,
+                      { minimumFractionDigits: 2 },
+                    )}
+                  </span>
+                ),
               },
               {
                 key: "totalProfit",
-                header: "Profit (BDT)",
+                header: "Profit",
+                className: "hidden md:table-cell",
                 tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                cell: (user) => Number(user.totalProfit ?? 0).toFixed(2),
+                  "whitespace-nowrap px-6 py-4 text-sm text-emerald-600 font-mono text-right font-medium",
+                cell: (user) =>
+                  `৳${Number(user.totalProfit ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`,
               },
               {
                 key: "balance",
-                header: "Balance (BDT)",
+                header: "Balance",
+                className: "hidden xl:table-cell",
                 tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                cell: (user) => Number(user.balance ?? 0).toFixed(2),
+                  "whitespace-nowrap px-6 py-4 text-sm text-blue-600 font-mono text-right font-medium",
+                cell: (user) =>
+                  `৳${Number(user.balance ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`,
               },
               {
                 key: "totalCost",
-                header: "Total Cost (BDT)",
+                header: "Total Cost",
+                className: "hidden xl:table-cell",
                 tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                cell: (user) => Number(user.totalCost ?? 0).toFixed(2),
+                  "whitespace-nowrap px-6 py-4 text-sm text-gray-500 font-mono text-right",
+                cell: (user) =>
+                  `৳${Number(user.totalCost ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`,
               },
               {
                 key: "status",
                 header: "Status",
-                tdClassName: "whitespace-nowrap px-4 py-3 text-xs",
+                className: "hidden sm:table-cell",
+                tdClassName: "whitespace-nowrap px-6 py-4 text-xs text-center",
                 cell: (user) => (
                   <span
-                    className={`inline-flex items-center rounded-full px-2 py-1 font-medium ${
+                    className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-medium ring-1 ring-inset ${
                       user.isBanned
-                        ? "bg-red-50 text-red-700"
-                        : "bg-emerald-50 text-emerald-700"
+                        ? "bg-red-50 text-red-700 ring-red-600/10"
+                        : "bg-emerald-50 text-emerald-700 ring-emerald-600/10"
                     }`}
                   >
+                    <span
+                      className={`h-1.5 w-1.5 rounded-full ${user.isBanned ? "bg-red-500" : "bg-emerald-500"}`}
+                    />
                     {user.isBanned ? "Banned" : "Active"}
                   </span>
                 ),
               },
-            ]}
+            ].filter((col) => col.key !== "email")} // Filter out the email column since we merged it
             data={investors}
             isLoading={isBusy}
-            emptyMessage="No investors found."
+            emptyMessage={
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-50">
+                  <Users className="h-6 w-6 text-gray-400" />
+                </div>
+                <h3 className="mt-2 text-sm font-semibold text-gray-900">
+                  No investors found
+                </h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  Get started by creating a new investor profile.
+                </p>
+                <div className="mt-6">
+                  <Button size="sm" onClick={openCreateModal} variant="outline">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Investor
+                  </Button>
+                </div>
+              </div>
+            }
             loadingLabel="Loading investors..."
             getRowKey={(user) => user.id}
+            onRowClick={handleRowClick}
             renderActions={(user) => (
-              <div className="flex items-center justify-end gap-2">
+              <div className="flex items-center justify-end gap-2 pr-4">
                 <button
                   type="button"
-                  onClick={() => router.push(`/admin/investor/${user.id}`)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(`/admin/investor/${user.id}`);
+                  }}
+                  className="group relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-600 transition-all hover:bg-blue-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  title="View Details"
                 >
-                  <Eye className="h-3.5 w-3.5" />
+                  <Eye className="h-4 w-4" />
                 </button>
                 <button
                   type="button"
-                  onClick={() => openEditModal(user)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openEditModal(user);
+                  }}
+                  className="group relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-amber-50 text-amber-600 transition-all hover:bg-amber-100 hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+                  title="Edit Profile"
                 >
-                  <Edit2 className="h-3.5 w-3.5" />
+                  <Pencil className="h-4 w-4" />
                 </button>
                 <button
                   type="button"
-                  onClick={() => confirmToggleBan(user)}
-                  className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white ${
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    confirmToggleBan(user);
+                  }}
+                  className={`group relative inline-flex h-8 w-8 items-center justify-center rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                     user.isBanned
-                      ? "border-emerald-200 text-emerald-600 hover:bg-emerald-50"
-                      : "border-amber-200 text-amber-600 hover:bg-amber-50"
+                      ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-700 focus:ring-emerald-500"
+                      : "bg-purple-50 text-purple-600 hover:bg-purple-100 hover:text-purple-700 focus:ring-purple-500"
                   }`}
+                  title={user.isBanned ? "Unban User" : "Ban User"}
                 >
                   {user.isBanned ? (
-                    <ShieldCheck className="h-3.5 w-3.5" />
+                    <ShieldCheck className="h-4 w-4" />
                   ) : (
-                    <ShieldBan className="h-3.5 w-3.5" />
+                    <ShieldBan className="h-4 w-4" />
                   )}
                 </button>
                 <button
                   type="button"
-                  onClick={() => confirmDelete(user)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-white text-red-600 hover:bg-red-50"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    confirmDelete(user);
+                  }}
+                  className="group relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-red-50 text-red-600 transition-all hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                  title="Delete User"
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
+                  <Trash2 className="h-4 w-4" />
                 </button>
               </div>
             )}
           />
         </div>
 
-        <Pagination
-          page={meta.page}
-          pageCount={meta.pageCount}
-          total={meta.total}
-          pageSize={pageSize}
-          onPageChange={(newPage) =>
-            setPage((p) =>
-              newPage < 1
-                ? 1
-                : meta.pageCount
-                  ? Math.min(meta.pageCount, newPage)
-                  : newPage,
-            )
-          }
-          onPageSizeChange={(newSize) => {
-            setPageSize(newSize);
-            setPage(1);
-          }}
-        />
+        <div className="border-t border-gray-100 bg-gray-50/50 px-6 py-4">
+          <Pagination
+            page={meta.page}
+            pageCount={meta.pageCount}
+            total={meta.total}
+            pageSize={pageSize}
+            onPageChange={(newPage) =>
+              setPage((p) =>
+                newPage < 1
+                  ? 1
+                  : meta.pageCount
+                    ? Math.min(meta.pageCount, newPage)
+                    : newPage,
+              )
+            }
+            onPageSizeChange={(newSize) => {
+              setPageSize(newSize);
+              setPage(1);
+            }}
+          />
+        </div>
       </section>
 
       <AdminInvestorFormModal
         isOpen={isModalOpen}
         editingUser={editingUser}
         formValues={formValues}
-        isCreating={isCreating}
-        isUpdating={isUpdating}
         onClose={closeModal}
         onChange={handleFormChange}
         onSubmit={handleSubmit}
         investorTypes={investorTypesData?.items ?? investorTypesData ?? []}
         isInvestorTypesLoading={isInvestorTypesLoading}
+        isCreating={isCreating}
+        isUpdating={isUpdating}
+        isEditing={!!editingUser}
       />
       <ConfirmDialog
         isOpen={confirmState.isOpen}
@@ -442,5 +567,3 @@ export default function AdminInvestorPage() {
     </div>
   );
 }
-
- 

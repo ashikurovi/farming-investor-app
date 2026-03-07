@@ -1,3 +1,5 @@
+import { X } from "lucide-react";
+
 export function Modal({
   isOpen,
   onClose,
@@ -5,47 +7,57 @@ export function Modal({
   description,
   children,
   footer,
-  size = "md", // "sm" | "md" | "lg"
+  size = "md", // "sm" | "md" | "lg" | "xl"
 }) {
   if (!isOpen) return null;
 
-  const maxWidthClass =
-    size === "sm"
-      ? "max-w-sm"
-      : size === "lg"
-        ? "max-w-2xl"
-        : "max-w-lg";
+  const maxWidthClass = {
+    sm: "max-w-sm",
+    md: "max-w-lg",
+    lg: "max-w-2xl",
+    xl: "max-w-4xl"
+  }[size] || "max-w-lg";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
-      <div className={`w-full ${maxWidthClass} rounded-3xl bg-white p-6 shadow-xl`}>
-        {(title || description) && (
-          <div className="mb-4 flex items-start justify-between gap-4">
-            <div>
-              {title && (
-                <h2 className="text-base font-semibold text-zinc-900">
-                  {title}
-                </h2>
-              )}
-              {description && (
-                <p className="text-xs text-zinc-500">{description}</p>
-              )}
-            </div>
-            {onClose && (
-              <button
-                type="button"
-                onClick={onClose}
-                className="text-xs font-medium text-zinc-500 hover:text-zinc-800"
-              >
-                Close
-              </button>
+    <div className="fixed inset-0 z-[99] flex items-center justify-center p-4 sm:p-6">
+      <div 
+        className="fixed inset-0 bg-gray-950/40 backdrop-blur-sm transition-opacity" 
+        onClick={onClose}
+        aria-hidden="true"
+      />
+      
+      <div className={`relative w-full ${maxWidthClass} transform overflow-hidden rounded-2xl bg-white shadow-2xl transition-all ring-1 ring-gray-950/5 flex flex-col max-h-[90vh]`}>
+        <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4 bg-gray-50/50">
+          <div className="space-y-1">
+            {title && (
+              <h2 className="text-lg font-semibold leading-6 text-gray-900">
+                {title}
+              </h2>
+            )}
+            {description && (
+              <p className="text-sm text-gray-500">{description}</p>
             )}
           </div>
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-6">
+          {children}
+        </div>
+
+        {footer && (
+          <div className="border-t border-gray-100 bg-gray-50/50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-3 gap-2 sm:gap-0">
+            {footer}
+          </div>
         )}
-
-        <div>{children}</div>
-
-        {footer && <div className="mt-4">{footer}</div>}
       </div>
     </div>
   );

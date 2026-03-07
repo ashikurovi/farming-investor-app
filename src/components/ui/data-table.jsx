@@ -6,6 +6,7 @@ export function DataTable({
   getRowKey,
   renderActions,
   loadingLabel = "Loading...",
+  onRowClick,
 }) {
   const hasActions = typeof renderActions === "function";
   const totalColumns = columns.length + (hasActions ? 1 : 0);
@@ -19,7 +20,7 @@ export function DataTable({
               {columns.map((column, index) => (
                 <th
                   key={column.key}
-                  className={
+                  className={`${
                     column.thClassName ??
                     [
                       "bg-zinc-50/90 px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 backdrop-blur",
@@ -30,7 +31,7 @@ export function DataTable({
                     ]
                       .filter(Boolean)
                       .join(" ")
-                  }
+                  } ${column.className || ""}`}
                 >
                   {column.header}
                 </th>
@@ -55,14 +56,16 @@ export function DataTable({
                     {columns.map((column, colIndex) => (
                       <td
                         key={column.key}
-                        className={[
-                          "px-4 py-3",
-                          rowIndex === 2 && colIndex === 0
-                            ? "rounded-bl-2xl"
-                            : "",
-                        ]
-                          .filter(Boolean)
-                          .join(" ")}
+                        className={`${
+                          [
+                            "px-4 py-3",
+                            rowIndex === 2 && colIndex === 0
+                              ? "rounded-bl-2xl"
+                              : "",
+                          ]
+                            .filter(Boolean)
+                            .join(" ")
+                        } ${column.className || ""}`}
                       >
                         <div className="h-3 w-[70%] animate-pulse rounded-full bg-zinc-200/70" />
                       </td>
@@ -119,12 +122,15 @@ export function DataTable({
                 return (
                   <tr
                     key={key}
-                    className="group border-b border-zinc-100 last:border-b-0 transition-colors hover:bg-zinc-50/80"
+                    onClick={(e) => onRowClick && onRowClick(row, e)}
+                    className={`group border-b border-zinc-100 last:border-b-0 transition-colors hover:bg-zinc-50/80 ${
+                      onRowClick ? "cursor-pointer" : ""
+                    }`}
                   >
                     {columns.map((column, colIndex) => (
                       <td
                         key={column.key}
-                        className={
+                        className={`${
                           column.tdClassName ??
                           [
                             "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
@@ -136,7 +142,7 @@ export function DataTable({
                           ]
                             .filter(Boolean)
                             .join(" ")
-                        }
+                        } ${column.className || ""}`}
                       >
                         {column.cell ? column.cell(row) : row[column.key]}
                       </td>
