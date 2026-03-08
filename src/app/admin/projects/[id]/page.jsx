@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, Wallet2, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,9 +16,11 @@ import { AdminProjectDailyReportsTab } from "@/app/admin/components/projects/Adm
 import { AdminProjectGlarryTab } from "@/app/admin/components/projects/AdminProjectGlarryTab";
 
 export default function AdminProjectDetailPage() {
+  const [mounted, setMounted] = useState(false);
   const params = useParams();
   const router = useRouter();
   const id = params?.id;
+  useEffect(() => setMounted(true), []);
 
   const [activeTab, setActiveTab] = useState("info");
 
@@ -97,6 +99,17 @@ export default function AdminProjectDetailPage() {
   }, [project]);
  
   const cleanUrl = (u) => (typeof u === "string" ? u.replace(/`/g, "").trim() : u);
+
+  if (!mounted) {
+    return (
+      <div className="flex h-[calc(100vh-200px)] items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-emerald-200 border-t-emerald-600"></div>
+          <p className="animate-pulse text-sm font-medium text-emerald-600">Loading…</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

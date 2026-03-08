@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, Wallet2, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,9 +11,11 @@ import { toast } from "sonner";
 import { formatNumber, formatCurrencyBDT } from "@/lib/utils";
 
 export default function AdminInvestmentDetailPage() {
+  const [mounted, setMounted] = useState(false);
   const params = useParams();
   const router = useRouter();
   const id = params?.id;
+  useEffect(() => setMounted(true), []);
 
   const {
     data: investment,
@@ -60,6 +62,17 @@ export default function AdminInvestmentDetailPage() {
       toast.error("Delete failed", { description: message });
     }
   };
+
+  if (!mounted) {
+    return (
+      <div className="flex h-[calc(100vh-200px)] items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-emerald-200 border-t-emerald-600"></div>
+          <p className="animate-pulse text-sm font-medium text-emerald-600">Loading…</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
