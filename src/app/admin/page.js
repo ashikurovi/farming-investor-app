@@ -122,23 +122,68 @@ export default function AdminDashboardPage() {
             </span>
           </div>
 
-          <div
-            className="relative mt-6 flex h-64 items-center justify-center overflow-hidden rounded-2xl border border-dashed border-emerald-100 bg-gradient-to-br from-emerald-50/30 via-white to-emerald-50/10 group-hover:border-emerald-200 transition-colors duration-300"
-            style={{
-              backgroundImage:
-                "repeating-linear-gradient(45deg, rgba(16, 185, 129, 0.03) 0px, rgba(16, 185, 129, 0.03) 10px, transparent 10px, transparent 20px)",
-            }}
-          >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex flex-col items-center gap-3 text-emerald-600/60">
-                <div className="relative">
-                  <div className="absolute inset-0 animate-ping rounded-full bg-emerald-100 opacity-75"></div>
-                  <Activity className="relative h-8 w-8" />
-                </div>
-                <span className="text-xs font-bold tracking-wide uppercase">
-                  Chart Coming Soon
-                </span>
+          <div className="relative mt-6 overflow-hidden rounded-2xl border border-dashed border-emerald-100 bg-gradient-to-br from-emerald-50/30 via-white to-emerald-50/10 group-hover:border-emerald-200 transition-colors duration-300">
+            <div className="flex items-start justify-between p-3">
+              <div className="text-xs font-bold uppercase tracking-widest text-zinc-400">
+                Weekly Investments
               </div>
+              <div className="text-xs font-bold text-emerald-600">
+                {recentLoading ? "—" : formatCurrencyBDT((recent ?? []).reduce((s, r) => s + Number(r.amount || 0), 0))}
+              </div>
+            </div>
+            <div className="h-64 w-full px-2 pb-2">
+              {recentLoading || !(recent ?? []).length ? (
+                <div className="flex h-full items-center justify-center text-xs text-zinc-400">
+                  {recentLoading ? "Loading activity…" : "No data"}
+                </div>
+              ) : (
+                (() => {
+                  const items = (recent ?? []).slice(0, 12).reverse();
+                  const values = items.map((i) => Number(i.amount || 0));
+                  const max = Math.max(1, ...values);
+                  const W = 600;
+                  const H = 180;
+                  const P = 16;
+                  const innerW = W - P * 2;
+                  const innerH = H - P * 2;
+                  const len = values.length;
+                  const points = values.map((v, idx) => {
+                    const x = len === 1 ? P + innerW / 2 : P + (idx / (len - 1)) * innerW;
+                    const y = P + innerH - (v / max) * innerH;
+                    return [x, y];
+                  });
+                  const path = points.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x},${y}`).join(" ");
+                  const area = `M${P},${P + innerH} ` + points.map(([x, y]) => `L${x},${y}`).join(" ") + ` L${P + innerW},${P + innerH} Z`;
+                  return (
+                    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="h-full w-full">
+                      <defs>
+                        <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#10b981" stopOpacity="0.25" />
+                          <stop offset="100%" stopColor="#10b981" stopOpacity="0.02" />
+                        </linearGradient>
+                      </defs>
+                      <rect x="0" y="0" width={W} height={H} fill="transparent" />
+                      {[0.25, 0.5, 0.75].map((g, i) => (
+                        <line
+                          key={i}
+                          x1={P}
+                          x2={P + innerW}
+                          y1={P + innerH * g}
+                          y2={P + innerH * g}
+                          stroke="#e5e7eb"
+                          strokeDasharray="4 6"
+                          opacity="0.7"
+                        />
+                      ))}
+                      <path d={area} fill="url(#grad)" />
+                      <path d={path} fill="none" stroke="#10b981" strokeWidth="2" />
+                      {points.map(([x, y], i) => (
+                        <circle key={i} cx={x} cy={y} r="2.5" fill="#10b981" />
+                      ))}
+                    </svg>
+                  );
+                })()
+              )}
             </div>
           </div>
         </div>
