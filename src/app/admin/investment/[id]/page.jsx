@@ -154,32 +154,32 @@ export default function AdminInvestmentDetailPage() {
             </CardHeader>
             <CardContent>
               {!isBusy && !isError && user ? (
-                <dl className="space-y-3 text-sm text-zinc-900">
-                  <div>
-                    <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                <div className="space-y-3 text-sm text-zinc-900">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
                       Name
-                    </dt>
-                    <dd>{user.name || "Unknown"}</dd>
+                    </span>
+                    <span>{user.name || "Unknown"}</span>
                   </div>
-                  <div>
-                    <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
                       Email
-                    </dt>
-                    <dd>{user.email || "-"}</dd>
+                    </span>
+                    <span>{user.email || "-"}</span>
                   </div>
-                  <div>
-                    <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
                       Phone
-                    </dt>
-                    <dd>{user.phone || "-"}</dd>
+                    </span>
+                    <span>{user.phone || "-"}</span>
                   </div>
-                  <div>
-                    <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
                       Location
-                    </dt>
-                    <dd>{user.location || "-"}</dd>
+                    </span>
+                    <span>{user.location || "-"}</span>
                   </div>
-                </dl>
+                </div>
               ) : (
                 <p className="text-xs text-zinc-500">
                   {isBusy

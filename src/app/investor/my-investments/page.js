@@ -130,24 +130,24 @@
              ) : isError ? (
                <p className="text-sm text-red-600">Failed to load totals.</p>
              ) : (
-               <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                 <dt className="text-zinc-500">Total Investment</dt>
-                 <dd className="text-right font-medium text-zinc-900">
-                   {formatCurrencyBDT(user?.totalInvestment)}
-                 </dd>
-                 <dt className="text-zinc-500">Total Profit</dt>
-                 <dd className="text-right font-medium text-emerald-700">
-                   {formatCurrencyBDT(user?.totalProfit)}
-                 </dd>
-                 <dt className="text-zinc-500">Balance</dt>
-                 <dd className="text-right font-medium text-blue-700">
-                   {formatCurrencyBDT(user?.balance)}
-                 </dd>
-                 <dt className="text-zinc-500">Total Cost</dt>
-                 <dd className="text-right font-medium text-zinc-900">
-                   {formatCurrencyBDT(user?.totalCost)}
-                 </dd>
-               </dl>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                <span className="text-zinc-500">Total Investment</span>
+                <span className="text-right font-medium text-zinc-900">
+                  {formatCurrencyBDT(user?.totalInvestment)}
+                </span>
+                <span className="text-zinc-500">Total Profit</span>
+                <span className="text-right font-medium text-emerald-700">
+                  {formatCurrencyBDT(user?.totalProfit)}
+                </span>
+                <span className="text-zinc-500">Balance</span>
+                <span className="text-right font-medium text-blue-700">
+                  {formatCurrencyBDT(user?.balance)}
+                </span>
+                <span className="text-zinc-500">Total Cost</span>
+                <span className="text-right font-medium text-zinc-900">
+                  {formatCurrencyBDT(user?.totalCost)}
+                </span>
+              </div>
              )}
            </CardContent>
          </Card>

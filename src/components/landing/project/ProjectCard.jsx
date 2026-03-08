@@ -98,10 +98,6 @@ export function ProjectCard({ project }) {
             src={project.images[0]}
             alt={project.title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            onError={(e) => {
-              e.target.src =
-                "https://images.pexels.com/photos/2132257/pexels-photo-2132257.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
-            }}
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-emerald-50 to-zinc-100 flex items-center justify-center">

@@ -25,9 +25,6 @@ export function ProjectDetails({ project, similarProjects = [] }) {
             src={project.images?.[0] ? `/images/${project.images[0]}` : "https://images.pexels.com/photos/158827/farm-sunset-wheat-sky-158827.jpeg?auto=compress&cs=tinysrgb&w=1920"} 
             alt={project.title}
             className="w-full h-full object-cover opacity-60"
-            onError={(e) => {
-              e.target.src = "https://images.pexels.com/photos/158827/farm-sunset-wheat-sky-158827.jpeg?auto=compress&cs=tinysrgb&w=1920";
-            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent" />
         </div>
@@ -132,9 +129,6 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                           src={`/images/${img}`} 
                           alt={`${project.title} ${idx + 1}`}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                          onError={(e) => {
-                            e.target.src = "https://images.pexels.com/photos/158827/farm-sunset-wheat-sky-158827.jpeg?auto=compress&cs=tinysrgb&w=1920";
-                          }}
                        />
                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                      </div>
@@ -159,9 +153,6 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                             src={p.images?.[0] ? `/images/${p.images[0]}` : "https://images.pexels.com/photos/158827/farm-sunset-wheat-sky-158827.jpeg?auto=compress&cs=tinysrgb&w=1920"}
                             alt={p.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            onError={(e) => {
-                              e.target.src = "https://images.pexels.com/photos/158827/farm-sunset-wheat-sky-158827.jpeg?auto=compress&cs=tinysrgb&w=1920";
-                            }}
                          />
                       </div>
                       <h4 className="font-bold text-zinc-900 group-hover:text-emerald-600 transition-colors">{p.title}</h4>
