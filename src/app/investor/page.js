@@ -244,38 +244,38 @@ export default function InvestorDashboardPage() {
               </div>
             </div>
 
-            <dl className="space-y-3 text-sm text-zinc-900">
-            <div className="flex items-center justify-between">
-              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Name
-              </dt>
-              <dd>{selectedInvestor.name || "-"}</dd>
+            <div className="space-y-3 text-sm text-zinc-900">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                  Name
+                </span>
+                <span>{selectedInvestor.name || "-"}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                  Email
+                </span>
+                <span>{selectedInvestor.email || "-"}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                  Phone
+                </span>
+                <span>{selectedInvestor.phone || "-"}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                  Location
+                </span>
+                <span>{selectedInvestor.location || "-"}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                  Type
+                </span>
+                <span>{selectedInvestor.investorType?.type || selectedInvestor.investorTypeId || "-"}</span>
+              </div>
             </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Email
-              </dt>
-              <dd>{selectedInvestor.email || "-"}</dd>
-            </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Phone
-              </dt>
-              <dd>{selectedInvestor.phone || "-"}</dd>
-            </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Location
-              </dt>
-              <dd>{selectedInvestor.location || "-"}</dd>
-            </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Type
-              </dt>
-              <dd>{selectedInvestor.investorType?.type || selectedInvestor.investorTypeId || "-"}</dd>
-            </div>
-            </dl>
           </>
         ) : (
           <div className="flex h-24 items-center justify-center text-sm text-zinc-500">

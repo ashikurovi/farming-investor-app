@@ -275,41 +275,41 @@
                  )}
                </div>
                <div>
-                 <h3 className="text-base font-semibold text-zinc-900">
-                   {fmtBDT(selectedInvestment.amount)} BDT
-                 </h3>
+                <h3 className="text-base font-semibold text-zinc-900">
+                  {formatCurrencyBDT(selectedInvestment.amount)}
+                </h3>
                  <p className="text-xs text-zinc-500">
                    {selectedInvestment.date || "-"} {selectedInvestment.time || ""}
                  </p>
                </div>
              </div>
  
-             <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm text-zinc-900">
-               <div>
-                 <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                   Amount
-                 </dt>
-                 <dd>{fmtBDT(selectedInvestment.amount)}</dd>
-               </div>
-               <div>
-                 <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                   Reference
-                 </dt>
-                 <dd>{selectedInvestment.reference || "-"}</dd>
-               </div>
-               <div>
-                 <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                   Date
-                 </dt>
-                 <dd>{selectedInvestment.date || "-"}</dd>
-               </div>
-               <div>
-                 <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                   Time
-                 </dt>
-                 <dd>{selectedInvestment.time || "-"}</dd>
-               </div>
-             </dl>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm text-zinc-900">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                  Amount
+                </p>
+                <p>{formatCurrencyBDT(selectedInvestment.amount)}</p>
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                  Reference
+                </p>
+                <p>{selectedInvestment.reference || "-"}</p>
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                  Date
+                </p>
+                <p>{selectedInvestment.date || "-"}</p>
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                  Time
+                </p>
+                <p>{selectedInvestment.time || "-"}</p>
+              </div>
+            </div>
            </>
          ) : (
            <div className="flex h-24 items-center justify-center text-sm text-zinc-500">

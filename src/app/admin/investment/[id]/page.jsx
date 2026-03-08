@@ -116,26 +116,26 @@ export default function AdminInvestmentDetailPage() {
               )}
 
               {!isBusy && !isError && investment && (
-                <dl className="space-y-4 text-sm text-zinc-900">
+                <div className="space-y-4 text-sm text-zinc-900">
                   <div className="flex items-center justify-between">
-                    <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                    <span className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
                       Amount (BDT)
-                    </dt>
-                    <dd>{formatCurrencyBDT(investment.amount)}</dd>
+                    </span>
+                    <span>{formatCurrencyBDT(investment.amount)}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                    <span className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
                       Date & time
-                    </dt>
-                    <dd>{investmentDate || "-"}</dd>
+                    </span>
+                    <span>{investmentDate || "-"}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                    <span className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
                       Investor ID
-                    </dt>
-                    <dd>#{investment.investorId}</dd>
+                    </span>
+                    <span>#{investment.investorId}</span>
                   </div>
-                </dl>
+                </div>
               )}
             </CardContent>
           </Card>

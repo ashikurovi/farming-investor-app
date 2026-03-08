@@ -85,70 +85,70 @@ export default function AdminContactDetailPage() {
               </div>
             </div>
 
-            <dl className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="space-y-1">
-                <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
                   First name
-                </dt>
-                <dd className="text-sm text-zinc-900">
+                </p>
+                <p className="text-sm text-zinc-900">
                   {contact.firstName || "-"}
-                </dd>
+                </p>
               </div>
 
               <div className="space-y-1">
-                <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
                   Last name
-                </dt>
-                <dd className="text-sm text-zinc-900">
+                </p>
+                <p className="text-sm text-zinc-900">
                   {contact.lastName || "-"}
-                </dd>
+                </p>
               </div>
 
               <div className="space-y-1">
-                <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
                   Email
-                </dt>
-                <dd className="text-sm text-zinc-900">
+                </p>
+                <p className="text-sm text-zinc-900">
                   {contact.email || "-"}
-                </dd>
+                </p>
               </div>
 
               <div className="space-y-1">
-                <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
                   Phone
-                </dt>
-                <dd className="text-sm text-zinc-900">
+                </p>
+                <p className="text-sm text-zinc-900">
                   {contact.phone || "-"}
-                </dd>
+                </p>
               </div>
 
               <div className="space-y-1">
-                <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
                   Country
-                </dt>
-                <dd className="text-sm text-zinc-900">
+                </p>
+                <p className="text-sm text-zinc-900">
                   {contact.country || "-"}
-                </dd>
+                </p>
               </div>
 
               <div className="space-y-1">
-                <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
                   Investor type
-                </dt>
-                <dd className="text-sm text-zinc-900">
+                </p>
+                <p className="text-sm text-zinc-900">
                   {contact.investorType || "-"}
-                </dd>
+                </p>
               </div>
 
               <div className="space-y-1">
-                <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
                   Investment range
-                </dt>
-                <dd className="text-sm text-zinc-900">
+                </p>
+                <p className="text-sm text-zinc-900">
                   {contact.investmentRange || "-"}
-                </dd>
+                </p>
               </div>
-            </dl>
+            </div>
 
             <div className="space-y-2">
               <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
