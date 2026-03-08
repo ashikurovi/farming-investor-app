@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Wallet, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
+import { formatCurrencyBDT, formatDateUTC } from "@/lib/utils";
 
 const cleanUrl = (u) => (typeof u === "string" ? u.replace(/[`]/g, "").trim() : "");
 
@@ -61,16 +62,14 @@ export function AdminInvestorRecentInvestments({ investments = [] }) {
                     {inv.reference || `Investment #${inv.id}`}
                   </p>
                   <p className="text-sm text-zinc-500">
-                    {inv.date
-                      ? new Date(inv.date).toLocaleDateString("en-US", { timeZone: "UTC" })
-                      : "-"}
+                    {formatDateUTC(inv?.date)}
                     {inv.time ? ` • ${inv.time}` : ""}
                   </p>
                 </div>
               </div>
               <div className="text-right">
                 <p className="font-semibold text-zinc-900">
-                  ৳{Number(inv.amount).toLocaleString("en-US")}
+                  {formatCurrencyBDT(inv?.amount)}
                 </p>
                 <p className="text-xs font-medium text-zinc-500">Completed</p>
               </div>

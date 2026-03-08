@@ -8,6 +8,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { useGetInvestmentAdminQuery, useDeleteInvestmentAdminMutation } from "@/features/investor/investments/investmentsApiSlice";
 import { useGetUserQuery } from "@/features/admin/users/usersApiSlice";
 import { toast } from "sonner";
+import { formatNumber, formatCurrencyBDT } from "@/lib/utils";
 
 export default function AdminInvestmentDetailPage() {
   const params = useParams();
@@ -28,10 +29,7 @@ export default function AdminInvestmentDetailPage() {
   const [deleteInvestment, { isLoading: isDeleting }] =
     useDeleteInvestmentAdminMutation();
 
-  const formatNumber = (value) =>
-    Number(value || 0).toLocaleString("en-US", {
-      maximumFractionDigits: 0,
-    });
+  
 
   const investorId = investment?.investorId;
   const { data: user } = useGetUserQuery(investorId, { skip: !investorId });
@@ -46,7 +44,7 @@ export default function AdminInvestmentDetailPage() {
   const handleDelete = async () => {
     if (!investment) return;
     const confirmed = window.confirm(
-      `Delete ${formatNumber(investment.amount)} BDT investment for investor #${investment.investorId}? This action cannot be undone.`,
+      `Delete ${formatCurrencyBDT(investment.amount)} investment for investor #${investment.investorId}? This action cannot be undone.`,
     );
     if (!confirmed) return;
 
@@ -123,7 +121,7 @@ export default function AdminInvestmentDetailPage() {
                     <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
                       Amount (BDT)
                     </dt>
-                    <dd>{formatNumber(investment.amount)}</dd>
+                    <dd>{formatCurrencyBDT(investment.amount)}</dd>
                   </div>
                   <div className="flex items-center justify-between">
                     <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">

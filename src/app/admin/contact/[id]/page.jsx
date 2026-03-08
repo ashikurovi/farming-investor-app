@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useGetContactQuery } from "@/features/contact/contactApiSlice";
+import { formatDateUTC } from "@/lib/utils";
 
 export default function AdminContactDetailPage() {
   const params = useParams();
@@ -21,12 +22,7 @@ export default function AdminContactDetailPage() {
 
   const isBusy = isLoading || isFetching;
 
-  const formatDateTime = (value) => {
-    if (!value) return "-";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "-";
-    return date.toLocaleString("en-US", { timeZone: "UTC" });
-  };
+  
 
   const fullName =
     contact &&
@@ -80,7 +76,7 @@ export default function AdminContactDetailPage() {
                   {fullName || "Unknown contact"}
                 </h2>
                 <p className="text-sm text-zinc-500">
-                  Received on {formatDateTime(contact.createdAt)}
+                  Received on {formatDateUTC(contact.createdAt, { year: "numeric", month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" })}
                 </p>
               </div>
 

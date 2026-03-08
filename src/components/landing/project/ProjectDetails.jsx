@@ -3,6 +3,7 @@
 import { ArrowLeft, MapPin, CheckCircle, Info, Share2, Heart, ShieldCheck, Sprout } from "lucide-react";
 import Link from "next/link";
 import { useState, useMemo } from "react";
+import { formatNumber } from "@/lib/utils";
 export function ProjectDetails({ project, similarProjects = [] }) {
   const [isLiked, setIsLiked] = useState(false);
 
@@ -213,7 +214,7 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center py-3 border-b border-zinc-100">
                       <span className="text-sm text-zinc-500">Min. Investment</span>
-                      <span className="font-bold text-zinc-900">BDT {Number(project.amount).toLocaleString("en-US")}</span>
+                      <span className="font-bold text-zinc-900">BDT {formatNumber(project.amount)}</span>
                     </div>
                     <div className="flex justify-between items-center py-3 border-b border-zinc-100">
                       <span className="text-sm text-zinc-500">Risk Level</span>

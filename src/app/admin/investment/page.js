@@ -22,6 +22,7 @@ import {
 } from "@/features/investor/investments/investmentsApiSlice";
 import { useGetUsersQuery } from "@/features/admin/users/usersApiSlice";
 import { toast } from "sonner";
+import { formatNumber, formatCurrencyBDT } from "@/lib/utils";
 
 const PAGE_SIZE = 10;
 
@@ -57,10 +58,7 @@ export default function AdminInvestmentsPage() {
     onConfirm: null,
   });
 
-  const formatNumber = (value) =>
-    Number(value || 0).toLocaleString("en-US", {
-      maximumFractionDigits: 0,
-    });
+  
 
   const { data, isLoading, isFetching } = useGetInvestmentsAdminQuery();
 
@@ -426,12 +424,12 @@ export default function AdminInvestmentsPage() {
             <p className="text-2xl font-semibold text-zinc-900">
               {isLoading
                 ? "—"
-                : `${formatNumber(
+                : formatCurrencyBDT(
                     filteredInvestments.reduce(
                       (sum, inv) => sum + Number(inv.amount || 0),
                       0,
                     ),
-                  )} BDT`}
+                  )}
             </p>
             <CardDescription>
               {isLoading ? "Loading amounts..." : "Sum of all investment amounts"}
@@ -469,7 +467,7 @@ export default function AdminInvestmentsPage() {
             <p className="text-2xl font-semibold text-zinc-900">
               {isLoading
                 ? "—"
-                : formatNumber(
+                : formatCurrencyBDT(
                     total > 0
                       ? filteredInvestments.reduce(
                           (sum, inv) => sum + Number(inv.amount || 0),

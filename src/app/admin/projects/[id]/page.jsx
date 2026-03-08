@@ -63,11 +63,7 @@ export default function AdminProjectDetailPage() {
 
   const isBusy = isLoading || isFetching;
 
-  const formatNumber = (value) =>
-    Number(value || 0).toLocaleString("en-US", {
-      maximumFractionDigits: 0,
-    });
-
+  
   const statusConfig = useMemo(() => {
     if (!project) return null;
 

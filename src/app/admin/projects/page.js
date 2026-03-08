@@ -57,11 +57,7 @@ export default function AdminProjectsPage() {
     totalProfit: stats?.totalProfit ?? 0,
   };
 
-  const formatNumber = (value) =>
-    Number(value || 0).toLocaleString("en-US", {
-      maximumFractionDigits: 0,
-    });
-
+  
   const { data, isLoading, isFetching } = useGetProjectsQuery({
     page,
     limit: pageSize,

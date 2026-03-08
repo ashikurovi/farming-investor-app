@@ -17,12 +17,12 @@ export function AdminInvestorStats({ stats = [] }) {
               <stat.icon className={`h-6 w-6 ${stat.color}`} />
             </div>
             <div className="flex items-center justify-between">
-              <dt className="truncate text-sm font-medium text-gray-500">
+              <p className="truncate text-sm font-medium text-gray-500">
                 {stat.label}
-              </dt>
-              <dd className="md:text-2xl font-bold tracking-tight text-gray-900">
+              </p>
+              <p className="md:text-2xl font-bold tracking-tight text-gray-900">
                 {stat.value}
-              </dd>
+              </p>
             </div>
           </div>
         </div>

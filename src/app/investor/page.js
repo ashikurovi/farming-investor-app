@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { formatNumber } from "@/lib/utils";
 import { Eye } from "lucide-react";
 import { useMeQuery } from "@/features/auth/authApiSlice";
 import { useGetProjectsStatsQuery } from "@/features/admin/projects/projectsApiSlice";
@@ -102,9 +103,7 @@ export default function InvestorDashboardPage() {
             <p className="mt-3 text-2xl font-semibold tracking-tight text-zinc-900">
               {(card.loading ?? statsLoading) || card.value == null
                 ? "—"
-                : Number(card.value).toLocaleString("en-US", {
-                    maximumFractionDigits: 0,
-                  })}
+                : formatNumber(card.value, { maximumFractionDigits: 0 })}
             </p>
           </div>
         ))}

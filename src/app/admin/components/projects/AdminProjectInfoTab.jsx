@@ -12,6 +12,7 @@ import { useMemo } from "react";
   ArrowUpRight,
   ArrowDownRight
 } from "lucide-react";
+import { formatCurrencyBDT, formatDateUTC } from "@/lib/utils";
 
 export function AdminProjectInfoTab({ project, isBusy, isError }) {
   const cleanUrl = (u) => (typeof u === "string" ? u.replace(/`/g, "").trim() : u);
@@ -20,11 +21,7 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
   const location = project?.location;
   const description = project?.description || "No description provided.";
 
-  const formatCurrency = (val) =>
-    `৳${Number(val || 0).toLocaleString("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    })}`;
+  
 
   if (isBusy) {
     return (
@@ -67,7 +64,7 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Investment</p>
-              <p className="mt-2 text-2xl font-bold text-zinc-900">{formatCurrency(investment)}</p>
+              <p className="mt-2 text-2xl font-bold text-zinc-900">{formatCurrencyBDT(investment, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 group-hover:bg-zinc-900 group-hover:text-white transition-colors">
               <Wallet className="h-5 w-5" />
@@ -86,7 +83,7 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Total Cost</p>
-              <p className="mt-2 text-2xl font-bold text-zinc-900">{formatCurrency(cost)}</p>
+              <p className="mt-2 text-2xl font-bold text-zinc-900">{formatCurrencyBDT(cost, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-colors">
               <Receipt className="h-5 w-5" />
@@ -103,7 +100,7 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Total Sell</p>
-              <p className="mt-2 text-2xl font-bold text-zinc-900">{formatCurrency(sell)}</p>
+              <p className="mt-2 text-2xl font-bold text-zinc-900">{formatCurrencyBDT(sell, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
               <TrendingUp className="h-5 w-5" />
@@ -121,7 +118,7 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-emerald-600">Net Profit</p>
               <p className={`mt-2 text-2xl font-bold ${isProfitPositive ? "text-emerald-700" : "text-rose-600"}`}>
-                {isProfitPositive ? "+" : ""}{formatCurrency(project.totalProfit)}
+                {isProfitPositive ? "+" : ""}{formatCurrencyBDT(project.totalProfit, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
               </p>
             </div>
             <div className={`flex h-10 w-10 items-center justify-center rounded-xl transition-colors ${isProfitPositive ? "bg-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white" : "bg-rose-100 text-rose-600 group-hover:bg-rose-600 group-hover:text-white"}`}>
@@ -208,7 +205,7 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
                 <h3 className="text-sm font-semibold text-emerald-900">Distributed Profit</h3>
               </div>
               <div className="mt-4">
-                <p className="text-3xl font-bold text-emerald-700 tracking-tight">{formatCurrency(project.distributedProfit)}</p>
+                <p className="text-3xl font-bold text-emerald-700 tracking-tight">{formatCurrencyBDT(project.distributedProfit, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
                 <p className="mt-1 text-xs font-medium text-emerald-600/80">Total distributed to investors</p>
               </div>
             </div>
@@ -235,7 +232,7 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
                   <span className="text-xs font-medium uppercase tracking-wide">Start Date</span>
                 </div>
                 <span className="text-sm font-semibold text-zinc-900">
-                  {project.startDate ? new Date(project.startDate).toLocaleDateString() : "N/A"}
+                  {project.startDate ? formatDateUTC(project.startDate) : "N/A"}
                 </span>
               </div>
               <div className="h-px bg-zinc-100" />

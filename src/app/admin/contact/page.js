@@ -11,6 +11,7 @@ import {
   useDeleteContactMutation,
 } from "@/features/contact/contactApiSlice";
 import { toast } from "sonner";
+import { formatDateUTC } from "@/lib/utils";
 
 export default function AdminContactsPage() {
   const router = useRouter();
@@ -74,12 +75,7 @@ export default function AdminContactsPage() {
     });
   };
 
-  const formatDateTime = (value) => {
-    if (!value) return "-";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "-";
-    return date.toLocaleString("en-US", { timeZone: "UTC" });
-  };
+  
 
   return (
     <div className="space-y-6">
@@ -156,7 +152,7 @@ export default function AdminContactsPage() {
                 header: "Received at",
                 tdClassName:
                   "whitespace-nowrap px-4 py-3 text-xs text-zinc-600",
-                cell: (contact) => formatDateTime(contact.createdAt),
+                cell: (contact) => formatDateUTC(contact.createdAt, { year: "numeric", month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" }),
               },
             ]}
             data={contacts}

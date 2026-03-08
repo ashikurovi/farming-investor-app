@@ -15,10 +15,7 @@
    if (typeof u !== "string") return "";
    return u.replace(/[`"'()]/g, "").trim();
  };
- const fmtBDT = (n) =>
-   Number(n ?? 0).toLocaleString("en-US", {
-      maximumFractionDigits: 0,
-   });
+ import { formatCurrencyBDT } from "@/lib/utils";
  
  const PAGE_SIZE = 10;
  
@@ -136,19 +133,19 @@
                <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                  <dt className="text-zinc-500">Total Investment</dt>
                  <dd className="text-right font-medium text-zinc-900">
-                   {fmtBDT(user?.totalInvestment)}
+                   {formatCurrencyBDT(user?.totalInvestment)}
                  </dd>
                  <dt className="text-zinc-500">Total Profit</dt>
                  <dd className="text-right font-medium text-emerald-700">
-                   {fmtBDT(user?.totalProfit)}
+                   {formatCurrencyBDT(user?.totalProfit)}
                  </dd>
                  <dt className="text-zinc-500">Balance</dt>
                  <dd className="text-right font-medium text-blue-700">
-                   {fmtBDT(user?.balance)}
+                   {formatCurrencyBDT(user?.balance)}
                  </dd>
                  <dt className="text-zinc-500">Total Cost</dt>
                  <dd className="text-right font-medium text-zinc-900">
-                   {fmtBDT(user?.totalCost)}
+                   {formatCurrencyBDT(user?.totalCost)}
                  </dd>
                </dl>
              )}
@@ -177,7 +174,7 @@
                  header: "Amount (BDT)",
                  tdClassName:
                    "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                 cell: (row) => fmtBDT(row?.amount),
+                cell: (row) => formatCurrencyBDT(row?.amount),
                },
                {
                  key: "date",

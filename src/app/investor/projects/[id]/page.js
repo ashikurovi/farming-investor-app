@@ -12,12 +12,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
+import { formatNumber } from "@/lib/utils";
 
 const cleanUrl = (u) =>
   typeof u === "string" ? u.replace(/[`\"'()]/g, "").trim() : "";
 
-const fmt = (n) =>
-  Number(n || 0).toLocaleString("en-US", { maximumFractionDigits: 0 });
+const fmt = (n) => formatNumber(n, { maximumFractionDigits: 0 });
 
 export default function ProjectDetailPage() {
   const params = useParams();

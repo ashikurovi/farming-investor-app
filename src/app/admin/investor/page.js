@@ -28,6 +28,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { toast } from "sonner";
 import { useGetInvestorTypesQuery } from "@/features/admin/investorType/investorTypeApiSlice";
+import { formatCurrencyBDT } from "@/lib/utils";
 
 const cleanUrl = (u) =>
   typeof u === "string" ? u.replace(/`/g, "").trim() : "";
@@ -380,8 +381,7 @@ export default function AdminInvestorPage() {
                   "whitespace-nowrap px-6 py-4 text-sm text-gray-700 font-mono text-right",
                 cell: (user) => (
                   <span className="font-medium text-gray-900">
-                    ৳
-                    {Number(user.totalInvestment ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                    {formatCurrencyBDT(user.totalInvestment ?? 0, { minimumFractionDigits: 2 })}
                   </span>
                 ),
               },
@@ -392,7 +392,7 @@ export default function AdminInvestorPage() {
                 tdClassName:
                   "whitespace-nowrap px-6 py-4 text-sm text-emerald-600 font-mono text-right font-medium",
                 cell: (user) =>
-                  `৳${Number(user.totalProfit ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
+                  formatCurrencyBDT(user.totalProfit ?? 0, { minimumFractionDigits: 2 }),
               },
               {
                 key: "balance",
@@ -401,7 +401,7 @@ export default function AdminInvestorPage() {
                 tdClassName:
                   "whitespace-nowrap px-6 py-4 text-sm text-blue-600 font-mono text-right font-medium",
                 cell: (user) =>
-                  `৳${Number(user.balance ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
+                  formatCurrencyBDT(user.balance ?? 0, { minimumFractionDigits: 2 }),
               },
               {
                 key: "totalCost",
@@ -410,7 +410,7 @@ export default function AdminInvestorPage() {
                 tdClassName:
                   "whitespace-nowrap px-6 py-4 text-sm text-gray-500 font-mono text-right",
                 cell: (user) =>
-                  `৳${Number(user.totalCost ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
+                  formatCurrencyBDT(user.totalCost ?? 0, { minimumFractionDigits: 2 }),
               },
               {
                 key: "status",

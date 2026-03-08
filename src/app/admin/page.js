@@ -10,18 +10,7 @@ import {
   Activity,
   ArrowRight,
 } from "lucide-react";
-
-function formatNumber(n) {
-  const num = Number(n ?? 0);
-  return num.toLocaleString("en-US", {
-    maximumFractionDigits: 0,
-  });
-}
-
-function formatCurrencyBDT(n) {
-  const num = Number(n ?? 0);
-  return `৳${num.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
-}
+import { formatNumber, formatCurrencyBDT } from "@/lib/utils";
 
 export default function AdminDashboardPage() {
   const { data: stats, isLoading: statsLoading } = useGetProjectsStatsQuery();

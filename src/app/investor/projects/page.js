@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card";
 import { SearchBar } from "@/components/ui/search-bar";
 import { useGetProjectsQuery } from "@/features/admin/projects/projectsApiSlice";
+import { formatNumber } from "@/lib/utils";
 // Removed invest action import
 
 const PAGE_SIZE = 6;
@@ -70,10 +71,7 @@ export default function InvestorProjectsPage() {
 
   // Removed handleAmountChange
 
-  const formatNumber = (value) =>
-    Number(value || 0).toLocaleString("en-US", {
-      maximumFractionDigits: 0,
-    });
+  
 
   // Removed handleInvest
 

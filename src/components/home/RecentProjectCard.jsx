@@ -6,6 +6,7 @@ import {
   ArrowRight,
   Sprout,
 } from "lucide-react";
+import { formatNumber } from "@/lib/utils";
 
 const fallbackImages = [
   "https://images.pexels.com/photos/2132227/pexels-photo-2132227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -107,7 +108,7 @@ export default function RecentProjectCard({ project, index }) {
                 Target
               </p>
               <p className="text-sm font-bold text-zinc-900">
-                BDT {amount.toLocaleString("en-US")}
+                BDT {formatNumber(amount)}
               </p>
             </div>
             <Link

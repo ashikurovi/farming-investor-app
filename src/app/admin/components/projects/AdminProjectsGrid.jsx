@@ -1,6 +1,7 @@
 import { FilePlus, Eye, Edit2, Trash2, MapPin, TrendingUp, Calendar } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { formatCurrencyBDT } from "@/lib/utils";
 
 export function AdminProjectsGrid({
   projects,
@@ -10,11 +11,7 @@ export function AdminProjectsGrid({
   onDelete,
   onAddDailyReport,
 }) {
-  const formatCurrency = (val) =>
-    `৳${Number(val || 0).toLocaleString("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    })}`;
+  const formatCurrency = (val) => formatCurrencyBDT(val, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
   return (
     <section className="space-y-6">

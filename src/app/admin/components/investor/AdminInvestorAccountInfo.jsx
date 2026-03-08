@@ -1,4 +1,5 @@
 import { Building2, ShieldCheck, Briefcase, Calendar, TrendingUp } from "lucide-react";
+import { formatDateUTC } from "@/lib/utils";
 
 export function AdminInvestorAccountInfo({ user }) {
   return (
@@ -60,9 +61,7 @@ export function AdminInvestorAccountInfo({ user }) {
                 Joined Date
               </p>
               <p className="text-sm font-semibold text-zinc-900">
-                {user?.createdAt
-                  ? new Date(user.createdAt).toLocaleDateString("en-US", { timeZone: "UTC" })
-                  : "-"}
+                {formatDateUTC(user?.createdAt)}
               </p>
             </div>
           </div>
