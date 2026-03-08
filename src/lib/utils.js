@@ -7,12 +7,28 @@ export function cn(...inputs) {
 
 export function formatNumber(n, options = {}) {
   const num = Number(n ?? 0);
-  return num.toLocaleString("en-US", { maximumFractionDigits: 0, ...options });
+  const merged = { maximumFractionDigits: 0, ...options };
+  if (
+    typeof merged.minimumFractionDigits === "number" &&
+    (merged.maximumFractionDigits == null ||
+      merged.maximumFractionDigits < merged.minimumFractionDigits)
+  ) {
+    merged.maximumFractionDigits = merged.minimumFractionDigits;
+  }
+  return num.toLocaleString("en-US", merged);
 }
 
 export function formatCurrencyBDT(n, options = {}) {
   const num = Number(n ?? 0);
-  return `৳${num.toLocaleString("en-US", { maximumFractionDigits: 0, ...options })}`;
+  const merged = { maximumFractionDigits: 0, ...options };
+  if (
+    typeof merged.minimumFractionDigits === "number" &&
+    (merged.maximumFractionDigits == null ||
+      merged.maximumFractionDigits < merged.minimumFractionDigits)
+  ) {
+    merged.maximumFractionDigits = merged.minimumFractionDigits;
+  }
+  return `৳${num.toLocaleString("en-US", merged)}`;
 }
 
 export function formatDateUTC(value, options = {}) {
