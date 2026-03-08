@@ -216,7 +216,7 @@ export default function AdminProjectsPage() {
             </span>
             Live Portfolio
           </div>
-          
+
           <div className="max-w-2xl">
             <h1 className="flex items-center gap-3 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600 shadow-sm">
@@ -225,7 +225,8 @@ export default function AdminProjectsPage() {
               Projects Overview
             </h1>
             <p className="mt-2 text-sm text-zinc-500 leading-relaxed max-w-lg">
-              Manage your agricultural investment portfolio. Track growth, analyze returns, and generate reports.
+              Manage your agricultural investment portfolio. Track growth,
+              analyze returns, and generate reports.
             </p>
           </div>
         </div>
@@ -258,12 +259,14 @@ export default function AdminProjectsPage() {
       {/* Grid Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-zinc-900">Active Projects</h2>
+          <h2 className="text-lg font-semibold text-zinc-900">
+            Active Projects
+          </h2>
           <div className="text-xs font-medium text-zinc-500">
             Showing {visibleProjects.length} of {meta.total} projects
           </div>
         </div>
-        
+
         <AdminProjectsGrid
           projects={visibleProjects}
           isBusy={isBusy}

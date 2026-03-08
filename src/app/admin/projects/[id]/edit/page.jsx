@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MapPin, Upload, Type, FileText, Image as ImageIcon, Save, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -31,6 +31,19 @@ export default function AdminProjectEditPage() {
     location: "",
   });
   const [imageFile, setImageFile] = useState(null);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Pre-fill form data when project loads
+  useEffect(() => {
+    if (project && !isInitialized) {
+      setFormValues({
+        name: project.name || "",
+        description: project.description || "",
+        location: project.location || "",
+      });
+      setIsInitialized(true);
+    }
+  }, [project, isInitialized]);
 
   const [updateProject, { isLoading: isUpdating }] = useUpdateProjectMutation();
 
@@ -95,137 +108,205 @@ export default function AdminProjectEditPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <header className="flex items-center gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          onClick={() => router.push("/admin/projects")}
-          className="h-9 w-9 rounded-full border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50"
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
+    <div className="w-full space-y-8 pb-10">
+      {/* Header */}
+      <header className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex items-start gap-4">
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            onClick={() => router.push("/admin/projects")}
+            className="mt-1 h-10 w-10 shrink-0 rounded-xl border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 transition-colors"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
 
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight text-zinc-900">
-            Edit project
-          </h1>
-          <p className="text-sm text-zinc-500">
-            Update project details on a full page, instead of a modal form.
-          </p>
+          <div className="space-y-1">
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+              Edit Project
+            </h1>
+            <p className="text-sm text-zinc-500">
+              Update project details, location, and visual assets.
+            </p>
+          </div>
         </div>
       </header>
 
-      <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
-        {isBusy && (
-          <div className="flex h-32 items-center justify-center text-sm text-zinc-500">
-            Loading project...
+      {/* Main Content */}
+      <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+        {(isBusy || (project && !isInitialized)) && (
+          <div className="flex h-64 items-center justify-center">
+            <div className="flex flex-col items-center gap-2">
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-200 border-t-emerald-600"></div>
+              <p className="text-sm font-medium text-zinc-500">Loading project details...</p>
+            </div>
           </div>
         )}
 
         {!isBusy && isError && (
-          <div className="flex h-32 items-center justify-center text-sm text-red-600">
-            Failed to load project. Please try again.
+          <div className="flex h-64 items-center justify-center rounded-2xl bg-red-50 p-6 text-center">
+            <div className="space-y-2">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600">
+                <X className="h-6 w-6" />
+              </div>
+              <h3 className="text-sm font-semibold text-red-900">Failed to load project</h3>
+              <p className="text-xs text-red-600">Please check your connection and try again.</p>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => window.location.reload()}
+                className="mt-2 border-red-200 bg-white text-red-700 hover:bg-red-50"
+              >
+                Retry
+              </Button>
+            </div>
           </div>
         )}
 
-        {!isBusy && !isError && project && (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <div className="space-y-2">
-                <label
-                  htmlFor="name"
-                  className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500"
-                >
-                  Name
-                </label>
-                <Input
-                  id="name"
-                  value={formValues.name ?? (project?.name ?? "")}
-                  onChange={(e) => handleChange("name", e.target.value)}
-                  placeholder="e.g. Tomato Farming"
-                  required
-                  className="h-10 rounded-xl border-zinc-200 bg-zinc-50 focus:border-emerald-500 focus:bg-white focus:ring-emerald-500/20"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="location"
-                  className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500"
-                >
-                  Location
-                </label>
-                <Input
-                  id="location"
-                  value={formValues.location ?? (project?.location ?? "")}
-                  onChange={(e) => handleChange("location", e.target.value)}
-                  placeholder="e.g. Dhaka"
-                  className="h-10 rounded-xl border-zinc-200 bg-zinc-50 focus:border-emerald-500 focus:bg-white focus:ring-emerald-500/20"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="photo"
-                  className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500"
-                >
-                  Project photo
-                </label>
-                <input
-                  id="photo"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="block w-full text-sm text-zinc-600 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-50 file:px-4 file:py-2 file:text-xs file:font-semibold file:uppercase file:tracking-[0.16em] file:text-emerald-700 hover:file:bg-emerald-100"
-                />
-                {previewUrl && (
-                  <div className="mt-3 overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50">
-                    <div className="aspect-[16/9] w-full bg-zinc-100">
-                      <img
-                        src={previewUrl}
-                        alt={formValues.name || "Project image"}
-                        className="h-full w-full object-cover"
+        {!isBusy && !isError && project && isInitialized && (
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+              {/* Left Column: Project Info */}
+              <div className="lg:col-span-2 space-y-6">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="name"
+                      className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500 flex items-center gap-1.5"
+                    >
+                      <Type className="h-3.5 w-3.5" />
+                      Project Name
+                    </label>
+                    <div className="relative">
+                      <Input
+                        id="name"
+                        value={formValues.name}
+                        onChange={(e) => handleChange("name", e.target.value)}
+                        placeholder="e.g. Sustainable Tomato Farming"
+                        required
+                        className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal"
                       />
                     </div>
                   </div>
-                )}
+
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="location"
+                      className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500 flex items-center gap-1.5"
+                    >
+                      <MapPin className="h-3.5 w-3.5" />
+                      Location
+                    </label>
+                    <div className="relative">
+                      <Input
+                        id="location"
+                        value={formValues.location}
+                        onChange={(e) => handleChange("location", e.target.value)}
+                        placeholder="e.g. Gazipur, Dhaka"
+                        className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="description"
+                    className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500 flex items-center gap-1.5"
+                  >
+                    <FileText className="h-3.5 w-3.5" />
+                    Description
+                  </label>
+                  <textarea
+                    id="description"
+                    rows={8}
+                    value={formValues.description}
+                    onChange={(e) => handleChange("description", e.target.value)}
+                    placeholder="Describe the project, its objectives, financial goals, and expected outcomes..."
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 p-4 text-sm leading-relaxed text-zinc-900 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10 transition-all resize-none placeholder:text-zinc-400"
+                  />
+                </div>
+              </div>
+
+              {/* Right Column: Media */}
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <label
+                    htmlFor="photo"
+                    className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500 flex items-center gap-1.5"
+                  >
+                    <ImageIcon className="h-3.5 w-3.5" />
+                    Cover Image
+                  </label>
+                  
+                  <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 transition-colors hover:border-emerald-500/50 hover:bg-emerald-50/30">
+                    <input
+                      id="photo"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
+                    />
+                    
+                    {previewUrl ? (
+                      <div className="relative aspect-[4/3] w-full">
+                        <img
+                          src={previewUrl}
+                          alt="Project preview"
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
+                          <div className="rounded-full bg-white/90 px-4 py-2 text-xs font-semibold text-zinc-900 shadow-lg backdrop-blur-sm">
+                            Change Image
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex aspect-[4/3] flex-col items-center justify-center gap-3 p-6 text-center">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-zinc-200">
+                          <Upload className="h-5 w-5 text-zinc-400" />
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium text-zinc-700">Click to upload</p>
+                          <p className="text-xs text-zinc-500">SVG, PNG, JPG or GIF</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-[10px] text-zinc-500">
+                    Recommended size: 1200x800px. Max file size: 5MB.
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label
-                htmlFor="description"
-                className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500"
-              >
-                Description
-              </label>
-              <textarea
-                id="description"
-                rows={6}
-                value={formValues.description ?? (project?.description ?? "")}
-                onChange={(e) => handleChange("description", e.target.value)}
-                placeholder="Describe the project, its objectives and financials."
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-900 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
-              />
-            </div>
-
-            <div className="flex items-center justify-end gap-3">
+            {/* Action Buttons */}
+            <div className="flex items-center justify-end gap-4 border-t border-zinc-100 pt-6">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => router.push("/admin/projects")}
-                className="h-9 rounded-full border-zinc-200 text-xs"
+                className="h-11 rounded-xl border-zinc-200 px-6 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={isUpdating}
-                className="h-9 rounded-full bg-emerald-600 px-5 text-xs font-semibold uppercase tracking-[0.18em] text-white hover:bg-emerald-500 disabled:opacity-70"
+                className="h-11 rounded-xl bg-emerald-600 px-8 text-sm font-semibold text-white shadow-md shadow-emerald-200 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-200/50 disabled:opacity-70 disabled:shadow-none transition-all"
               >
-                {isUpdating ? "Saving..." : "Save changes"}
+                {isUpdating ? (
+                  <div className="flex items-center gap-2">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                    <span>Saving...</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Save className="h-4 w-4" />
+                    <span>Save Changes</span>
+                  </div>
+                )}
               </Button>
             </div>
           </form>

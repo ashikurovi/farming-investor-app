@@ -104,67 +104,87 @@ export default function AdminProjectDetailPage() {
 
   return (
     <div className="space-y-6">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
+      <header className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex items-start gap-4">
           <Button
             type="button"
             variant="outline"
             size="icon"
             onClick={() => router.push("/admin/projects")}
-            className="h-9 w-9 rounded-full border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50"
+            className="mt-1 h-10 w-10 shrink-0 rounded-xl border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-5 w-5" />
           </Button>
 
-          <div>
-            <h1 className="text-xl font-semibold tracking-tight text-zinc-900">
-              Project details
+          <div className="space-y-1">
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+              {project?.name || "Project Details"}
             </h1>
-            <p className="text-sm text-zinc-500">
-              View key information about this investment project.
-            </p>
+            <div className="flex items-center gap-3 text-sm text-zinc-500">
+              <span className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-zinc-400"></span>
+                Investment Project
+              </span>
+              {project?.location && (
+                <>
+                  <span className="text-zinc-300">•</span>
+                  <span>{project.location}</span>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
         {statusConfig && (
-          <div className="inline-flex items-center gap-2 rounded-full bg-zinc-50 px-3 py-1.5 text-xs font-medium text-zinc-700 ring-1 ring-zinc-200">
-            <span
-              className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[0.16em] ${statusConfig.className}`}
-            >
-              {statusConfig.label}
-            </span>
+          <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wider ${statusConfig.className.replace("bg-", "border-").replace("text-", "text-").replace("ring-", "bg-").replace("ring-opacity-", "bg-opacity-")}`}>
+            <span className={`h-2 w-2 rounded-full ${statusConfig.className.includes("emerald") ? "bg-emerald-500" : statusConfig.className.includes("amber") ? "bg-amber-500" : "bg-zinc-500"}`}></span>
+            {statusConfig.label}
           </div>
         )}
       </header>
 
-      <div className="flex items-center gap-2">
-        <Button
-          type="button"
-          size="sm"
-          variant="outline"
-          onClick={() => setActiveTab("info")}
-          className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] ${activeTab === "info" ? "bg-zinc-900 text-white border-zinc-900" : "text-zinc-700 border-zinc-200 hover:bg-zinc-50"}`}
-        >
-          Project info
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant="outline"
-          onClick={() => setActiveTab("daily")}
-          className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] ${activeTab === "daily" ? "bg-zinc-900 text-white border-zinc-900" : "text-zinc-700 border-zinc-200 hover:bg-zinc-50"}`}
-        >
-          Daily reports
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant="outline"
-          onClick={() => setActiveTab("glarry")}
-          className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] ${activeTab === "glarry" ? "bg-zinc-900 text-white border-zinc-900" : "text-zinc-700 border-zinc-200 hover:bg-zinc-50"}`}
-        >
-          Glarry
-        </Button>
+      <div className="border-b border-zinc-200">
+        <div className="flex items-center gap-6">
+          <button
+            onClick={() => setActiveTab("info")}
+            className={`relative pb-3 text-sm font-medium transition-colors ${
+              activeTab === "info"
+                ? "text-emerald-600"
+                : "text-zinc-500 hover:text-zinc-700"
+            }`}
+          >
+            Project Overview
+            {activeTab === "info" && (
+              <span className="absolute bottom-0 left-0 h-0.5 w-full bg-emerald-600" />
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab("daily")}
+            className={`relative pb-3 text-sm font-medium transition-colors ${
+              activeTab === "daily"
+                ? "text-emerald-600"
+                : "text-zinc-500 hover:text-zinc-700"
+            }`}
+          >
+            Daily Reports
+            {activeTab === "daily" && (
+              <span className="absolute bottom-0 left-0 h-0.5 w-full bg-emerald-600" />
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab("glarry")}
+            className={`relative pb-3 text-sm font-medium transition-colors ${
+              activeTab === "glarry"
+                ? "text-emerald-600"
+                : "text-zinc-500 hover:text-zinc-700"
+            }`}
+          >
+            Gallery
+            {activeTab === "glarry" && (
+              <span className="absolute bottom-0 left-0 h-0.5 w-full bg-emerald-600" />
+            )}
+          </button>
+        </div>
       </div>
 
       {activeTab === "info" && (
