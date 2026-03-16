@@ -7,18 +7,22 @@ import {
 import { ProjectDetails } from "../../../../components/landing/project/ProjectDetails";
 import { Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { use } from "react";
+import { useRouter, useParams } from "next/navigation";
 
-export default function ProjectDetailsPage({ params }) {
+export default function ProjectDetailsPage() {
   const router = useRouter();
-  const { id } = use(params);
+  const params = useParams();
+  const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
 
-  const { data: rawProject, isLoading, isError } = useGetProjectQuery(id);
+  const {
+    data: rawProject,
+    isLoading,
+    isError,
+  } = useGetProjectQuery(id, { skip: !id });
 
   const { data: projectsData } = useGetProjectsQuery({ limit: 100 });
 
-  if (isLoading) {
+  if (!id || isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-50">
         <div className="flex flex-col items-center gap-4">
@@ -38,8 +42,8 @@ export default function ProjectDetailsPage({ params }) {
           Project Not Found
         </h3>
         <p className="max-w-xs text-sm text-zinc-500">
-          We couldn't retrieve the project details. It might have been deleted
-          or doesn't exist.
+          We couldn&apos;t retrieve the project details. It might have been deleted
+          or doesn&apos;t exist.
         </p>
         <Button onClick={() => router.back()} variant="outline">
           Go Back

@@ -6,22 +6,45 @@ import { useState, useMemo } from "react";
 export function ProjectDetails({ project, similarProjects = [] }) {
   const [isLiked, setIsLiked] = useState(false);
 
-  // Format paragraphs
-  const descriptionParagraphs = project.project_details.split('\r\n').filter(p => p.trim().length > 0);
+  const formatCurrency = (val) =>
+    `BDT ${Number(val || 0).toLocaleString("en-US")}`;
 
-  // Calculate stable funding progress based on projectId
+  const descriptionParagraphs = (typeof project?.project_details === "string"
+    ? project.project_details
+    : "")
+    .split(/\r?\n/)
+    .map((p) => p.trim())
+    .filter((p) => p.length > 0);
+
   const fundingPercent = useMemo(() => {
-    const hash = project.projectId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return (hash % 55) + 40; // Range 40-95
-  }, [project.projectId]);
+    const total = Number(project?.totalCost || 0);
+    const invested = Number(project?.totalInvestment || 0);
+    if (total > 0) {
+      const pct = Math.round((invested / total) * 100);
+      return Math.max(0, Math.min(100, pct));
+    }
+    const idStr = String(project?.projectId ?? "");
+    const hash = idStr.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return (hash % 55) + 40;
+  }, [project.totalCost, project.totalInvestment, project.projectId]);
+
+  const resolveImageSrc = (img) => {
+    if (!img) return null;
+    const s = String(img).trim();
+    if (s.startsWith("http") || s.startsWith("/")) return s;
+    return `/images/${s}`;
+  };
+
+  const heroSrc =
+    resolveImageSrc(project?.images?.[0]) ||
+    "https://images.pexels.com/photos/158827/farm-sunset-wheat-sky-158827.jpeg?auto=compress&cs=tinysrgb&w=1920";
 
   return (
     <div className="bg-zinc-50 min-h-screen pb-20">
-      {/* Hero Section */}
       <div className="relative h-[50vh] min-h-[400px] w-full bg-zinc-900">
         <div className="absolute inset-0">
           <img 
-            src={project.images?.[0] ? `/images/${project.images[0]}` : "https://images.pexels.com/photos/158827/farm-sunset-wheat-sky-158827.jpeg?auto=compress&cs=tinysrgb&w=1920"} 
+            src={heroSrc} 
             alt={project.title}
             className="w-full h-full object-cover opacity-60"
             onError={(e) => {
@@ -89,7 +112,6 @@ export function ProjectDetails({ project, similarProjects = [] }) {
           {/* Left Column: Details */}
           <div className="lg:col-span-2 space-y-8">
             
-            {/* Highlights Card */}
             <div className="bg-white rounded-3xl p-8 shadow-sm border border-zinc-100">
               <h3 className="text-lg font-bold text-zinc-900 mb-6 flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-emerald-600" />
@@ -105,7 +127,6 @@ export function ProjectDetails({ project, similarProjects = [] }) {
               </div>
             </div>
 
-            {/* Description */}
             <div className="bg-white rounded-3xl p-8 shadow-sm border border-zinc-100">
               <h3 className="text-lg font-bold text-zinc-900 mb-6 flex items-center gap-2">
                 <Info className="w-5 h-5 text-emerald-600" />
@@ -120,7 +141,6 @@ export function ProjectDetails({ project, similarProjects = [] }) {
               </div>
             </div>
 
-            {/* Gallery */}
             <div className="bg-white rounded-3xl p-8 shadow-sm border border-zinc-100">
               <h3 className="text-lg font-bold text-zinc-900 mb-6">Gallery</h3>
               <div className="grid grid-cols-2 gap-4">
@@ -128,7 +148,7 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                    project.images.map((img, idx) => (
                      <div key={idx} className="aspect-video rounded-xl bg-zinc-100 relative overflow-hidden group cursor-pointer">
                        <img 
-                          src={`/images/${img}`} 
+                          src={resolveImageSrc(img) || "https://images.pexels.com/photos/158827/farm-sunset-wheat-sky-158827.jpeg?auto=compress&cs=tinysrgb&w=1920"} 
                           alt={`${project.title} ${idx + 1}`}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                           onError={(e) => {
@@ -146,7 +166,6 @@ export function ProjectDetails({ project, similarProjects = [] }) {
               </div>
             </div>
 
-            {/* Similar Projects */}
             {similarProjects.length > 0 && (
               <div className="pt-8 border-t border-zinc-200">
                 <h3 className="text-2xl font-bold text-zinc-900 mb-6">Similar Projects</h3>
@@ -155,7 +174,7 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                     <Link key={p.projectId} href={`/landing/project/${p.projectId}`} className="group block bg-white rounded-2xl p-4 border border-zinc-200 hover:border-emerald-500/50 transition-all hover:shadow-lg">
                       <div className="aspect-video rounded-xl bg-zinc-100 mb-4 overflow-hidden relative">
                          <img 
-                            src={p.images?.[0] ? `/images/${p.images[0]}` : "https://images.pexels.com/photos/158827/farm-sunset-wheat-sky-158827.jpeg?auto=compress&cs=tinysrgb&w=1920"}
+                            src={resolveImageSrc(p.images?.[0]) || "https://images.pexels.com/photos/158827/farm-sunset-wheat-sky-158827.jpeg?auto=compress&cs=tinysrgb&w=1920"}
                             alt={p.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             onError={(e) => {
@@ -176,11 +195,9 @@ export function ProjectDetails({ project, similarProjects = [] }) {
 
           </div>
 
-          {/* Right Column: Sticky Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
               
-              {/* Investment Card */}
               <div className="bg-white rounded-3xl p-6 shadow-xl shadow-zinc-200/50 border border-zinc-100 overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
                 
@@ -194,13 +211,12 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                     <span className="text-lg font-semibold text-zinc-900">{project.duration} Months</span>
                   </div>
 
-                  {/* Progress Bar */}
                   <div className="space-y-2 mb-8">
                     <div className="flex justify-between text-xs font-medium">
                       <span className="text-zinc-600">
                         <span className="font-bold text-zinc-900">{fundingPercent}%</span> Funded
                       </span>
-                      <span className="text-zinc-400">Target: BDT 50L</span>
+                      <span className="text-zinc-400">Target: {formatCurrency(project.totalCost)}</span>
                     </div>
                     <div className="h-2 w-full bg-zinc-100 rounded-full overflow-hidden">
                       <div 
@@ -208,21 +224,27 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                         style={{ width: `${fundingPercent}%` }}
                       />
                     </div>
+                    <div className="flex justify-between text-xs font-medium text-zinc-500">
+                      <span>Raised: {formatCurrency(project.totalInvestment)}</span>
+                      <span>Min: {formatCurrency(project.amount)}</span>
+                    </div>
                   </div>
 
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center py-3 border-b border-zinc-100">
-                      <span className="text-sm text-zinc-500">Min. Investment</span>
-                      <span className="font-bold text-zinc-900">BDT {Number(project.amount).toLocaleString("en-US")}</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-zinc-100">
-                      <span className="text-sm text-zinc-500">Risk Level</span>
-                      <span className="inline-flex items-center px-2 py-1 rounded bg-emerald-50 text-emerald-700 text-xs font-bold uppercase">Low-Medium</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-zinc-100">
-                      <span className="text-sm text-zinc-500">Payout</span>
-                      <span className="text-sm font-medium text-zinc-900">At Maturity</span>
-                    </div>
+                    {project.riskLevel != null && (
+                      <div className="flex justify-between items-center py-3 border-b border-zinc-100">
+                        <span className="text-sm text-zinc-500">Risk Level</span>
+                        <span className="inline-flex items-center px-2 py-1 rounded bg-emerald-50 text-emerald-700 text-xs font-bold uppercase">
+                          {String(project.riskLevel)}
+                        </span>
+                      </div>
+                    )}
+                    {project.payout != null && (
+                      <div className="flex justify-between items-center py-3 border-b border-zinc-100">
+                        <span className="text-sm text-zinc-500">Payout</span>
+                        <span className="text-sm font-medium text-zinc-900">{String(project.payout)}</span>
+                      </div>
+                    )}
                   </div>
 
                   <button className="w-full mt-8 py-4 rounded-xl bg-zinc-900 text-white font-bold text-sm uppercase tracking-wider hover:bg-emerald-600 transition-all shadow-lg shadow-zinc-900/10 hover:shadow-emerald-600/20 transform active:scale-[0.98]">
