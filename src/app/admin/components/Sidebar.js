@@ -126,13 +126,13 @@ export default function Sidebar() {
   return (
     <aside
       className={`
-        hidden min-h-screen ${sidebarWidth} flex-col
+        hidden ${sidebarWidth} flex-shrink-0 flex-col
         border-r border-zinc-100
         bg-white
         px-3 py-5
         transition-all duration-300 ease-in-out
         lg:flex
-        relative
+        sticky top-0 h-screen overflow-hidden
       `}
       style={{
         background: "linear-gradient(180deg, #ffffff 0%, #f9fafb 100%)",

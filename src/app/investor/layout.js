@@ -7,9 +7,9 @@ export const metadata = {
 
 export default function InvestorLayout({ children }) {
   return (
-    <div className="flex min-h-screen bg-zinc-100 text-zinc-900">
+    <div className="flex h-screen overflow-hidden bg-zinc-100 text-zinc-900">
       <Sidebar />
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col overflow-hidden">
         <TopNavbar />
         <main className="flex-1 overflow-y-auto px-6 py-6 lg:px-10 lg:py-8">
           {children}
