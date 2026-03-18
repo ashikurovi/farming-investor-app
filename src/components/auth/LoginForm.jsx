@@ -25,7 +25,6 @@ export function LoginForm() {
 
     try {
       const result = await login({ email, password }).unwrap();
-
       const roleFromResult =
         result?.data?.user?.role || result?.user?.role || user?.role || null;
 
@@ -49,27 +48,206 @@ export function LoginForm() {
         (Array.isArray(err?.data?.message) ? err.data.message[0] : null) ||
         "Login failed. Please check your credentials and try again.";
       setError(message);
-
-      toast.error("Login failed", {
-        description: message,
-      });
+      toast.error("Login failed", { description: message });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <label
-            htmlFor="email"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-zinc-700"
-          >
-            Email
+    <>
+      {/* Google Font import */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400&display=swap');
+
+        .lf-wrapper {
+          font-family: 'DM Sans', sans-serif;
+        }
+
+        .lf-label {
+          font-family: 'DM Mono', monospace;
+          font-size: 0.65rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: #6b7280;
+        }
+
+        .lf-field {
+          position: relative;
+          display: flex;
+          align-items: center;
+        }
+
+        .lf-field-icon {
+          position: absolute;
+          left: 14px;
+          top: 50%;
+          transform: translateY(-50%);
+          pointer-events: none;
+          width: 15px;
+          height: 15px;
+          color: #9ca3af;
+          transition: color 0.2s ease;
+          z-index: 1;
+        }
+
+        .lf-input {
+          width: 100%;
+          height: 48px;
+          padding-left: 42px;
+          padding-right: 16px;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.875rem;
+          color: #1a1a1a;
+          background: #fafaf9;
+          border: 1px solid #e5e5e3;
+          border-radius: 10px;
+          outline: none;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+          -webkit-appearance: none;
+        }
+
+        .lf-input::placeholder {
+          color: #c4c4be;
+          font-size: 0.82rem;
+        }
+
+        .lf-input:focus {
+          background: #ffffff;
+          border-color: #5a8a6a;
+          box-shadow: 0 0 0 3px rgba(90, 138, 106, 0.1);
+        }
+
+        .lf-input-pr {
+          padding-right: 44px;
+        }
+
+        .lf-field:focus-within .lf-field-icon {
+          color: #5a8a6a;
+        }
+
+        .lf-toggle-pw {
+          position: absolute;
+          right: 14px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          color: #9ca3af;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: color 0.2s ease;
+          z-index: 1;
+        }
+
+        .lf-toggle-pw:hover {
+          color: #5a8a6a;
+        }
+
+        .lf-divider {
+          height: 1px;
+          background: linear-gradient(to right, transparent, #e5e5e3, transparent);
+          margin: 2px 0;
+        }
+
+        .lf-forgot {
+          font-family: 'DM Mono', monospace;
+          font-size: 0.62rem;
+          letter-spacing: 0.07em;
+          text-transform: uppercase;
+          color: #5a8a6a;
+          text-decoration: none;
+          transition: opacity 0.2s ease;
+        }
+
+        .lf-forgot:hover {
+          opacity: 0.65;
+        }
+
+        .lf-error {
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+          padding: 10px 14px;
+          background: #fef5f5;
+          border: 1px solid #fcd5d5;
+          border-radius: 9px;
+          font-size: 0.78rem;
+          color: #b91c1c;
+          font-family: 'DM Sans', sans-serif;
+          line-height: 1.5;
+        }
+
+        .lf-submit {
+          width: 100%;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          background: linear-gradient(135deg, #3d7a52 0%, #2e6642 100%);
+          color: #f0f7f3;
+          border: none;
+          border-radius: 12px;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 1.05rem;
+          font-weight: 600;
+          letter-spacing: 0.04em;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          transition: opacity 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+          box-shadow: 0 4px 20px rgba(46, 102, 66, 0.28), inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+
+        .lf-submit::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 60%);
+          pointer-events: none;
+        }
+
+        .lf-submit:hover:not(:disabled) {
+          box-shadow: 0 6px 28px rgba(46, 102, 66, 0.38), inset 0 1px 0 rgba(255,255,255,0.1);
+          transform: translateY(-1px);
+        }
+
+        .lf-submit:active:not(:disabled) {
+          transform: translateY(0px);
+          box-shadow: 0 2px 12px rgba(46, 102, 66, 0.2);
+        }
+
+        .lf-submit:disabled {
+          opacity: 0.55;
+          cursor: not-allowed;
+        }
+
+        .lf-arrow {
+          transition: transform 0.2s ease;
+        }
+
+        .lf-submit:hover:not(:disabled) .lf-arrow {
+          transform: translateX(3px);
+        }
+      `}</style>
+
+      <form
+        onSubmit={handleSubmit}
+        className="lf-wrapper"
+        style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+      >
+        {/* Email field */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          <label htmlFor="email" className="lf-label">
+            Email address
           </label>
-          <div className="relative group">
-            <Mail className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-400 group-focus-within:text-emerald-600 transition-colors pointer-events-none" />
-            <Input
+          <div className="lf-field">
+            <Mail className="lf-field-icon" />
+            <input
               id="email"
+              className="lf-input"
               placeholder="name@example.com"
               type="email"
               value={email}
@@ -77,68 +255,67 @@ export function LoginForm() {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              className="pl-10 h-11 bg-white border-zinc-200 focus:border-emerald-600 focus:ring-emerald-600/20 rounded-lg shadow-sm transition-all"
             />
           </div>
         </div>
 
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <label
-              htmlFor="password"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-zinc-700"
-            >
+        {/* Password field */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <label htmlFor="password" className="lf-label">
               Password
             </label>
-            <Link
-              href="/forgot-password"
-              className="text-sm font-medium text-emerald-600 hover:text-emerald-500 transition-colors"
-            >
+            <Link href="/forgot-password" className="lf-forgot">
               Forgot password?
             </Link>
           </div>
-          <div className="relative group">
-            <Lock className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-400 group-focus-within:text-emerald-600 transition-colors pointer-events-none" />
-            <Input
+          <div className="lf-field">
+            <Lock className="lf-field-icon" />
+            <input
               id="password"
+              className="lf-input lf-input-pr"
               type={showPassword ? "text" : "password"}
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
-              className="pl-10 pr-10 h-11 bg-white border-zinc-200 focus:border-emerald-600 focus:ring-emerald-600/20 rounded-lg shadow-sm transition-all"
             />
             <button
               type="button"
+              className="lf-toggle-pw"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-emerald-700 focus:outline-none transition-colors"
             >
-              {showPassword ? (
-                <EyeOff className="h-4 w-4" />
-              ) : (
-                <Eye className="h-4 w-4" />
-              )}
+              {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
               <span className="sr-only">
                 {showPassword ? "Hide password" : "Show password"}
               </span>
             </button>
           </div>
         </div>
-      </div>
 
-      {error ? (
-        <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 ring-1 ring-red-200">
-          {error}
-        </div>
-      ) : null}
+        {/* Error */}
+        {error && (
+          <div className="lf-error">
+            <span style={{ marginTop: "1px", opacity: 0.7 }}>⚠</span>
+            <span>{error}</span>
+          </div>
+        )}
 
-      <Button
-        disabled={isLoading}
-        className="w-full h-12 bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/40 transition-all text-base font-semibold rounded-xl group disabled:opacity-70 disabled:cursor-not-allowed"
-      >
-        {isLoading ? "Signing in..." : "Sign In"}
-        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-      </Button>
-    </form>
+        {/* Thin divider */}
+        <div className="lf-divider" />
+
+        {/* Submit */}
+        <button type="submit" className="lf-submit" disabled={isLoading}>
+          {isLoading ? "Signing in…" : "Sign In"}
+          <ArrowRight size={16} className="lf-arrow" />
+        </button>
+      </form>
+    </>
   );
 }
