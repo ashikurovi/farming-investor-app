@@ -34,19 +34,20 @@ export default function HomeBlogSection() {
   };
 
   return (
-    <section className="">
+    <section className="relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-emerald-50/20 to-white pointer-events-none" />
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12 relative">
           <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 w-fit">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-emerald-100 w-fit shadow-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700">
                 Latest Insights
               </span>
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-zinc-900 leading-tight">
               News &{" "}
               <span className="font-serif italic text-emerald-700">
                 Perspectives
@@ -66,7 +67,7 @@ export default function HomeBlogSection() {
         </div>
 
         {/* Editorial List Layout */}
-        <div className="flex flex-col gap-16">
+        <div className="flex flex-col gap-16 relative">
           {blogPosts.map((post) => {
             const isExpanded = expandedPosts[post.id];
 
@@ -103,7 +104,7 @@ export default function HomeBlogSection() {
                     </div>
                   </div>
 
-                  <h3 className="text-2xl md:text-3xl font-light text-zinc-900 mb-4 leading-tight group-hover:text-emerald-700 transition-colors">
+                  <h3 className="text-2xl md:text-3xl font-semibold text-zinc-900 mb-4 leading-tight group-hover:text-emerald-700 transition-colors">
                     <button
                       onClick={() => toggleExpand(post.id)}
                       className="text-left focus:outline-none"
@@ -112,7 +113,7 @@ export default function HomeBlogSection() {
                     </button>
                   </h3>
 
-                  <div className="text-zinc-500 text-lg leading-relaxed mb-8 max-w-2xl transition-all duration-300">
+                  <div className="text-zinc-600 text-base md:text-lg leading-relaxed mb-8 max-w-2xl transition-all duration-300">
                     <p className="mb-4">{post.excerpt}</p>
 
                     {isExpanded && (
@@ -147,7 +148,7 @@ export default function HomeBlogSection() {
         <div className="mt-16 md:hidden text-center">
           <Link
             href="/landing/blog"
-            className="inline-flex items-center justify-center w-full px-6 py-4 bg-zinc-900 text-white rounded-full text-sm font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center justify-center w-full px-6 py-4 bg-zinc-900 text-white rounded-full text-sm font-bold uppercase tracking-widest hover:bg-emerald-600 transition-colors"
           >
             Read All Articles
           </Link>
