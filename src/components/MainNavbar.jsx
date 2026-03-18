@@ -11,72 +11,40 @@ import {
   Menu,
   User,
   LayoutDashboard,
-  LayoutGrid,
   LogOut,
 } from "lucide-react";
 import { useLogoutMutation } from "@/features/auth/authApiSlice";
 import { toast } from "sonner";
 
-function MainNavItem({ href, label, icon: Icon, isScrolled, className = "" }) {
+const NAV_LINKS = [
+  { href: "/", label: "Home", icon: Home },
+  { href: "/landing/project", label: "Project", icon: FolderGit2 },
+  { href: "/landing/gallery", label: "Gallery", icon: Images },
+  { href: "/landing/contact", label: "Contact", icon: User },
+  { href: "/landing/about", label: "About", icon: LayoutDashboard },
+];
+
+function NavLink({ href, label, scrolled }) {
   const pathname = usePathname();
   const isActive = href === "/" ? pathname === href : pathname.startsWith(href);
-
   return (
     <Link
       href={href}
-      className={`group inline-flex items-center gap-2 rounded-md px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.26em] transition-all ${
+      className={`relative text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 group ${
         isActive
-          ? "bg-emerald-500/10 text-emerald-600 ring-1 ring-emerald-500/20"
-          : isScrolled
-            ? "text-zinc-800 hover:text-zinc-950 hover:bg-zinc-950/5"
-            : "text-white/90 hover:text-white hover:bg-white/10"
-      } ${className}`}
+          ? "text-emerald-400"
+          : scrolled
+          ? "text-zinc-500 hover:text-zinc-900"
+          : "text-white/60 hover:text-white"
+      }`}
     >
-      {Icon && (
-        <Icon
-          className={`h-3.5 w-3.5 transition-colors ${
-            isActive
-              ? "text-emerald-500"
-              : isScrolled
-                ? "text-zinc-400 group-hover:text-zinc-600"
-                : "text-white/60 group-hover:text-white/90"
-          }`}
-        />
-      )}
-      <span>{label}</span>
+      {label}
+      <span
+        className={`absolute -bottom-1 left-0 h-px w-full scale-x-0 origin-left transition-transform duration-300 ${
+          isActive ? "scale-x-100 bg-emerald-400" : "bg-current group-hover:scale-x-100"
+        }`}
+      />
     </Link>
-  );
-}
-
-function MainNavLinks({ isScrolled }) {
-  return (
-    <nav className="flex items-center gap-4 text-[10px] sm:text-[11px] lg:text-xs">
-      <MainNavItem href="/" label="Home" icon={Home} isScrolled={isScrolled} />
-      <MainNavItem
-        href="/landing/project"
-        label="Project"
-        icon={FolderGit2}
-        isScrolled={isScrolled}
-      />
-      <MainNavItem
-        href="/landing/gallery"
-        label="Gallery"
-        icon={Images}
-        isScrolled={isScrolled}
-      />
-      <MainNavItem
-        href="/landing/contact"
-        label="Contact"
-        icon={User}
-        isScrolled={isScrolled}
-      />
-      <MainNavItem
-        href="/landing/about"
-        label="About"
-        icon={LayoutGrid}
-        isScrolled={isScrolled}
-      />
-    </nav>
   );
 }
 
@@ -98,200 +66,206 @@ export function MainNavbar() {
   const handleLogout = async () => {
     try {
       await logout().unwrap();
-    } catch {
-      // ignore API/logout errors, state is cleared in slice
-    } finally {
+    } catch {}
+    finally {
       toast.success("Logged out");
       router.push("/");
     }
   };
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => setMobileOpen(false), [pathname]);
 
   return (
     <>
-      {/* Desktop/Laptop Navbar - Premium Floating Design */}
+      {/* ── Desktop Navbar ── */}
       <header
-        className={`hidden md:block fixed top-6 inset-x-0 z-50 transition-all duration-500 px-6`}
+        className={`hidden md:flex fixed top-0 inset-x-0 z-50 h-16 items-center transition-all duration-500 ${
+          scrolled
+            ? "bg-white/80 backdrop-blur-xl border-b border-zinc-200/60 shadow-sm"
+            : "bg-transparent"
+        }`}
       >
-        <div
-          className={`mx-auto max-w-7xl rounded-lg transition-all duration-500 ${
-            scrolled
-              ? "bg-white/70 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/40 py-1"
-              : "bg-transparent py-0"
-          }`}
-        >
-          <div className="flex h-16 items-center justify-between px-6 lg:px-8">
-            <Link href="/" className="flex items-center group">
-              <img src="/iashd.png" className="w-[120px] h-auto object-contain"></img>
-            </Link>
+        <div className="mx-auto w-full max-w-7xl px-8 flex items-center justify-between">
+          <Link href="/" className="shrink-0">
+            <img src="/logo.png" alt="Logo" className="h-8 w-auto object-contain" />
+          </Link>
 
-            <div className="flex items-center gap-8">
-              <div className="hidden md:flex">
-                <MainNavLinks isScrolled={scrolled} />
-              </div>
+          <nav className="flex items-center gap-8">
+            {NAV_LINKS.map(({ href, label }) => (
+              <NavLink key={href} href={href} label={label} scrolled={scrolled} />
+            ))}
+          </nav>
 
-              <div className="hidden items-center gap-4 sm:flex">
-                {isAuthenticated ? (
-                  <>
-                    <Link
-                      href={dashboardHref}
-                      className="inline-flex items-center rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white transition-all duration-300 bg-gradient-to-r from-emerald-600 to-emerald-500 shadow-[0_10px_20px_rgba(16,185,129,0.2)] hover:shadow-[0_14px_25px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 active:scale-[0.98]"
-                    >
-                      {role === "admin" ? "Admin Dashboard" : "Investor Dashboard"}
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={handleLogout}
-                      disabled={isLoggingOut}
-                      className="inline-flex items-center justify-center rounded-full px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all bg-red-500 hover:bg-red-600 text-white shadow-[0_6px_16px_rgba(239,68,68,0.35)] disabled:opacity-60 disabled:cursor-not-allowed"
-                      aria-label={isLoggingOut ? "Logging out" : "Logout"}
-                      title={isLoggingOut ? "Logging out" : "Logout"}
-                    >
-                      <LogOut className="h-4 w-4 text-white" />
-                    </button>
-                  </>
-                ) : (
-                  <Link
-                    href="/login"
-                    className="rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white transition-all duration-300 bg-gradient-to-r from-emerald-600 to-emerald-500 shadow-[0_10px_20px_rgba(16,185,129,0.2)] hover:shadow-[0_14px_25px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 active:scale-[0.98]"
-                  >
-                    Login
-                  </Link>
-                )}
-              </div>
-            </div>
+          <div className="flex items-center gap-3">
+            {isAuthenticated ? (
+              <>
+                <Link
+                  href={dashboardHref}
+                  className={`text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2 rounded-full border transition-all duration-200 ${
+                    scrolled
+                      ? "border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white"
+                      : "border-white/40 text-white hover:bg-white/10"
+                  }`}
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                  className="flex items-center justify-center w-9 h-9 rounded-full bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-200 disabled:opacity-50"
+                  title="Logout"
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/login"
+                className={`text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2 rounded-md border transition-all duration-200 ${
+                  scrolled
+                    ? "border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white"
+                    : "border-white/40 text-white hover:bg-white/10"
+                }`}
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </header>
 
-      {/* Mobile Bottom Navigation - Fixed Bottom - Hidden on Desktop */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
-        {/* Bottom Bar */}
-        <div className="bg-white border-t border-zinc-200 pb-safe pt-2 px-6 shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
-          <div className="flex items-center justify-between h-14">
-            <Link
-              href="/"
-              className="flex flex-col items-center gap-1 text-zinc-400 hover:text-emerald-600 transition group"
-            >
-              <Home className="h-5 w-5 group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-medium">Home</span>
-            </Link>
+      {/* ── Mobile Bottom Tab Bar ── */}
+      <nav className="fixed bottom-0 inset-x-0 z-50 md:hidden bg-white border-t border-zinc-200 shadow-[0_-4px_20px_rgba(0,0,0,0.07)]">
+        <div className="flex items-end justify-around px-1 h-[62px]">
 
-            <Link
-              href="/landing/project"
-              className="flex flex-col items-center gap-1 text-zinc-400 hover:text-emerald-600 transition group"
-            >
-              <FolderGit2 className="h-5 w-5 group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-medium">Project</span>
-            </Link>
+          {/* Home — logo avatar */}
+          {(() => {
+            const isActive = pathname === "/";
+            return (
+              <Link href="/" className="flex flex-col items-center gap-0.5 pt-2 pb-1 min-w-[56px] group">
+                <div className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${isActive ? "ring-2 ring-red-400 ring-offset-1" : ""}`}>
+                  <img src="/iashd.png" alt="Home" className="w-8 h-8 object-contain rounded-full" />
+                </div>
+                <span className={`text-[10px] font-semibold leading-none ${isActive ? "text-zinc-800" : "text-zinc-400"}`}>Home</span>
+              </Link>
+            );
+          })()}
 
-            {/* Applications Icon (Center) */}
-            <Link
-              href="/landing/contact"
-              className="flex flex-col items-center gap-1 text-zinc-400 hover:text-emerald-600 transition group"
-            >
-              <div className="h-10 w-10 bg-emerald-500 rounded-full flex items-center justify-center -mt-5 border-4 border-white shadow-lg group-hover:scale-110 transition-transform">
-                <User className="h-5 w-5 text-white" />
-              </div>
-              <span className="text-[10px] font-medium text-emerald-600">
-                Contact
-              </span>
-            </Link>
+          {/* Project */}
+          {(() => {
+            const isActive = pathname.startsWith("/landing/project");
+            return (
+              <Link href="/landing/project" className="flex flex-col items-center gap-0.5 pt-2 pb-1 min-w-[56px] group">
+                <div className="w-10 h-10 flex items-center justify-center">
+                  <FolderGit2 className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`} />
+                </div>
+                <span className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"}`}>Project</span>
+              </Link>
+            );
+          })()}
 
-            <Link
-              href="/landing/gallery"
-              className="flex flex-col items-center gap-1 text-zinc-400 hover:text-emerald-600 transition group"
-            >
-              <Images className="h-5 w-5 group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-medium">Gallery</span>
-            </Link>
+          {/* Contact — raised center button */}
+          {(() => {
+            const isActive = pathname.startsWith("/landing/contact");
+            return (
+              <Link href="/landing/contact" className="flex flex-col items-center gap-0.5 pb-1 -mt-4 min-w-[56px] group">
+                <div className={`w-12 h-12 flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${isActive ? "bg-emerald-500" : "bg-emerald-400 group-hover:bg-emerald-500"}`}>
+                  <User className="h-5 w-5 text-white" />
+                </div>
+                <span className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"}`}>Contact</span>
+              </Link>
+            );
+          })()}
 
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className={`flex flex-col items-center gap-1 transition group ${mobileOpen ? "text-emerald-600" : "text-zinc-400 hover:text-emerald-600"}`}
-            >
-              <Menu className="h-5 w-5 group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-medium">More</span>
-            </button>
-          </div>
+          {/* Gallery */}
+          {(() => {
+            const isActive = pathname.startsWith("/landing/gallery");
+            return (
+              <Link href="/landing/gallery" className="flex flex-col items-center gap-0.5 pt-2 pb-1 min-w-[56px] group">
+                <div className="w-10 h-10 flex items-center justify-center">
+                  <Images className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`} />
+                </div>
+                <span className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"}`}>Gallery</span>
+              </Link>
+            );
+          })()}
+
+          {/* More */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="flex flex-col items-center gap-0.5 pt-2 pb-1 min-w-[56px] group"
+          >
+            <div className="w-10 h-10 flex items-center justify-center">
+              <Menu className={`h-5 w-5 transition-colors ${mobileOpen ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`} />
+            </div>
+            <span className={`text-[10px] font-semibold leading-none ${mobileOpen ? "text-emerald-600" : "text-zinc-400"}`}>More</span>
+          </button>
+
         </div>
-      </div>
+      </nav>
 
-      {/* Mobile More Menu Drawer */}
+      {/* ── Mobile More Popup (bottom-right) ── */}
       {mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden animate-in fade-in duration-200"
-          onClick={() => setMobileOpen(false)}
-        >
+        <div className="fixed inset-0 z-40 md:hidden" onClick={() => setMobileOpen(false)}>
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
           <div
-            className="absolute bottom-20 right-4 w-64 bg-white border border-zinc-200 rounded-3xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 zoom-in-95 duration-300 ease-out origin-bottom-right"
+            className="absolute bottom-[70px] right-4 w-60 bg-white rounded-2xl shadow-2xl border border-zinc-100 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex flex-col p-3 gap-2">
-              {/* Gallery Section - Moved from Bottom Nav */}
+            <div className="flex flex-col p-2">
               <Link
-                href="/landing/gallery"
-                className="flex items-center gap-4 px-4 py-4 text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 rounded-2xl transition group"
+                href="/landing/about"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition"
               >
-                <Images className="h-5 w-5 text-zinc-400 group-hover:text-emerald-500 transition-colors" />
-                <span className="text-xs font-bold uppercase tracking-[0.15em]">
-                  Gallery
-                </span>
+                <LayoutDashboard className="h-4 w-4 text-zinc-400" />
+                <span className="text-xs font-bold uppercase tracking-[0.15em]">About</span>
               </Link>
-
-              <div className="h-px bg-zinc-100 mx-4"></div>
-
-              <div className="h-px bg-zinc-100 mx-4 mb-1"></div>
-
-              {/* Auth actions */}
+              <div className="h-px bg-zinc-100 mx-2 my-1" />
               {isAuthenticated ? (
                 <>
                   <Link
                     href={dashboardHref}
-                    className="flex items-center gap-4 px-4 py-4 text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 rounded-2xl transition group"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition"
                   >
-                    <LayoutDashboard className="h-5 w-5 text-zinc-400 group-hover:text-emerald-500 transition-colors" />
+                    <LayoutDashboard className="h-4 w-4 text-zinc-400" />
                     <span className="text-xs font-bold uppercase tracking-[0.15em]">
-                      {role === "admin" ? "Admin Dashboard" : "Investor Dashboard"}
+                      {role === "admin" ? "Admin" : "Investor"} Dashboard
                     </span>
                   </Link>
                   <button
-                    type="button"
                     onClick={handleLogout}
                     disabled={isLoggingOut}
-                    className="flex items-center justify-center gap-2 mx-1 px-4 py-4 bg-zinc-900 text-white hover:bg-zinc-800 rounded-2xl transition shadow-lg shadow-zinc-200 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition disabled:opacity-50"
                   >
-                    <span className="text-xs font-bold uppercase tracking-[0.2em]">
-                      {isLoggingOut ? "Logging out..." : "Logout"}
+                    <LogOut className="h-4 w-4" />
+                    <span className="text-xs font-bold uppercase tracking-[0.15em]">
+                      {isLoggingOut ? "Logging out…" : "Logout"}
                     </span>
                   </button>
                 </>
               ) : (
                 <Link
                   href="/login"
-                  className="flex items-center justify-center gap-2 mx-1 px-4 py-4 bg-zinc-900 text-white hover:bg-zinc-800 rounded-lg transition shadow-lg shadow-zinc-200 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-800 hover:bg-zinc-50 transition"
                 >
-                  <span className="text-xs font-bold uppercase tracking-[0.2em]">
-                    Login
-                  </span>
+                  <User className="h-4 w-4 text-zinc-400" />
+                  <span className="text-xs font-bold uppercase tracking-[0.15em]">Login</span>
                 </Link>
               )}
             </div>
           </div>
         </div>
       )}
+
+      {/* Mobile bottom spacer */}
+      <div className="h-[62px] md:hidden" />
     </>
   );
 }

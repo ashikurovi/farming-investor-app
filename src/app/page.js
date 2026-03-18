@@ -14,18 +14,42 @@ export default function Home() {
   const recentProjects = getRecentProjects(4);
 
   return (
-    <div className="bg-white space-y-8  md:space-y-20  ">
+    <main className="min-h-screen bg-zinc-50">
       <HomeHero />
-      {/* <HomeStatsSnapshot /> */}
-      <HomeLiveKpis />
-      <HomeRecentProjects projects={recentProjects} />
-      <HomeHowItWorks />
-      <HomeWhyChooseUs />
-      <HomeGalleryPreview />
-      <HomeBlogSection />
-      {/* Blog */}
-      <HomeTestimonials />
-      <HomeFaq />
-    </div>
+
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 space-y-20 -mt-10">
+        <section id="live-kpis">
+          <HomeLiveKpis />
+        </section>
+
+        <section id="recent-projects" className="space-y-6">
+          <HomeRecentProjects projects={recentProjects} />
+        </section>
+
+        <section id="how-it-works" className="border-t border-zinc-200 pt-16">
+          <HomeHowItWorks />
+        </section>
+
+        <section id="why-choose-us" className="border-t border-zinc-200 pt-16">
+          <HomeWhyChooseUs />
+        </section>
+
+        <section id="gallery" className="border-t border-zinc-200 pt-16">
+          <HomeGalleryPreview />
+        </section>
+
+        <section id="blog" className="border-t border-zinc-200 pt-16">
+          <HomeBlogSection />
+        </section>
+
+        <section id="testimonials" className="border-t border-zinc-200 pt-16">
+          <HomeTestimonials />
+        </section>
+
+        <section id="faq" className="border-t border-zinc-200 pt-16 pb-20">
+          <HomeFaq />
+        </section>
+      </div>
+    </main>
   );
 }

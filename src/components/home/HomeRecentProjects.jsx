@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import { useGetProjectsQuery } from "@/features/admin/projects/projectsApiSlice";
 import { Loader } from "@/components/ui/loader";
-import RecentProjectCard from "./RecentProjectCard";
+import { ProjectCard } from "@/components/landing/project/ProjectCard";
 
 export default function HomeRecentProjects() {
   const { data: projectsData, isLoading } = useGetProjectsQuery({
@@ -14,9 +14,29 @@ export default function HomeRecentProjects() {
   });
   
 
-  const projects = Array.isArray(projectsData)
+  const rawProjects = Array.isArray(projectsData)
     ? projectsData
     : projectsData?.items || projectsData?.data || [];
+
+  const resolveImageSrc = (img) => {
+    if (!img) return "";
+    const s = String(img).replace(/[`]/g, "").trim();
+    if (!s) return "";
+    if (s.startsWith("http") || s.startsWith("/")) return s;
+    return `/images/${s}`;
+  };
+
+  const projects = rawProjects.map((item) => ({
+    projectId: item.id,
+    title: item.name || "Untitled Project",
+    location: item.location || "Bangladesh",
+    category: item.category || "Others",
+    roi: item.roi || 0,
+    images: item.photoUrl ? [resolveImageSrc(item.photoUrl)] : [],
+    totalCost: Number(item.totalCost || 0),
+    totalInvestment: Number(item.totalInvestment || 0),
+    project_details: item.description || "No description available.",
+  }));
 
   if (isLoading) {
     return (
@@ -64,8 +84,8 @@ export default function HomeRecentProjects() {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {projects.map((project, index) => (
-            <RecentProjectCard key={project.id || index} project={project} index={index} />
+          {projects.map((project) => (
+            <ProjectCard key={project.projectId} project={project} />
           ))}
         </div>
 

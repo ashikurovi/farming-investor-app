@@ -6,14 +6,23 @@ import { useState, useMemo } from "react";
 export function ProjectDetails({ project, similarProjects = [] }) {
   const [isLiked, setIsLiked] = useState(false);
 
-  // Format paragraphs
-  const descriptionParagraphs = project.project_details.split('\r\n').filter(p => p.trim().length > 0);
+  const descriptionParagraphs =
+    (typeof project?.project_details === "string" ? project.project_details : "")
+      .split(/\r?\n/)
+      .map((p) => p.trim())
+      .filter((p) => p.length > 0);
 
-  // Calculate stable funding progress based on projectId
   const fundingPercent = useMemo(() => {
-    const hash = project.projectId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return (hash % 55) + 40; // Range 40-95
-  }, [project.projectId]);
+    const total = Number(project?.totalCost || 0);
+    const invested = Number(project?.totalInvestment || 0);
+    if (total > 0) {
+      const pct = Math.round((invested / total) * 100);
+      return Math.max(0, Math.min(100, pct));
+    }
+    const idStr = String(project?.projectId ?? "");
+    const hash = idStr.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return (hash % 55) + 40;
+  }, [project.totalCost, project.totalInvestment, project.projectId]);
 
   return (
     <div className="bg-zinc-50 min-h-screen pb-20">
