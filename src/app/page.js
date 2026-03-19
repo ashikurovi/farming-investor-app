@@ -17,7 +17,7 @@ export default function Home() {
     <main className="min-h-screen bg-zinc-50">
       <HomeHero />
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 space-y-20 -mt-10">
+      <div className="mx-auto md:max-w-7xl px-0 lg:px-8 space-y-20 -mt-10">
         <section id="live-kpis">
           <HomeLiveKpis />
         </section>

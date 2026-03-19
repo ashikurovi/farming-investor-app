@@ -1,16 +1,71 @@
- "use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye } from "lucide-react";
+import {
+  Eye,
+  TrendingUp,
+  Users,
+  Sprout,
+  Wallet,
+  DollarSign,
+} from "lucide-react";
 import { useMeQuery } from "@/features/auth/authApiSlice";
 import { useGetProjectsStatsQuery } from "@/features/admin/projects/projectsApiSlice";
-import { useGetMyInvestmentsQuery, useGetInvestmentsStatsQuery } from "@/features/investor/investments/investmentsApiSlice";
+import {
+  useGetMyInvestmentsQuery,
+  useGetInvestmentsStatsQuery,
+} from "@/features/investor/investments/investmentsApiSlice";
 import { useGetUsersQuery } from "@/features/admin/users/usersApiSlice";
 import { DataTable } from "@/components/ui/data-table";
 import { Pagination } from "@/components/ui/pagination";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
+
+const KPIStatCard = ({ label, value, loading, Icon, accent = "emerald", secondary }) => {
+  const isBusy = Boolean(loading) || value == null;
+  const text = isBusy
+    ? "—"
+    : Number(value || 0).toLocaleString("en-US", { maximumFractionDigits: 0 });
+  const iconBg =
+    accent === "emerald"
+      ? "bg-emerald-50 text-emerald-600"
+      : accent === "teal"
+        ? "bg-teal-50 text-teal-600"
+        : "bg-zinc-100 text-zinc-600";
+
+  const secondaryText = (() => {
+    if (!secondary) return null;
+    if (secondary.percentage && typeof secondary.value === "number") {
+      return `${Math.round(secondary.value)}%`;
+    }
+    if (secondary.value == null) return "—";
+    return Number(secondary.value).toLocaleString("en-US", {
+      maximumFractionDigits: 0,
+    });
+  })();
+
+  return (
+    <div className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm lg:p-5 ring-1 ring-transparent transition-all hover:shadow-md hover:ring-emerald-200">
+      <div className="flex items-start justify-between">
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-400">
+          {label}
+        </p>
+        <span className={`inline-flex h-8 w-8 items-center justify-center rounded-xl ${iconBg} ring-1 ring-inset ring-black/5`}>
+          <Icon className="h-4 w-4" />
+        </span>
+      </div>
+      <p className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 tabular-nums">
+        {text}
+      </p>
+      {secondary?.label && (
+        <p className="mt-1 text-[11px] font-medium text-zinc-500">
+          {secondary.label}: <span className="text-zinc-900">{secondaryText}</span>
+        </p>
+      )}
+    </div>
+  );
+};
 
 const PAGE_SIZE = 5;
 
@@ -37,15 +92,15 @@ export default function InvestorDashboardPage() {
   } = useGetMyInvestmentsQuery({ page, limit: pageSize });
 
   const { data: stats, isLoading: statsLoading } = useGetProjectsStatsQuery();
-  const { data: invStats, isLoading: invStatsLoading } = useGetInvestmentsStatsQuery();
+  const { data: invStats, isLoading: invStatsLoading } =
+    useGetInvestmentsStatsQuery();
 
   const investments = myInvestments?.items ?? [];
-  const meta =
-    myInvestments?.meta ?? {
-      page,
-      pageCount: 1,
-      total: investments.length,
-    };
+  const meta = myInvestments?.meta ?? {
+    page,
+    pageCount: 1,
+    total: investments.length,
+  };
 
   const isInvestmentsBusy = isInvestmentsLoading || isInvestmentsFetching;
 
@@ -55,15 +110,18 @@ export default function InvestorDashboardPage() {
     data: usersData,
     isLoading: isUsersLoading,
     isFetching: isUsersFetching,
-  } = useGetUsersQuery({ page: investorPage, limit: investorPageSize, search: "" });
+  } = useGetUsersQuery({
+    page: investorPage,
+    limit: investorPageSize,
+    search: "",
+  });
   const allUsers = usersData?.items ?? [];
   const investors = allUsers.filter((u) => u.role === "investor");
-  const investorsMeta =
-    usersData?.meta ?? {
-      page: investorPage,
-      pageCount: 1,
-      total: investors.length,
-    };
+  const investorsMeta = usersData?.meta ?? {
+    page: investorPage,
+    pageCount: 1,
+    total: investors.length,
+  };
   const isInvestorsBusy = isUsersLoading || isUsersFetching;
   const [detailOpen, setDetailOpen] = useState(false);
   const [selectedInvestor, setSelectedInvestor] = useState(null);
@@ -77,50 +135,128 @@ export default function InvestorDashboardPage() {
   };
 
   return (
-    <div className="space-y-8">
-      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-        {[
-           
-          { label: "Collect Investment", value: invStats?.totalInvestmentCollect },
-            { label: "Total Investor", value: invStats?.totalInvestorCount },
-            {label : "New Investor", value : invStats?.newInvestorCount},
-
-           { label: "Total projects", value: stats?.totalProjects },
-          { label: "Project Investment", value: stats?.totalInvestment},
-         
-          { label: "Total cost", value: stats?.totalCost },
-          { label: "Total sell", value: stats?.totalSell },
-          { label: "Total profit", value: stats?.totalProfit },
-        ].map((card) => (
-          <div
-            key={card.label}
-            className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm"
-          >
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-400">
-              {card.label}
-            </p>
-            <p className="mt-3 text-2xl font-semibold tracking-tight text-zinc-900">
-              {(card.loading ?? statsLoading) || card.value == null
-                ? "—"
-                : Number(card.value).toLocaleString("en-US", {
-                    maximumFractionDigits: 0,
-                  })}
-            </p>
-          </div>
-        ))}
+    <div className="space-y-8  mx-auto -mt-2">
+      <section className="grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+        <KPIStatCard
+          label="Collect Investment"
+          value={invStats?.totalInvestmentCollect}
+          loading={invStatsLoading}
+          Icon={Wallet}
+          accent="emerald"
+          secondary={{
+            label: "Avg/project",
+            value:
+              (stats?.totalProjects ?? 0) > 0
+                ? (stats?.totalInvestment ?? 0) / (stats?.totalProjects ?? 1)
+                : null,
+          }}
+        />
+        <KPIStatCard
+          label="Total Investor"
+          value={invStats?.totalInvestorCount}
+          loading={invStatsLoading}
+          Icon={Users}
+          accent="teal"
+          secondary={{
+            label: "New",
+            value: invStats?.newInvestorCount,
+          }}
+        />
+        <KPIStatCard
+          label="New Investor"
+          value={invStats?.newInvestorCount}
+          loading={invStatsLoading}
+          Icon={TrendingUp}
+          accent="emerald"
+          secondary={{
+            label: "Share",
+            value:
+              (invStats?.totalInvestorCount ?? 0) > 0
+                ? ((invStats?.newInvestorCount ?? 0) * 100) /
+                  (invStats?.totalInvestorCount ?? 1)
+                : null,
+            percentage: true,
+          }}
+        />
+        <KPIStatCard
+          label="Total projects"
+          value={stats?.totalProjects}
+          loading={statsLoading}
+          Icon={Sprout}
+          accent="teal"
+        />
+        <KPIStatCard
+          label="Project Investment"
+          value={stats?.totalInvestment}
+          loading={statsLoading}
+          Icon={DollarSign}
+          accent="emerald"
+          secondary={{
+            label: "Per project",
+            value:
+              (stats?.totalProjects ?? 0) > 0
+                ? (stats?.totalInvestment ?? 0) / (stats?.totalProjects ?? 1)
+                : null,
+          }}
+        />
+        <KPIStatCard
+          label="Total cost"
+          value={stats?.totalCost}
+          loading={statsLoading}
+          Icon={DollarSign}
+          accent="teal"
+          secondary={{
+            label: "Per project",
+            value:
+              (stats?.totalProjects ?? 0) > 0
+                ? (stats?.totalCost ?? 0) / (stats?.totalProjects ?? 1)
+                : null,
+          }}
+        />
+        <KPIStatCard
+          label="Total sell"
+          value={stats?.totalSell}
+          loading={statsLoading}
+          Icon={DollarSign}
+          accent="emerald"
+          secondary={{
+            label: "Per project",
+            value:
+              (stats?.totalProjects ?? 0) > 0
+                ? (stats?.totalSell ?? 0) / (stats?.totalProjects ?? 1)
+                : null,
+          }}
+        />
+        <KPIStatCard
+          label="Total profit"
+          value={stats?.totalProfit}
+          loading={statsLoading}
+          Icon={TrendingUp}
+          accent="teal"
+          secondary={{
+            label: "Per project",
+            value:
+              (stats?.totalProjects ?? 0) > 0
+                ? (stats?.totalProfit ?? 0) / (stats?.totalProjects ?? 1)
+                : null,
+          }}
+        />
       </section>
 
-      
-
       <section className="grid gap-6">
-        <div className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm lg:p-5">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-zinc-900">
-              All investors
-            </h2>
-          </div>
+        <div className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm lg:p-6">
+          <header className="mb-4 flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-semibold text-zinc-900">
+                All investors
+              </h2>
+              <p className="text-xs text-zinc-500">
+                List of registered investors
+              </p>
+            </div>
+          </header>
 
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+          <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm overflow-x-auto">
             <DataTable
               columns={[
                 {
@@ -128,7 +264,8 @@ export default function InvestorDashboardPage() {
                   header: "SL",
                   tdClassName:
                     "whitespace-nowrap px-4 py-3 text-sm text-zinc-500",
-                  cell: (user) => investors.findIndex((u) => u.id === user.id) + 1,
+                  cell: (user) =>
+                    investors.findIndex((u) => u.id === user.id) + 1,
                 },
                 {
                   key: "name",
@@ -189,8 +326,8 @@ export default function InvestorDashboardPage() {
                   newPage < 1
                     ? 1
                     : investorsMeta.pageCount
-                    ? Math.min(investorsMeta.pageCount, newPage)
-                    : newPage,
+                      ? Math.min(investorsMeta.pageCount, newPage)
+                      : newPage,
                 )
               }
               onPageSizeChange={(newSize) => {
@@ -209,7 +346,12 @@ export default function InvestorDashboardPage() {
         size="md"
         footer={
           <div className="flex items-center justify-end">
-            <Button type="button" variant="outline" onClick={closeDetail} className="h-8 rounded-full text-xs">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={closeDetail}
+              className="h-8 rounded-full text-xs"
+            >
               Close
             </Button>
           </div>
@@ -226,7 +368,11 @@ export default function InvestorDashboardPage() {
                         ? selectedInvestor.photoUrl.replace(/`/g, "").trim()
                         : ""
                     }
-                    alt={selectedInvestor.name || selectedInvestor.email || "Investor"}
+                    alt={
+                      selectedInvestor.name ||
+                      selectedInvestor.email ||
+                      "Investor"
+                    }
                     className="h-16 w-16 rounded-2xl object-cover"
                   />
                 ) : (
@@ -241,41 +387,47 @@ export default function InvestorDashboardPage() {
                 <h3 className="text-base font-semibold text-zinc-900">
                   {selectedInvestor.name || "Investor"}
                 </h3>
-                <p className="text-xs text-zinc-500">{selectedInvestor.email || "-"}</p>
+                <p className="text-xs text-zinc-500">
+                  {selectedInvestor.email || "-"}
+                </p>
               </div>
             </div>
 
             <dl className="space-y-3 text-sm text-zinc-900">
-            <div className="flex items-center justify-between">
-              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Name
-              </dt>
-              <dd>{selectedInvestor.name || "-"}</dd>
-            </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Email
-              </dt>
-              <dd>{selectedInvestor.email || "-"}</dd>
-            </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Phone
-              </dt>
-              <dd>{selectedInvestor.phone || "-"}</dd>
-            </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Location
-              </dt>
-              <dd>{selectedInvestor.location || "-"}</dd>
-            </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                Type
-              </dt>
-              <dd>{selectedInvestor.investorType?.type || selectedInvestor.investorTypeId || "-"}</dd>
-            </div>
+              <div className="flex items-center justify-between">
+                <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                  Name
+                </dt>
+                <dd>{selectedInvestor.name || "-"}</dd>
+              </div>
+              <div className="flex items-center justify-between">
+                <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                  Email
+                </dt>
+                <dd>{selectedInvestor.email || "-"}</dd>
+              </div>
+              <div className="flex items-center justify-between">
+                <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                  Phone
+                </dt>
+                <dd>{selectedInvestor.phone || "-"}</dd>
+              </div>
+              <div className="flex items-center justify-between">
+                <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                  Location
+                </dt>
+                <dd>{selectedInvestor.location || "-"}</dd>
+              </div>
+              <div className="flex items-center justify-between">
+                <dt className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                  Type
+                </dt>
+                <dd>
+                  {selectedInvestor.investorType?.type ||
+                    selectedInvestor.investorTypeId ||
+                    "-"}
+                </dd>
+              </div>
             </dl>
           </>
         ) : (
