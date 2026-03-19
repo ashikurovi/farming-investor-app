@@ -1,326 +1,614 @@
- "use client";
- 
-  import { useState } from "react";
- import Image from "next/image";
- import { Eye } from "lucide-react";
- import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
- import { DataTable } from "@/components/ui/data-table";
- import { Pagination } from "@/components/ui/pagination";
- import { Modal } from "@/components/ui/modal";
- import { Button } from "@/components/ui/button";
- import { useMeQuery } from "@/features/auth/authApiSlice";
- import { useGetMyInvestmentsQuery } from "@/features/investor/investments/investmentsApiSlice";
- 
- const cleanUrl = (u) => {
-   if (typeof u !== "string") return "";
-   return u.replace(/[`"'()]/g, "").trim();
- };
- const fmtBDT = (n) =>
-   Number(n ?? 0).toLocaleString("en-US", {
-      maximumFractionDigits: 0,
-   });
- 
- const PAGE_SIZE = 10;
- 
- export default function MyInvestmentsPage() {
-   const { data: meResponse, isLoading, isError } = useMeQuery();
-   const user = meResponse?.data ?? meResponse ?? null;
- 
-   const photo = cleanUrl(user?.photoUrl || "");
- 
-   const [page, setPage] = useState(1);
-   const [pageSize, setPageSize] = useState(PAGE_SIZE);
-   const {
-     data: myInvestments,
-     isLoading: isInvLoading,
-     isFetching: isInvFetching,
-     isError: isInvError,
-   } = useGetMyInvestmentsQuery({ page, limit: pageSize });
- 
-   const investments = myInvestments?.items ?? [];
-   const meta =
-     myInvestments?.meta ?? {
-       page,
-       pageCount: 1,
-       total: investments.length,
-     };
-   const isInvestmentsBusy = isInvLoading || isInvFetching;
- 
-   const [detailOpen, setDetailOpen] = useState(false);
-   const [selectedInvestment, setSelectedInvestment] = useState(null);
-   const openDetail = (row) => {
-     setSelectedInvestment(row);
-     setDetailOpen(true);
-   };
-   const closeDetail = () => {
-     setDetailOpen(false);
-     setSelectedInvestment(null);
-   };
- 
-   return (
-     <main className="min-h-screen space-y-6 bg-zinc-50/60 p-4 sm:p-6">
-       <header>
-         <h1 className="text-xl font-semibold tracking-tight text-zinc-900">My Investments</h1>
-         <p className="text-sm text-zinc-500">Your profile and investment summary.</p>
-       </header>
- 
-       <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-         <Card className="sm:col-span-2">
-           <CardHeader>
-             <CardTitle>Profile</CardTitle>
-             <CardDescription>Your account overview from /users/me</CardDescription>
-           </CardHeader>
-           <CardContent>
-             {isLoading ? (
-               <div className="flex items-center gap-4">
-                 <div className="h-16 w-16 animate-pulse rounded-full bg-zinc-200/80" />
-                 <div className="space-y-2">
-                   <div className="h-4 w-48 animate-pulse rounded bg-zinc-200/80" />
-                   <div className="h-3 w-64 animate-pulse rounded bg-zinc-200/70" />
-                 </div>
-               </div>
-             ) : isError ? (
-               <p className="text-sm text-red-600">Failed to load profile.</p>
-             ) : user ? (
-               <div className="flex items-center gap-4">
-                 <div className="relative h-16 w-16 overflow-hidden rounded-full border border-zinc-200 bg-white">
-                   {photo ? (
-                     <Image
-                       src={photo}
-                       alt={user.name ?? "Profile photo"}
-                       fill
-                       sizes="64px"
-                       className="object-cover"
-                       priority
-                     />
-                   ) : (
-                     <div className="flex h-full w-full items-center justify-center bg-zinc-100 text-sm font-medium text-zinc-500">
-                       {user?.name?.[0]?.toUpperCase() ?? "U"}
-                     </div>
-                   )}
-                 </div>
- 
-                 <div className="min-w-0">
-                   <div className="truncate text-base font-semibold text-zinc-900">
-                     {user.name || "-"}
-                   </div>
-                   <div className="truncate text-sm text-zinc-600">{user.email || "-"}</div>
-                   <div className="truncate text-sm text-zinc-600">{user.phone || "-"}</div>
-                   <div className="truncate text-sm text-zinc-600">
-                     {user.location || "No location set"}
-                   </div>
-                 </div>
-               </div>
-             ) : (
-               <p className="text-sm text-zinc-500">No user data.</p>
-             )}
-           </CardContent>
-         </Card>
- 
-         <Card>
-           <CardHeader>
-             <CardTitle className="text-sm">Totals</CardTitle>
-             <CardDescription>Summary amounts (BDT)</CardDescription>
-           </CardHeader>
-           <CardContent>
-             {isLoading ? (
-               <div className="space-y-3">
-                 <div className="h-4 w-40 animate-pulse rounded bg-zinc-200/80" />
-                 <div className="h-4 w-32 animate-pulse rounded bg-zinc-200/80" />
-                 <div className="h-4 w-36 animate-pulse rounded bg-zinc-200/80" />
-                 <div className="h-4 w-28 animate-pulse rounded bg-zinc-200/80" />
-               </div>
-             ) : isError ? (
-               <p className="text-sm text-red-600">Failed to load totals.</p>
-             ) : (
-               <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                 <dt className="text-zinc-500">Total Investment</dt>
-                 <dd className="text-right font-medium text-zinc-900">
-                   {fmtBDT(user?.totalInvestment)}
-                 </dd>
-                 <dt className="text-zinc-500">Total Profit</dt>
-                 <dd className="text-right font-medium text-emerald-700">
-                   {fmtBDT(user?.totalProfit)}
-                 </dd>
-                 <dt className="text-zinc-500">Balance</dt>
-                 <dd className="text-right font-medium text-blue-700">
-                   {fmtBDT(user?.balance)}
-                 </dd>
-                 <dt className="text-zinc-500">Total Cost</dt>
-                 <dd className="text-right font-medium text-zinc-900">
-                   {fmtBDT(user?.totalCost)}
-                 </dd>
-               </dl>
-             )}
-           </CardContent>
-         </Card>
-       </section>
- 
-       <section className="grid gap-4">
-         <div className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
-           <div className="mb-4 flex items-center justify-between">
-             <h2 className="text-sm font-semibold text-zinc-900">All Investments</h2>
-           </div>
- 
-           <DataTable
-             columns={[
-               {
-                 key: "sl",
-                 header: "SL",
-                 tdClassName:
-                   "whitespace-nowrap px-4 py-3 text-sm text-zinc-500",
-                 cell: (row) =>
-                   investments.findIndex((i) => i.id === row.id) + 1,
-               },
-               {
-                 key: "amount",
-                 header: "Amount (BDT)",
-                 tdClassName:
-                   "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                 cell: (row) => fmtBDT(row?.amount),
-               },
-               {
-                 key: "date",
-                 header: "Date",
-                 tdClassName:
-                   "whitespace-nowrap px-4 py-3 text-xs text-zinc-600",
-                 cell: (row) => row?.date ?? "-",
-               },
-               {
-                 key: "time",
-                 header: "Time",
-                 tdClassName:
-                   "whitespace-nowrap px-4 py-3 text-xs text-zinc-600",
-                 cell: (row) => row?.time ?? "-",
-               },
-               {
-                 key: "reference",
-                 header: "Reference",
-                 tdClassName:
-                   "whitespace-nowrap px-4 py-3 text-xs text-zinc-600",
-                 cell: (row) => row?.reference ?? "-",
-               },
-             ]}
-             data={investments}
-             isLoading={isInvestmentsBusy}
-             emptyMessage={isInvError ? "Investments load korte parini." : "Kono investment nai."}
-             loadingLabel="Investments load hocche..."
-             getRowKey={(row) => row.id}
-             renderActions={(row) => (
-               <button
-                 type="button"
-                 onClick={() => openDetail(row)}
-                 className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
-               >
-                 <Eye className="h-3.5 w-3.5" />
-               </button>
-             )}
-           />
- 
-           <div className="mt-3">
-             <Pagination
-               page={meta.page}
-               pageCount={meta.pageCount}
-               total={meta.total}
-               pageSize={pageSize}
-               onPageChange={(newPage) =>
-                 setPage((current) =>
-                   newPage < 1
-                     ? 1
-                     : meta.pageCount
-                     ? Math.min(meta.pageCount, newPage)
-                     : newPage,
-                 )
-               }
-               onPageSizeChange={(newSize) => {
-                 setPageSize(newSize);
-                 setPage(1);
-               }}
-             />
-           </div>
-         </div>
-       </section>
- 
-       <Modal
-         isOpen={detailOpen}
-         onClose={closeDetail}
-         title="Investment details"
-         size="md"
-         footer={
-           <div className="flex items-center justify-end">
-             <Button
-               type="button"
-               variant="outline"
-               onClick={closeDetail}
-               className="h-8 rounded-full text-xs"
-             >
-               Close
-             </Button>
-           </div>
-         }
-       >
-         {selectedInvestment ? (
-           <>
-             <div className="mb-4 flex items-center gap-3">
-               <div className="relative h-16 w-16 overflow-hidden rounded-2xl bg-emerald-50 ring-1 ring-emerald-100">
-                 {cleanUrl(selectedInvestment.photoUrl) ? (
-                   <Image
-                     src={cleanUrl(selectedInvestment.photoUrl)}
-                     alt="Investment photo"
-                     fill
-                     sizes="64px"
-                     className="object-cover"
-                   />
-                 ) : (
-                   <div className="flex h-full w-full items-center justify-center text-xs font-semibold text-emerald-700">
-                     INV
-                   </div>
-                 )}
-               </div>
-               <div>
-                 <h3 className="text-base font-semibold text-zinc-900">
-                   {fmtBDT(selectedInvestment.amount)} BDT
-                 </h3>
-                 <p className="text-xs text-zinc-500">
-                   {selectedInvestment.date || "-"} {selectedInvestment.time || ""}
-                 </p>
-               </div>
-             </div>
- 
-             <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm text-zinc-900">
-               <div>
-                 <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                   Amount
-                 </dt>
-                 <dd>{fmtBDT(selectedInvestment.amount)}</dd>
-               </div>
-               <div>
-                 <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                   Reference
-                 </dt>
-                 <dd>{selectedInvestment.reference || "-"}</dd>
-               </div>
-               <div>
-                 <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                   Date
-                 </dt>
-                 <dd>{selectedInvestment.date || "-"}</dd>
-               </div>
-               <div>
-                 <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                   Time
-                 </dt>
-                 <dd>{selectedInvestment.time || "-"}</dd>
-               </div>
-             </dl>
-           </>
-         ) : (
-           <div className="flex h-24 items-center justify-center text-sm text-zinc-500">
-             Kono investment select kora hoyni.
-           </div>
-         )}
-       </Modal>
-     </main>
-   );
- }
- 
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import {
+  Eye,
+  TrendingUp,
+  Wallet,
+  BadgeDollarSign,
+  Landmark,
+  X,
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  CalendarDays,
+  Clock3,
+  Hash,
+  UserCircle2,
+} from "lucide-react";
+import { useMeQuery } from "@/features/auth/authApiSlice";
+import { useGetMyInvestmentsQuery } from "@/features/investor/investments/investmentsApiSlice";
+
+/* ─── helpers ─────────────────────────────────── */
+const cleanUrl = (u) =>
+  typeof u === "string" ? u.replace(/[`"'()]/g, "").trim() : "";
+
+const fmtBDT = (n) =>
+  Number(n ?? 0).toLocaleString("en-US", { maximumFractionDigits: 0 });
+
+/* ─── STAT CARD ───────────────────────────────── */
+const STAT_COLORS = {
+  emerald: {
+    bar: "from-emerald-400 to-teal-400",
+    iconBg: "bg-emerald-50",
+    iconRing: "ring-emerald-100",
+    iconColor: "text-emerald-600",
+    valueColor: "text-emerald-700",
+  },
+  blue: {
+    bar: "from-blue-400 to-indigo-400",
+    iconBg: "bg-blue-50",
+    iconRing: "ring-blue-100",
+    iconColor: "text-blue-600",
+    valueColor: "text-blue-700",
+  },
+  violet: {
+    bar: "from-violet-400 to-purple-400",
+    iconBg: "bg-violet-50",
+    iconRing: "ring-violet-100",
+    iconColor: "text-violet-600",
+    valueColor: "text-violet-700",
+  },
+  zinc: {
+    bar: "from-zinc-400 to-zinc-500",
+    iconBg: "bg-zinc-100",
+    iconRing: "ring-zinc-200",
+    iconColor: "text-zinc-600",
+    valueColor: "text-zinc-800",
+  },
+};
+
+const StatCard = ({ label, value, Icon, color = "zinc", currency = false }) => {
+  const c = STAT_COLORS[color] ?? STAT_COLORS.zinc;
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm ring-1 ring-black/[0.03] transition-all hover:-translate-y-0.5 hover:shadow-md sm:p-5">
+      <div
+        className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${c.bar}`}
+      />
+      <div className="flex items-start justify-between gap-2">
+        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-400 leading-tight">
+          {label}
+        </p>
+        <span
+          className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-xl ${c.iconBg} ring-1 ${c.iconRing} sm:h-8 sm:w-8`}
+        >
+          <Icon className={`h-3.5 w-3.5 ${c.iconColor} sm:h-4 sm:w-4`} />
+        </span>
+      </div>
+      <p
+        className={`mt-2.5 text-xl font-bold tabular-nums tracking-tight ${c.valueColor} sm:text-2xl`}
+      >
+        {currency ? "৳" : ""}
+        {fmtBDT(value)}
+      </p>
+    </div>
+  );
+};
+
+/* ─── AVATAR ──────────────────────────────────── */
+const Avatar = ({ user, size = "md" }) => {
+  const dim =
+    size === "lg"
+      ? "h-14 w-14 text-lg sm:h-16 sm:w-16 sm:text-xl"
+      : "h-9 w-9 text-xs sm:h-10 sm:w-10 sm:text-sm";
+  const initials = (user?.name || user?.email || "U")
+    .substring(0, 2)
+    .toUpperCase();
+  return cleanUrl(user?.photoUrl) ? (
+    <div
+      className={`${dim} relative shrink-0 overflow-hidden rounded-2xl ring-2 ring-white shadow`}
+    >
+      <Image
+        src={cleanUrl(user.photoUrl)}
+        alt={user.name ?? "Profile"}
+        fill
+        sizes="64px"
+        className="object-cover"
+        priority
+      />
+    </div>
+  ) : (
+    <div
+      className={`${dim} inline-flex shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 font-bold text-white ring-2 ring-white shadow`}
+    >
+      {initials}
+    </div>
+  );
+};
+
+/* ─── SKELETON ────────────────────────────────── */
+const Sk = ({ className = "" }) => (
+  <div className={`animate-pulse rounded-lg bg-zinc-100 ${className}`} />
+);
+
+const SkeletonRow = () => (
+  <tr className="border-b border-zinc-100">
+    {[...Array(6)].map((_, i) => (
+      <td key={i} className="px-3 py-3.5 sm:px-4">
+        <Sk className="h-4 w-full" />
+      </td>
+    ))}
+  </tr>
+);
+
+/* ─── AMOUNT BADGE ────────────────────────────── */
+const AmountBadge = ({ amount }) => (
+  <span className="inline-flex items-center gap-0.5 font-bold text-emerald-700">
+    <span className="text-[11px] font-bold text-emerald-400">৳</span>
+    {fmtBDT(amount)}
+  </span>
+);
+
+/* ─── DETAIL MODAL ────────────────────────────── */
+const InvestmentDetailModal = ({ investment, onClose }) => {
+  if (!investment) return null;
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center p-3 sm:items-center sm:p-4">
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl ring-1 ring-black/5">
+        <div className="h-1.5 w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500" />
+        <div className="p-5 sm:p-6">
+          {/* header */}
+          <div className="mb-5 flex items-start justify-between gap-3">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 text-xs font-bold text-white shadow sm:h-14 sm:w-14">
+                INV
+              </div>
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
+                  Investment
+                </p>
+                <h3 className="text-lg font-bold tabular-nums text-zinc-900 sm:text-xl">
+                  ৳{fmtBDT(investment.amount)}
+                </h3>
+                <p className="text-xs text-zinc-400">
+                  {investment.date || "—"}
+                  {investment.time ? ` · ${investment.time}` : ""}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-zinc-200 text-zinc-400 transition-colors hover:bg-zinc-50 hover:text-zinc-600"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+
+          {/* fields */}
+          <div className="overflow-hidden rounded-2xl border border-zinc-100 bg-zinc-50/60">
+            {[
+              {
+                Icon: BadgeDollarSign,
+                label: "Amount (BDT)",
+                value: `৳${fmtBDT(investment.amount)}`,
+              },
+              { Icon: Hash, label: "Reference", value: investment.reference },
+              { Icon: CalendarDays, label: "Date", value: investment.date },
+              { Icon: Clock3, label: "Time", value: investment.time },
+            ].map(({ Icon, label, value }, i) => (
+              <div
+                key={label}
+                className={`flex items-center justify-between gap-3 px-4 py-3 ${i % 2 === 0 ? "bg-white shadow-sm" : ""}`}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-400">
+                    {label}
+                  </span>
+                </div>
+                <span className="text-sm font-semibold text-zinc-800">
+                  {value || "—"}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={onClose}
+            className="mt-4 w-full rounded-xl border border-zinc-200 bg-white py-2.5 text-sm font-semibold text-zinc-700 shadow-sm transition-colors hover:bg-zinc-50"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ─── PAGINATION ──────────────────────────────── */
+const TablePagination = ({
+  page,
+  pageCount,
+  total,
+  pageSize,
+  onPageChange,
+  onPageSizeChange,
+}) => {
+  const from = total === 0 ? 0 : (page - 1) * pageSize + 1;
+  const to = Math.min(page * pageSize, total);
+  return (
+    <div className="flex flex-col gap-2.5 border-t border-zinc-100 bg-zinc-50/60 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+      <p className="text-[11px] text-zinc-400">
+        Showing{" "}
+        <span className="font-semibold text-zinc-700">
+          {from}–{to}
+        </span>{" "}
+        of <span className="font-semibold text-zinc-700">{total}</span>{" "}
+        investments
+      </p>
+      <div className="flex items-center gap-1.5">
+        <select
+          value={pageSize}
+          onChange={(e) => onPageSizeChange(Number(e.target.value))}
+          className="h-8 rounded-lg border border-zinc-200 bg-white px-2 text-xs font-medium text-zinc-700 focus:outline-none focus:ring-2 focus:ring-emerald-300"
+        >
+          {[5, 10, 20, 50].map((s) => (
+            <option key={s} value={s}>
+              {s} / page
+            </option>
+          ))}
+        </select>
+        {[
+          { Icon: ChevronsLeft, label: "First", target: 1 },
+          { Icon: ChevronLeft, label: "Prev", target: page - 1 },
+          { Icon: ChevronRight, label: "Next", target: page + 1 },
+          { Icon: ChevronsRight, label: "Last", target: pageCount },
+        ].map(({ Icon, label, target }) => (
+          <button
+            key={label}
+            onClick={() => onPageChange(target)}
+            disabled={
+              label === "First" || label === "Prev"
+                ? page <= 1
+                : page >= pageCount
+            }
+            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-40"
+            aria-label={label}
+          >
+            <Icon className="h-3.5 w-3.5" />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ─── PAGE ────────────────────────────────────── */
+const PAGE_SIZE = 10;
+
+export default function MyInvestmentsPage() {
+  const { data: meResponse, isLoading, isError } = useMeQuery();
+  const user = meResponse?.data ?? meResponse ?? null;
+
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(PAGE_SIZE);
+  const [search, setSearch] = useState("");
+
+  const {
+    data: myInvestments,
+    isLoading: isInvLoading,
+    isFetching: isInvFetching,
+    isError: isInvError,
+  } = useGetMyInvestmentsQuery({ page, limit: pageSize });
+
+  const investments = myInvestments?.items ?? [];
+  const meta = myInvestments?.meta ?? {
+    page,
+    pageCount: 1,
+    total: investments.length,
+  };
+  const isInvestmentsBusy = isInvLoading || isInvFetching;
+
+  const filtered = search.trim()
+    ? investments.filter(
+        (r) =>
+          (r.reference || "").toLowerCase().includes(search.toLowerCase()) ||
+          (r.date || "").includes(search) ||
+          String(r.amount || "").includes(search),
+      )
+    : investments;
+
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [selectedInvestment, setSelectedInvestment] = useState(null);
+  const openDetail = (row) => {
+    setSelectedInvestment(row);
+    setDetailOpen(true);
+  };
+  const closeDetail = () => {
+    setDetailOpen(false);
+    setSelectedInvestment(null);
+  };
+
+  return (
+    <main className="min-h-screen space-y-4 bg-zinc-50/60 p-3 sm:space-y-6 sm:p-6">
+      {/* ── PAGE HEADER ── */}
+      <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+        <div className="h-[3px] w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500" />
+        <div className="flex items-center gap-3 px-4 py-3.5 sm:px-5 sm:py-4">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 ring-1 ring-emerald-100 sm:h-9 sm:w-9">
+            <Wallet className="h-4 w-4 text-emerald-600" />
+          </div>
+          <div>
+            <h1 className="text-sm font-bold tracking-tight text-zinc-900 sm:text-base">
+              My Investments
+            </h1>
+            <p className="text-[11px] text-zinc-400 sm:text-xs">
+              Your profile overview and investment history.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── PROFILE + STATS ── */}
+      <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+        {/* Profile card — full width on mobile, spans on larger */}
+        <div className="relative col-span-2 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm ring-1 ring-black/[0.03] sm:p-5 lg:col-span-1">
+          <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-emerald-400 to-teal-400" />
+          <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 sm:mb-4 sm:text-[11px]">
+            Profile
+          </p>
+
+          {isLoading ? (
+            <div className="flex items-center gap-3">
+              <Sk className="h-14 w-14 shrink-0 rounded-2xl sm:h-16 sm:w-16" />
+              <div className="flex-1 space-y-2">
+                <Sk className="h-4 w-3/4" />
+                <Sk className="h-3 w-full" />
+                <Sk className="h-3 w-2/3" />
+              </div>
+            </div>
+          ) : isError ? (
+            <div className="flex items-center gap-2 text-sm text-red-500">
+              <X className="h-4 w-4" /> Failed to load profile.
+            </div>
+          ) : user ? (
+            <div className="flex items-center gap-3 sm:gap-4">
+              <Avatar user={user} size="lg" />
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-bold text-zinc-900 sm:text-base">
+                  {user.name || "—"}
+                </p>
+                <p className="truncate text-[11px] text-zinc-500 sm:text-xs">
+                  {user.email || "—"}
+                </p>
+                <p className="truncate text-[11px] text-zinc-500 sm:text-xs">
+                  {user.phone || "—"}
+                </p>
+                <p className="truncate text-[11px] text-zinc-400 sm:text-xs">
+                  {user.location || "No location set"}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-2 py-4 text-zinc-400">
+              <UserCircle2 className="h-8 w-8 text-zinc-300" />
+              <p className="text-xs">No user data.</p>
+            </div>
+          )}
+        </div>
+
+        {/* 4 stat cards — always 2 cols */}
+        <StatCard
+          label="Total Investment"
+          value={user?.totalInvestment}
+          Icon={Wallet}
+          color="emerald"
+          currency
+        />
+        <StatCard
+          label="Total Profit"
+          value={user?.totalProfit}
+          Icon={TrendingUp}
+          color="blue"
+          currency
+        />
+        <StatCard
+          label="Balance"
+          value={user?.balance}
+          Icon={Landmark}
+          color="violet"
+          currency
+        />
+        <StatCard
+          label="Total Cost"
+          value={user?.totalCost}
+          Icon={BadgeDollarSign}
+          color="zinc"
+          currency
+        />
+      </section>
+
+      {/* ── INVESTMENTS TABLE ── */}
+      <section>
+        <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+          <div className="h-[3px] w-full bg-gradient-to-r from-teal-400 to-emerald-400" />
+
+          {/* Toolbar */}
+          <div className="flex flex-col gap-2.5 border-b border-zinc-100 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
+            <div>
+              <h2 className="text-sm font-bold text-zinc-900">
+                All Investments
+              </h2>
+              <p className="text-[11px] text-zinc-400">
+                {meta.total ?? investments.length} total records
+              </p>
+            </div>
+            <div className="relative w-full sm:w-56">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
+              <input
+                type="text"
+                placeholder="Search…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="h-9 w-full rounded-xl border border-zinc-200 bg-zinc-50 pl-8 pr-8 text-sm text-zinc-800 placeholder-zinc-400 transition focus:border-emerald-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-100"
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch("")}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Table */}
+          <div className="w-full overflow-x-auto">
+            <table className="min-w-full table-fixed divide-y divide-zinc-100 text-sm">
+              <colgroup>
+                <col className="w-10" />
+                <col className="w-36 min-w-[130px]" />
+                <col className="w-28 min-w-[105px]" />
+                <col className="w-24 min-w-[95px]" />
+                <col className="w-40 min-w-[148px]" />
+                <col className="w-14" />
+              </colgroup>
+
+              <thead>
+                <tr className="bg-zinc-50">
+                  {["#", "Amount (BDT)", "Date", "Time", "Reference", ""].map(
+                    (h) => (
+                      <th
+                        key={h}
+                        scope="col"
+                        className="px-3 py-3 text-left text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-400 first:pl-4 sm:px-4 sm:text-[11px]"
+                      >
+                        {h}
+                      </th>
+                    ),
+                  )}
+                </tr>
+              </thead>
+
+              <tbody className="divide-y divide-zinc-100 bg-white">
+                {isInvestmentsBusy ? (
+                  [...Array(5)].map((_, i) => <SkeletonRow key={i} />)
+                ) : filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-14 text-center sm:py-16">
+                      <div className="flex flex-col items-center gap-2.5">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-50 ring-1 ring-zinc-200">
+                          <Wallet className="h-5 w-5 text-zinc-300" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-zinc-500">
+                            {isInvError
+                              ? "Failed to load"
+                              : search
+                                ? "No results"
+                                : "No investments"}
+                          </p>
+                          <p className="text-xs text-zinc-400">
+                            {isInvError
+                              ? "Could not load investments."
+                              : search
+                                ? `No results for "${search}"`
+                                : "Your investments will appear here."}
+                          </p>
+                        </div>
+                        {search && (
+                          <button
+                            onClick={() => setSearch("")}
+                            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-600 hover:border-emerald-300 hover:text-emerald-700"
+                          >
+                            <X className="h-3 w-3" /> Clear
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  filtered.map((row, idx) => (
+                    <tr
+                      key={row.id}
+                      className="group transition-colors hover:bg-emerald-50/40"
+                    >
+                      {/* SL */}
+                      <td className="pl-4 pr-3 py-3.5 text-xs font-semibold tabular-nums text-zinc-400 sm:pl-5">
+                        {(page - 1) * pageSize + idx + 1}
+                      </td>
+
+                      {/* Amount */}
+                      <td className="px-3 py-3.5 sm:px-4">
+                        <AmountBadge amount={row.amount} />
+                      </td>
+
+                      {/* Date */}
+                      <td className="px-3 py-3.5 sm:px-4">
+                        <span className="inline-flex items-center gap-1 text-xs text-zinc-600">
+                          <CalendarDays className="h-3 w-3 shrink-0 text-zinc-400" />
+                          {row.date || "—"}
+                        </span>
+                      </td>
+
+                      {/* Time */}
+                      <td className="px-3 py-3.5 sm:px-4">
+                        <span className="inline-flex items-center gap-1 text-xs text-zinc-600">
+                          <Clock3 className="h-3 w-3 shrink-0 text-zinc-400" />
+                          {row.time || "—"}
+                        </span>
+                      </td>
+
+                      {/* Reference */}
+                      <td className="px-3 py-3.5 sm:px-4">
+                        {row.reference ? (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-2 py-0.5 font-mono text-[10px] text-zinc-600 ring-1 ring-zinc-200 sm:px-2.5 sm:text-[11px]">
+                            <Hash className="h-2.5 w-2.5 text-zinc-400" />
+                            {row.reference}
+                          </span>
+                        ) : (
+                          <span className="text-zinc-300 text-xs">—</span>
+                        )}
+                      </td>
+
+                      {/* Action */}
+                      <td className="px-3 py-3.5 text-right sm:px-4">
+                        <button
+                          type="button"
+                          onClick={() => openDetail(row)}
+                          className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-400 shadow-sm transition-all group-hover:border-emerald-200 group-hover:bg-emerald-50 group-hover:text-emerald-700 hover:scale-110 sm:h-8 sm:w-8"
+                          aria-label="View investment details"
+                        >
+                          <Eye className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          <TablePagination
+            page={meta.page ?? page}
+            pageCount={meta.pageCount ?? 1}
+            total={meta.total ?? investments.length}
+            pageSize={pageSize}
+            onPageChange={(newPage) =>
+              setPage(Math.max(1, Math.min(meta.pageCount ?? 1, newPage)))
+            }
+            onPageSizeChange={(s) => {
+              setPageSize(s);
+              setPage(1);
+            }}
+          />
+        </div>
+      </section>
+
+      {detailOpen && (
+        <InvestmentDetailModal
+          investment={selectedInvestment}
+          onClose={closeDetail}
+        />
+      )}
+    </main>
+  );
+}
