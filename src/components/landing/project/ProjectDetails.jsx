@@ -8,13 +8,16 @@ export function ProjectDetails({ project, similarProjects = [] }) {
   const [isLiked, setIsLiked] = useState(false);
 
   // Format paragraphs
-  const descriptionParagraphs = project.project_details.split('\r\n').filter(p => p.trim().length > 0);
+  const descriptionParagraphs = (project?.project_details || "")
+    .split(/\r?\n/)
+    .filter(p => p.trim().length > 0);
 
   // Calculate stable funding progress based on projectId
   const fundingPercent = useMemo(() => {
-    const hash = project.projectId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    if (!project?.projectId) return 40;
+    const hash = String(project.projectId).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return (hash % 55) + 40; // Range 40-95
-  }, [project.projectId]);
+  }, [project?.projectId]);
 
   return (
     <div className="bg-zinc-50 min-h-screen pb-20">

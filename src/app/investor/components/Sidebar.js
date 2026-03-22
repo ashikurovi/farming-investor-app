@@ -24,7 +24,7 @@ export default function Sidebar() {
       // ignore API/logout errors, state is cleared in slice
     } finally {
       toast.success("Logged out");
-      router.push("/");
+      router.push("/login");
     }
   };
 

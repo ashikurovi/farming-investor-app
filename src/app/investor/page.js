@@ -8,10 +8,12 @@ import { useMeQuery } from "@/features/auth/authApiSlice";
 import { useGetProjectsStatsQuery } from "@/features/admin/projects/projectsApiSlice";
 import { useGetMyInvestmentsQuery, useGetInvestmentsStatsQuery } from "@/features/investor/investments/investmentsApiSlice";
 import { useGetUsersQuery } from "@/features/admin/users/usersApiSlice";
+import { useGetNoticesQuery } from "@/features/admin/notice/noticeApiSlice";
 import { DataTable } from "@/components/ui/data-table";
 import { Pagination } from "@/components/ui/pagination";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const PAGE_SIZE = 5;
 
@@ -39,6 +41,9 @@ export default function InvestorDashboardPage() {
 
   const { data: stats, isLoading: statsLoading } = useGetProjectsStatsQuery();
   const { data: invStats, isLoading: invStatsLoading } = useGetInvestmentsStatsQuery();
+  
+  const { data: noticesData, isLoading: noticesLoading } = useGetNoticesQuery({ page: 1, limit: 10 });
+  const publicNotices = noticesData?.items?.filter(n => n.isPublic) || [];
 
   const investments = myInvestments?.items ?? [];
   const meta =
@@ -79,6 +84,27 @@ export default function InvestorDashboardPage() {
 
   return (
     <div className="space-y-8">
+      {/* Notice Marquee */}
+      {!noticesLoading && publicNotices.length > 0 && (
+        <section className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm flex items-center h-12">
+          <div className="bg-emerald-600 text-white px-4 h-full flex items-center justify-center font-bold uppercase tracking-wider text-xs whitespace-nowrap z-10 shrink-0">
+            Latest News
+          </div>
+          <div className="flex-1 overflow-hidden relative flex items-center h-full">
+            <marquee className="text-sm font-medium text-zinc-800" onMouseOver={(e) => e.target.stop()} onMouseOut={(e) => e.target.start()}>
+              {publicNotices.map((notice, i) => (
+                <span key={notice.id}>
+                  <Link href={`/investor/notice/${notice.id}`} className="hover:text-emerald-600 hover:underline mx-4">
+                    {notice.title}
+                  </Link>
+                  {i < publicNotices.length - 1 && <span className="text-zinc-300 mx-2">|</span>}
+                </span>
+              ))}
+            </marquee>
+          </div>
+        </section>
+      )}
+
       <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {[
            

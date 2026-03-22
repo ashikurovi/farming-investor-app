@@ -31,7 +31,7 @@ export function ProjectHero() {
   const displayImages =
     images.length > 0
       ? images
-      : "";
+      : [];
 
   useEffect(() => {
     if (displayImages.length <= 1) return;
@@ -56,14 +56,16 @@ export function ProjectHero() {
             transition={{ duration: 1.5, ease: "easeOut" }}
             className="absolute inset-0"
           >
-            <Image
-              src={displayImages[currentImageIndex]}
-              alt="Project Hero - Cultivate Wealth"
-              fill
-              priority
-              className="object-cover opacity-50"
-              quality={90}
-            />
+            {displayImages[currentImageIndex] && (
+              <Image
+                src={displayImages[currentImageIndex]}
+                alt="Project Hero - Cultivate Wealth"
+                fill
+                priority
+                className="object-cover opacity-50"
+                quality={90}
+              />
+            )}
           </motion.div>
         </AnimatePresence>
 

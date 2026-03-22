@@ -9,6 +9,7 @@ import HomeRecentProjects from "../components/home/HomeRecentProjects";
 import HomeStatsSnapshot from "../components/home/HomeStatsSnapshot";
 import HomeTestimonials from "../components/home/HomeTestimonials";
 import HomeWhyChooseUs from "../components/home/HomeWhyChooseUs";
+import WhatsAppButton from "../components/WhatsAppButton";
 
 export default function Home() {
   const recentProjects = getRecentProjects(4);
@@ -26,6 +27,7 @@ export default function Home() {
       {/* Blog */}
       <HomeTestimonials />
       <HomeFaq />
+      <WhatsAppButton />
     </div>
   );
 }

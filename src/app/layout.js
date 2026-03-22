@@ -3,6 +3,7 @@ import "./globals.css";
 import { ReduxProvider } from "./providers";
 import { AppShell } from "@/app/AppShell";
 import { ToasterProvider } from "@/components/ToasterProvider";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const baiJamjuree = Bai_Jamjuree({
   variable: "--font-bai-jamjuree",
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
         <ReduxProvider>
           <ToasterProvider />
           <AppShell>{children}</AppShell>
+          <WhatsAppButton />
         </ReduxProvider>
       </body>
     </html>

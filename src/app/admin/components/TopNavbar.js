@@ -43,7 +43,7 @@ export default function TopNavbar() {
       // ignore
     } finally {
       toast.success("Logged out");
-      router.push("/");
+      router.push("/login");
       setMobileMenuOpen(false);
     }
   };

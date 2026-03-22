@@ -35,7 +35,7 @@ export default function Sidebar() {
       // ignore
     } finally {
       toast.success("Logged out");
-      router.push("/");
+      router.push("/login");
     }
   };
 

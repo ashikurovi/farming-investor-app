@@ -24,6 +24,7 @@ export const apiSlice = createApi({
     "Banner",
     "Contact",
     "InvestorType",
+    "Notice",
   ],
   endpoints: () => ({}),
 });
