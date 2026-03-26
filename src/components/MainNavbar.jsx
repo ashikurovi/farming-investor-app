@@ -273,7 +273,7 @@ export function MainNavbar() {
         </div>
       )}
 
-      {/* Mobile bottom spacer */}
+      {/* Mobile bottom spacer ewfwefwefe */}
       <div className="h-[62px] md:hidden" />
     </>
   );
