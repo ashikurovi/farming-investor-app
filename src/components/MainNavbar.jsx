@@ -143,17 +143,26 @@ export function MainNavbar() {
 
       {/* ── Mobile Bottom Tab Bar ── */}
       <nav className="fixed bottom-0 inset-x-0 z-50 md:hidden bg-white border-t border-zinc-200 shadow-[0_-4px_20px_rgba(0,0,0,0.07)]">
-        <div className="flex items-end justify-around px-1 h-[62px]">
+        <div className="flex items-center justify-around px-1 h-[62px]">
 
-          {/* Home — logo avatar */}
+          {/* Home */}
           {(() => {
             const isActive = pathname === "/";
             return (
-              <Link href="/" className="flex flex-col items-center gap-0.5 pt-2 pb-1 min-w-[56px] group">
-                <div className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${isActive ? "ring-2 ring-red-400 ring-offset-1" : ""}`}>
-                  <img src="/iashd.png" alt="Home" className="w-8 h-8 object-contain rounded-full" />
+              <Link href="/" className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group">
+                <div
+                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
+                    isActive ? "bg-emerald-50 ring-2 ring-emerald-400 ring-offset-1" : ""
+                  }`}
+                  aria-label="Home"
+                >
+                  <Home
+                    className={`h-5 w-5 transition-colors ${
+                      isActive ? "text-emerald-600" : "text-zinc-400 group-hover:text-zinc-600"
+                    }`}
+                  />
                 </div>
-                <span className={`text-[10px] font-semibold leading-none ${isActive ? "text-zinc-800" : "text-zinc-400"}`}>Home</span>
+                <span className="sr-only">Home</span>
               </Link>
             );
           })()}
@@ -162,7 +171,7 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/project");
             return (
-              <Link href="/landing/project" className="flex flex-col items-center gap-0.5 pt-2 pb-1 min-w-[56px] group">
+              <Link href="/landing/project" className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group">
                 <div className="w-10 h-10 flex items-center justify-center">
                   <FolderGit2 className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`} />
                 </div>
@@ -175,7 +184,7 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/contact");
             return (
-              <Link href="/landing/contact" className="flex flex-col items-center gap-0.5 pb-1 -mt-4 min-w-[56px] group">
+              <Link href="/landing/contact" className="flex flex-col items-center gap-0.5 pb-1 -mt-3 min-w-[56px] group">
                 <div className={`w-12 h-12 flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${isActive ? "bg-emerald-500" : "bg-emerald-400 group-hover:bg-emerald-500"}`}>
                   <User className="h-5 w-5 text-white" />
                 </div>
@@ -188,7 +197,7 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/gallery");
             return (
-              <Link href="/landing/gallery" className="flex flex-col items-center gap-0.5 pt-2 pb-1 min-w-[56px] group">
+              <Link href="/landing/gallery" className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group">
                 <div className="w-10 h-10 flex items-center justify-center">
                   <Images className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`} />
                 </div>
@@ -200,7 +209,7 @@ export function MainNavbar() {
           {/* More */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="flex flex-col items-center gap-0.5 pt-2 pb-1 min-w-[56px] group"
+            className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
           >
             <div className="w-10 h-10 flex items-center justify-center">
               <Menu className={`h-5 w-5 transition-colors ${mobileOpen ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`} />

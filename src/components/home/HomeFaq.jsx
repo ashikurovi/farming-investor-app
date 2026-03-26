@@ -1,14 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  ChevronDown,
-  MessageCircle,
-  Phone,
-  Mail,
-  Plus,
-  Minus,
-} from "lucide-react";
+import { ChevronDown, MessageCircle, Mail, Phone } from "lucide-react";
 
 const faqs = [
   {
@@ -39,90 +32,82 @@ const faqs = [
 ];
 
 export default function HomeFaq() {
-  const [openIndex, setOpenIndex] = useState(0);
+  const [openIndex, setOpenIndex] = useState(-1); // ← Changed to -1 (all closed by default)
 
   const toggleFaq = (index) => {
-    setOpenIndex(openIndex === index ? -1 : index);
+    setOpenIndex(openIndex === index ? -1 : index); // Close if clicked again, otherwise open this one
   };
 
   return (
     <section className="">
-      <div className="max-w-7xl mb-6 mx-auto px-6 lg:px-8">
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-          <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
-                Support & FAQ
-              </span>
-            </div>
-
-            <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
-              Common questions,{" "}
-              <span className="font-serif italic text-emerald-700">
-                clarified
-              </span>
-              .
-            </h2>
-
-            <p className="text-zinc-500 text-xs md:text-lg leading-relaxed max-w-xl">
-              Everything you need to know about investing in sustainable
-              agriculture and growing your wealth with us.
-            </p>
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Header */}
+        <div className="max-w-2xl mb-10 lg:mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 mb-4">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span className="text-xs font-bold uppercase tracking-widest text-zinc-600">
+              FAQ
+            </span>
           </div>
+
+          <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900">
+            Common questions,{" "}
+            <span className="font-serif italic text-emerald-700">clarified</span>.
+          </h2>
+
+          <p className="mt-3 text-base text-zinc-600">
+            Everything you need to know about investing in sustainable agriculture and growing your wealth with us.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
           {/* FAQ Accordion */}
-          <div className="lg:col-span-8 space-y-4">
+          <div className="lg:col-span-8 space-y-3">
             {faqs.map((faq, index) => {
               const isOpen = openIndex === index;
+
               return (
                 <div
                   key={index}
                   onClick={() => toggleFaq(index)}
-                  className={`group border rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer ${
+                  className={`group border rounded-2xl overflow-hidden bg-white cursor-pointer transition-all duration-300 ${
                     isOpen
-                      ? "bg-emerald-50/30 border-emerald-200 shadow-sm"
-                      : "bg-white border-zinc-200 hover:border-emerald-200 hover:shadow-md hover:shadow-emerald-50"
+                      ? "border-emerald-300 shadow-xl shadow-emerald-100/70"
+                      : "border-zinc-200 hover:border-emerald-200 hover:shadow-md"
                   }`}
                 >
-                  <div className="flex items-center justify-between gap-4 p-6">
+                  {/* Question Header */}
+                  <div className="flex items-center justify-between px-6 py-5">
                     <h3
-                      className={`text-base md:text-lg font-medium transition-colors ${
-                        isOpen
-                          ? "text-emerald-900"
-                          : "text-zinc-900 group-hover:text-emerald-800"
+                      className={`text-[15px] font-medium transition-colors ${
+                        isOpen ? "text-emerald-900" : "text-zinc-900"
                       }`}
                     >
                       {faq.question}
                     </h3>
-                    <span
-                      className={`relative flex-shrink-0 ml-4 h-8 w-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+
+                    <div
+                      className={`h-7 w-7 flex items-center justify-center rounded-xl transition-all duration-300 ${
                         isOpen
-                          ? "bg-emerald-500 text-white rotate-180"
-                          : "bg-zinc-100 text-zinc-400 group-hover:bg-emerald-100 group-hover:text-emerald-600"
+                          ? "bg-emerald-600 text-white rotate-180"
+                          : "bg-zinc-100 text-zinc-400 group-hover:bg-emerald-50 group-hover:text-emerald-600"
                       }`}
                     >
-                      <ChevronDown className="w-5 h-5" />
-                    </span>
+                      <ChevronDown className="h-4 w-4" />
+                    </div>
                   </div>
 
+                  {/* Answer */}
                   <div
-                    className={`grid transition-[grid-template-rows] duration-300 ease-out ${
-                      isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    className={`overflow-hidden transition-all duration-300 ${
+                      isOpen ? "max-h-96 pb-6" : "max-h-0"
                     }`}
                   >
-                    <div className="overflow-hidden">
-                      <div className="px-6 pb-6 pt-0">
-                        <div
-                          className={`h-px w-full bg-emerald-100/50 mb-4 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0"}`}
-                        />
-                        <p className="text-zinc-600 leading-relaxed text-sm md:text-base">
-                          {faq.answer}
-                        </p>
-                      </div>
+                    <div className="px-6">
+                      <div className="h-px bg-emerald-100 mb-4" />
+                      <p className="text-zinc-600 leading-relaxed text-sm">
+                        {faq.answer}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -130,68 +115,54 @@ export default function HomeFaq() {
             })}
           </div>
 
-          {/* Support Sidebar */}
+          {/* Support Sidebar - Matching the screenshot style */}
           <div className="lg:col-span-4 space-y-6">
-            <div className="p-8 rounded-3xl bg-zinc-900 text-white relative overflow-hidden shadow-xl">
-              <div className="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-emerald-500/20 rounded-full blur-3xl"></div>
-              <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-32 h-32 bg-emerald-500/20 rounded-full blur-3xl"></div>
+            {/* Need Personal Help Card */}
+            <div className="bg-zinc-900 text-white rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+              <h3 className="text-xl font-semibold mb-1.5">Need personal help?</h3>
+              <p className="text-zinc-400 mb-6 text-sm">
+                Our investment specialists are ready to assist you anytime.
+              </p>
 
-              <div className="relative z-10">
-                <h3 className="text-xl font-bold mb-2">Need personal help?</h3>
-                <p className="text-zinc-400 text-sm mb-8 leading-relaxed">
-                  Our expert support team is available 24/7 to guide you through
-                  your investment journey.
-                </p>
+              <div className="space-y-3">
+                <button className="w-full bg-white/10 hover:bg-white/15 border border-white/10 rounded-2xl p-4 flex items-center gap-3 transition-all active:scale-[0.98]">
+                  <div className="bg-emerald-500/20 p-2.5 rounded-xl">
+                    <MessageCircle className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div className="text-left">
+                    <div className="text-[11px] uppercase tracking-widest text-emerald-400">LIVE CHAT</div>
+                    <div className="font-medium text-sm">Start conversation now</div>
+                  </div>
+                </button>
 
-                <div className="space-y-4">
-                  <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all group hover:scale-[1.02] active:scale-[0.98]">
-                    <div className="p-2 bg-emerald-500/10 rounded-lg group-hover:bg-emerald-500/20 transition-colors">
-                      <MessageCircle className="w-5 h-5 text-emerald-400" />
-                    </div>
-                    <div className="text-left">
-                      <div className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">
-                        Live Chat
-                      </div>
-                      <div className="text-sm font-bold text-white">
-                        Start a conversation
-                      </div>
-                    </div>
-                  </button>
-
-                  <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all group hover:scale-[1.02] active:scale-[0.98]">
-                    <div className="p-2 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
-                      <Mail className="w-5 h-5 text-blue-400" />
-                    </div>
-                    <div className="text-left">
-                      <div className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">
-                        Email Us
-                      </div>
-                      <div className="text-sm font-bold text-white">
-                        support@farming.com
-                      </div>
-                    </div>
-                  </button>
-                </div>
+                <button className="w-full bg-white/10 hover:bg-white/15 border border-white/10 rounded-2xl p-4 flex items-center gap-3 transition-all active:scale-[0.98]">
+                  <div className="bg-blue-500/20 p-2.5 rounded-xl">
+                    <Mail className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div className="text-left">
+                    <div className="text-[11px] uppercase tracking-widest text-blue-400">EMAIL SUPPORT</div>
+                    <div className="font-medium text-sm">support@xinzofarms.com</div>
+                  </div>
+                </button>
               </div>
             </div>
 
-            <div className="p-8 rounded-3xl bg-white border border-zinc-100 shadow-lg shadow-emerald-900/5 hover:shadow-emerald-900/10 hover:border-emerald-100 transition-all duration-300 group">
-              <div className="flex items-start gap-5">
-                <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-emerald-50 rounded-2xl text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-emerald-500/25 group-hover:scale-110 group-hover:-rotate-3">
-                  <Phone className="w-6 h-6" strokeWidth={2} />
+            {/* Call Us Card */}
+            <div className="bg-white border border-zinc-100 rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all">
+              <div className="flex items-center gap-4">
+                <div className="w-11 h-11 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600">
+                  <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-zinc-900 mb-1.5 text-base group-hover:text-emerald-900 transition-colors">
-                    Call for inquiries
-                  </h4>
-                  <p className="text-xs font-medium text-zinc-500 mb-3 uppercase tracking-wide">
-                    Mon-Fri from 9am to 6pm
-                  </p>
+                  <div className="font-semibold text-base">Call us directly</div>
+                  <div className="text-xs text-zinc-500 mt-1">
+                    Monday to Friday, 9:00 AM – 6:00 PM
+                  </div>
                   <a
                     href="tel:+8801234567890"
-                    className="text-xl font-bold tracking-tight text-emerald-600 hover:text-emerald-700 transition-colors flex items-center gap-2"
+                    className="mt-2.5 block text-xl font-bold text-emerald-600 tracking-tight hover:text-emerald-700 transition-colors"
                   >
-                    +880 1234 567 890
+                    +880 1234-567890
                   </a>
                 </div>
               </div>
