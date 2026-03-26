@@ -11,15 +11,23 @@ export const metadata = {
 
 const Contactpage = () => {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-zinc-50/50">
       <ContactHero />
-      <div id="contact-form" className="max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
-          {/* Contact Form - Client Component */}
-          <ContactForm />
+      <div id="contact-form" className="relative max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-32">
+        {/* Decorative Background Elements */}
+        <div className="absolute top-40 left-0 w-72 h-72 bg-emerald-300/10 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute bottom-20 right-0 w-96 h-96 bg-teal-300/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Contact Info - Static Component */}
-          <ContactInfo />
+          <div className="lg:col-span-5 order-2 lg:order-1">
+            <ContactInfo />
+          </div>
+
+          {/* Contact Form - Client Component */}
+          <div className="lg:col-span-7 order-1 lg:order-2">
+            <ContactForm />
+          </div>
         </div>
       </div>
     </main>

@@ -45,13 +45,17 @@ export function ContactForm() {
   };
 
   return (
-    <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl shadow-zinc-200/50 border border-zinc-100">
-      <div className="mb-8">
-        <h3 className="text-2xl font-semibold text-zinc-900 tracking-tight">
+    <div className="relative bg-white/80 backdrop-blur-md p-8 md:p-12 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl shadow-zinc-200/40 ring-1 ring-zinc-200/50 overflow-hidden group/form">
+      {/* Decorative gradients */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-400/10 rounded-full blur-[60px] -z-10 pointer-events-none transition-transform duration-700 group-hover/form:scale-110" />
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-400/10 rounded-full blur-[60px] -z-10 pointer-events-none transition-transform duration-700 group-hover/form:scale-110" />
+      
+      <div className="mb-10 relative">
+        <h3 className="text-3xl font-bold text-zinc-900 tracking-tight">
           Send us a message
         </h3>
-        <p className="text-zinc-500 text-sm mt-2">
-          We&apos;ll get back to you within 24 hours.
+        <p className="text-zinc-500 text-base mt-3 leading-relaxed">
+          We&apos;ll get back to you within 24 hours. Fill out the form below to start the conversation.
         </p>
       </div>
 
@@ -70,7 +74,7 @@ export function ContactForm() {
               name="firstName"
               placeholder="John"
               required
-              className="h-12 bg-zinc-50/50 border-zinc-200 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500/10 transition-all rounded-xl"
+              className="h-14 bg-zinc-50/50 border-zinc-200/80 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-300 rounded-2xl text-base px-4"
             />
           </div>
 
@@ -87,7 +91,7 @@ export function ContactForm() {
               name="lastName"
               placeholder="Doe"
               required
-              className="h-12 bg-zinc-50/50 border-zinc-200 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500/10 transition-all rounded-xl"
+              className="h-14 bg-zinc-50/50 border-zinc-200/80 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-300 rounded-2xl text-base px-4"
             />
           </div>
         </div>
@@ -107,7 +111,7 @@ export function ContactForm() {
               type="email"
               placeholder="john@example.com"
               required
-              className="h-12 bg-zinc-50/50 border-zinc-200 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500/10 transition-all rounded-xl"
+              className="h-14 bg-zinc-50/50 border-zinc-200/80 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-300 rounded-2xl text-base px-4"
             />
           </div>
 
@@ -124,7 +128,7 @@ export function ContactForm() {
               name="phone"
               type="tel"
               placeholder="+1 (555) 000-0000"
-              className="h-12 bg-zinc-50/50 border-zinc-200 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500/10 transition-all rounded-xl"
+              className="h-14 bg-zinc-50/50 border-zinc-200/80 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-300 rounded-2xl text-base px-4"
             />
           </div>
         </div>
@@ -230,15 +234,16 @@ export function ContactForm() {
         {/* Submit Button */}
         <Button 
             disabled={isSubmitting}
-            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-14 rounded-xl transition-all duration-300 shadow-lg shadow-emerald-200/50 group disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-14 rounded-2xl transition-all duration-300 shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_-5px_rgba(16,185,129,0.6)] group disabled:opacity-70 disabled:cursor-not-allowed mt-4 overflow-hidden relative"
         >
+            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer" />
             {isSubmitting ? (
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex items-center justify-center gap-2 relative z-10">
                     <span>Submitting...</span>
                     <Loader2 className="w-5 h-5 animate-spin" />
                 </div>
             ) : (
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex items-center justify-center gap-2 relative z-10">
                     <span>Send Message</span>
                     <Send className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </div>
