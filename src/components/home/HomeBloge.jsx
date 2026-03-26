@@ -15,6 +15,7 @@ const blogPosts = [
     readTime: "5 min read",
     image: "https://images.pexels.com/photos/2132250/pexels-photo-2132250.jpeg?auto=compress&cs=tinysrgb&w=800", // Rice field
   },
+  ///uweqhfiuwh eyughweyugfyuiwe
   {
     id: 2,
     title: "Maximizing ROI: A Guide for Agro-Investors",
