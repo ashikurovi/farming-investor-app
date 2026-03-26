@@ -75,11 +75,14 @@ export default function AdminInvestorPage() {
   const [unbanUser] = useUnbanUserMutation();
 
   const { data: investorTypesData, isLoading: isInvestorTypesLoading } =
-    useGetInvestorTypesQuery({
-      page: 1,
-      limit: 100,
-      search: "",
-    }, { skip: !isModalOpen });
+    useGetInvestorTypesQuery(
+      {
+        page: 1,
+        limit: 100,
+        search: "",
+      },
+      { skip: !isModalOpen },
+    );
 
   const investors = useMemo(() => {
     const items = data?.items ?? [];
@@ -130,120 +133,137 @@ export default function AdminInvestorPage() {
     setFormValues((prev) => ({ ...prev, [field]: value }));
   }, []);
 
-  const handleSubmit = useCallback(async (e) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    try {
-      const formData = new FormData();
-      formData.append("name", formValues.name);
-      formData.append("email", formValues.email);
-      if (formValues.phone) {
-        formData.append("phone", formValues.phone);
-      }
-      formData.append("role", formValues.role || "investor");
-      if (formValues.password) {
-        formData.append("password", formValues.password);
-      }
-      if (formValues.investorTypeId) {
-        formData.append("investorTypeId", String(formValues.investorTypeId));
-      }
-      if (formValues.photo) {
-        formData.append("photo", formValues.photo);
-      }
-
-      if (editingUser) {
-        await updateUser({ id: editingUser.id, formData }).unwrap();
-        toast.success("Investor updated successfully");
-      } else {
-        await createUser(formData).unwrap();
-        toast.success("Investor created successfully");
-      }
-
-      closeModal();
-    } catch (error) {
-      const message =
-        error?.data?.message ||
-        (Array.isArray(error?.data?.message) ? error.data.message[0] : null) ||
-        "Something went wrong. Please try again.";
-      toast.error("Operation failed", { description: message });
-    }
-  }, [formValues, editingUser, updateUser, createUser, closeModal]);
-
-  const closeConfirm = useCallback(() =>
-    setConfirmState((prev) => ({ ...prev, isOpen: false, onConfirm: null })), []);
-
-  const openConfirm = useCallback((options) =>
-    setConfirmState({
-      isOpen: true,
-      title: "",
-      description: "",
-      confirmLabel: "Confirm",
-      cancelLabel: "Cancel",
-      onConfirm: null,
-      variant: "danger",
-      ...options,
-    }), []);
-
-  const confirmDelete = useCallback((user) => {
-    openConfirm({
-      title: "Delete investor",
-      description: `Delete investor "${user.name || user.email}"? This action cannot be undone.`,
-      confirmLabel: "Delete",
-      variant: "danger",
-      onConfirm: async () => {
-        try {
-          await deleteUser(user.id).unwrap();
-          toast.success("Investor deleted successfully");
-        } catch (error) {
-          const message =
-            error?.data?.message ||
-            (Array.isArray(error?.data?.message)
-              ? error.data.message[0]
-              : null) ||
-            "Failed to delete investor.";
-          toast.error("Delete failed", { description: message });
-        } finally {
-          closeConfirm();
+      try {
+        const formData = new FormData();
+        formData.append("name", formValues.name);
+        formData.append("email", formValues.email);
+        if (formValues.phone) {
+          formData.append("phone", formValues.phone);
         }
-      },
-    });
-  }, [openConfirm, deleteUser, closeConfirm]);
+        formData.append("role", formValues.role || "investor");
+        if (formValues.password) {
+          formData.append("password", formValues.password);
+        }
+        if (formValues.investorTypeId) {
+          formData.append("investorTypeId", String(formValues.investorTypeId));
+        }
+        if (formValues.photo) {
+          formData.append("photo", formValues.photo);
+        }
 
-  const confirmToggleBan = useCallback((user) => {
-    const isCurrentlyBanned = user.isBanned;
-    const actionLabel = isCurrentlyBanned ? "Unban" : "Ban";
-    const variant = isCurrentlyBanned ? "success" : "danger";
+        if (editingUser) {
+          await updateUser({ id: editingUser.id, formData }).unwrap();
+          toast.success("Investor updated successfully");
+        } else {
+          await createUser(formData).unwrap();
+          toast.success("Investor created successfully");
+        }
 
-    openConfirm({
-      title: `${actionLabel} investor`,
-      description: isCurrentlyBanned
-        ? `Unban investor "${user.name || user.email}" and restore access?`
-        : `Ban investor "${user.name || user.email}" and revoke access?`,
-      confirmLabel: actionLabel,
-      variant: variant,
-      onConfirm: async () => {
-        try {
-          if (isCurrentlyBanned) {
-            await unbanUser(user.id).unwrap();
-            toast.success("Investor unbanned");
-          } else {
-            await banUser(user.id).unwrap();
-            toast.success("Investor banned");
+        closeModal();
+      } catch (error) {
+        const message =
+          error?.data?.message ||
+          (Array.isArray(error?.data?.message)
+            ? error.data.message[0]
+            : null) ||
+          "Something went wrong. Please try again.";
+        toast.error("Operation failed", { description: message });
+      }
+    },
+    [formValues, editingUser, updateUser, createUser, closeModal],
+  );
+
+  const closeConfirm = useCallback(
+    () =>
+      setConfirmState((prev) => ({ ...prev, isOpen: false, onConfirm: null })),
+    [],
+  );
+
+  const openConfirm = useCallback(
+    (options) =>
+      setConfirmState({
+        isOpen: true,
+        title: "",
+        description: "",
+        confirmLabel: "Confirm",
+        cancelLabel: "Cancel",
+        onConfirm: null,
+        variant: "danger",
+        ...options,
+      }),
+    [],
+  );
+
+  const confirmDelete = useCallback(
+    (user) => {
+      openConfirm({
+        title: "Delete investor",
+        description: `Delete investor "${user.name || user.email}"? This action cannot be undone.`,
+        confirmLabel: "Delete",
+        variant: "danger",
+        onConfirm: async () => {
+          try {
+            await deleteUser(user.id).unwrap();
+            toast.success("Investor deleted successfully");
+          } catch (error) {
+            const message =
+              error?.data?.message ||
+              (Array.isArray(error?.data?.message)
+                ? error.data.message[0]
+                : null) ||
+              "Failed to delete investor.";
+            toast.error("Delete failed", { description: message });
+          } finally {
+            closeConfirm();
           }
-        } catch (error) {
-          const message =
-            error?.data?.message ||
-            (Array.isArray(error?.data?.message)
-              ? error.data.message[0]
-              : null) ||
-            "Failed to update status.";
-          toast.error("Status update failed", { description: message });
-        } finally {
-          closeConfirm();
-        }
-      },
-    });
-  }, [openConfirm, unbanUser, banUser, closeConfirm]);
+        },
+      });
+    },
+    [openConfirm, deleteUser, closeConfirm],
+  );
+
+  const confirmToggleBan = useCallback(
+    (user) => {
+      const isCurrentlyBanned = user.isBanned;
+      const actionLabel = isCurrentlyBanned ? "Unban" : "Ban";
+      const variant = isCurrentlyBanned ? "success" : "danger";
+
+      openConfirm({
+        title: `${actionLabel} investor`,
+        description: isCurrentlyBanned
+          ? `Unban investor "${user.name || user.email}" and restore access?`
+          : `Ban investor "${user.name || user.email}" and revoke access?`,
+        confirmLabel: actionLabel,
+        variant: variant,
+        onConfirm: async () => {
+          try {
+            if (isCurrentlyBanned) {
+              await unbanUser(user.id).unwrap();
+              toast.success("Investor unbanned");
+            } else {
+              await banUser(user.id).unwrap();
+              toast.success("Investor banned");
+            }
+          } catch (error) {
+            const message =
+              error?.data?.message ||
+              (Array.isArray(error?.data?.message)
+                ? error.data.message[0]
+                : null) ||
+              "Failed to update status.";
+            toast.error("Status update failed", { description: message });
+          } finally {
+            closeConfirm();
+          }
+        },
+      });
+    },
+    [openConfirm, unbanUser, banUser, closeConfirm],
+  );
 
   const handleSearchChange = (value) => {
     setSearchInput(value);
@@ -384,7 +404,9 @@ export default function AdminInvestorPage() {
                 cell: (user) => (
                   <span className="font-medium text-gray-900">
                     ৳
-                    {Number(user.totalInvestment ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                    {Number(user.totalInvestment ?? 0).toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                    })}
                   </span>
                 ),
               },
