@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
@@ -12,41 +12,133 @@ import {
   User,
   LayoutDashboard,
   LogOut,
-  ShoppingCart,
   ChevronDown,
+  TrendingUp,
+  Bell,
+  Settings,
+  ExternalLink,
+  BadgeHelp,
+  LifeBuoy,
 } from "lucide-react";
 import { useLogoutMutation } from "@/features/auth/authApiSlice";
 import { toast } from "sonner";
 
 const NAV_LINKS = [
   { href: "/", label: "Home", icon: Home },
-  { href: "/landing/project", label: "Project", icon: FolderGit2 },
+  { href: "/landing/project", label: "Projects", icon: FolderGit2 },
   { href: "/landing/gallery", label: "Gallery", icon: Images },
   { href: "/landing/contact", label: "Contact", icon: User },
   { href: "/landing/about", label: "About", icon: LayoutDashboard },
 ];
 
-function NavLink({ href, label, Icon }) {
+/* ── Nav link with animated underline ── */
+function NavLink({ href, label }) {
   const pathname = usePathname();
   const isActive = href === "/" ? pathname === href : pathname.startsWith(href);
+
   return (
     <Link
       href={href}
-      className={`group relative inline-flex items-center gap-2 text-[13px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap ${
-        isActive
-          ? "text-emerald-500"
-          : "text-zinc-700 hover:text-zinc-900"
+      className={`relative group flex items-center gap-1.5 text-[13px] font-semibold tracking-[0.04em] py-1 transition-colors duration-200 whitespace-nowrap ${
+        isActive ? "text-emerald-400" : "text-zinc-300 hover:text-white"
       }`}
     >
-      {Icon ? (
-        <Icon
-          className={`h-[18px] w-[18px] transition-colors ${
-            isActive ? "text-emerald-500" : "text-zinc-500 group-hover:text-zinc-700"
+      {label}
+      <span
+        className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-emerald-400 transition-all duration-300 ${
+          isActive ? "w-full" : "w-0 group-hover:w-full"
+        }`}
+      />
+    </Link>
+  );
+}
+
+/* ── User dropdown menu ── */
+function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen((p) => !p)}
+        className="flex items-center gap-2.5 pl-1 pr-3 py-1 rounded-full bg-white/10 hover:bg-white/15 border border-white/10 hover:border-white/20 transition-all duration-200"
+      >
+        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-xs font-bold uppercase shadow-sm">
+          {user?.name?.[0] ?? "U"}
+        </div>
+        <span className="text-sm font-medium text-white/90 max-w-[90px] truncate leading-none">
+          {user?.name ?? "Account"}
+        </span>
+        <ChevronDown
+          className={`h-3.5 w-3.5 text-white/50 transition-transform duration-200 ${
+            open ? "rotate-180" : ""
           }`}
         />
-      ) : null}
-      {label}
-    </Link>
+      </button>
+
+      {open && (
+        <div className="absolute right-0 top-[calc(100%+10px)] w-56 bg-[#0f1a14] border border-white/10 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-50">
+          <div className="px-4 py-3 border-b border-white/8">
+            <p className="text-white text-sm font-semibold truncate">
+              {user?.name ?? "User"}
+            </p>
+            <p className="text-zinc-400 text-xs truncate mt-0.5">
+              {user?.email ?? ""}
+            </p>
+          </div>
+
+          <div className="p-2 flex flex-col gap-0.5">
+            <Link
+              href={dashboardHref}
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-zinc-300 hover:bg-white/8 hover:text-white transition-colors"
+            >
+              <LayoutDashboard className="h-4 w-4 text-emerald-400 shrink-0" />
+              <span className="text-xs font-semibold tracking-wide uppercase">
+                {role === "admin" ? "Admin" : "Investor"} Dashboard
+              </span>
+              <ExternalLink className="h-3 w-3 ml-auto text-zinc-600" />
+            </Link>
+
+            <Link
+              href="/settings"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-zinc-300 hover:bg-white/8 hover:text-white transition-colors"
+            >
+              <Settings className="h-4 w-4 text-zinc-500 shrink-0" />
+              <span className="text-xs font-semibold tracking-wide uppercase">
+                Settings
+              </span>
+            </Link>
+
+            <div className="h-px bg-white/8 my-1" />
+
+            <button
+              onClick={() => {
+                setOpen(false);
+                onLogout();
+              }}
+              disabled={isLoggingOut}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50 w-full text-left"
+            >
+              <LogOut className="h-4 w-4 shrink-0" />
+              <span className="text-xs font-semibold tracking-wide uppercase">
+                {isLoggingOut ? "Logging out…" : "Sign Out"}
+              </span>
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -54,6 +146,7 @@ export function MainNavbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const token = useSelector((state) => state.auth?.token);
   const user = useSelector((state) => state.auth?.user);
@@ -67,105 +160,162 @@ export function MainNavbar() {
   const handleLogout = async () => {
     try {
       await logout().unwrap();
-    } catch {}
-    finally {
+    } catch {
+    } finally {
       toast.success("Logged out");
       router.push("/");
     }
   };
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   useEffect(() => setMobileOpen(false), [pathname]);
 
   return (
     <>
-      {/* ── Desktop Navbar (Fiberace style) ── */}
-      <header className="hidden md:flex fixed top-0 inset-x-0 z-50 h-16 items-center bg-white border-b border-zinc-200 shadow-sm">
-        <div className="mx-auto w-full max-w-7xl px-6 flex items-center gap-6">
+      {/* ══════════════════════════════════════════
+          DESKTOP NAVBAR — md and above ONLY
+      ══════════════════════════════════════════ */}
+      <div className="hidden md:block fixed top-0 inset-x-0 z-50">
+        {/* ── Top utility bar ── */}
+        <div className="bg-[#0a1a0f] border-b border-white/4">
+          <div className="mx-auto max-w-7xl px-8 h-9 flex items-center justify-between">
+            {/* Live market ticker */}
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1.5 text-[11px] text-emerald-400/80 font-medium tracking-wide">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+                </span>
+                Markets Live
+              </span>
+              <span className="text-white/10">|</span>
+              <span className="flex items-center gap-1 text-[11px] text-zinc-400">
+                <TrendingUp className="h-3 w-3 text-emerald-500" />
+                <span className="text-emerald-400 font-semibold">+2.1%</span>
+                <span>Avg. Yield This Quarter</span>
+              </span>
+            </div>
 
-          {/* Logo */}
-          <Link href="/" className="shrink-0 mr-2">
-            <img src="/logo.png" alt="Logo" className="h-8 w-auto object-contain" />
-          </Link>
-
-          {/* Nav Links */}
-          <nav className="flex items-center gap-6">
-            {NAV_LINKS.map(({ href, label, icon }) => (
-              <NavLink key={href} href={href} label={label} Icon={icon} />
-            ))}
-          </nav>
-
-          {/* Right Side: Cart + Auth */}
-          <div className="flex items-center gap-3 ml-auto shrink-0">
-            {/* Cart */}
-            <button className="relative flex items-center justify-center w-9 h-9 rounded-full hover:bg-zinc-100 transition-colors text-zinc-600">
-              <ShoppingCart className="h-5 w-5" />
-            </button>
-
-            {isAuthenticated ? (
-              <>
-                {/* User avatar/dropdown */}
-                <div className="flex items-center gap-2 cursor-pointer group">
-                  <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-bold uppercase">
-                    {user?.name?.[0] ?? "U"}
-                  </div>
-                  <span className="text-sm font-medium text-zinc-700 max-w-[100px] truncate">
-                    {user?.name ?? "Account"}
-                  </span>
-                  <ChevronDown className="h-3.5 w-3.5 text-zinc-400" />
-                </div>
-
-                {/* Dashboard Link */}
-                <Link
-                  href={dashboardHref}
-                  className="text-[11px] font-bold tracking-[0.18em] uppercase px-4 py-2 rounded-full border border-zinc-300 text-zinc-700 hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-all duration-200"
-                >
-                  Dashboard
-                </Link>
-
-                {/* Logout */}
-                <button
-                  onClick={handleLogout}
-                  disabled={isLoggingOut}
-                  className="flex items-center justify-center w-9 h-9 rounded-full bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-200 disabled:opacity-50"
-                  title="Logout"
-                >
-                  <LogOut className="h-4 w-4" />
-                </button>
-              </>
-            ) : (
+            {/* Right quick links */}
+            <div className="flex items-center gap-4">
               <Link
-                href="/login"
-                className="text-[11px] font-bold tracking-[0.18em] uppercase px-5 py-2 rounded-full border border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white transition-all duration-200"
+                href="/landing/about"
+                className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] text-zinc-400 hover:bg-white/5 hover:text-zinc-200 tracking-wide transition-colors"
               >
-                Login
+                <BadgeHelp className="h-3.5 w-3.5 text-zinc-500" />
+                How it Works
               </Link>
-            )}
+              <span className="text-white/10">|</span>
+              <Link
+                href="/landing/contact"
+                className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] text-zinc-400 hover:bg-white/5 hover:text-zinc-200 tracking-wide transition-colors"
+              >
+                <LifeBuoy className="h-3.5 w-3.5 text-zinc-500" />
+                Support
+              </Link>
+              {isAuthenticated && (
+                <>
+                  <span className="text-white/10">|</span>
+                  <button className="text-zinc-400 hover:text-zinc-200 transition-colors relative">
+                    <Bell className="h-3.5 w-3.5" />
+                    <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </header>
 
-      {/* Desktop spacer */}
-      <div className="h-16 hidden md:block" />
+        {/* ── Main nav bar ── */}
+        <header
+          className={`transition-all duration-300 ${
+            scrolled
+              ? "bg-[#0d1f12]/95 backdrop-blur-xl shadow-lg shadow-black/30 border-b border-white/5"
+              : "bg-[#0d1f12] border-b border-white/4"
+          }`}
+        >
+          <div className="mx-auto max-w-7xl px-8 h-[60px] flex items-center gap-8">
+            {/* Logo */}
+            <Link href="/" className="shrink-0 flex items-center">
+              <img
+                src="/favicon.ico"
+                alt="XINZO"
+                className="h-8 w-auto object-contain"
+              />
+            </Link>
 
-      {/* ── Mobile Bottom Tab Bar (UNCHANGED) ── */}
+            {/* Divider */}
+            <div className="h-5 w-px bg-white/6 shrink-0" />
+
+            {/* Nav links */}
+            <nav className="flex items-center gap-7">
+              {NAV_LINKS.map(({ href, label }) => (
+                <NavLink key={href} href={href} label={label} />
+              ))}
+            </nav>
+
+            {/* Spacer */}
+            <div className="flex-1" />
+
+            {/* Right actions */}
+            <div className="flex items-center gap-3 shrink-0">
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    href={dashboardHref}
+                    className="flex items-center gap-2 text-[11px] font-bold tracking-[0.16em] uppercase px-4 py-2 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/25 hover:bg-emerald-500/25 hover:border-emerald-400/40 hover:text-emerald-200 transition-all duration-200"
+                  >
+                    <LayoutDashboard className="h-3.5 w-3.5" />
+                    Dashboard
+                  </Link>
+                  <UserDropdown
+                    user={user}
+                    dashboardHref={dashboardHref}
+                    role={role}
+                    onLogout={handleLogout}
+                    isLoggingOut={isLoggingOut}
+                  />
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  className="text-[12px] font-bold tracking-[0.16em] uppercase px-5 py-2 rounded-lg border border-white/10 bg-white/5 text-white/90 hover:bg-white/10 hover:border-white/15 transition-all duration-200"
+                >
+                  Log in
+                </Link>
+              )}
+            </div>
+          </div>
+        </header>
+      </div>
+
+      {/* Desktop spacer: top bar 36px + main nav 60px = 96px */}
+      <div className="hidden md:block h-[96px]" />
+
+      {/* ══════════════════════════════════════════
+          MOBILE — completely UNCHANGED
+      ══════════════════════════════════════════ */}
       <nav className="fixed bottom-0 inset-x-0 z-50 md:hidden bg-white border-t border-zinc-200 shadow-[0_-4px_20px_rgba(0,0,0,0.07)]">
         <div className="flex items-center justify-around px-1 h-[62px]">
-
           {/* Home */}
           {(() => {
             const isActive = pathname === "/";
             return (
-              <Link href="/" className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group">
+              <Link
+                href="/"
+                className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
+              >
                 <div
-                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
-                    isActive ? "bg-emerald-50 ring-2 ring-emerald-400 ring-offset-1" : ""
-                  }`}
-                  aria-label="Home"
+                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${isActive ? "bg-emerald-50 ring-2 ring-emerald-400 ring-offset-1" : ""}`}
                 >
                   <Home
-                    className={`h-5 w-5 transition-colors ${
-                      isActive ? "text-emerald-600" : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
+                    className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-600" : "text-zinc-400 group-hover:text-zinc-600"}`}
                   />
                 </div>
                 <span className="sr-only">Home</span>
@@ -177,24 +327,42 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/project");
             return (
-              <Link href="/landing/project" className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group">
+              <Link
+                href="/landing/project"
+                className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
+              >
                 <div className="w-10 h-10 flex items-center justify-center">
-                  <FolderGit2 className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`} />
+                  <FolderGit2
+                    className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`}
+                  />
                 </div>
-                <span className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"}`}>Project</span>
+                <span
+                  className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"}`}
+                >
+                  Project
+                </span>
               </Link>
             );
           })()}
 
-          {/* Contact — raised center button */}
+          {/* Contact — raised center */}
           {(() => {
             const isActive = pathname.startsWith("/landing/contact");
             return (
-              <Link href="/landing/contact" className="flex flex-col items-center gap-0.5 pb-1 -mt-3 min-w-[56px] group">
-                <div className={`w-12 h-12 flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${isActive ? "bg-emerald-500" : "bg-emerald-400 group-hover:bg-emerald-500"}`}>
+              <Link
+                href="/landing/contact"
+                className="flex flex-col items-center gap-0.5 pb-1 -mt-3 min-w-[56px] group"
+              >
+                <div
+                  className={`w-12 h-12 flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${isActive ? "bg-emerald-500" : "bg-emerald-400 group-hover:bg-emerald-500"}`}
+                >
                   <User className="h-5 w-5 text-white" />
                 </div>
-                <span className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"}`}>Contact</span>
+                <span
+                  className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"}`}
+                >
+                  Contact
+                </span>
               </Link>
             );
           })()}
@@ -203,11 +371,20 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/gallery");
             return (
-              <Link href="/landing/gallery" className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group">
+              <Link
+                href="/landing/gallery"
+                className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
+              >
                 <div className="w-10 h-10 flex items-center justify-center">
-                  <Images className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`} />
+                  <Images
+                    className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`}
+                  />
                 </div>
-                <span className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"}`}>Gallery</span>
+                <span
+                  className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"}`}
+                >
+                  Gallery
+                </span>
               </Link>
             );
           })()}
@@ -218,17 +395,25 @@ export function MainNavbar() {
             className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
           >
             <div className="w-10 h-10 flex items-center justify-center">
-              <Menu className={`h-5 w-5 transition-colors ${mobileOpen ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`} />
+              <Menu
+                className={`h-5 w-5 transition-colors ${mobileOpen ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`}
+              />
             </div>
-            <span className={`text-[10px] font-semibold leading-none ${mobileOpen ? "text-emerald-600" : "text-zinc-400"}`}>More</span>
+            <span
+              className={`text-[10px] font-semibold leading-none ${mobileOpen ? "text-emerald-600" : "text-zinc-400"}`}
+            >
+              More
+            </span>
           </button>
-
         </div>
       </nav>
 
-      {/* ── Mobile More Popup (bottom-right) ── */}
+      {/* Mobile More Popup */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 md:hidden" onClick={() => setMobileOpen(false)}>
+        <div
+          className="fixed inset-0 z-40 md:hidden"
+          onClick={() => setMobileOpen(false)}
+        >
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
           <div
             className="absolute bottom-[70px] right-4 w-60 bg-white rounded-2xl shadow-2xl border border-zinc-100 overflow-hidden"
@@ -240,7 +425,9 @@ export function MainNavbar() {
                 className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition"
               >
                 <LayoutDashboard className="h-4 w-4 text-zinc-400" />
-                <span className="text-xs font-bold uppercase tracking-[0.15em]">About</span>
+                <span className="text-xs font-bold uppercase tracking-[0.15em]">
+                  About
+                </span>
               </Link>
               <div className="h-px bg-zinc-100 mx-2 my-1" />
               {isAuthenticated ? (
@@ -271,7 +458,9 @@ export function MainNavbar() {
                   className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-800 hover:bg-zinc-50 transition"
                 >
                   <User className="h-4 w-4 text-zinc-400" />
-                  <span className="text-xs font-bold uppercase tracking-[0.15em]">Login</span>
+                  <span className="text-xs font-bold uppercase tracking-[0.15em]">
+                    Login
+                  </span>
                 </Link>
               )}
             </div>
