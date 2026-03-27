@@ -137,15 +137,11 @@ export default function AdminContactsPage() {
                 header: "Investor type",
                 tdClassName:
                   "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-<<<<<<< HEAD
                 cell: (contact) => (
                   <span className="inline-flex items-center rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-800">
                     {contact.investorType || "-"}
                   </span>
                 ),
-=======
-                cell: (contact) => contact.investorType || "-",
->>>>>>> main
               },
               {
                 key: "subject",

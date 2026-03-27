@@ -12,7 +12,7 @@ const baiJamjuree = Bai_Jamjuree({
 });
 
 export const metadata = {
-  title: "Framing Investor App",
+  title: "Framing Investor App | Xinzo",
   description: "Framing Investor App",
 };
 

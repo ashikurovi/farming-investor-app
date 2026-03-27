@@ -31,10 +31,10 @@ function NavLink({ href, label, scrolled }) {
     <Link
       href={href}
       className={`relative text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 group ${isActive
-          ? "text-emerald-400"
-          : scrolled
-            ? "text-zinc-500 hover:text-zinc-900"
-            : "text-white/60 hover:text-white"
+        ? "text-emerald-400"
+        : scrolled
+          ? "text-zinc-500 hover:text-zinc-900"
+          : "text-white/60 hover:text-white"
         }`}
     >
       {label}
@@ -85,8 +85,8 @@ export function MainNavbar() {
       {/* ── Desktop Navbar ── */}
       <header
         className={`hidden md:flex fixed top-0 inset-x-0 z-50 h-16 items-center transition-all duration-500 ${scrolled
-            ? "bg-white/80 backdrop-blur-xl border-b border-zinc-200/60 shadow-sm"
-            : "bg-transparent"
+          ? "bg-white/80 backdrop-blur-xl border-b border-zinc-200/60 shadow-sm"
+          : "bg-transparent"
           }`}
       >
         <div className="mx-auto w-full max-w-7xl px-8 flex items-center justify-between">
@@ -106,8 +106,8 @@ export function MainNavbar() {
                 <Link
                   href={dashboardHref}
                   className={`text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2 rounded-full border transition-all duration-200 ${scrolled
-                      ? "border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white"
-                      : "border-white/40 text-white hover:bg-white/10"
+                    ? "border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white"
+                    : "border-white/40 text-white hover:bg-white/10"
                     }`}
                 >
                   Dashboard
@@ -125,8 +125,8 @@ export function MainNavbar() {
               <Link
                 href="/login"
                 className={`text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2 rounded-md border transition-all duration-200 ${scrolled
-                    ? "border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white"
-                    : "border-white/40 text-white hover:bg-white/10"
+                  ? "border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white"
+                  : "border-white/40 text-white hover:bg-white/10"
                   }`}
               >
                 Login
@@ -266,7 +266,7 @@ export function MainNavbar() {
         </div>
       )}
 
-      {/* Mobile bottom spacer ewfwefwefe */}
+      {/* Mobile bottom spacer */}
       <div className="h-[62px] md:hidden" />
     </>
   );

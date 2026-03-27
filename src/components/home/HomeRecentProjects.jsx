@@ -13,7 +13,6 @@ export default function HomeRecentProjects() {
     page: 1,
   });
 
-
   const rawProjects = Array.isArray(projectsData)
     ? projectsData
     : projectsData?.items || projectsData?.data || [];

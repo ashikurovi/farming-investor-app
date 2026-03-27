@@ -143,6 +143,28 @@ export default function HomeHero() {
                     <TrustPill Icon={Sprout} label="Agri-Focused" />
                   </div>
                 </div>
+
+                <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 w-[94%] md:w-auto">
+                  <div className="mx-auto flex flex-col md:flex-row items-center gap-2.5 md:gap-3.5 rounded-xl md:rounded-full border border-white/15 bg-white/10 backdrop-blur-md px-3.5 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+                    <a href="#why-choose-us" className="inline-flex items-center gap-2 rounded-full bg-white/85 text-zinc-900 px-2.5 py-1.5 text-[11px] font-semibold hover:bg-white transition">
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                      Why choose us
+                    </a>
+                    <div className="hidden md:block w-px h-5 bg-white/20" />
+                    <div className="flex items-center gap-1.5 text-white/90 text-[11px]">
+                      <CloudSun className="w-4 h-4 text-emerald-300" />
+                      <span>Clear, 28°C</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-white/90 text-[11px]">
+                      <Droplets className="w-4 h-4 text-emerald-300" />
+                      <span>Humidity 48%</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-white/90 text-[11px]">
+                      <Wind className="w-4 h-4 text-emerald-300" />
+                      <span>Wind 5km/h</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </SwiperSlide>
           ))}
