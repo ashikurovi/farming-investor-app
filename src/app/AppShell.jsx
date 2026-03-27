@@ -28,7 +28,7 @@ export function AppShell({ children }) {
   const isProtectedRoute = isAdminRoute || isInvestorRoute;
 
   const { isFetching } = useMeQuery(undefined, {
-    skip: !isProtectedRoute || !authHydrated || !token,
+    skip: !authHydrated || !token,
   });
 
   useEffect(() => {

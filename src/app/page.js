@@ -26,7 +26,12 @@ export default function Home() {
       <HomeBlogSection />
       {/* Blog */}
       <HomeTestimonials />
-      <HomeFaq />
+
+      <div className='pb-10'>
+        <HomeFaq />
+
+      </div>
+
       <WhatsAppButton />
     </main>
   );
