@@ -29,7 +29,7 @@ export default function AdminDeedPage() {
   const [editingDeed, setEditingDeed] = useState(null);
   const [formValues, setFormValues] = useState({
     title: "",
-    investorId: "",
+    investmentId: "",
     issueDate: "",
     file: null,
     uploadPdf: null,
@@ -75,7 +75,7 @@ export default function AdminDeedPage() {
   const resetForm = () => {
     setFormValues({
       title: "",
-      investorId: "",
+      investmentId: "",
       issueDate: "",
       file: null,
       uploadPdf: null,
@@ -92,7 +92,7 @@ export default function AdminDeedPage() {
   const openEditModal = (deed) => {
     setFormValues({
       title: deed.title ?? "",
-      investorId: deed.investorId ?? "",
+      investmentId: deed.investmentId ?? "",
       issueDate: deed.issueDate ?? "",
       file: null,
       uploadPdf: null,
@@ -114,15 +114,15 @@ export default function AdminDeedPage() {
       toast.error("Title is required");
       return;
     }
-    if (!formValues.investorId) {
-      toast.error("Investor ID is required");
+    if (!formValues.investmentId) {
+      toast.error("Investment ID is required");
       return;
     }
 
     try {
       const formData = new FormData();
       formData.append("title", formValues.title.trim());
-      formData.append("investorId", formValues.investorId);
+      formData.append("investmentId", formValues.investmentId);
       if (formValues.issueDate) {
         formData.append("issueDate", formValues.issueDate);
       }
@@ -196,7 +196,7 @@ export default function AdminDeedPage() {
             Deeds
           </h1>
           <p className="text-sm text-zinc-500">
-            Manage investor deeds, attachments, and signatures.
+            Manage investment deeds, attachments, and signatures.
           </p>
         </div>
 
@@ -235,10 +235,15 @@ export default function AdminDeedPage() {
                 cell: (deed) => deed.title || "-",
               },
               {
-                key: "investor",
-                header: "Investor",
+                key: "investment",
+                header: "Investment",
                 tdClassName: "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                cell: (deed) => deed.investor?.name || deed.investorId || "-",
+                cell: (deed) => (
+                  <div className="flex flex-col">
+                    <span className="font-medium text-zinc-900">Inv #{deed.investmentId || "-"}</span>
+                    <span className="text-xs text-zinc-500">{deed.investment?.investor?.name || deed.investment?.investor?.email || "-"}</span>
+                  </div>
+                ),
               },
               {
                 key: "issueDate",

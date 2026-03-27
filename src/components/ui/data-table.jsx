@@ -7,6 +7,7 @@ export function DataTable({
   renderActions,
   loadingLabel = "Loading...",
   onRowClick,
+  minWidth = "min-w-[700px] md:min-w-full",
 }) {
   const hasActions = typeof renderActions === "function";
   const totalColumns = columns.length + (hasActions ? 1 : 0);
@@ -14,7 +15,9 @@ export function DataTable({
   return (
     <div className="overflow-hidden rounded-2xl border border-zinc-300 bg-white shadow-xs">
       <div className="overflow-x-auto">
-        <table className="min-w-full border-separate border-spacing-0 text-sm">
+        <table
+          className={`${minWidth} border-separate border-spacing-0 text-sm`}
+        >
           <thead>
             <tr>
               {columns.map((column, index) => (

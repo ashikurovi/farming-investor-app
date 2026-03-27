@@ -127,6 +127,14 @@ export function AdminProjectsGrid({
                         {isProfitPositive ? "+" : ""}{profitPercentage}% ROI
                       </p>
                     </div>
+                    <div className="space-y-1 rounded-xl bg-rose-50/50 p-3">
+                      <p className="text-[10px] font-semibold uppercase tracking-wider text-rose-600/70">Total Cost</p>
+                      <p className="text-sm font-bold text-rose-700">{formatCurrency(project.totalCost || 0)}</p>
+                    </div>
+                    <div className="space-y-1 rounded-xl bg-blue-50/50 p-3">
+                      <p className="text-[10px] font-semibold uppercase tracking-wider text-blue-600/70">Total Sell</p>
+                      <p className="text-sm font-bold text-blue-700">{formatCurrency(project.totalSell || 0)}</p>
+                    </div>
                   </div>
 
                   {/* Footer Actions */}

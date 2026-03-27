@@ -57,6 +57,11 @@ export const sidebarNavigation = [
         href: "/admin/investor-type",
         icon: Percent,
       },
+      {
+        name: "Investment Amount",
+        href: "/admin/invest-amount",
+        icon: ReceiptIndianRupee,
+      },
     ],
   },
 

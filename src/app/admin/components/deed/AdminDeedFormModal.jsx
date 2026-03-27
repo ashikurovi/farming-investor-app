@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
-import { useGetUsersQuery } from "@/features/admin/users/usersApiSlice";
+import { useGetInvestmentsQuery } from "@/features/investor/investments/investmentsApiSlice";
 import { useMemo } from "react";
 
 export function AdminDeedFormModal({
@@ -14,15 +14,14 @@ export function AdminDeedFormModal({
   onChange,
   onSubmit,
 }) {
-  const { data: usersData, isLoading: isUsersLoading } = useGetUsersQuery(
+  const { data: investmentsData, isLoading: isInvestmentsLoading } = useGetInvestmentsQuery(
     { limit: 1000 },
     { skip: !isOpen }
   );
-
-  const investors = useMemo(() => {
-    const items = usersData?.items ?? [];
-    return items.filter((u) => u.role === "investor");
-  }, [usersData]);
+  
+  const investments = useMemo(() => {
+    return investmentsData?.items ?? investmentsData ?? [];
+  }, [investmentsData]);
 
   if (!isOpen) return null;
 
@@ -31,7 +30,7 @@ export function AdminDeedFormModal({
       isOpen={isOpen}
       onClose={onClose}
       title={editingDeed ? "Edit deed" : "Add deed"}
-      description="Manage deed with title, investor, issue date, and attachments."
+      description="Manage deed with title, investment, issue date, and attachments."
       size="md"
       footer={
         <div className="flex items-center justify-end gap-3">
@@ -85,25 +84,25 @@ export function AdminDeedFormModal({
 
           <div className="space-y-1.5">
             <label
-              htmlFor="investorId"
+              htmlFor="investmentId"
               className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500"
             >
-              Investor
+              Investment
             </label>
             <select
-              id="investorId"
-              value={formValues.investorId}
-              onChange={(e) => onChange("investorId", e.target.value)}
+              id="investmentId"
+              value={formValues.investmentId}
+              onChange={(e) => onChange("investmentId", e.target.value)}
               required
-              disabled={isUsersLoading}
+              disabled={isInvestmentsLoading}
               className="h-10 w-full rounded-xl bg-zinc-50 border border-zinc-200 px-3 text-sm text-zinc-900 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 disabled:opacity-50"
             >
               <option value="" disabled>
-                {isUsersLoading ? "Loading investors..." : "Select an investor"}
+                {isInvestmentsLoading ? "Loading investments..." : "Select an investment"}
               </option>
-              {investors.map((inv) => (
+              {investments.map((inv) => (
                 <option key={inv.id} value={inv.id}>
-                  {inv.name || inv.email} (ID: {inv.id})
+                  Inv #{inv.id} - {inv.investor?.name || inv.investor?.email || "Unknown"} (Amount: {inv.amount})
                 </option>
               ))}
             </select>

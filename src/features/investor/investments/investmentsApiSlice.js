@@ -116,14 +116,26 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
     }),
 
     createInvestmentAdmin: builder.mutation({
-      query: ({ investorId, amount, reference, photoFile, date, time }) => {
-        const hasFile = typeof FormData !== "undefined" && photoFile instanceof File;
+      query: ({
+        investorId,
+        amount,
+        reference,
+        photoFile,
+        date,
+        time,
+        startDate,
+        endDate,
+      }) => {
+        const hasFile =
+          typeof FormData !== "undefined" && photoFile instanceof File;
         if (hasFile) {
           const form = new FormData();
           form.append("investorId", String(investorId));
           form.append("amount", String(amount));
           form.append("date", date);
           form.append("time", time);
+          if (startDate) form.append("startDate", startDate);
+          if (endDate) form.append("endDate", endDate);
           if (reference) form.append("reference", reference);
           form.append("photo", photoFile);
           return {
@@ -135,14 +147,14 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         return {
           url: "/investment",
           method: "POST",
-          body: { investorId, amount, reference, date, time },
+          body: { investorId, amount, reference, date, time, startDate, endDate },
         };
       },
       transformResponse: (response) => response?.data ?? response,
     }),
 
     updateInvestmentAdmin: builder.mutation({
-      query: ({ id, amount, reference, photoFile, date, time }) => {
+      query: ({ id, amount, reference, photoFile, date, time, startDate, endDate }) => {
         const hasFile = typeof FormData !== "undefined" && photoFile instanceof File;
         if (hasFile) {
           const form = new FormData();
@@ -150,6 +162,8 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
           if (reference) form.append("reference", reference);
           if (date) form.append("date", date);
           if (time) form.append("time", time);
+          if (startDate) form.append("startDate", startDate);
+          if (endDate) form.append("endDate", endDate);
           form.append("photo", photoFile);
           return {
             url: `/investment/${id}`,
@@ -160,7 +174,7 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         return {
           url: `/investment/${id}`,
           method: "PATCH",
-          body: { amount, reference, date, time },
+          body: { amount, reference, date, time, startDate, endDate },
         };
       },
       transformResponse: (response) => response?.data ?? response,

@@ -234,6 +234,26 @@ export default function AdminInvestmentDetailPage() {
                   {investment.time || "-"}
                 </div>
               </div>
+
+              <div className="space-y-1">
+                <label className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500 flex items-center gap-1.5">
+                  <Calendar className="h-3.5 w-3.5" />
+                  Start Date
+                </label>
+                <div className="text-base font-medium text-zinc-900">
+                  {investment.startDate || "-"}
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500 flex items-center gap-1.5">
+                  <Calendar className="h-3.5 w-3.5" />
+                  End Date
+                </label>
+                <div className="text-base font-medium text-zinc-900">
+                  {investment.endDate || "-"}
+                </div>
+              </div>
             </div>
           </section>
         </div>

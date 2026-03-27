@@ -40,9 +40,8 @@ export function Table({
 
   return (
     <div className={`w-full ${className}`}>
-      {/* ── Desktop table (hidden on small screens) ── */}
-      <div className="hidden sm:block overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
-        <table className="min-w-full border-collapse text-sm">
+      <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+        <table className="min-w-[600px] md:min-w-full border-collapse text-sm">
           <thead className="bg-gray-50">
             <tr>
               {columns.map((column) => (
@@ -109,55 +108,6 @@ export function Table({
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* ── Mobile card list (visible only on small screens) ── */}
-      <div className="sm:hidden flex flex-col gap-3">
-        {data.length === 0 && (
-          <div className="rounded-xl border border-gray-200 bg-white px-4 py-6 text-center text-sm text-gray-500 shadow-sm">
-            {emptyMessage}
-          </div>
-        )}
-        {data.map((row, index) => (
-          <div
-            key={getRowKey ? getRowKey(row) : index}
-            className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden"
-          >
-            {columns.map((column) => (
-              <div
-                key={column.accessor}
-                className="flex items-start justify-between gap-3 px-4 py-2.5 odd:bg-white even:bg-gray-50 border-b border-gray-100 last:border-b-0"
-              >
-                {/* Column label */}
-                <span className="shrink-0 text-xs font-semibold uppercase tracking-wide text-gray-400 pt-0.5 w-1/3">
-                  {column.header}
-                </span>
-
-                {/* Cell value */}
-                <span
-                  className={`text-sm text-gray-900 flex-1 ${
-                    column.align === "right"
-                      ? "text-right"
-                      : column.align === "center"
-                        ? "text-center"
-                        : "text-right"
-                  } ${column.className ?? ""}`}
-                >
-                  {typeof column.cell === "function"
-                    ? column.cell(row)
-                    : row[column.accessor]}
-                </span>
-              </div>
-            ))}
-
-            {/* Actions row */}
-            {hasActions && (
-              <div className="flex flex-wrap justify-end gap-2 px-4 py-3 bg-gray-50 border-t border-gray-100">
-                {renderActions(row)}
-              </div>
-            )}
-          </div>
-        ))}
       </div>
     </div>
   );

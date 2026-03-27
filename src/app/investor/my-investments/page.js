@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Eye,
   TrendingUp,
@@ -142,85 +143,6 @@ const AmountBadge = ({ amount }) => (
   </span>
 );
 
-/* ─── DETAIL MODAL ────────────────────────────── */
-const InvestmentDetailModal = ({ investment, onClose }) => {
-  if (!investment) return null;
-  return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center p-3 sm:items-center sm:p-4">
-      <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl ring-1 ring-black/5">
-        <div className="h-1.5 w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500" />
-        <div className="p-5 sm:p-6">
-          {/* header */}
-          <div className="mb-5 flex items-start justify-between gap-3">
-            <div className="flex items-center gap-3 sm:gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 text-xs font-bold text-white shadow sm:h-14 sm:w-14">
-                INV
-              </div>
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
-                  Investment
-                </p>
-                <h3 className="text-lg font-bold tabular-nums text-zinc-900 sm:text-xl">
-                  ৳{fmtBDT(investment.amount)}
-                </h3>
-                <p className="text-xs text-zinc-400">
-                  {investment.date || "—"}
-                  {investment.time ? ` · ${investment.time}` : ""}
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={onClose}
-              className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-zinc-200 text-zinc-400 transition-colors hover:bg-zinc-50 hover:text-zinc-600"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-
-          {/* fields */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-100 bg-zinc-50/60">
-            {[
-              {
-                Icon: BadgeDollarSign,
-                label: "Amount (BDT)",
-                value: `৳${fmtBDT(investment.amount)}`,
-              },
-              { Icon: Hash, label: "Reference", value: investment.reference },
-              { Icon: CalendarDays, label: "Date", value: investment.date },
-              { Icon: Clock3, label: "Time", value: investment.time },
-            ].map(({ Icon, label, value }, i) => (
-              <div
-                key={label}
-                className={`flex items-center justify-between gap-3 px-4 py-3 ${i % 2 === 0 ? "bg-white shadow-sm" : ""}`}
-              >
-                <div className="flex items-center gap-2">
-                  <Icon className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-400">
-                    {label}
-                  </span>
-                </div>
-                <span className="text-sm font-semibold text-zinc-800">
-                  {value || "—"}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <button
-            onClick={onClose}
-            className="mt-4 w-full rounded-xl border border-zinc-200 bg-white py-2.5 text-sm font-semibold text-zinc-700 shadow-sm transition-colors hover:bg-zinc-50"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 /* ─── PAGINATION ──────────────────────────────── */
 const TablePagination = ({
@@ -290,6 +212,7 @@ export default function MyInvestmentsPage() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [search, setSearch] = useState("");
+  const [showActive, setShowActive] = useState(true);
 
   const {
     data: myInvestments,
@@ -306,25 +229,16 @@ export default function MyInvestmentsPage() {
   };
   const isInvestmentsBusy = isInvLoading || isInvFetching;
 
+  const filteredByStatus = investments.filter(inv => inv.isActive === showActive);
+
   const filtered = search.trim()
-    ? investments.filter(
+    ? filteredByStatus.filter(
       (r) =>
         (r.reference || "").toLowerCase().includes(search.toLowerCase()) ||
         (r.date || "").includes(search) ||
         String(r.amount || "").includes(search),
     )
-    : investments;
-
-  const [detailOpen, setDetailOpen] = useState(false);
-  const [selectedInvestment, setSelectedInvestment] = useState(null);
-  const openDetail = (row) => {
-    setSelectedInvestment(row);
-    setDetailOpen(true);
-  };
-  const closeDetail = () => {
-    setDetailOpen(false);
-    setSelectedInvestment(null);
-  };
+    : filteredByStatus;
 
   return (
     <main className="min-h-screen space-y-4 bg-zinc-50/60 p-3 sm:space-y-6 sm:p-6">
@@ -432,12 +346,34 @@ export default function MyInvestmentsPage() {
 
           {/* Toolbar */}
           <div className="flex flex-col gap-2.5 border-b border-zinc-100 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => { setShowActive(true); setPage(1); }}
+                className={`text-sm font-bold transition-colors ${showActive ? "text-emerald-600 underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
+              >
+                Active Investments
+              </button>
+              <button
+                onClick={() => { setShowActive(false); setPage(1); }}
+                className={`text-sm font-bold transition-colors ${!showActive ? "text-emerald-600 underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
+              >
+                Previous Investments
+              </button>
+            </div>
+            <div className="flex flex-col items-end">
+              <p className="text-[11px] text-zinc-400">
+                {filteredByStatus.length} records in this view
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2.5 border-b border-zinc-100 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
             <div>
               <h2 className="text-sm font-bold text-zinc-900">
-                All Investments
+                {showActive ? "Current Active Investments" : "Past/Inactive Investments"}
               </h2>
               <p className="text-[11px] text-zinc-400">
-                {meta.total ?? investments.length} total records
+                {filtered.length} total records
               </p>
             </div>
             <div className="relative w-full sm:w-56">
@@ -459,6 +395,7 @@ export default function MyInvestmentsPage() {
               )}
             </div>
           </div>
+
 
           {/* Table */}
           <div className="w-full overflow-x-auto">
@@ -571,14 +508,13 @@ export default function MyInvestmentsPage() {
 
                       {/* Action */}
                       <td className="px-3 py-3.5 text-right sm:px-4">
-                        <button
-                          type="button"
-                          onClick={() => openDetail(row)}
+                        <Link
+                          href={`/investor/my-investments/${row.id}`}
                           className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-400 shadow-sm transition-all group-hover:border-emerald-200 group-hover:bg-emerald-50 group-hover:text-emerald-700 hover:scale-110 sm:h-8 sm:w-8"
                           aria-label="View investment details"
                         >
                           <Eye className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-                        </button>
+                        </Link>
                       </td>
                     </tr>
                   ))
@@ -603,12 +539,7 @@ export default function MyInvestmentsPage() {
         </div>
       </section>
 
-      {detailOpen && (
-        <InvestmentDetailModal
-          investment={selectedInvestment}
-          onClose={closeDetail}
-        />
-      )}
+      {/* detail modal removed for detail page */}
     </main>
   );
 }

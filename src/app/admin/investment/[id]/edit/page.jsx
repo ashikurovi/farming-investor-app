@@ -45,6 +45,8 @@ export default function AdminInvestmentEditPage() {
     amount: "",
     date: "",
     time: "",
+    startDate: "",
+    endDate: "",
     reference: "",
   });
   const [photoFile, setPhotoFile] = useState(null);
@@ -59,6 +61,8 @@ export default function AdminInvestmentEditPage() {
         amount: investment.amount != null ? String(investment.amount) : "",
         date: investment.date || "",
         time: investment.time || "",
+        startDate: investment.startDate || "",
+        endDate: investment.endDate || "",
         reference: investment.reference || "",
       });
     }
@@ -110,6 +114,8 @@ export default function AdminInvestmentEditPage() {
         amount: amountNumber,
         date: formValues.date,
         time: formValues.time,
+        startDate: formValues.startDate || undefined,
+        endDate: formValues.endDate || undefined,
         reference: formValues.reference || undefined,
         photoFile: photoFile || undefined,
       }).unwrap();
@@ -312,6 +318,42 @@ export default function AdminInvestmentEditPage() {
                     value={formValues.time}
                     onChange={(e) => handleChange("time", e.target.value)}
                     required
+                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <label
+                    htmlFor="startDate"
+                    className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500 flex items-center gap-1.5"
+                  >
+                    <Calendar className="h-3.5 w-3.5" />
+                    Start Date
+                  </label>
+                  <Input
+                    id="startDate"
+                    type="date"
+                    value={formValues.startDate}
+                    onChange={(e) => handleChange("startDate", e.target.value)}
+                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="endDate"
+                    className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500 flex items-center gap-1.5"
+                  >
+                    <Calendar className="h-3.5 w-3.5" />
+                    End Date
+                  </label>
+                  <Input
+                    id="endDate"
+                    type="date"
+                    value={formValues.endDate}
+                    onChange={(e) => handleChange("endDate", e.target.value)}
                     className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all"
                   />
                 </div>
