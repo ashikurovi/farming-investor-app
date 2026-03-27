@@ -16,7 +16,7 @@ export default function AdminDashboardPage() {
   const { data: stats, isLoading: statsLoading } = useGetProjectsStatsQuery();
   const { data: recent, isLoading: recentLoading } =
     useGetRecentInvestmentsQuery({ limit: 5 });
-
+// ijwdhfjchsdjic
   const statCards = [
     {
       label: "Total investment",
