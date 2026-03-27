@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { Leaf, Sprout, Truck, BadgeCheck } from "lucide-react";
 
 export default function HomeLiveKpis() {
@@ -28,21 +30,24 @@ export default function HomeLiveKpis() {
               mollis venenatis diam ante adipiscing in pretium.
             </p>
             <div className="mt-6">
-              <a
+              <Link
                 href="/landing/about"
                 className="inline-flex items-center justify-center rounded-full bg-[#7f9b3c] px-7 py-3 text-[13px] font-semibold text-white shadow-[0_18px_48px_-30px_rgba(127,155,60,0.85)] transition hover:bg-[#8cab44] active:scale-[0.99]"
               >
                 Discover more
-              </a>
+              </Link>
             </div>
           </div>
 
           <div className="lg:col-span-6">
             <div className="grid grid-cols-2 grid-rows-2 gap-4">
               <div className="row-span-2 overflow-hidden rounded-3xl bg-zinc-200 shadow-sm ring-1 ring-zinc-200">
-                <img
+                <Image
                   src="/img_7-2048x1024.jpg"
                   alt="Sustainable farming"
+                  width={900}
+                  height={1200}
+                  sizes="(min-width: 1024px) 50vw, 100vw"
                   className="h-full w-full object-cover"
                 />
               </div>
@@ -61,9 +66,12 @@ export default function HomeLiveKpis() {
               </div>
 
               <div className="overflow-hidden rounded-3xl bg-zinc-200 shadow-sm ring-1 ring-zinc-200">
-                <img
+                <Image
                   src="/img_4-2048x1024.jpg"
                   alt="Fresh harvest"
+                  width={900}
+                  height={600}
+                  sizes="(min-width: 1024px) 25vw, 100vw"
                   className="h-full w-full object-cover"
                 />
               </div>

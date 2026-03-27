@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import {
@@ -243,10 +244,13 @@ export function MainNavbar() {
           <div className="mx-auto max-w-7xl px-8 h-[60px] flex items-center gap-8">
             {/* Logo */}
             <Link href="/" className="shrink-0 flex items-center">
-              <img
+              <Image
                 src="/favicon.ico"
                 alt="XINZO"
-                className="h-8 w-auto object-contain"
+                width={32}
+                height={32}
+                priority
+                className="h-8 w-8 object-contain"
               />
             </Link>
 
