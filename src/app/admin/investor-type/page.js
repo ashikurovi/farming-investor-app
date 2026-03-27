@@ -56,10 +56,10 @@ export default function AdminInvestorTypePage() {
     data?.meta ??
     (Array.isArray(items)
       ? {
-          page,
-          pageCount: 1,
-          total: items.length,
-        }
+        page,
+        pageCount: 1,
+        total: items.length,
+      }
       : { page: 1, pageCount: 1, total: 0 });
 
   const handleSearchChange = (value) => {

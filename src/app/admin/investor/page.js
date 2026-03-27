@@ -444,11 +444,10 @@ export default function AdminInvestorPage() {
                 tdClassName: "whitespace-nowrap px-6 py-4 text-xs text-center",
                 cell: (user) => (
                   <span
-                    className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-medium ring-1 ring-inset ${
-                      user.isBanned
+                    className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-medium ring-1 ring-inset ${user.isBanned
                         ? "bg-red-50 text-red-700 ring-red-600/10"
                         : "bg-emerald-50 text-emerald-700 ring-emerald-600/10"
-                    }`}
+                      }`}
                   >
                     <span
                       className={`h-1.5 w-1.5 rounded-full ${user.isBanned ? "bg-red-500" : "bg-emerald-500"}`}
@@ -512,11 +511,10 @@ export default function AdminInvestorPage() {
                     e.stopPropagation();
                     confirmToggleBan(user);
                   }}
-                  className={`group relative inline-flex h-8 w-8 items-center justify-center rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                    user.isBanned
+                  className={`group relative inline-flex h-8 w-8 items-center justify-center rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${user.isBanned
                       ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-700 focus:ring-emerald-500"
                       : "bg-purple-50 text-purple-600 hover:bg-purple-100 hover:text-purple-700 focus:ring-purple-500"
-                  }`}
+                    }`}
                   title={user.isBanned ? "Unban User" : "Ban User"}
                 >
                   {user.isBanned ? (

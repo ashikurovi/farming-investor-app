@@ -12,7 +12,7 @@ export default function HomeRecentProjects() {
     limit: 4,
     page: 1,
   });
-  
+
 
   const rawProjects = Array.isArray(projectsData)
     ? projectsData

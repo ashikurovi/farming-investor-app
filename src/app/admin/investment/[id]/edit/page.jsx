@@ -2,17 +2,17 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { 
-  ArrowLeft, 
-  Wallet2, 
-  Calendar, 
-  Clock, 
-  FileText, 
-  User, 
-  ImageIcon, 
-  Upload, 
-  Save, 
-  Trash2 
+import {
+  ArrowLeft,
+  Wallet2,
+  Calendar,
+  Clock,
+  FileText,
+  User,
+  ImageIcon,
+  Upload,
+  Save,
+  Trash2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -198,7 +198,7 @@ export default function AdminInvestmentEditPage() {
         </div>
 
         <div className="flex items-center gap-3">
-           <Button
+          <Button
             type="button"
             variant="outline"
             onClick={handleDelete}
@@ -328,7 +328,7 @@ export default function AdminInvestmentEditPage() {
                   <ImageIcon className="h-3.5 w-3.5" />
                   Payment Proof / Photo
                 </label>
-                
+
                 <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 transition-colors hover:border-emerald-500/50 hover:bg-emerald-50/30">
                   <input
                     id="photo"
@@ -337,7 +337,7 @@ export default function AdminInvestmentEditPage() {
                     onChange={handlePhotoChange}
                     className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
                   />
-                  
+
                   {previewUrl ? (
                     <div className="relative aspect-[4/3] w-full">
                       <img

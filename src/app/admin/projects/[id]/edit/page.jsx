@@ -152,9 +152,9 @@ export default function AdminProjectEditPage() {
               </div>
               <h3 className="text-sm font-semibold text-red-900">Failed to load project</h3>
               <p className="text-xs text-red-600">Please check your connection and try again.</p>
-              <Button 
-                variant="outline" 
-                size="sm" 
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={() => window.location.reload()}
                 className="mt-2 border-red-200 bg-white text-red-700 hover:bg-red-50"
               >
@@ -239,7 +239,7 @@ export default function AdminProjectEditPage() {
                     <ImageIcon className="h-3.5 w-3.5" />
                     Cover Image
                   </label>
-                  
+
                   <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 transition-colors hover:border-emerald-500/50 hover:bg-emerald-50/30">
                     <input
                       id="photo"
@@ -248,7 +248,7 @@ export default function AdminProjectEditPage() {
                       onChange={handleImageChange}
                       className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
                     />
-                    
+
                     {previewUrl ? (
                       <div className="relative aspect-[4/3] w-full">
                         <img

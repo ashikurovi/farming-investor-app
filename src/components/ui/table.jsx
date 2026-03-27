@@ -48,13 +48,12 @@ export function Table({
               {columns.map((column) => (
                 <th
                   key={column.accessor}
-                  className={`px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500 ${
-                    column.align === "right"
+                  className={`px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500 ${column.align === "right"
                       ? "text-right"
                       : column.align === "center"
-                      ? "text-center"
-                      : "text-left"
-                  } ${column.className ?? ""}`}
+                        ? "text-center"
+                        : "text-left"
+                    } ${column.className ?? ""}`}
                 >
                   {column.header}
                 </th>
@@ -85,13 +84,12 @@ export function Table({
                 {columns.map((column) => (
                   <td
                     key={column.accessor}
-                    className={`px-4 py-3 text-gray-900 ${
-                      column.align === "right"
+                    className={`px-4 py-3 text-gray-900 ${column.align === "right"
                         ? "text-right"
                         : column.align === "center"
-                        ? "text-center"
-                        : "text-left"
-                    } ${column.className ?? ""}`}
+                          ? "text-center"
+                          : "text-left"
+                      } ${column.className ?? ""}`}
                   >
                     {typeof column.cell === "function"
                       ? column.cell(row)
@@ -135,13 +133,12 @@ export function Table({
 
                 {/* Cell value */}
                 <span
-                  className={`text-sm text-gray-900 flex-1 ${
-                    column.align === "right"
+                  className={`text-sm text-gray-900 flex-1 ${column.align === "right"
                       ? "text-right"
                       : column.align === "center"
-                      ? "text-center"
-                      : "text-right"
-                  } ${column.className ?? ""}`}
+                        ? "text-center"
+                        : "text-right"
+                    } ${column.className ?? ""}`}
                 >
                   {typeof column.cell === "function"
                     ? column.cell(row)

@@ -1,4 +1,5 @@
 import { Building2, ShieldCheck, Briefcase, Calendar, TrendingUp } from "lucide-react";
+import { formatDateUTC } from "@/lib/utils";
 
 export function AdminInvestorAccountInfo({ user }) {
   return (
@@ -24,9 +25,8 @@ export function AdminInvestorAccountInfo({ user }) {
               </p>
               <div className="flex items-center gap-2">
                 <span
-                  className={`inline-flex h-2 w-2 rounded-full ${
-                    user?.isBanned ? "bg-red-500" : "bg-emerald-500"
-                  }`}
+                  className={`inline-flex h-2 w-2 rounded-full ${user?.isBanned ? "bg-red-500" : "bg-emerald-500"
+                    }`}
                 ></span>
                 <p className="text-sm font-semibold text-zinc-900">
                   {user?.isBanned ? "Banned" : "Active"}
@@ -60,9 +60,7 @@ export function AdminInvestorAccountInfo({ user }) {
                 Joined Date
               </p>
               <p className="text-sm font-semibold text-zinc-900">
-                {user?.createdAt
-                  ? new Date(user.createdAt).toLocaleDateString("en-US", { timeZone: "UTC" })
-                  : "-"}
+                {formatDateUTC(user?.createdAt)}
               </p>
             </div>
           </div>

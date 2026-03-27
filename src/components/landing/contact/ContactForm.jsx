@@ -49,7 +49,7 @@ export function ContactForm() {
       {/* Decorative gradients */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-400/10 rounded-full blur-[60px] -z-10 pointer-events-none transition-transform duration-700 group-hover/form:scale-110" />
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-400/10 rounded-full blur-[60px] -z-10 pointer-events-none transition-transform duration-700 group-hover/form:scale-110" />
-      
+
       <div className="mb-10 relative">
         <h3 className="text-3xl font-bold text-zinc-900 tracking-tight">
           Send us a message
@@ -134,8 +134,8 @@ export function ContactForm() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* Country - New Field */}
-            <div className="space-y-2">
+          {/* Country - New Field */}
+          <div className="space-y-2">
             <label
               htmlFor="country"
               className="text-[13px] font-bold uppercase tracking-wider text-zinc-500 ml-1"
@@ -151,7 +151,7 @@ export function ContactForm() {
           </div>
 
           {/* Investor Type - New Field */}
-           <div className="space-y-2">
+          <div className="space-y-2">
             <label
               htmlFor="investorType"
               className="text-[13px] font-bold uppercase tracking-wider text-zinc-500 ml-1"
@@ -171,27 +171,27 @@ export function ContactForm() {
           </div>
         </div>
 
-         {/* Investment Range - New Field */}
-         <div className="space-y-2">
-            <label
-              htmlFor="investmentRange"
-              className="text-[13px] font-bold uppercase tracking-wider text-zinc-500 ml-1"
-            >
-              Investment Range (USD)
-            </label>
-            <select
-              id="investmentRange"
-              name="investmentRange"
-              className="flex h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3 py-2 text-sm transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 appearance-none cursor-pointer"
-            >
-              <option value="">Select Range...</option>
-              <option>Less than $10,000</option>
-              <option>$10,000 - $50,000</option>
-              <option>$50,000 - $100,000</option>
-              <option>$100,000 - $500,000</option>
-              <option>$500,000+</option>
-            </select>
-          </div>
+        {/* Investment Range - New Field */}
+        <div className="space-y-2">
+          <label
+            htmlFor="investmentRange"
+            className="text-[13px] font-bold uppercase tracking-wider text-zinc-500 ml-1"
+          >
+            Investment Range (USD)
+          </label>
+          <select
+            id="investmentRange"
+            name="investmentRange"
+            className="flex h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3 py-2 text-sm transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 appearance-none cursor-pointer"
+          >
+            <option value="">Select Range...</option>
+            <option>Less than $10,000</option>
+            <option>$10,000 - $50,000</option>
+            <option>$50,000 - $100,000</option>
+            <option>$100,000 - $500,000</option>
+            <option>$500,000+</option>
+          </select>
+        </div>
 
         {/* Subject Select */}
         <div className="space-y-2">
@@ -232,22 +232,22 @@ export function ContactForm() {
         </div>
 
         {/* Submit Button */}
-        <Button 
-            disabled={isSubmitting}
-            className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-14 rounded-2xl transition-all duration-300 shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_-5px_rgba(16,185,129,0.6)] group disabled:opacity-70 disabled:cursor-not-allowed mt-4 overflow-hidden relative"
+        <Button
+          disabled={isSubmitting}
+          className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-14 rounded-2xl transition-all duration-300 shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_-5px_rgba(16,185,129,0.6)] group disabled:opacity-70 disabled:cursor-not-allowed mt-4 overflow-hidden relative"
         >
-            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer" />
-            {isSubmitting ? (
-                <div className="flex items-center justify-center gap-2 relative z-10">
-                    <span>Submitting...</span>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                </div>
-            ) : (
-                <div className="flex items-center justify-center gap-2 relative z-10">
-                    <span>Send Message</span>
-                    <Send className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </div>
-            )}
+          <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer" />
+          {isSubmitting ? (
+            <div className="flex items-center justify-center gap-2 relative z-10">
+              <span>Submitting...</span>
+              <Loader2 className="w-5 h-5 animate-spin" />
+            </div>
+          ) : (
+            <div className="flex items-center justify-center gap-2 relative z-10">
+              <span>Send Message</span>
+              <Send className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+            </div>
+          )}
         </Button>
       </form>
     </div>

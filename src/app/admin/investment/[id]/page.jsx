@@ -2,15 +2,15 @@
 
 import { useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { 
-  ArrowLeft, 
-  Wallet2, 
-  Calendar, 
-  Clock, 
-  FileText, 
-  User, 
-  ImageIcon, 
-  Trash2, 
+import {
+  ArrowLeft,
+  Wallet2,
+  Calendar,
+  Clock,
+  FileText,
+  User,
+  ImageIcon,
+  Trash2,
   Pencil
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -125,7 +125,7 @@ export default function AdminInvestmentDetailPage() {
             <Pencil className="h-4 w-4" />
             <span className="hidden sm:inline">Edit</span>
           </Button>
-          
+
           <Button
             variant="outline"
             onClick={handleDelete}
@@ -156,7 +156,7 @@ export default function AdminInvestmentDetailPage() {
                 Investor Information
               </h2>
             </div>
-            
+
             <div className="rounded-2xl bg-zinc-50/50 p-4 border border-zinc-100">
               {isUserLoading ? (
                 <div className="animate-pulse space-y-2">
@@ -247,7 +247,7 @@ export default function AdminInvestmentDetailPage() {
               </div>
               Payment Proof
             </h2>
-            
+
             <div className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50">
               {investment.photo ? (
                 <div className="relative aspect-[4/3] w-full">
@@ -257,9 +257,9 @@ export default function AdminInvestmentDetailPage() {
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/10">
-                    <a 
-                      href={investment.photo} 
-                      target="_blank" 
+                    <a
+                      href={investment.photo}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="rounded-full bg-white/90 px-4 py-2 text-xs font-semibold text-zinc-900 shadow-lg backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity"
                     >

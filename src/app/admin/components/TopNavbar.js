@@ -43,7 +43,7 @@ export default function TopNavbar() {
       // ignore
     } finally {
       toast.success("Logged out");
-      router.push("/");
+      router.push("/login");
       setMobileMenuOpen(false);
     }
   };
@@ -362,21 +362,18 @@ export default function TopNavbar() {
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed inset-0 z-50 flex transform transition-all duration-300 lg:hidden ${
-          mobileMenuOpen ? "pointer-events-auto" : "pointer-events-none"
-        }`}
+        className={`fixed inset-0 z-50 flex transform transition-all duration-300 lg:hidden ${mobileMenuOpen ? "pointer-events-auto" : "pointer-events-none"
+          }`}
       >
         <div
-          className={`absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-300 ${
-            mobileMenuOpen ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-300 ${mobileMenuOpen ? "opacity-100" : "opacity-0"
+            }`}
           onClick={() => setMobileMenuOpen(false)}
         />
 
         <div
-          className={`relative flex h-full w-64 flex-col border-r border-zinc-200 bg-white px-3 py-6 shadow-2xl transform transition-transform duration-300 ease-out ${
-            mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+          className={`relative flex h-full w-64 flex-col border-r border-zinc-200 bg-white px-3 py-6 shadow-2xl transform transition-transform duration-300 ease-out ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
         >
           <div className="mb-8 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -423,9 +420,8 @@ export default function TopNavbar() {
                   <a
                     key={linkItem.name}
                     href={linkItem.href}
-                    className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-600 transition-all hover:bg-zinc-50 hover:text-zinc-900 active:bg-zinc-100 ${
-                      isNested ? "text-xs" : ""
-                    }`}
+                    className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-600 transition-all hover:bg-zinc-50 hover:text-zinc-900 active:bg-zinc-100 ${isNested ? "text-xs" : ""
+                      }`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {linkItem.icon && !isNested && (
@@ -466,17 +462,15 @@ export default function TopNavbar() {
                         <span className="truncate">{item.title}</span>
                       </div>
                       <ChevronDown
-                        className={`h-4 w-4 text-zinc-400 transition-transform duration-200 ${
-                          isExpanded ? "rotate-180" : ""
-                        }`}
+                        className={`h-4 w-4 text-zinc-400 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""
+                          }`}
                       />
                     </button>
                     <div
-                      className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                        isExpanded
+                      className={`overflow-hidden transition-all duration-300 ease-in-out ${isExpanded
                           ? "max-h-96 opacity-100 mt-1"
                           : "max-h-0 opacity-0"
-                      }`}
+                        }`}
                     >
                       <div className="relative ml-[26px] space-y-0.5 border-l-2 border-zinc-100 pl-3">
                         {item.items.map((subItem) => renderLink(subItem, true))}
@@ -496,7 +490,7 @@ export default function TopNavbar() {
 
           <div className="mt-4 space-y-3">
             <div className="h-px bg-gradient-to-r from-transparent via-zinc-200 to-transparent" />
-            
+
             {/* Logout */}
             <button
               type="button"

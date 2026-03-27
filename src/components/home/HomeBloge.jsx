@@ -127,7 +127,6 @@ export default function HomeBloge() {
                       {post.author}
                     </span>
                   </div>
-
                   <span className="w-8 h-8 rounded-full bg-zinc-50 flex items-center justify-center text-zinc-400 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
                     <ArrowUpRight className="w-4 h-4" />
                   </span>

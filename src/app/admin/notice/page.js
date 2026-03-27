@@ -1,37 +1,38 @@
 "use client";
 
 import { useState } from "react";
-import { Edit2, Trash2, Plus } from "lucide-react";
+import { Edit2, Trash2, Plus, ExternalLink, Eye } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
 import { DataTable } from "@/components/ui/data-table";
 import { AdminSearchBar } from "@/app/admin/components/AdminSearchBar";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
-import { AdminBannerFormModal } from "@/app/admin/components/banner/AdminBannerFormModal";
+import { AdminNoticeFormModal } from "@/app/admin/components/notice/AdminNoticeFormModal";
 import {
-  useGetBannersQuery,
-  useCreateBannerMutation,
-  useUpdateBannerMutation,
-  useDeleteBannerMutation,
-} from "@/features/admin/banner/bannerApiSlice";
+  useGetNoticesQuery,
+  useCreateNoticeMutation,
+  useUpdateNoticeMutation,
+  useDeleteNoticeMutation,
+} from "@/features/admin/notice/noticeApiSlice";
 import { toast } from "sonner";
 
 const PAGE_SIZE = 10;
 
-export default function AdminBannerPage() {
+export default function AdminNoticePage() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingBanner, setEditingBanner] = useState(null);
+  const [editingNotice, setEditingNotice] = useState(null);
   const [formValues, setFormValues] = useState({
     title: "",
-    shortDescription: "",
-    order: "",
-    photo: null,
-    photoUrl: "",
+    description: "",
+    isPublic: true,
+    file: null,
+    fileUrl: "",
   });
 
   const [confirmState, setConfirmState] = useState({
@@ -43,25 +44,25 @@ export default function AdminBannerPage() {
     onConfirm: null,
   });
 
-  const { data, isLoading, isFetching } = useGetBannersQuery({
+  const { data, isLoading, isFetching } = useGetNoticesQuery({
     page,
     limit: pageSize,
     search,
   });
 
-  const [createBanner, { isLoading: isCreating }] = useCreateBannerMutation();
-  const [updateBanner, { isLoading: isUpdating }] = useUpdateBannerMutation();
-  const [deleteBanner, { isLoading: isDeleting }] = useDeleteBannerMutation();
+  const [createNotice, { isLoading: isCreating }] = useCreateNoticeMutation();
+  const [updateNotice, { isLoading: isUpdating }] = useUpdateNoticeMutation();
+  const [deleteNotice, { isLoading: isDeleting }] = useDeleteNoticeMutation();
 
   const items = data?.items ?? data ?? [];
   const meta =
     data?.meta ??
     (Array.isArray(items)
       ? {
-        page,
-        pageCount: 1,
-        total: items.length,
-      }
+          page,
+          pageCount: 1,
+          total: items.length,
+        }
       : { page: 1, pageCount: 1, total: 0 });
 
   const handleSearchChange = (value) => {
@@ -77,12 +78,12 @@ export default function AdminBannerPage() {
   const resetForm = () => {
     setFormValues({
       title: "",
-      shortDescription: "",
-      order: "",
-      photo: null,
-      photoUrl: "",
+      description: "",
+      isPublic: true,
+      file: null,
+      fileUrl: "",
     });
-    setEditingBanner(null);
+    setEditingNotice(null);
   };
 
   const openCreateModal = () => {
@@ -90,15 +91,15 @@ export default function AdminBannerPage() {
     setIsModalOpen(true);
   };
 
-  const openEditModal = (banner) => {
+  const openEditModal = (notice) => {
     setFormValues({
-      title: banner.title ?? "",
-      shortDescription: banner.shortDescription ?? "",
-      order: banner.order != null ? String(banner.order) : "",
-      photo: null,
-      photoUrl: banner.photoUrl ?? "",
+      title: notice.title ?? "",
+      description: notice.description ?? "",
+      isPublic: notice.isPublic ?? true,
+      file: null,
+      fileUrl: notice.fileUrl ?? "",
     });
-    setEditingBanner(banner);
+    setEditingNotice(notice);
     setIsModalOpen(true);
   };
 
@@ -115,35 +116,29 @@ export default function AdminBannerPage() {
       return;
     }
 
-    if (!formValues.shortDescription.trim()) {
-      toast.error("Short description is required");
-      return;
-    }
-
-    if (!formValues.photo && !formValues.photoUrl) {
-      toast.error("Please upload a photo or provide a photo URL");
+    if (!formValues.description.trim()) {
+      toast.error("Description is required");
       return;
     }
 
     try {
       const formData = new FormData();
       formData.append("title", formValues.title.trim());
-      formData.append("shortDescription", formValues.shortDescription.trim());
-      if (formValues.order) {
-        formData.append("order", String(formValues.order));
-      }
-      if (formValues.photo) {
-        formData.append("photo", formValues.photo);
-      } else if (formValues.photoUrl) {
-        formData.append("photoUrl", formValues.photoUrl);
+      formData.append("description", formValues.description.trim());
+      formData.append("isPublic", formValues.isPublic);
+
+      if (formValues.file) {
+        formData.append("file", formValues.file);
+      } else if (formValues.fileUrl) {
+        formData.append("fileUrl", formValues.fileUrl);
       }
 
-      if (editingBanner) {
-        await updateBanner({ id: editingBanner.id, formData }).unwrap();
-        toast.success("Banner updated successfully");
+      if (editingNotice) {
+        await updateNotice({ id: editingNotice.id, formData }).unwrap();
+        toast.success("Notice updated successfully");
       } else {
-        await createBanner(formData).unwrap();
-        toast.success("Banner created successfully");
+        await createNotice(formData).unwrap();
+        toast.success("Notice created successfully");
       }
 
       closeModal();
@@ -173,22 +168,22 @@ export default function AdminBannerPage() {
       ...options,
     });
 
-  const confirmDelete = (banner) => {
+  const confirmDelete = (notice) => {
     openConfirm({
-      title: "Delete banner",
-      description: `Delete banner "${banner.title}"? This action cannot be undone.`,
+      title: "Delete notice",
+      description: `Delete notice "${notice.title}"? This action cannot be undone.`,
       confirmLabel: "Delete",
       onConfirm: async () => {
         try {
-          await deleteBanner(banner.id).unwrap();
-          toast.success("Banner deleted successfully");
+          await deleteNotice(notice.id).unwrap();
+          toast.success("Notice deleted successfully");
         } catch (error) {
           const message =
             error?.data?.message ||
             (Array.isArray(error?.data?.message)
               ? error.data.message[0]
               : null) ||
-            "Failed to delete banner.";
+            "Failed to delete notice.";
           toast.error("Delete failed", { description: message });
         } finally {
           closeConfirm();
@@ -202,10 +197,10 @@ export default function AdminBannerPage() {
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-xl font-semibold tracking-tight text-zinc-900">
-            Banners
+            Notices
           </h1>
           <p className="text-sm text-zinc-500">
-            Manage homepage banners, their order and images.
+            Manage system notices, documents, and news.
           </p>
         </div>
 
@@ -213,7 +208,7 @@ export default function AdminBannerPage() {
           <AdminSearchBar
             value={searchInput}
             onChange={handleSearchChange}
-            placeholder="Search banners..."
+            placeholder="Search notices..."
           />
           <Button
             type="button"
@@ -222,7 +217,7 @@ export default function AdminBannerPage() {
             className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-md hover:bg-emerald-500"
           >
             <Plus className="h-3.5 w-3.5" />
-            <span>Add banner</span>
+            <span>Add notice</span>
           </Button>
         </div>
       </header>
@@ -236,64 +231,91 @@ export default function AdminBannerPage() {
                 header: "SL",
                 tdClassName:
                   "whitespace-nowrap px-4 py-3 text-sm text-zinc-500",
-                cell: (banner) =>
-                  items.findIndex((b) => b.id === banner.id) + 1,
+                cell: (notice) =>
+                  items.findIndex((n) => n.id === notice.id) + 1,
               },
               {
                 key: "title",
                 header: "Title",
                 tdClassName:
                   "whitespace-nowrap px-4 py-3 text-sm font-medium text-zinc-900",
-                cell: (banner) => banner.title || "-",
+                cell: (notice) => notice.title || "-",
               },
               {
-                key: "shortDescription",
+                key: "description",
                 header: "Description",
                 tdClassName:
-                  "px-4 py-3 text-sm text-zinc-700 max-w-xs truncate",
-                cell: (banner) => banner.shortDescription || "-",
-              },
-              {
-                key: "order",
-                header: "Order",
-                tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                cell: (banner) =>
-                  banner.order != null ? String(banner.order) : "-",
-              },
-              {
-                key: "photo",
-                header: "Photo",
-                tdClassName: "whitespace-nowrap px-4 py-3",
-                cell: (banner) =>
-                  banner.photoUrl ? (
-                    <img
-                      src={banner.photoUrl}
-                      alt="Banner"
-                      className="h-16 w-32 rounded-md object-cover border border-zinc-200"
+                  "px-4 py-3 text-sm text-zinc-700 max-w-xs",
+                cell: (notice) => 
+                  notice.description ? (
+                    <div
+                      className="truncate max-w-xs [&>*]:inline [&>*]:truncate"
+                      dangerouslySetInnerHTML={{ __html: notice.description }}
                     />
                   ) : (
-                    <span className="text-sm text-zinc-400">No image</span>
+                    "-"
+                  ),
+              },
+              {
+                key: "isPublic",
+                header: "Visibility",
+                tdClassName:
+                  "whitespace-nowrap px-4 py-3 text-sm",
+                cell: (notice) => (
+                  <span
+                    className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
+                      notice.isPublic
+                        ? "bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20"
+                        : "bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20"
+                    }`}
+                  >
+                    {notice.isPublic ? "Public" : "Private"}
+                  </span>
+                ),
+              },
+              {
+                key: "file",
+                header: "Attachment",
+                tdClassName: "whitespace-nowrap px-4 py-3 text-sm",
+                cell: (notice) =>
+                  notice.fileUrl ? (
+                    <a
+                      href={notice.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-emerald-600 hover:text-emerald-500 font-medium"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      View File
+                    </a>
+                  ) : (
+                     <span className="text-zinc-500">None</span>
                   ),
               },
             ]}
             data={items}
             isLoading={isBusy}
-            emptyMessage="No banners found."
-            loadingLabel="Loading banners..."
-            getRowKey={(banner) => banner.id}
-            renderActions={(banner) => (
+            emptyMessage="No notices found."
+            loadingLabel="Loading notices..."
+            getRowKey={(notice) => notice.id}
+            renderActions={(notice) => (
               <div className="flex items-center justify-end gap-2">
+                <Link
+                  href={`/admin/notice/${notice.id}`}
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+                >
+                  <Eye className="h-3.5 w-3.5" />
+                </Link>
                 <button
                   type="button"
-                  onClick={() => openEditModal(banner)}
+                  onClick={() => openEditModal(notice)}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
                 >
                   <Edit2 className="h-3.5 w-3.5" />
                 </button>
                 <button
                   type="button"
-                  onClick={() => confirmDelete(banner)}
+                  onClick={() => confirmDelete(notice)}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-white text-red-600 hover:bg-red-50"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -334,9 +356,9 @@ export default function AdminBannerPage() {
         onCancel={closeConfirm}
       />
 
-      <AdminBannerFormModal
+      <AdminNoticeFormModal
         isOpen={isModalOpen}
-        editingBanner={editingBanner}
+        editingNotice={editingNotice}
         formValues={formValues}
         isCreating={isCreating}
         isUpdating={isUpdating}

@@ -24,6 +24,7 @@ import {
   useGetInvestmentsStatsQuery,
 } from "@/features/investor/investments/investmentsApiSlice";
 import { useGetUsersQuery } from "@/features/admin/users/usersApiSlice";
+import { NoticeMarquee } from "./components/NoticeMarquee";
 
 /* ══════════════════════════════════════════════════
    THEME TOKENS
@@ -137,7 +138,7 @@ const Avatar = ({ user, size = "sm" }) => {
   const initials = (user?.name || user?.email || "?").substring(0, 2).toUpperCase();
   const dim =
     size === "xl" ? "h-16 w-16 text-base" :
-    size === "lg" ? "h-12 w-12 text-sm" : "h-8 w-8 text-xs";
+      size === "lg" ? "h-12 w-12 text-sm" : "h-8 w-8 text-xs";
   const src =
     typeof user?.photoUrl === "string" ? user.photoUrl.replace(/`/g, "").trim() : "";
 
@@ -300,11 +301,11 @@ export default function InvestorDashboardPage() {
   const investors = allUsers.filter((u) => u.role === "investor");
   const filtered = search.trim()
     ? investors.filter(
-        (u) =>
-          (u.name || "").toLowerCase().includes(search.toLowerCase()) ||
-          (u.email || "").toLowerCase().includes(search.toLowerCase()) ||
-          (u.phone || "").includes(search),
-      )
+      (u) =>
+        (u.name || "").toLowerCase().includes(search.toLowerCase()) ||
+        (u.email || "").toLowerCase().includes(search.toLowerCase()) ||
+        (u.phone || "").includes(search),
+    )
     : investors;
 
   const investorsMeta = usersData?.meta ?? { page: investorPage, pageCount: 1, total: investors.length };
@@ -385,6 +386,7 @@ export default function InvestorDashboardPage() {
 
   return (
     <div className="space-y-8 mx-auto">
+      <NoticeMarquee />
 
       {/* ── DASHBOARD HEADER ── */}
       <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">

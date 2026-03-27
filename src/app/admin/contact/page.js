@@ -11,6 +11,7 @@ import {
   useDeleteContactMutation,
 } from "@/features/contact/contactApiSlice";
 import { toast } from "sonner";
+import { formatDateUTC } from "@/lib/utils";
 
 export default function AdminContactsPage() {
   const router = useRouter();
@@ -51,9 +52,8 @@ export default function AdminContactsPage() {
 
     openConfirm({
       title: "Delete contact message",
-      description: `Delete message from "${displayName}" with subject "${
-        contact.subject || "-"
-      }"? This action cannot be undone.`,
+      description: `Delete message from "${displayName}" with subject "${contact.subject || "-"
+        }"? This action cannot be undone.`,
       confirmLabel: "Delete",
       onConfirm: async () => {
         try {
@@ -74,32 +74,22 @@ export default function AdminContactsPage() {
     });
   };
 
-  const formatDateTime = (value) => {
-    if (!value) return "-";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "-";
-    return date.toLocaleString("en-US", { timeZone: "UTC" });
-  };
+
 
   return (
-    <div className="space-y-8 p-4 md:p-5 max-w-[1600px] mx-auto -mt-6">
-      <header className="flex flex-col gap-6 rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
-            <Mail className="h-6 w-6" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight text-zinc-900">
-              Contact Messages
-            </h1>
-            <p className="text-sm font-medium text-zinc-500">
-              Manage inquiries and support requests.
-            </p>
-          </div>
+    <div className="space-y-6">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight text-zinc-900">
+            Contact messages
+          </h1>
+          <p className="text-sm text-zinc-500">
+            View and manage messages submitted from the public contact form.
+          </p>
         </div>
       </header>
 
-      <section className="overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-sm">
+      <section className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
           <DataTable
             columns={[
@@ -147,11 +137,15 @@ export default function AdminContactsPage() {
                 header: "Investor type",
                 tdClassName:
                   "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
+<<<<<<< HEAD
                 cell: (contact) => (
                   <span className="inline-flex items-center rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-800">
                     {contact.investorType || "-"}
                   </span>
                 ),
+=======
+                cell: (contact) => contact.investorType || "-",
+>>>>>>> main
               },
               {
                 key: "subject",
@@ -165,7 +159,7 @@ export default function AdminContactsPage() {
                 header: "Received at",
                 tdClassName:
                   "whitespace-nowrap px-4 py-3 text-xs text-zinc-600",
-                cell: (contact) => formatDateTime(contact.createdAt),
+                cell: (contact) => formatDateUTC(contact.createdAt, { year: "numeric", month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" }),
               },
             ]}
             data={contacts}
@@ -178,14 +172,14 @@ export default function AdminContactsPage() {
                 <button
                   type="button"
                   onClick={() => router.push(`/admin/contact/${contact.id}`)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
                 >
                   <Eye className="h-3.5 w-3.5" />
                 </button>
                 <button
                   type="button"
                   onClick={() => confirmDelete(contact)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-white text-red-600 hover:bg-red-50"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </button>

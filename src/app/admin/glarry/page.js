@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, Trash2, Plus, Edit2, Image as ImageIcon } from "lucide-react";
+import { Eye, Trash2, Plus, Edit2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
+import { DataTable } from "@/components/ui/data-table";
 import { AdminSearchBar } from "@/app/admin/components/AdminSearchBar";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { AdminGlarryFormModal } from "@/app/admin/components/glarry/AdminGlarryFormModal";
@@ -66,10 +67,10 @@ export default function AdminGlarryPage() {
     data?.meta ??
     (Array.isArray(items)
       ? {
-          page,
-          pageCount: 1,
-          total: items.length,
-        }
+        page,
+        pageCount: 1,
+        total: items.length,
+      }
       : { page: 1, pageCount: 1, total: 0 });
 
   const handleSearchChange = (value) => {
@@ -198,187 +199,128 @@ export default function AdminGlarryPage() {
 
   return (
     <div className="space-y-6">
-      <header className="flex flex-col gap-6 rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
-            <ImageIcon className="h-6 w-6" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight text-zinc-900">
-              Gallery Management
-            </h1>
-            <p className="text-sm font-medium text-zinc-500">
-              Manage project photos and visual assets.
-            </p>
-          </div>
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight text-zinc-900">
+            Glarry images
+          </h1>
+          <p className="text-sm text-zinc-500">
+            View and manage glarry photos attached to projects.
+          </p>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="flex items-center gap-3">
           <AdminSearchBar
             value={searchInput}
             onChange={handleSearchChange}
             placeholder="Search by project..."
-            className="w-full sm:w-64"
           />
           <Button
             type="button"
-            size="default"
+            size="sm"
             onClick={openCreateModal}
-            className="inline-flex h-10 items-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:bg-zinc-800 hover:shadow-xl hover:shadow-zinc-900/30 active:scale-95"
+            className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-md hover:bg-emerald-500"
           >
-            <Plus className="h-4 w-4" />
-            <span>Add Gallery</span>
+            <Plus className="h-3.5 w-3.5" />
+            <span>Add glarry</span>
           </Button>
         </div>
       </header>
 
-      <section className="space-y-6">
-        {isBusy ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {[...Array(8)].map((_, i) => (
-              <div
-                key={i}
-                className="animate-pulse overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm"
-              >
-                <div className="aspect-[4/3] w-full bg-zinc-100"></div>
-                <div className="p-4 space-y-3">
-                  <div className="h-4 w-3/4 rounded bg-zinc-100"></div>
-                  <div className="flex justify-end gap-2">
-                    <div className="h-8 w-8 rounded-full bg-zinc-100"></div>
-                    <div className="h-8 w-8 rounded-full bg-zinc-100"></div>
-                    <div className="h-8 w-8 rounded-full bg-zinc-100"></div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : items.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-300 bg-zinc-50 py-20 text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-100">
-              <ImageIcon className="h-6 w-6 text-zinc-400" />
-            </div>
-            <h3 className="text-lg font-medium text-zinc-900">
-              No glarry images found
-            </h3>
-            <p className="mt-1 text-sm text-zinc-500">
-              Get started by adding a new glarry image.
-            </p>
-            <Button
-              onClick={openCreateModal}
-              className="mt-6 bg-emerald-600 hover:bg-emerald-500 text-white"
-            >
-              Add Glarry
-            </Button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {items.map((item) => (
-              <div
-                key={item.id}
-                className="group relative flex flex-col overflow-hidden rounded-3xl border border-zinc-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-              >
-                <div className="aspect-[4/3] w-full overflow-hidden bg-zinc-50 relative">
-                  {item.photoUrl ? (
+      <section className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+        <div className="overflow-x-auto">
+          <DataTable
+            columns={[
+              {
+                key: "sl",
+                header: "SL",
+                tdClassName:
+                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-500",
+                cell: (item) =>
+                  items.findIndex((i) => i.id === item.id) + 1,
+              },
+              {
+                key: "project",
+                header: "Project",
+                tdClassName:
+                  "whitespace-nowrap px-4 py-3 text-sm font-medium text-zinc-900",
+                cell: (item) =>
+                  item?.projectName ||
+                  item?.project?.name ||
+                  (item.projectId ? `Project #${item.projectId}` : "-"),
+              },
+              {
+                key: "photo",
+                header: "Photo",
+                tdClassName: "whitespace-nowrap px-4 py-3",
+                cell: (item) =>
+                  item.photoUrl ? (
                     <img
                       src={item.photoUrl}
-                      alt={
-                        item?.projectName ||
-                        item?.project?.name ||
-                        "Glarry Image"
-                      }
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      alt="Glarry"
+                      className="h-16 w-24 rounded-md object-cover border border-zinc-200"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-zinc-300 bg-zinc-50">
-                      <ImageIcon className="h-12 w-12 opacity-20" />
-                    </div>
-                  )}
-
-                  {/* Overlay Actions */}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-center justify-center gap-3 backdrop-blur-[2px]">
-                    {item.projectId && (
-                      <button
-                        type="button"
-                        onClick={() =>
-                          router.push(`/admin/projects/${item.projectId}`)
-                        }
-                        className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-zinc-700 shadow-lg hover:bg-emerald-500 hover:text-white hover:scale-110 transition-all duration-200"
-                        title="View Project"
-                      >
-                        <Eye className="h-4 w-4" />
-                      </button>
-                    )}
-                    <button
-                      type="button"
-                      onClick={() => openEditModal(item)}
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-zinc-700 shadow-lg hover:bg-blue-500 hover:text-white hover:scale-110 transition-all duration-200"
-                      title="Edit Image"
-                    >
-                      <Edit2 className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => confirmDelete(item)}
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-zinc-700 shadow-lg hover:bg-red-500 hover:text-white hover:scale-110 transition-all duration-200"
-                      title="Delete Image"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="p-5 flex flex-col gap-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">
-                      Project
-                    </span>
-                    {item.projectId && (
-                      <span className="inline-flex items-center rounded-full bg-zinc-100 px-2.5 py-0.5 text-[10px] font-semibold text-zinc-500 uppercase tracking-wide">
-                        ID: {item.projectId}
-                      </span>
-                    )}
-                  </div>
-                  <h3
-                    className="truncate text-base font-semibold text-zinc-900 group-hover:text-emerald-600 transition-colors"
-                    title={
-                      item?.projectName ||
-                      item?.project?.name ||
-                      `Project #${item.projectId}`
+                    <span className="text-sm text-zinc-400">No image</span>
+                  ),
+              },
+            ]}
+            data={items}
+            isLoading={isBusy}
+            emptyMessage="No glarry images found."
+            loadingLabel="Loading glarry images..."
+            getRowKey={(item) => item.id}
+            renderActions={(item) => (
+              <div className="flex items-center justify-end gap-2">
+                {item.projectId && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      router.push(`/admin/projects/${item.projectId}`)
                     }
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
                   >
-                    {item?.projectName ||
-                      item?.project?.name ||
-                      (item.projectId ? `Project #${item.projectId}` : "-")}
-                  </h3>
-                </div>
+                    <Eye className="h-3.5 w-3.5" />
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => openEditModal(item)}
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+                >
+                  <Edit2 className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => confirmDelete(item)}
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-white text-red-600 hover:bg-red-50"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
               </div>
-            ))}
-          </div>
-        )}
+            )}
+          />
+        </div>
 
-        {items.length > 0 && (
-          <div className="border-t border-zinc-200 pt-6">
-            <Pagination
-              page={meta.page}
-              pageCount={meta.pageCount}
-              total={meta.total}
-              pageSize={pageSize}
-              onPageChange={(newPage) =>
-                setPage((p) =>
-                  newPage < 1
-                    ? 1
-                    : meta.pageCount
-                      ? Math.min(meta.pageCount, newPage)
-                      : newPage,
-                )
-              }
-              onPageSizeChange={(newSize) => {
-                setPageSize(newSize);
-                setPage(1);
-              }}
-            />
-          </div>
-        )}
+        <Pagination
+          page={meta.page}
+          pageCount={meta.pageCount}
+          total={meta.total}
+          pageSize={pageSize}
+          onPageChange={(newPage) =>
+            setPage((p) =>
+              newPage < 1
+                ? 1
+                : meta.pageCount
+                  ? Math.min(meta.pageCount, newPage)
+                  : newPage,
+            )
+          }
+          onPageSizeChange={(newSize) => {
+            setPageSize(newSize);
+            setPage(1);
+          }}
+        />
       </section>
 
       <ConfirmDialog
@@ -400,11 +342,7 @@ export default function AdminGlarryPage() {
         onClose={closeModal}
         onChange={handleFormChange}
         onSubmit={handleSubmit}
-        projects={
-          Array.isArray(projectsData)
-            ? projectsData
-            : (projectsData?.items ?? [])
-        }
+        projects={Array.isArray(projectsData) ? projectsData : projectsData?.items ?? []}
         isProjectsLoading={isProjectsLoading}
       />
     </div>

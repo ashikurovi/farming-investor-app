@@ -1,14 +1,14 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { 
-  ArrowLeft, 
-  Mail, 
-  User, 
-  Phone, 
-  Globe, 
-  DollarSign, 
-  MessageSquare, 
+import {
+  ArrowLeft,
+  Mail,
+  User,
+  Phone,
+  Globe,
+  DollarSign,
+  MessageSquare,
   Clock,
   Briefcase
 } from "lucide-react";
@@ -65,9 +65,9 @@ export default function AdminContactDetailPage() {
     if (!value) return "-";
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return "-";
-    return date.toLocaleString("en-US", { 
-      year: 'numeric', 
-      month: 'long', 
+    return date.toLocaleString("en-US", {
+      year: 'numeric',
+      month: 'long',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit'

@@ -245,6 +245,6 @@ export function LoginImageSlider() {
           transition: opacity 0.7s ease !important;
         }
       `}</style>
-    </div>
+    </div >
   );
 }

@@ -70,28 +70,25 @@ export default function HomeFaq() {
                 <div
                   key={index}
                   onClick={() => toggleFaq(index)}
-                  className={`group border rounded-2xl overflow-hidden bg-white cursor-pointer transition-all duration-300 ${
-                    isOpen
+                  className={`group border rounded-2xl overflow-hidden bg-white cursor-pointer transition-all duration-300 ${isOpen
                       ? "border-emerald-300 shadow-xl shadow-emerald-100/70"
                       : "border-zinc-200 hover:border-emerald-200 hover:shadow-md"
-                  }`}
+                    }`}
                 >
                   {/* Question Header */}
                   <div className="flex items-center justify-between px-6 py-5">
                     <h3
-                      className={`text-[15px] font-medium transition-colors ${
-                        isOpen ? "text-emerald-900" : "text-zinc-900"
-                      }`}
+                      className={`text-[15px] font-medium transition-colors ${isOpen ? "text-emerald-900" : "text-zinc-900"
+                        }`}
                     >
                       {faq.question}
                     </h3>
 
                     <div
-                      className={`h-7 w-7 flex items-center justify-center rounded-xl transition-all duration-300 ${
-                        isOpen
+                      className={`h-7 w-7 flex items-center justify-center rounded-xl transition-all duration-300 ${isOpen
                           ? "bg-emerald-600 text-white rotate-180"
                           : "bg-zinc-100 text-zinc-400 group-hover:bg-emerald-50 group-hover:text-emerald-600"
-                      }`}
+                        }`}
                     >
                       <ChevronDown className="h-4 w-4" />
                     </div>
@@ -99,9 +96,8 @@ export default function HomeFaq() {
 
                   {/* Answer */}
                   <div
-                    className={`overflow-hidden transition-all duration-300 ${
-                      isOpen ? "max-h-96 pb-6" : "max-h-0"
-                    }`}
+                    className={`overflow-hidden transition-all duration-300 ${isOpen ? "max-h-96 pb-6" : "max-h-0"
+                      }`}
                   >
                     <div className="px-6">
                       <div className="h-px bg-emerald-100 mb-4" />

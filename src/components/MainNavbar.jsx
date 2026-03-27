@@ -30,19 +30,17 @@ function NavLink({ href, label, scrolled }) {
   return (
     <Link
       href={href}
-      className={`relative text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 group ${
-        isActive
+      className={`relative text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 group ${isActive
           ? "text-emerald-400"
           : scrolled
-          ? "text-zinc-500 hover:text-zinc-900"
-          : "text-white/60 hover:text-white"
-      }`}
+            ? "text-zinc-500 hover:text-zinc-900"
+            : "text-white/60 hover:text-white"
+        }`}
     >
       {label}
       <span
-        className={`absolute -bottom-1 left-0 h-px w-full scale-x-0 origin-left transition-transform duration-300 ${
-          isActive ? "scale-x-100 bg-emerald-400" : "bg-current group-hover:scale-x-100"
-        }`}
+        className={`absolute -bottom-1 left-0 h-px w-full scale-x-0 origin-left transition-transform duration-300 ${isActive ? "scale-x-100 bg-emerald-400" : "bg-current group-hover:scale-x-100"
+          }`}
       />
     </Link>
   );
@@ -66,7 +64,7 @@ export function MainNavbar() {
   const handleLogout = async () => {
     try {
       await logout().unwrap();
-    } catch {}
+    } catch { }
     finally {
       toast.success("Logged out");
       router.push("/");
@@ -86,11 +84,10 @@ export function MainNavbar() {
     <>
       {/* ── Desktop Navbar ── */}
       <header
-        className={`hidden md:flex fixed top-0 inset-x-0 z-50 h-16 items-center transition-all duration-500 ${
-          scrolled
+        className={`hidden md:flex fixed top-0 inset-x-0 z-50 h-16 items-center transition-all duration-500 ${scrolled
             ? "bg-white/80 backdrop-blur-xl border-b border-zinc-200/60 shadow-sm"
             : "bg-transparent"
-        }`}
+          }`}
       >
         <div className="mx-auto w-full max-w-7xl px-8 flex items-center justify-between">
           <Link href="/" className="shrink-0">
@@ -108,11 +105,10 @@ export function MainNavbar() {
               <>
                 <Link
                   href={dashboardHref}
-                  className={`text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2 rounded-full border transition-all duration-200 ${
-                    scrolled
+                  className={`text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2 rounded-full border transition-all duration-200 ${scrolled
                       ? "border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white"
                       : "border-white/40 text-white hover:bg-white/10"
-                  }`}
+                    }`}
                 >
                   Dashboard
                 </Link>
@@ -128,11 +124,10 @@ export function MainNavbar() {
             ) : (
               <Link
                 href="/login"
-                className={`text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2 rounded-md border transition-all duration-200 ${
-                  scrolled
+                className={`text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2 rounded-md border transition-all duration-200 ${scrolled
                     ? "border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white"
                     : "border-white/40 text-white hover:bg-white/10"
-                }`}
+                  }`}
               >
                 Login
               </Link>
@@ -151,15 +146,13 @@ export function MainNavbar() {
             return (
               <Link href="/" className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group">
                 <div
-                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
-                    isActive ? "bg-emerald-50 ring-2 ring-emerald-400 ring-offset-1" : ""
-                  }`}
+                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${isActive ? "bg-emerald-50 ring-2 ring-emerald-400 ring-offset-1" : ""
+                    }`}
                   aria-label="Home"
                 >
                   <Home
-                    className={`h-5 w-5 transition-colors ${
-                      isActive ? "text-emerald-600" : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
+                    className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-600" : "text-zinc-400 group-hover:text-zinc-600"
+                      }`}
                   />
                 </div>
                 <span className="sr-only">Home</span>

@@ -35,7 +35,7 @@ export default function Sidebar() {
       // ignore
     } finally {
       toast.success("Logged out");
-      router.push("/");
+      router.push("/login");
     }
   };
 
@@ -126,13 +126,13 @@ export default function Sidebar() {
   return (
     <aside
       className={`
-        hidden ${sidebarWidth} flex-shrink-0 flex-col
+        hidden min-h-screen ${sidebarWidth} flex-col
         border-r border-zinc-100
         bg-white
         px-3 py-5
         transition-all duration-300 ease-in-out
         lg:flex
-        sticky top-0 h-screen overflow-hidden
+        relative
       `}
       style={{
         background: "linear-gradient(180deg, #ffffff 0%, #f9fafb 100%)",

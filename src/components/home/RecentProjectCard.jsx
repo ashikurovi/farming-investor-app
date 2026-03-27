@@ -18,16 +18,16 @@ export default function RecentProjectCard({ project, index }) {
   const cleanUrl = (u) => (typeof u === "string" ? u.replace(/[`]/g, "").trim() : u);
   const totalCost = Number(project.totalCost || 0);
   const totalInvestment = Number(project.totalInvestment || 0);
-  
+
   // Calculate funding percent based on API data
-  const fundingPercent = totalCost > 0 
-    ? Math.min(100, Math.round((totalInvestment / totalCost) * 100)) 
+  const fundingPercent = totalCost > 0
+    ? Math.min(100, Math.round((totalInvestment / totalCost) * 100))
     : 0;
-    
+
   const title = project.name || "Untitled Project";
   const location = project.location || "Bangladesh";
   const amount = totalCost; // Target amount is usually total cost
-  
+
   const image =
     cleanUrl(project.photoUrl) || fallbackImages[index % fallbackImages.length];
 

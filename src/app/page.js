@@ -9,47 +9,25 @@ import HomeRecentProjects from "../components/home/HomeRecentProjects";
 import HomeStatsSnapshot from "../components/home/HomeStatsSnapshot";
 import HomeTestimonials from "../components/home/HomeTestimonials";
 import HomeWhyChooseUs from "../components/home/HomeWhyChooseUs";
+import WhatsAppButton from "../components/WhatsAppButton";
 
 export default function Home() {
   const recentProjects = getRecentProjects(4);
 
   return (
-    <main className="min-h-screen bg-zinc-50">
+    <div className="bg-white space-y-8  md:space-y-20  ">
       <HomeHero />
-
-      <div className="mx-auto md:max-w-7xl px-0 lg:px-8 space-y-20 -mt-10">
-        <section id="live-kpis">
-          <HomeLiveKpis />
-        </section>
-
-        <section id="recent-projects" className="space-y-6">
-          <HomeRecentProjects projects={recentProjects} />
-        </section>
-
-        <section id="how-it-works" className="border-t border-zinc-200 pt-16">
-          <HomeHowItWorks />
-        </section>
-
-        <section id="why-choose-us" className="border-t border-zinc-200 pt-16">
-          <HomeWhyChooseUs />
-        </section>
-
-        <section id="gallery" className="border-t border-zinc-200 pt-16">
-          <HomeGalleryPreview />
-        </section>
-
-        <section id="blog" className="border-t border-zinc-200 pt-16">
-          <HomeBlogSection />
-        </section>
-
-        <section id="testimonials" className="border-t border-zinc-200 pt-16">
-          <HomeTestimonials />
-        </section>
-
-        <section id="faq" className="border-t border-zinc-200 pt-16 pb-20">
-          <HomeFaq />
-        </section>
-      </div>
-    </main>
+      {/* <HomeStatsSnapshot /> */}
+      <HomeLiveKpis />
+      <HomeRecentProjects projects={recentProjects} />
+      <HomeHowItWorks />
+      <HomeWhyChooseUs />
+      <HomeGalleryPreview />
+      <HomeBlogSection />
+      {/* Blog */}
+      <HomeTestimonials />
+      <HomeFaq />
+      <WhatsAppButton />
+    </div>
   );
 }

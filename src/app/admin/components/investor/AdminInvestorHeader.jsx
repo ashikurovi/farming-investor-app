@@ -17,19 +17,19 @@ export function AdminInvestorHeader({ user, onBack }) {
   }, [user]);
 
   return (
-    <header className="flex flex-col gap-4 rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-      <div className="flex items-center gap-4">
+    <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-center gap-3">
         <Button
           type="button"
           variant="ghost"
           size="icon"
           onClick={onBack}
-          className="h-10 w-10 rounded-xl bg-zinc-50 text-zinc-500 shadow-sm ring-1 ring-zinc-100 transition-all hover:bg-zinc-100 hover:text-zinc-900"
+          className="h-10 w-10 rounded-xl bg-white text-zinc-500 shadow-sm transition-all hover:bg-zinc-50 hover:text-zinc-900 hover:shadow-md"
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="text-xl font-bold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
             Investor Profile
           </h1>
           <p className="text-sm font-medium text-zinc-500">

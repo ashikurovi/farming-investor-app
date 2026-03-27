@@ -1,12 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Layers, Wallet2, Users, TrendingUp, TrendingDown, DollarSign, Minus } from "lucide-react";
+import { formatNumber, formatCurrencyBDT } from "@/lib/utils";
 
 export function AdminProjectsStats({ stats, isLoading }) {
-  const formatNumber = (value) =>
-    Number(value || 0).toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
 
   const totalCost = Number(stats?.totalCost || 0);
   const totalInvestment = Number(stats?.totalInvestment || 0);
@@ -37,12 +33,11 @@ export function AdminProjectsStats({ stats, isLoading }) {
           {trend === "up" && <TrendingUp className="h-4 w-4 text-emerald-500" />}
           {trend === "down" && <TrendingDown className="h-4 w-4 text-rose-500" />}
           {trend === "neutral" && <Minus className="h-4 w-4 text-zinc-400" />}
-          <span 
-            className={`text-xs font-medium ${
-              trend === "up" ? "text-emerald-600" : 
-              trend === "down" ? "text-rose-600" : 
-              "text-zinc-500"
-            }`}
+          <span
+            className={`text-xs font-medium ${trend === "up" ? "text-emerald-600" :
+                trend === "down" ? "text-rose-600" :
+                  "text-zinc-500"
+              }`}
           >
             {trendValue}
           </span>
@@ -66,7 +61,7 @@ export function AdminProjectsStats({ stats, isLoading }) {
       />
       <StatCard
         title="Total Investment"
-        value={`৳${formatNumber(stats?.totalInvestment)}`}
+        value={formatCurrencyBDT(stats?.totalInvestment, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         icon={Wallet2}
         trend="up"
         trendValue={`+${investmentProgress.toFixed(1)}%`}
@@ -76,7 +71,7 @@ export function AdminProjectsStats({ stats, isLoading }) {
       />
       <StatCard
         title="Total Sell"
-        value={`৳${formatNumber(stats?.totalSell)}`}
+        value={formatCurrencyBDT(stats?.totalSell, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         icon={DollarSign}
         trend="neutral"
         trendValue="0%"
@@ -86,7 +81,7 @@ export function AdminProjectsStats({ stats, isLoading }) {
       />
       <StatCard
         title="Net Profit"
-        value={`৳${formatNumber(stats?.totalProfit)}`}
+        value={formatCurrencyBDT(stats?.totalProfit, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         icon={Users}
         trend={totalProfit >= 0 ? "up" : "down"}
         trendValue={`${totalProfit >= 0 ? "+" : ""}${profitMargin.toFixed(1)}%`}

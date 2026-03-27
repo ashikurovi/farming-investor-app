@@ -55,7 +55,7 @@ export function AdminGlarryFormModal({
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       onChange("photo", e.dataTransfer.files[0]);
     }
@@ -114,7 +114,7 @@ export function AdminGlarryFormModal({
 
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           <form id="admin-glarry-form" onSubmit={onSubmit} className="space-y-6">
-            
+
             {/* Project Selection */}
             <div className="space-y-3">
               <label className="text-xs font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-2">
@@ -158,12 +158,12 @@ export function AdminGlarryFormModal({
                   <span className="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
                   Upload Image
                 </label>
-                
-                <div 
+
+                <div
                   className={cn(
                     "relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 transition-all duration-300 group cursor-pointer",
-                    dragActive 
-                      ? "border-emerald-500 bg-emerald-50/50 scale-[1.02]" 
+                    dragActive
+                      ? "border-emerald-500 bg-emerald-50/50 scale-[1.02]"
                       : "border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50"
                   )}
                   onDragEnter={handleDrag}
@@ -180,7 +180,7 @@ export function AdminGlarryFormModal({
                     onChange={handleFileChange}
                     className="hidden"
                   />
-                  
+
                   <div className="mb-3 rounded-full bg-zinc-100 p-3 text-zinc-400 transition-colors group-hover:bg-emerald-100 group-hover:text-emerald-600">
                     <Upload className="h-6 w-6" />
                   </div>
@@ -222,7 +222,7 @@ export function AdminGlarryFormModal({
                   <span className="h-1.5 w-1.5 rounded-full bg-purple-500"></span>
                   Preview
                 </label>
-                
+
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm flex items-center justify-center group">
                   {previewUrl ? (
                     <>
@@ -251,7 +251,7 @@ export function AdminGlarryFormModal({
                     </div>
                   )}
                 </div>
-                
+
                 {previewUrl && (
                   <div className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-700 border border-emerald-100">
                     <Check className="h-3.5 w-3.5" />

@@ -75,19 +75,19 @@ export default function AdminInvestmentsPage() {
   const allInvestments = Array.isArray(data) ? data : [];
   const filteredInvestments = search
     ? allInvestments.filter((inv) => {
-        const user = usersById.get(inv.investorId);
-        const haystack = [
-          String(inv.id ?? ""),
-          String(inv.investorId ?? ""),
-          String(inv.amount ?? ""),
-          String(inv.reference ?? ""),
-          user?.name ?? "",
-          user?.email ?? "",
-        ]
-          .join(" ")
-          .toLowerCase();
-        return haystack.includes(search.toLowerCase());
-      })
+      const user = usersById.get(inv.investorId);
+      const haystack = [
+        String(inv.id ?? ""),
+        String(inv.investorId ?? ""),
+        String(inv.amount ?? ""),
+        String(inv.reference ?? ""),
+        user?.name ?? "",
+        user?.email ?? "",
+      ]
+        .join(" ")
+        .toLowerCase();
+      return haystack.includes(search.toLowerCase());
+    })
     : allInvestments;
   const total = filteredInvestments.length;
   const startIndex = (page - 1) * pageSize;

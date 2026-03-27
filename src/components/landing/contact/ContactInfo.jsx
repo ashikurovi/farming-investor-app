@@ -17,7 +17,7 @@ export function ContactInfo() {
                 <div className="group p-6 sm:p-8 rounded-3xl bg-white/80 backdrop-blur-sm border border-zinc-100 shadow-xl shadow-zinc-200/20 hover:shadow-2xl hover:shadow-emerald-200/20 hover:border-emerald-100 transition-all duration-500 hover:-translate-y-1.5 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-100/40 rounded-full blur-2xl -z-10 transition-transform duration-700 group-hover:scale-150" />
                     <div className="absolute -top-10 -right-10 w-32 h-32 bg-emerald-50 rounded-full -z-10 transition-transform duration-700 group-hover:scale-125 opacity-50" />
-                    
+
                     <div className="h-14 w-14 bg-gradient-to-br from-emerald-100 to-teal-50 rounded-2xl flex items-center justify-center mb-6 text-emerald-600 ring-1 ring-emerald-200/50 shadow-inner group-hover:scale-110 transition-transform duration-500">
                         <Mail className="w-6 h-6" />
                     </div>
@@ -29,7 +29,7 @@ export function ContactInfo() {
                 <div className="group p-6 sm:p-8 rounded-3xl bg-white/80 backdrop-blur-sm border border-zinc-100 shadow-xl shadow-zinc-200/20 hover:shadow-2xl hover:shadow-emerald-200/20 hover:border-emerald-100 transition-all duration-500 hover:-translate-y-1.5 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-100/40 rounded-full blur-2xl -z-10 transition-transform duration-700 group-hover:scale-150" />
                     <div className="absolute -top-10 -right-10 w-32 h-32 bg-emerald-50 rounded-full -z-10 transition-transform duration-700 group-hover:scale-125 opacity-50" />
-                    
+
                     <div className="h-14 w-14 bg-gradient-to-br from-emerald-100 to-teal-50 rounded-2xl flex items-center justify-center mb-6 text-emerald-600 ring-1 ring-emerald-200/50 shadow-inner group-hover:scale-110 transition-transform duration-500">
                         <Phone className="w-6 h-6" />
                     </div>
@@ -41,25 +41,25 @@ export function ContactInfo() {
                 <div className="group p-6 sm:p-8 rounded-3xl bg-white/80 backdrop-blur-sm border border-zinc-100 shadow-xl shadow-zinc-200/20 hover:shadow-2xl hover:shadow-emerald-200/20 hover:border-emerald-100 transition-all duration-500 hover:-translate-y-1.5 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-100/40 rounded-full blur-2xl -z-10 transition-transform duration-700 group-hover:scale-150" />
                     <div className="absolute -top-10 -right-10 w-32 h-32 bg-emerald-50 rounded-full -z-10 transition-transform duration-700 group-hover:scale-125 opacity-50" />
-                    
+
                     <div className="h-14 w-14 bg-gradient-to-br from-emerald-100 to-teal-50 rounded-2xl flex items-center justify-center mb-6 text-emerald-600 ring-1 ring-emerald-200/50 shadow-inner group-hover:scale-110 transition-transform duration-500">
                         <MapPin className="w-6 h-6" />
                     </div>
                     <h4 className="font-bold text-zinc-900 mb-1.5 text-lg group-hover:text-emerald-700 transition-colors">Visit Us</h4>
                     <p className="text-sm text-zinc-500 mb-5">Come say hello at our office.</p>
-                    <span className="text-sm font-medium text-zinc-800 leading-relaxed">Level 4, AgriTech Tower,<br/>Dhaka 1212, Bangladesh</span>
+                    <span className="text-sm font-medium text-zinc-800 leading-relaxed">Level 4, AgriTech Tower,<br />Dhaka 1212, Bangladesh</span>
                 </div>
 
                 <div className="group p-6 sm:p-8 rounded-3xl bg-white/80 backdrop-blur-sm border border-zinc-100 shadow-xl shadow-zinc-200/20 hover:shadow-2xl hover:shadow-emerald-200/20 hover:border-emerald-100 transition-all duration-500 hover:-translate-y-1.5 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-100/40 rounded-full blur-2xl -z-10 transition-transform duration-700 group-hover:scale-150" />
                     <div className="absolute -top-10 -right-10 w-32 h-32 bg-emerald-50 rounded-full -z-10 transition-transform duration-700 group-hover:scale-125 opacity-50" />
-                    
+
                     <div className="h-14 w-14 bg-gradient-to-br from-emerald-100 to-teal-50 rounded-2xl flex items-center justify-center mb-6 text-emerald-600 ring-1 ring-emerald-200/50 shadow-inner group-hover:scale-110 transition-transform duration-500">
                         <Clock className="w-6 h-6" />
                     </div>
                     <h4 className="font-bold text-zinc-900 mb-1.5 text-lg group-hover:text-emerald-700 transition-colors">Working Hours</h4>
                     <p className="text-sm text-zinc-500 mb-5">We are open on these times.</p>
-                    <span className="text-sm font-medium text-zinc-800 leading-relaxed">Mon-Fri: 9:00 AM - 6:00 PM<br/>Sat-Sun: Closed</span>
+                    <span className="text-sm font-medium text-zinc-800 leading-relaxed">Mon-Fri: 9:00 AM - 6:00 PM<br />Sat-Sun: Closed</span>
                 </div>
             </div>
 

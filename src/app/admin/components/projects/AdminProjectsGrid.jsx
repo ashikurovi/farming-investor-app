@@ -1,6 +1,7 @@
 import { FilePlus, Eye, Edit2, Trash2, MapPin, TrendingUp, Calendar } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { formatCurrencyBDT } from "@/lib/utils";
 
 export function AdminProjectsGrid({
   projects,
@@ -10,11 +11,7 @@ export function AdminProjectsGrid({
   onDelete,
   onAddDailyReport,
 }) {
-  const formatCurrency = (val) =>
-    `৳${Number(val || 0).toLocaleString("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    })}`;
+  const formatCurrency = (val) => formatCurrencyBDT(val, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
   return (
     <section className="space-y-6">
@@ -65,11 +62,11 @@ export function AdminProjectsGrid({
                     </div>
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
-                  
+
                   {/* Status Badge */}
                   <div className="absolute right-3 top-3">
-                    <Badge 
-                      variant="secondary" 
+                    <Badge
+                      variant="secondary"
                       className="bg-white/90 text-xs font-medium text-zinc-900 backdrop-blur-sm hover:bg-white"
                     >
                       {project.status || "Active"}
@@ -99,7 +96,7 @@ export function AdminProjectsGrid({
                 <div className="flex flex-1 flex-col p-5">
                   <div className="mb-4">
                     <div className="flex items-start justify-between gap-2">
-                      <h3 
+                      <h3
                         className="cursor-pointer text-lg font-bold text-zinc-900 transition-colors hover:text-emerald-600 line-clamp-1"
                         onClick={() => onView?.(project)}
                       >

@@ -308,11 +308,11 @@ export default function MyInvestmentsPage() {
 
   const filtered = search.trim()
     ? investments.filter(
-        (r) =>
-          (r.reference || "").toLowerCase().includes(search.toLowerCase()) ||
-          (r.date || "").includes(search) ||
-          String(r.amount || "").includes(search),
-      )
+      (r) =>
+        (r.reference || "").toLowerCase().includes(search.toLowerCase()) ||
+        (r.date || "").includes(search) ||
+        String(r.amount || "").includes(search),
+    )
     : investments;
 
   const [detailOpen, setDetailOpen] = useState(false);

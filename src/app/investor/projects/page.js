@@ -259,11 +259,11 @@ export default function InvestorProjectsPage() {
   const raw = Array.isArray(data) ? data : (data?.items ?? []);
   const filtered = search
     ? raw.filter((p) =>
-        [p?.name ?? "", p?.location ?? "", p?.description ?? ""]
-          .join(" ")
-          .toLowerCase()
-          .includes(search.toLowerCase()),
-      )
+      [p?.name ?? "", p?.location ?? "", p?.description ?? ""]
+        .join(" ")
+        .toLowerCase()
+        .includes(search.toLowerCase()),
+    )
     : raw;
 
   const total = filtered.length;

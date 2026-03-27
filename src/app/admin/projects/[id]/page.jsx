@@ -99,7 +99,7 @@ export default function AdminProjectDetailPage() {
       className: "bg-zinc-100 text-zinc-700 ring-zinc-200",
     };
   }, [project]);
- 
+
   const cleanUrl = (u) => (typeof u === "string" ? u.replace(/`/g, "").trim() : u);
 
   return (
@@ -147,11 +147,10 @@ export default function AdminProjectDetailPage() {
         <div className="flex items-center gap-6">
           <button
             onClick={() => setActiveTab("info")}
-            className={`relative pb-3 text-sm font-medium transition-colors ${
-              activeTab === "info"
+            className={`relative pb-3 text-sm font-medium transition-colors ${activeTab === "info"
                 ? "text-emerald-600"
                 : "text-zinc-500 hover:text-zinc-700"
-            }`}
+              }`}
           >
             Project Overview
             {activeTab === "info" && (
@@ -160,11 +159,10 @@ export default function AdminProjectDetailPage() {
           </button>
           <button
             onClick={() => setActiveTab("daily")}
-            className={`relative pb-3 text-sm font-medium transition-colors ${
-              activeTab === "daily"
+            className={`relative pb-3 text-sm font-medium transition-colors ${activeTab === "daily"
                 ? "text-emerald-600"
                 : "text-zinc-500 hover:text-zinc-700"
-            }`}
+              }`}
           >
             Daily Reports
             {activeTab === "daily" && (
@@ -173,11 +171,10 @@ export default function AdminProjectDetailPage() {
           </button>
           <button
             onClick={() => setActiveTab("glarry")}
-            className={`relative pb-3 text-sm font-medium transition-colors ${
-              activeTab === "glarry"
+            className={`relative pb-3 text-sm font-medium transition-colors ${activeTab === "glarry"
                 ? "text-emerald-600"
                 : "text-zinc-500 hover:text-zinc-700"
-            }`}
+              }`}
           >
             Gallery
             {activeTab === "glarry" && (

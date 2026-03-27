@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { useMemo } from "react";
-  import {
+import {
   Banknote,
   TrendingUp,
   Wallet,
@@ -12,6 +12,7 @@ import { useMemo } from "react";
   ArrowUpRight,
   ArrowDownRight
 } from "lucide-react";
+import { formatCurrencyBDT, formatDateUTC } from "@/lib/utils";
 
 export function AdminProjectInfoTab({ project, isBusy, isError }) {
   const cleanUrl = (u) => (typeof u === "string" ? u.replace(/`/g, "").trim() : u);
@@ -20,11 +21,7 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
   const location = project?.location;
   const description = project?.description || "No description provided.";
 
-  const formatCurrency = (val) =>
-    `৳${Number(val || 0).toLocaleString("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    })}`;
+
 
   if (isBusy) {
     return (
@@ -55,7 +52,7 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
   const roi = investment > 0 ? ((profit / investment) * 100).toFixed(1) : "0.0";
   const costPercentage = investment > 0 ? ((cost / investment) * 100).toFixed(1) : "0.0";
   const sellPercentage = investment > 0 ? ((sell / investment) * 100).toFixed(1) : "0.0";
-  
+
   const isProfitPositive = profit >= 0;
 
   return (
@@ -67,7 +64,7 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Investment</p>
-              <p className="mt-2 text-2xl font-bold text-zinc-900">{formatCurrency(investment)}</p>
+              <p className="mt-2 text-2xl font-bold text-zinc-900">{formatCurrencyBDT(investment, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 group-hover:bg-zinc-900 group-hover:text-white transition-colors">
               <Wallet className="h-5 w-5" />
@@ -77,7 +74,7 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
             <div className="h-1.5 w-full rounded-full bg-zinc-100 overflow-hidden">
               <div className="h-full bg-zinc-900 w-full rounded-full" />
             </div>
-             <span className="text-[10px] font-medium text-zinc-500">100% Funded</span>
+            <span className="text-[10px] font-medium text-zinc-500">100% Funded</span>
           </div>
         </div>
 
@@ -86,15 +83,15 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Total Cost</p>
-              <p className="mt-2 text-2xl font-bold text-zinc-900">{formatCurrency(cost)}</p>
+              <p className="mt-2 text-2xl font-bold text-zinc-900">{formatCurrencyBDT(cost, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-colors">
               <Receipt className="h-5 w-5" />
             </div>
           </div>
           <div className="mt-4 flex items-center gap-2">
-             <span className="text-[10px] text-zinc-500">Operating expenses</span>
-             <span className="text-[10px] font-medium text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded-md">{costPercentage}%</span>
+            <span className="text-[10px] text-zinc-500">Operating expenses</span>
+            <span className="text-[10px] font-medium text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded-md">{costPercentage}%</span>
           </div>
         </div>
 
@@ -103,15 +100,15 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Total Sell</p>
-              <p className="mt-2 text-2xl font-bold text-zinc-900">{formatCurrency(sell)}</p>
+              <p className="mt-2 text-2xl font-bold text-zinc-900">{formatCurrencyBDT(sell, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
               <TrendingUp className="h-5 w-5" />
             </div>
           </div>
-           <div className="mt-4 flex items-center gap-2">
-             <span className="text-[10px] text-zinc-500">Revenue generated</span>
-             <span className="text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-md">{sellPercentage}%</span>
+          <div className="mt-4 flex items-center gap-2">
+            <span className="text-[10px] text-zinc-500">Revenue generated</span>
+            <span className="text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-md">{sellPercentage}%</span>
           </div>
         </div>
 
@@ -121,7 +118,7 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-emerald-600">Net Profit</p>
               <p className={`mt-2 text-2xl font-bold ${isProfitPositive ? "text-emerald-700" : "text-rose-600"}`}>
-                {isProfitPositive ? "+" : ""}{formatCurrency(project.totalProfit)}
+                {isProfitPositive ? "+" : ""}{formatCurrencyBDT(project.totalProfit, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
               </p>
             </div>
             <div className={`flex h-10 w-10 items-center justify-center rounded-xl transition-colors ${isProfitPositive ? "bg-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white" : "bg-rose-100 text-rose-600 group-hover:bg-rose-600 group-hover:text-white"}`}>
@@ -147,10 +144,10 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
           {projectImageUrl && (
             <div className="group relative overflow-hidden rounded-3xl border border-zinc-200 bg-zinc-100 shadow-sm">
               <div className="aspect-[16/9] w-full overflow-hidden">
-                <img 
-                  src={projectImageUrl} 
-                  alt={name} 
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                <img
+                  src={projectImageUrl}
+                  alt={name}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
@@ -167,20 +164,20 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
           )}
 
           {!projectImageUrl && (
-             <div className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-zinc-100 rounded-lg">
-                        <Tag className="h-5 w-5 text-zinc-500"/>
-                    </div>
-                    <h2 className="text-xl font-bold text-zinc-900">{name}</h2>
+            <div className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-zinc-100 rounded-lg">
+                  <Tag className="h-5 w-5 text-zinc-500" />
                 </div>
-                {location && (
-                  <div className="flex items-center gap-2 text-zinc-500 mb-4">
-                    <MapPin className="h-4 w-4" />
-                    <span className="text-sm font-medium">{location}</span>
-                  </div>
-                )}
-             </div>
+                <h2 className="text-xl font-bold text-zinc-900">{name}</h2>
+              </div>
+              {location && (
+                <div className="flex items-center gap-2 text-zinc-500 mb-4">
+                  <MapPin className="h-4 w-4" />
+                  <span className="text-sm font-medium">{location}</span>
+                </div>
+              )}
+            </div>
           )}
 
           <div className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
@@ -208,7 +205,7 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
                 <h3 className="text-sm font-semibold text-emerald-900">Distributed Profit</h3>
               </div>
               <div className="mt-4">
-                <p className="text-3xl font-bold text-emerald-700 tracking-tight">{formatCurrency(project.distributedProfit)}</p>
+                <p className="text-3xl font-bold text-emerald-700 tracking-tight">{formatCurrencyBDT(project.distributedProfit, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
                 <p className="mt-1 text-xs font-medium text-emerald-600/80">Total distributed to investors</p>
               </div>
             </div>
@@ -235,20 +232,19 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
                   <span className="text-xs font-medium uppercase tracking-wide">Start Date</span>
                 </div>
                 <span className="text-sm font-semibold text-zinc-900">
-                  {project.startDate ? new Date(project.startDate).toLocaleDateString() : "N/A"}
+                  {project.startDate ? formatDateUTC(project.startDate) : "N/A"}
                 </span>
               </div>
               <div className="h-px bg-zinc-100" />
               <div className="flex items-center justify-between">
-                 <div className="flex items-center gap-3 text-zinc-500">
+                <div className="flex items-center gap-3 text-zinc-500">
                   <Tag className="h-4 w-4" />
                   <span className="text-xs font-medium uppercase tracking-wide">Status</span>
                 </div>
-                <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${
-                    project.status === 'open' ? 'bg-emerald-50 text-emerald-700' : 
-                    project.status === 'closed' ? 'bg-zinc-100 text-zinc-700' : 
-                    'bg-amber-50 text-amber-700'
-                }`}>
+                <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${project.status === 'open' ? 'bg-emerald-50 text-emerald-700' :
+                    project.status === 'closed' ? 'bg-zinc-100 text-zinc-700' :
+                      'bg-amber-50 text-amber-700'
+                  }`}>
                   {project.status || "Unknown"}
                 </span>
               </div>

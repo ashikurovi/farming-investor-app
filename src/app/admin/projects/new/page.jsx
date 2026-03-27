@@ -180,7 +180,7 @@ export default function AdminProjectCreatePage() {
                   <ImageIcon className="h-3.5 w-3.5" />
                   Cover Image
                 </label>
-                
+
                 <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 transition-colors hover:border-emerald-500/50 hover:bg-emerald-50/30">
                   <input
                     id="photo"
@@ -189,7 +189,7 @@ export default function AdminProjectCreatePage() {
                     onChange={handleImageChange}
                     className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
                   />
-                  
+
                   {previewUrl ? (
                     <div className="relative aspect-[4/3] w-full">
                       <img

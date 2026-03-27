@@ -11,6 +11,7 @@ import {
   ClipboardList,
   Library,
   Settings,
+  FileText,
   LifeBuoy,
 } from "lucide-react";
 
@@ -23,12 +24,15 @@ export const sidebarNavigation = [
     icon: ClipboardList,
     items: [
       { name: "Investors", href: "/admin/investor", icon: Users },
-      { name: "Projects", href: "/admin/projects", icon: Sprout },
       {
         name: "Investments",
         href: "/admin/investment",
         icon: ReceiptIndianRupee,
       },
+      { name: "Projects", href: "/admin/projects", icon: Sprout },
+
+      { name: "Notices", href: "/admin/notice", icon: FileText },
+      { name: "Deeds", href: "/admin/deed", icon: FileText },
     ],
   },
 
