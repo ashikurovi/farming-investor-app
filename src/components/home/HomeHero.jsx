@@ -11,6 +11,9 @@ import {
   TrendingUp,
   Users,
   Sprout,
+  CloudSun,
+  Droplets,
+  Wind,
 } from "lucide-react";
 import { useGetBannersQuery } from "@/features/admin/banner/bannerApiSlice";
 import { Loader } from "@/components/ui/loader";
