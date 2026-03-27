@@ -12,6 +12,8 @@ import {
   User,
   LayoutDashboard,
   LogOut,
+  ShoppingCart,
+  ChevronDown,
 } from "lucide-react";
 import { useLogoutMutation } from "@/features/auth/authApiSlice";
 import { toast } from "sonner";
@@ -24,24 +26,26 @@ const NAV_LINKS = [
   { href: "/landing/about", label: "About", icon: LayoutDashboard },
 ];
 
-function NavLink({ href, label, scrolled }) {
+function NavLink({ href, label, Icon }) {
   const pathname = usePathname();
   const isActive = href === "/" ? pathname === href : pathname.startsWith(href);
   return (
     <Link
       href={href}
-      className={`relative text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 group ${isActive
-        ? "text-emerald-400"
-        : scrolled
-          ? "text-zinc-500 hover:text-zinc-900"
-          : "text-white/60 hover:text-white"
-        }`}
+      className={`group relative inline-flex items-center gap-2 text-[13px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap ${
+        isActive
+          ? "text-emerald-500"
+          : "text-zinc-700 hover:text-zinc-900"
+      }`}
     >
-      {label}
-      <span
-        className={`absolute -bottom-1 left-0 h-px w-full scale-x-0 origin-left transition-transform duration-300 ${isActive ? "scale-x-100 bg-emerald-400" : "bg-current group-hover:scale-x-100"
+      {Icon ? (
+        <Icon
+          className={`h-[18px] w-[18px] transition-colors ${
+            isActive ? "text-emerald-500" : "text-zinc-500 group-hover:text-zinc-700"
           }`}
-      />
+        />
+      ) : null}
+      {label}
     </Link>
   );
 }
@@ -49,7 +53,6 @@ function NavLink({ href, label, scrolled }) {
 export function MainNavbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const token = useSelector((state) => state.auth?.token);
@@ -64,70 +67,75 @@ export function MainNavbar() {
   const handleLogout = async () => {
     try {
       await logout().unwrap();
-    } catch { }
+    } catch {}
     finally {
       toast.success("Logged out");
       router.push("/");
     }
   };
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    onScroll();
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   useEffect(() => setMobileOpen(false), [pathname]);
 
   return (
     <>
-      {/* ── Desktop Navbar ── */}
-      <header
-        className={`hidden md:flex fixed top-0 inset-x-0 z-50 h-16 items-center transition-all duration-500 ${scrolled
-          ? "bg-white/80 backdrop-blur-xl border-b border-zinc-200/60 shadow-sm"
-          : "bg-transparent"
-          }`}
-      >
-        <div className="mx-auto w-full max-w-7xl px-8 flex items-center justify-between">
-          <Link href="/" className="shrink-0">
+      {/* ── Desktop Navbar (Fiberace style) ── */}
+      <header className="hidden md:flex fixed top-0 inset-x-0 z-50 h-16 items-center bg-white border-b border-zinc-200 shadow-sm">
+        <div className="mx-auto w-full max-w-7xl px-6 flex items-center gap-6">
+
+          {/* Logo */}
+          <Link href="/" className="shrink-0 mr-2">
             <img src="/logo.png" alt="Logo" className="h-8 w-auto object-contain" />
           </Link>
 
-          <nav className="flex items-center gap-8">
-            {NAV_LINKS.map(({ href, label }) => (
-              <NavLink key={href} href={href} label={label} scrolled={scrolled} />
+          {/* Nav Links */}
+          <nav className="flex items-center gap-6">
+            {NAV_LINKS.map(({ href, label, icon }) => (
+              <NavLink key={href} href={href} label={label} Icon={icon} />
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          {/* Right Side: Cart + Auth */}
+          <div className="flex items-center gap-3 ml-auto shrink-0">
+            {/* Cart */}
+            <button className="relative flex items-center justify-center w-9 h-9 rounded-full hover:bg-zinc-100 transition-colors text-zinc-600">
+              <ShoppingCart className="h-5 w-5" />
+            </button>
+
             {isAuthenticated ? (
               <>
+                {/* User avatar/dropdown */}
+                <div className="flex items-center gap-2 cursor-pointer group">
+                  <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-bold uppercase">
+                    {user?.name?.[0] ?? "U"}
+                  </div>
+                  <span className="text-sm font-medium text-zinc-700 max-w-[100px] truncate">
+                    {user?.name ?? "Account"}
+                  </span>
+                  <ChevronDown className="h-3.5 w-3.5 text-zinc-400" />
+                </div>
+
+                {/* Dashboard Link */}
                 <Link
                   href={dashboardHref}
-                  className={`text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2 rounded-full border transition-all duration-200 ${scrolled
-                    ? "border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white"
-                    : "border-white/40 text-white hover:bg-white/10"
-                    }`}
+                  className="text-[11px] font-bold tracking-[0.18em] uppercase px-4 py-2 rounded-full border border-zinc-300 text-zinc-700 hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-all duration-200"
                 >
                   Dashboard
                 </Link>
+
+                {/* Logout */}
                 <button
                   onClick={handleLogout}
                   disabled={isLoggingOut}
-                  className="flex items-center justify-center w-9 h-9 rounded-full bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-200 disabled:opacity-50"
+                  className="flex items-center justify-center w-9 h-9 rounded-full bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-200 disabled:opacity-50"
                   title="Logout"
                 >
-                  <LogOut className="h-3.5 w-3.5" />
+                  <LogOut className="h-4 w-4" />
                 </button>
               </>
             ) : (
               <Link
                 href="/login"
-                className={`text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2 rounded-md border transition-all duration-200 ${scrolled
-                  ? "border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white"
-                  : "border-white/40 text-white hover:bg-white/10"
-                  }`}
+                className="text-[11px] font-bold tracking-[0.18em] uppercase px-5 py-2 rounded-full border border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white transition-all duration-200"
               >
                 Login
               </Link>
@@ -136,7 +144,10 @@ export function MainNavbar() {
         </div>
       </header>
 
-      {/* ── Mobile Bottom Tab Bar ── */}
+      {/* Desktop spacer */}
+      <div className="h-16 hidden md:block" />
+
+      {/* ── Mobile Bottom Tab Bar (UNCHANGED) ── */}
       <nav className="fixed bottom-0 inset-x-0 z-50 md:hidden bg-white border-t border-zinc-200 shadow-[0_-4px_20px_rgba(0,0,0,0.07)]">
         <div className="flex items-center justify-around px-1 h-[62px]">
 
@@ -146,13 +157,15 @@ export function MainNavbar() {
             return (
               <Link href="/" className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group">
                 <div
-                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${isActive ? "bg-emerald-50 ring-2 ring-emerald-400 ring-offset-1" : ""
-                    }`}
+                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
+                    isActive ? "bg-emerald-50 ring-2 ring-emerald-400 ring-offset-1" : ""
+                  }`}
                   aria-label="Home"
                 >
                   <Home
-                    className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-600" : "text-zinc-400 group-hover:text-zinc-600"
-                      }`}
+                    className={`h-5 w-5 transition-colors ${
+                      isActive ? "text-emerald-600" : "text-zinc-400 group-hover:text-zinc-600"
+                    }`}
                   />
                 </div>
                 <span className="sr-only">Home</span>
