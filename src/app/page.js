@@ -18,15 +18,31 @@ export default function Home() {
     <main className="min-h-screen bg-zinc-50">
       <HomeHero />
       {/* <HomeStatsSnapshot /> */}
-      <HomeLiveKpis />
-      <HomeRecentProjects projects={recentProjects} />
-      <HomeHowItWorks />
-      <HomeWhyChooseUs />
-      <HomeGalleryPreview />
-      <HomeBlogSection />
+      <div className="py-10">
+        <HomeLiveKpis />
+      </div>
+      <div className="py-10">
+        <HomeRecentProjects projects={recentProjects} />
+      </div>
+      <div className="py-10">
+        <HomeHowItWorks />
+      </div>
+      <div className="py-10">
+        <HomeWhyChooseUs />
+      </div>
+      <div className="py-10">
+        <HomeGalleryPreview />
+      </div>
+      <div className="py-10">
+        <HomeBlogSection />
+      </div>
       {/* Blog */}
-      <HomeTestimonials />
-      <HomeFaq />
+      <div className="py-10">
+        <HomeTestimonials />
+      </div>
+      <div className="py-10">
+        <HomeFaq />
+      </div>
       <WhatsAppButton />
     </main>
   );
