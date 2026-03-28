@@ -5,46 +5,39 @@ import { Autoplay, EffectFade, Pagination } from "swiper/modules";
 import Image from "next/image";
 import Link from "next/link";
 import { Sprout } from "lucide-react";
+import { useGetGlarryQuery } from "@/features/admin/glarry/glarryApiSlice";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 
-const slides = [
-  {
-    image:
-      "https://images.pexels.com/photos/2132126/pexels-photo-2132126.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    quote:
-      "This platform has completely transformed how we manage our agricultural portfolio. The transparency and real-time data are unmatched.",
-    author: "Sofia Davis",
-    role: "Sustainable Fund Manager",
-    initials: "SD",
-    accent: "#a8c5a0", // muted sage green
-  },
-  {
-    image:
-      "https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    quote:
-      "Investing in tangible assets like farmland provides stability in volatile markets. Framing makes it accessible and secure.",
-    author: "Michael Chen",
-    role: "Institutional Investor",
-    initials: "MC",
-    accent: "#a0b8c5",
-  },
-  {
-    image:
-      "https://images.pexels.com/photos/4207906/pexels-photo-4207906.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    quote:
-      "Connecting capital directly to farmers helps scale sustainable practices faster than ever before.",
-    author: "Elena Rodriguez",
-    role: "Agritech Consultant",
-    initials: "ER",
-    accent: "#c5bfa0",
-  },
-];
-
 export function LoginImageSlider() {
+  const { data: galleryData, isLoading } = useGetGlarryQuery({ limit: 5 });
+  const items = galleryData?.items ?? galleryData ?? [];
+
+  const cleanUrl = (u) =>
+    typeof u === "string" ? u.replace(/[`]/g, "").trim() : u;
+
+  const slides = items.map((item, index) => ({
+    image: cleanUrl(item.photoUrl || item.photo),
+    quote: item.project?.shortDescription || "Transparent visual reporting from our active project sites.",
+    author: item.project?.title || item.projectName || "Farm Project",
+    role: item.project?.location || "Bangladesh",
+    initials: (item.project?.title || "FP").substring(0, 2).toUpperCase(),
+    accent: ["#a8c5a0", "#a0b8c5", "#c5bfa0", "#bfa0c5", "#c5a0a8"][index % 5],
+  }));
+
+  if (isLoading || slides.length === 0) {
+    return (
+      <div className="relative h-full w-full bg-zinc-900 flex items-center justify-center">
+        <div className="animate-pulse flex flex-col items-center gap-4">
+          <div className="h-12 w-12 rounded-full border-2 border-zinc-700 border-t-emerald-500 animate-spin" />
+          <p className="text-zinc-500 text-xs font-mono tracking-widest uppercase">Loading Gallery...</p>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="relative h-full w-full overflow-hidden">
       {/* Grain overlay */}

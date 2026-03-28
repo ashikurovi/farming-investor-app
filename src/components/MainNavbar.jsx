@@ -40,15 +40,13 @@ function NavLink({ href, label }) {
   return (
     <Link
       href={href}
-      className={`relative group flex items-center gap-1.5 text-[13px] font-semibold tracking-[0.04em] py-1 transition-colors duration-200 whitespace-nowrap ${
-        isActive ? "text-emerald-400" : "text-zinc-300 hover:text-white"
-      }`}
+      className={`relative group flex items-center gap-1.5 text-[13px] font-semibold tracking-[0.04em] py-1 transition-colors duration-200 whitespace-nowrap ${isActive ? "text-emerald-400" : "text-zinc-300 hover:text-white"
+        }`}
     >
       {label}
       <span
-        className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-emerald-400 transition-all duration-300 ${
-          isActive ? "w-full" : "w-0 group-hover:w-full"
-        }`}
+        className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-emerald-400 transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"
+          }`}
       />
     </Link>
   );
@@ -80,9 +78,8 @@ function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
           {user?.name ?? "Account"}
         </span>
         <ChevronDown
-          className={`h-3.5 w-3.5 text-white/50 transition-transform duration-200 ${
-            open ? "rotate-180" : ""
-          }`}
+          className={`h-3.5 w-3.5 text-white/50 transition-transform duration-200 ${open ? "rotate-180" : ""
+            }`}
         />
       </button>
 
@@ -110,16 +107,7 @@ function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
               <ExternalLink className="h-3 w-3 ml-auto text-zinc-600" />
             </Link>
 
-            <Link
-              href="/settings"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-zinc-300 hover:bg-white/8 hover:text-white transition-colors"
-            >
-              <Settings className="h-4 w-4 text-zinc-500 shrink-0" />
-              <span className="text-xs font-semibold tracking-wide uppercase">
-                Settings
-              </span>
-            </Link>
+
 
             <div className="h-px bg-white/8 my-1" />
 
@@ -184,73 +172,25 @@ export function MainNavbar() {
       ══════════════════════════════════════════ */}
       <div className="hidden md:block fixed top-0 inset-x-0 z-50">
         {/* ── Top utility bar ── */}
-        <div className="bg-[#0a1a0f] border-b border-white/4">
-          <div className="mx-auto max-w-7xl px-8 h-9 flex items-center justify-between">
-            {/* Live market ticker */}
-            <div className="flex items-center gap-4">
-              <span className="flex items-center gap-1.5 text-[11px] text-emerald-400/80 font-medium tracking-wide">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
-                </span>
-                Markets Live
-              </span>
-              <span className="text-white/10">|</span>
-              <span className="flex items-center gap-1 text-[11px] text-zinc-400">
-                <TrendingUp className="h-3 w-3 text-emerald-500" />
-                <span className="text-emerald-400 font-semibold">+2.1%</span>
-                <span>Avg. Yield This Quarter</span>
-              </span>
-            </div>
 
-            {/* Right quick links */}
-            <div className="flex items-center gap-4">
-              <Link
-                href="/landing/about"
-                className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] text-zinc-400 hover:bg-white/5 hover:text-zinc-200 tracking-wide transition-colors"
-              >
-                <BadgeHelp className="h-3.5 w-3.5 text-zinc-500" />
-                How it Works
-              </Link>
-              <span className="text-white/10">|</span>
-              <Link
-                href="/landing/contact"
-                className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] text-zinc-400 hover:bg-white/5 hover:text-zinc-200 tracking-wide transition-colors"
-              >
-                <LifeBuoy className="h-3.5 w-3.5 text-zinc-500" />
-                Support
-              </Link>
-              {isAuthenticated && (
-                <>
-                  <span className="text-white/10">|</span>
-                  <button className="text-zinc-400 hover:text-zinc-200 transition-colors relative">
-                    <Bell className="h-3.5 w-3.5" />
-                    <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-emerald-400 rounded-full" />
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
 
         {/* ── Main nav bar ── */}
         <header
-          className={`transition-all duration-300 ${
-            scrolled
-              ? "bg-[#0d1f12]/95 backdrop-blur-xl shadow-lg shadow-black/30 border-b border-white/5"
-              : "bg-[#0d1f12] border-b border-white/4"
-          }`}
+          className={`transition-all duration-300 ${scrolled
+            ? "bg-[#0d1f12]/95 backdrop-blur-xl shadow-lg shadow-black/30 border-b border-white/5"
+            : "bg-[#0d1f12] border-b border-white/4"
+            }`}
         >
-          <div className="mx-auto max-w-7xl px-8 h-[60px] flex items-center gap-8">
+          <div className="mx-auto max-w-7xl px-8 h-[80px] flex items-center gap-8">
             {/* Logo */}
             <Link href="/" className="shrink-0 flex items-center">
               <Image
                 src="/favicon.ico"
                 alt="XINZO"
-                width={32}
-                height={32}
+                width={40}
+                height={40}
                 priority
-                className="h-8 w-8 object-contain"
+                className="h-40 w-40 object-contain"
               />
             </Link>
 
@@ -258,7 +198,7 @@ export function MainNavbar() {
             <div className="h-5 w-px bg-white/6 shrink-0" />
 
             {/* Nav links */}
-            <nav className="flex items-center gap-7">
+            <nav className="flex  items-center gap-7">
               {NAV_LINKS.map(({ href, label }) => (
                 <NavLink key={href} href={href} label={label} />
               ))}

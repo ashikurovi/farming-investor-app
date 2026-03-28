@@ -37,7 +37,7 @@ export default function HomeHero() {
 
   /* ── no slides ── */
   if (slides.length === 0) {
-    return <section className="h-[320px] w-full bg-zinc-950 md:h-[480px]" />;
+    return <section className="h-[420px] w-full bg-zinc-950 md:h-[480px]" />;
   }
 
   return (
@@ -92,30 +92,7 @@ export default function HomeHero() {
                   </div>
 
                   <div className="mt-10 grid grid-cols-3 gap-x-6 gap-y-6 text-white/90 sm:mt-12 sm:flex sm:flex-wrap sm:items-end sm:gap-10">
-                    <div className="min-w-0">
-                      <div className="text-xl font-semibold tracking-tight sm:text-3xl">
-                        1,200+
-                      </div>
-                      <div className="mt-1 text-[10px] font-medium text-white/70 sm:text-[11px]">
-                        Ha Sustainable Organic Farmland
-                      </div>
-                    </div>
-                    <div className="min-w-0">
-                      <div className="text-xl font-semibold tracking-tight sm:text-3xl">
-                        20+
-                      </div>
-                      <div className="mt-1 text-[10px] font-medium text-white/70 sm:text-[11px]">
-                        International Business Partners
-                      </div>
-                    </div>
-                    <div className="min-w-0">
-                      <div className="text-xl font-semibold tracking-tight sm:text-3xl">
-                        24+
-                      </div>
-                      <div className="mt-1 text-[10px] font-medium text-white/70 sm:text-[11px]">
-                        Export Destination Countries
-                      </div>
-                    </div>
+
                   </div>
 
                   <div className="mt-6 w-full rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-md shadow-[0_18px_60px_-40px_rgba(0,0,0,0.8)] lg:hidden">

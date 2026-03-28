@@ -1,25 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { Search, Filter, Calendar, MapPin, ArrowUpRight, X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import { useGetGlarryQuery } from "@/features/admin/glarry/glarryApiSlice";
 import { Loader } from "@/components/ui/loader";
 
-const categories = ["All", "Harvest", "Community", "Technology", "Produce", "Livestock"];
-
 export function GalleryFeed() {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [selectedProject, setSelectedProject] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
   const { data: galleryData, isLoading } = useGetGlarryQuery({ limit: 100 });
   const items = galleryData?.items ?? galleryData ?? [];
-
   const mappedItems = items.map((item) => ({
     id: item.id,
-    title: item.project?.title || "Gallery Image",
-    category: item.project?.category || "All",
+    title: item.projectName || item.project?.title || "Gallery Image",
     image: item.photo || item.photoUrl,
     description: item.project?.shortDescription || "",
     date: item.createdAt
@@ -27,13 +23,18 @@ export function GalleryFeed() {
       : "",
     location: item.project?.location || "Farm Location",
   }));
+ 
+  const projectNames = useMemo(() => {
+    const names = mappedItems.map((item) => item.title).filter(Boolean);
+    return ["All", ...new Set(names)];
+  }, [mappedItems]);
 
   // Filter items
   const filteredItems = mappedItems.filter((item) => {
-    const matchesCategory = activeCategory === "All" || item.category === activeCategory;
+    const matchesProject = selectedProject === "All" || item.title === selectedProject;
     const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           item.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    return matchesProject && matchesSearch;
   });
 
   // Handle Lightbox Navigation
@@ -75,25 +76,25 @@ export function GalleryFeed() {
       <div className="mx-auto max-w-7xl">
         
         {/* Controls Header */}
-        <div className="mb-12 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+        <div className="mb-12 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           
-          {/* Categories */}
+          {/* Project Tabs */}
           <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
+            {projectNames.map((name) => (
               <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                  activeCategory === category
+                key={name}
+                onClick={() => setSelectedProject(name)}
+                className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+                  selectedProject === name
                     ? "bg-zinc-900 text-white shadow-lg shadow-zinc-900/20 scale-105"
                     : "bg-white text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 border border-zinc-200"
                 }`}
               >
-                {category}
+                {name}
               </button>
             ))}
           </div>
-
+ 
           {/* Search */}
           <div className="relative w-full lg:w-72 group">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-emerald-500 transition-colors" />
@@ -133,9 +134,6 @@ export function GalleryFeed() {
               <div className="absolute inset-0 p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="inline-flex items-center rounded-full bg-emerald-500/90 px-2.5 py-0.5 text-xs font-medium text-white backdrop-blur-sm shadow-sm">
-                      {item.category}
-                    </span>
                     <span className="text-xs text-white/80 font-medium bg-black/20 px-2 py-1 rounded-full backdrop-blur-md">
                       {item.date}
                     </span>
@@ -170,7 +168,7 @@ export function GalleryFeed() {
               We couldn&apos;t find any photos matching your current filters.
             </p>
             <button 
-              onClick={() => {setActiveCategory("All"); setSearchQuery("");}}
+              onClick={() => {setSelectedProject("All"); setSearchQuery("");}}
               className="mt-8 px-6 py-2.5 rounded-full text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-600/20"
             >
               Clear filters
@@ -233,9 +231,6 @@ export function GalleryFeed() {
               <div className="mt-4 flex items-center justify-center gap-4 text-sm text-zinc-500">
                 <span className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/50">
                    <Calendar className="h-3.5 w-3.5" /> {filteredItems[selectedImageIndex].date}
-                </span>
-                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/50 text-emerald-400">
-                   {filteredItems[selectedImageIndex].category}
                 </span>
               </div>
             </div>

@@ -29,16 +29,7 @@ const CategoryIcon = ({ type }) => {
   }
 };
 
-const getCategoryLabel = (type) => {
-  const map = {
-    CF: "Livestock",
-    PF: "Poultry",
-    CV: "Crops",
-    OH: "Vegetables",
-    Others: "Specialty",
-  };
-  return map[type] || type;
-};
+
 
 const getCategoryAccent = (type) => {
   const map = {
@@ -79,10 +70,7 @@ const getCategoryAccent = (type) => {
 export function ProjectCard({ project }) {
   const totalCost = Number(project.totalCost || 0);
   const totalInvestment = Number(project.totalInvestment || 0);
-  const fundingPercent =
-    totalCost > 0
-      ? Math.min(100, Math.round((totalInvestment / totalCost) * 100))
-      : 0;
+
 
   const accent = getCategoryAccent(project.category);
 
@@ -109,43 +97,9 @@ export function ProjectCard({ project }) {
           </div>
         )}
 
-        {/* subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
 
-        {/* Category Badge */}
-        <div
-          className={`absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border ${accent.bg} ${accent.border} backdrop-blur-md`}
-        >
-          <span className={accent.text}>
-            <CategoryIcon type={project.category} />
-          </span>
-          <span
-            className={`text-[10px] font-semibold uppercase tracking-widest ${accent.text}`}
-          >
-            {getCategoryLabel(project.category)}
-          </span>
-        </div>
 
-        {/* Live Status */}
-        <div className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md border border-white/50 shadow-sm">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-          </span>
-          <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-zinc-700">
-            Open
-          </span>
-        </div>
 
-        {/* ROI — floating on image bottom */}
-        <div className="absolute bottom-3 right-3 flex flex-col items-end">
-          <div className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-emerald-500 shadow-lg shadow-emerald-600/30">
-            <TrendingUp className="w-3 h-3 text-white/80" />
-            <span className="text-xs font-bold text-white tracking-tight">
-              {project.roi}% ROI
-            </span>
-          </div>
-        </div>
       </div>
 
       {/* ── Content ── */}
@@ -168,26 +122,7 @@ export function ProjectCard({ project }) {
           {project.project_details}
         </p>
 
-        {/* Funding Progress */}
-        <div className="mb-4 space-y-1.5">
-          <div className="flex justify-between items-center">
-            <span className="text-[10px] font-semibold uppercase tracking-widest text-zinc-400">
-              Funding Progress
-            </span>
-            <span className="text-[11px] font-bold text-emerald-600">
-              {fundingPercent}%
-            </span>
-          </div>
-          <div className="h-1 w-full bg-zinc-100 rounded-full overflow-hidden">
-            <div
-              className="h-full rounded-full transition-all duration-1000 ease-out"
-              style={{
-                width: `${fundingPercent}%`,
-                background: "linear-gradient(90deg, #10b981, #34d399)",
-              }}
-            />
-          </div>
-        </div>
+
 
         {/* Divider */}
         <div className="h-px w-full bg-zinc-100 mb-4" />

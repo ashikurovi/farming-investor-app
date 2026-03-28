@@ -30,7 +30,7 @@ export default function HomeRecentProjects() {
     title: item.name || "Untitled Project",
     location: item.location || "Bangladesh",
     category: item.category || "Others",
-    roi: item.roi || 0,
+
     images: item.photoUrl ? [resolveImageSrc(item.photoUrl)] : [],
     totalCost: Number(item.totalCost || 0),
     totalInvestment: Number(item.totalInvestment || 0),
