@@ -5,28 +5,9 @@ import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
-import {
-  ArrowDown,
-  ShieldCheck,
-  TrendingUp,
-  Users,
-  Sprout,
-  CloudSun,
-  Droplets,
-  Wind,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useGetBannersQuery } from "@/features/admin/banner/bannerApiSlice";
 import { Loader } from "@/components/ui/loader";
-
-/* ─── tiny trust-pill ──────────────────────────── */
-const TrustPill = ({ Icon, label }) => (
-  <div className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 backdrop-blur-md">
-    <Icon className="h-3.5 w-3.5 shrink-0 text-emerald-300" />
-    <span className="text-[11px] font-semibold text-white/90 whitespace-nowrap">
-      {label}
-    </span>
-  </div>
-);
 
 export default function HomeHero() {
   const { data: bannerData, isLoading } = useGetBannersQuery();
@@ -56,12 +37,12 @@ export default function HomeHero() {
 
   /* ── no slides ── */
   if (slides.length === 0) {
-    return <section className="h-[320px] w-full bg-zinc-950 md:h-[480px]" />;
+    return <section className="h-[420px] w-full bg-zinc-950 md:h-[480px]" />;
   }
 
   return (
     <section className="w-full">
-      <div className="relative h-[480px] w-full overflow-hidden bg-zinc-950 sm:h-[560px] md:h-[640px] lg:h-[720px]">
+      <div className="relative w-full overflow-hidden bg-zinc-950">
         <Swiper
           modules={[Autoplay, Pagination, EffectFade]}
           effect="fade"
@@ -70,101 +51,81 @@ export default function HomeHero() {
           loop
           autoplay={{ delay: 5500, disableOnInteraction: false }}
           pagination={{ clickable: true }}
-          className="h-full w-full"
+          className="h-[640px] w-full sm:h-[640px] lg:h-[660px]"
         >
           {slides.map((slide, index) => (
             <SwiperSlide key={index}>
-              <div className="relative flex h-full w-full items-center justify-center">
-                {/* ── Background image ── */}
+              <div className="relative h-full w-full">
                 <div
                   className="absolute inset-0 h-full w-full bg-cover bg-center"
-                  style={{ backgroundImage: `url('${slide.image}')` }}
-                />
-
-                {/* ── Gradient overlays ── */}
-                {/* Main dark fade bottom */}
-                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-900/20" />
-                {/* Side vignettes */}
-                <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/60 via-transparent to-zinc-950/60" />
-                {/* Subtle emerald glow from bottom */}
-                <div
-                  className="absolute inset-0 pointer-events-none"
                   style={{
-                    backgroundImage:
-                      "radial-gradient(ellipse 900px 280px at 50% 115%, rgba(16,185,129,0.14), transparent)",
+                    backgroundImage: `url('${slide.image}')`,
+                    backgroundPosition: "center",
                   }}
                 />
 
-                {/* ── Content ── */}
-                <div className="relative z-10 mx-auto w-full max-w-4xl px-5 text-center sm:px-8 md:px-12">
-                  {/* Ghost watermark title — desktop only */}
-                  {slide.title && (
-                    <p className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap text-[110px] font-black leading-none text-white/[0.04] lg:block xl:text-[150px]">
-                      {slide.title}
-                    </p>
-                  )}
+                <div className="absolute inset-0 bg-black/10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/30 to-transparent sm:from-black/60 sm:via-black/25" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
 
-                  {/* Highlight tag */}
-                  {slide.highlight && (
-                    <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 backdrop-blur-sm sm:mb-4 sm:px-4">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      <span className="text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-300 sm:text-[11px]">
-                        {slide.highlight}
-                      </span>
+                <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col justify-end px-5 pb-20 pt-10 sm:px-8 sm:pb-14 lg:px-8 lg:pb-16">
+                  <div className="max-w-xl">
+                    <h1 className="font-serif text-[38px] font-semibold leading-[1.02] tracking-tight text-white drop-shadow-sm sm:text-6xl lg:text-7xl">
+                      {slide.subtitle || slide.title || ""}
+                    </h1>
+
+                    {slide.description && (
+                      <p className="mt-4 max-w-lg text-sm font-medium leading-relaxed text-white/80 sm:text-base">
+                        {slide.description}
+                      </p>
+                    )}
+
+                    <div className="mt-6 flex items-center gap-3">
+                      <button
+                        onClick={scrollToContent}
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 py-3 text-[12px] font-semibold text-white shadow-[0_16px_40px_-18px_rgba(16,185,129,0.9)] transition hover:bg-emerald-400 active:scale-[0.98]"
+                      >
+                        Learn More
+                        <ArrowRight className="h-4 w-4" />
+                      </button>
                     </div>
-                  )}
-
-                  {/* Headline */}
-                  <h1 className="mb-3 text-[28px] font-extrabold leading-[1.15] tracking-tight text-white drop-shadow-lg sm:mb-4 sm:text-4xl md:text-5xl lg:text-6xl">
-                    {slide.subtitle || slide.title || ""}
-                  </h1>
-
-                  {/* Description */}
-                  {slide.description && (
-                    <p className="mx-auto mb-6 max-w-xl text-[13px] font-medium leading-relaxed text-zinc-300 sm:mb-8 sm:text-sm md:text-base lg:max-w-2xl">
-                      {slide.description}
-                    </p>
-                  )}
-
-                  {/* CTA */}
-                  <button
-                    onClick={scrollToContent}
-                    className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-600 to-teal-500 px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.18em] text-white shadow-[0_12px_32px_-6px_rgba(16,185,129,0.55)] transition-all duration-300 hover:-translate-y-0.5 hover:from-emerald-500 hover:to-teal-400 hover:shadow-[0_16px_40px_-6px_rgba(16,185,129,0.65)] active:scale-[0.97] sm:px-8 sm:py-3.5 sm:text-xs md:text-sm"
-                  >
-                    <span className="sm:hidden">Discover</span>
-                    <span className="hidden sm:inline">
-                      Discover Opportunities
-                    </span>
-                    <ArrowDown className="h-3.5 w-3.5 animate-bounce md:h-4 md:w-4" />
-                  </button>
-
-                  {/* ── Trust pills row ── */}
-                  <div className="mt-6 flex flex-wrap items-center justify-center gap-2 sm:mt-8 sm:gap-3">
-                    <TrustPill Icon={ShieldCheck} label="Trusted Platform" />
-                    <TrustPill Icon={TrendingUp} label="High Returns" />
-                    <TrustPill Icon={Users} label="500+ Investors" />
-                    <TrustPill Icon={Sprout} label="Agri-Focused" />
                   </div>
-                </div>
 
-                <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 w-[94%] md:w-auto">
-                  <div className="mx-auto flex flex-col md:flex-row items-center gap-2.5 md:gap-3.5 rounded-xl md:rounded-full border border-white/15 bg-white/10 backdrop-blur-md px-3.5 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
-                    <a href="#why-choose-us" className="inline-flex items-center gap-2 rounded-full bg-white/85 text-zinc-900 px-2.5 py-1.5 text-[11px] font-semibold hover:bg-white transition">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                      Why choose us
-                    </a>
-                    <div className="hidden md:block w-px h-5 bg-white/20" />
-                    <div className="flex items-center gap-1.5 text-white/90 text-[11px]">
-                      <CloudSun className="w-4 h-4 text-emerald-300" />
-                      <span>Clear, 28°C</span>
+                  <div className="mt-10 grid grid-cols-3 gap-x-6 gap-y-6 text-white/90 sm:mt-12 sm:flex sm:flex-wrap sm:items-end sm:gap-10">
+
+                  </div>
+
+                  <div className="mt-6 w-full rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-md shadow-[0_18px_60px_-40px_rgba(0,0,0,0.8)] lg:hidden">
+                    <div className="flex items-center gap-4">
+                      <div
+                        className="h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-cover bg-center"
+                        style={{ backgroundImage: `url('${slide.image}')` }}
+                      />
+                      <div>
+                        <div className="text-[13px] font-semibold text-white">
+                          98% Quality Assurance Rate
+                        </div>
+                        <div className="mt-0.5 text-[11px] text-white/70">
+                          Verified farms and transparent updates
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-1.5 text-white/90 text-[11px]">
-                      <Droplets className="w-4 h-4 text-emerald-300" />
-                      <span>Humidity 48%</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-white/90 text-[11px]">
-                      <Wind className="w-4 h-4 text-emerald-300" />
-                      <span>Wind 5km/h</span>
+                  </div>
+
+                  <div className="pointer-events-none absolute bottom-10 right-6 hidden lg:block">
+                    <div className="flex items-center gap-3 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-md shadow-[0_18px_60px_-40px_rgba(0,0,0,0.8)]">
+                      <div
+                        className="h-12 w-12 overflow-hidden rounded-xl bg-cover bg-center"
+                        style={{ backgroundImage: `url('${slide.image}')` }}
+                      />
+                      <div>
+                        <div className="text-[12px] font-semibold text-white">
+                          98% Quality Assurance Rate
+                        </div>
+                        <div className="mt-0.5 text-[11px] text-white/70">
+                          Verified farms and transparent updates
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

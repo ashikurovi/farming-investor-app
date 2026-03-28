@@ -20,9 +20,7 @@ export default function RecentProjectCard({ project, index }) {
   const totalInvestment = Number(project.totalInvestment || 0);
 
   // Calculate funding percent based on API data
-  const fundingPercent = totalCost > 0
-    ? Math.min(100, Math.round((totalInvestment / totalCost) * 100))
-    : 0;
+
 
   const title = project.name || "Untitled Project";
   const location = project.location || "Bangladesh";
@@ -81,24 +79,7 @@ export default function RecentProjectCard({ project, index }) {
           </h3>
         </div>
 
-        {/* Funding Progress */}
-        <div className="mb-6 space-y-2">
-          <div className="flex justify-between text-[11px] font-medium">
-            <span className="text-zinc-500">
-              Funded{" "}
-              <span className="text-zinc-900">{fundingPercent}%</span>
-            </span>
-            <span className="text-emerald-600">
-              {100 - fundingPercent}% Available
-            </span>
-          </div>
-          <div className="h-1.5 w-full bg-zinc-100 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-emerald-500 rounded-full transition-all duration-1000 ease-out group-hover:bg-emerald-400"
-              style={{ width: `${fundingPercent}%` }}
-            />
-          </div>
-        </div>
+
 
         <div className="mt-auto pt-4 border-t border-dashed border-zinc-200">
           <div className="flex justify-between items-end">

@@ -54,19 +54,13 @@ export default function ProjectDetailsPage({ params }) {
 
   // Map API response to component props
   const project = {
-    projectId: rawProject.id || "",
-    title: rawProject.name || "Untitled Project",
+    id: rawProject.id || "",
+    name: rawProject.name || "Untitled Project",
     location: rawProject.location || "Bangladesh",
-    category: rawProject.category || "Others",
-    roi: rawProject.roi || 0,
-    images: rawProject.photoUrl ? [cleanUrl(rawProject.photoUrl)] : [],
-    totalCost: Number(rawProject.totalCost || 0),
-    totalInvestment: Number(rawProject.totalInvestment || 0),
-    project_details: rawProject.description || "No description available.",
-    amount: Number(rawProject.minInvestment || 0),
-    duration: rawProject.duration || "0",
-    code: rawProject.code || "N/A",
-    investment_highlight: rawProject.investment_highlight || [],
+    photoUrl: rawProject.photoUrl ? cleanUrl(rawProject.photoUrl) : "",
+    description: rawProject.description || "No description available.",
+    glarry: rawProject.glarry || [],
+    totalInvestment: rawProject.totalInvestment || 0,
   };
 
   // Process similar projects
@@ -77,16 +71,14 @@ export default function ProjectDetailsPage({ params }) {
   const similarProjects = rawProjectsList
     .filter(
       (p) =>
-        (p.category || "Others") === project.category &&
-        p.id !== project.projectId,
+        (p.category || "Others") === (rawProject.category || "Others") &&
+        p.id !== project.id,
     )
     .slice(0, 3)
     .map((p) => ({
-      projectId: p.id,
-      title: p.name || "Untitled Project",
-      images: p.photoUrl ? [cleanUrl(p.photoUrl)] : [],
-      roi: p.roi || 0,
-      duration: p.duration || "0",
+      id: p.id,
+      name: p.name || "Untitled Project",
+      photoUrl: p.photoUrl ? cleanUrl(p.photoUrl) : "",
     }));
 
   return <ProjectDetails project={project} similarProjects={similarProjects} />;

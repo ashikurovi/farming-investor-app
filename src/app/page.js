@@ -15,7 +15,7 @@ export default function Home() {
   const recentProjects = getRecentProjects(4);
 
   return (
-    <main className="min-h-screen bg-zinc-50">
+    <main className="min-h-screen space-y-10 bg-zinc-50">
       <HomeHero />
       {/* <HomeStatsSnapshot /> */}
       <div className="py-10">

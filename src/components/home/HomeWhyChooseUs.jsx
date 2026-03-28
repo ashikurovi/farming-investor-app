@@ -1,134 +1,139 @@
 "use client";
-import {
-  ShieldCheck,
-  Sprout,
-  BarChart3,
-  Clock,
-  CheckCircle2,
-} from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, Play, CircleArrowRight } from "lucide-react";
+import { useState } from "react";
 
-const features = [
-  {
-    title: "Institutional-Grade Security",
-    description:
-      "Your investments are backed by audited legal frameworks and secured by regulated custodians.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Expert Farm Management",
-    description:
-      "Partner with seasoned agronomists who leverage decades of experience to maximize crop yields.",
-    icon: Sprout,
-  },
-  {
-    title: "Transparent Performance",
-    description:
-      "Access real-time dashboards showing detailed operational metrics, costs, and projected returns.",
-    icon: BarChart3,
-  },
-  {
-    title: "24/7 Investor Support",
-    description:
-      "Our dedicated concierge team is available around the clock to assist with your portfolio needs.",
-    icon: Clock,
-  },
-];
+const VIDEO_EMBED_URL =
+  "https://www.youtube-nocookie.com/embed/ysz5S6PUM-U?rel=0";
 
 export default function HomeWhyChooseUs() {
+  const [isPlaying, setIsPlaying] = useState(false);
+
   return (
-    <section className="">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          {/* Left Content */}
-          <div className="space-y-10">
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit shadow-sm">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
-                  Why Choose Us
-                </span>
-              </div>
-
-              <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-[1.1]">
-                Built for <span className="font-serif italic">trust</span>,
-                <br />
-                designed for{" "}
-                <span className="font-serif italic text-emerald-700">
-                  growth
-                </span>
-                .
-              </h2>
-
-              <p className="text-zinc-500 text-lg leading-relaxed max-w-xl font-light">
-                We combine traditional agricultural expertise with modern
-                financial technology to offer a secure, transparent, and
-                high-yield investment platform.
-              </p>
-            </div>
-
-            <div className="space-y-5">
-              {[
-                "Direct ownership of tangible assets",
-                "Quarterly dividend distributions",
-                "Fully audited financial reports",
-                "Sustainable farming practices",
-              ].map((item, i) => (
-                <div key={i} className="flex items-center gap-4 group">
-                  <div className="flex-shrink-0 border w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-100 transition-colors duration-300">
-                    <CheckCircle2 className="w-4 h-4" strokeWidth={2.5} />
-                  </div>
-                  <span className="text-base font-medium text-zinc-700 group-hover:text-zinc-900 transition-colors">
-                    {item}
-                  </span>
+    <section className="relative py-8 sm:py-14">
+      <div className="relative z-20 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-2xl bg-zinc-200 shadow-[0_40px_100px_-70px_rgba(0,0,0,0.65)] ring-1 ring-zinc-200 sm:rounded-[28px]">
+          {!isPlaying ? (
+            <button
+              type="button"
+              onClick={() => setIsPlaying(true)}
+              className="relative block w-full text-left"
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10" />
+              <Image
+                src="/img_7-2048x1024.jpg"
+                alt="Organic farming"
+                width={1600}
+                height={900}
+                sizes="(min-width: 1024px) 960px, 100vw"
+                className="h-[240px] w-full object-cover sm:h-[360px] lg:h-[420px]"
+              />
+              <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center sm:px-6">
+                <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/30 shadow-[0_18px_60px_-30px_rgba(0,0,0,0.75)] backdrop-blur-md sm:h-[74px] sm:w-[74px]">
+                  <div className="absolute -inset-6 rounded-full bg-white/10 blur-xl" />
+                  <Play className="relative h-6 w-6 text-white sm:h-8 sm:w-8" />
                 </div>
-              ))}
-            </div>
-
-            <button className="group inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-zinc-900 hover:text-emerald-700 transition-colors pt-4">
-              <span className="border-b border-zinc-200 pb-1 group-hover:border-emerald-700 transition-colors">
-                Explore Our Track Record
-              </span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              >
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Right Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 relative">
-            {/* Decorative background element */}
-            <div className="absolute -inset-4 bg-gradient-to-tr from-emerald-50/50 to-transparent rounded-[3rem] -z-10 opacity-0 lg:opacity-100"></div>
-
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className={`group p-8 rounded-3xl border border-zinc-100 bg-white hover:border-emerald-100 hover:shadow-2xl hover:shadow-emerald-900/5 transition-all duration-500 ${
-                  index === 1 || index === 3 ? "sm:translate-y-12" : ""
-                }`}
-              >
-                <div className="w-14 h-14 rounded-2xl bg-zinc-50 flex items-center justify-center mb-6 text-zinc-400 group-hover:bg-emerald-500 group-hover:text-white group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500 shadow-sm">
-                  <feature.icon className="w-7 h-7" strokeWidth={1.5} />
-                </div>
-                <h3 className="text-xl font-medium text-zinc-900 mb-3 group-hover:text-emerald-700 transition-colors">
-                  {feature.title}
+                <h3 className="mt-4 max-w-3xl font-serif text-2xl font-semibold leading-tight tracking-tight text-white drop-shadow-sm sm:mt-5 sm:text-5xl">
+                  Organic Farming Pricing Designed For Growing Businesses
                 </h3>
-                <p className="text-sm text-zinc-500 leading-relaxed group-hover:text-zinc-600 transition-colors">
-                  {feature.description}
-                </p>
+                <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#7f9b3c] px-4 py-2 text-[11px] font-semibold text-white shadow-[0_18px_48px_-30px_rgba(127,155,60,0.85)] sm:mt-6">
+                  Book Now - It&apos;s Free!
+                  <ArrowRight className="h-4 w-4" />
+                </div>
               </div>
-            ))}
+            </button>
+          ) : (
+            <div className="relative w-full">
+              <div className="h-[240px] w-full sm:h-[360px] lg:h-[420px]">
+                <iframe
+                  className="h-full w-full"
+                  src={VIDEO_EMBED_URL}
+                  title="YouTube video player"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  loading="lazy"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="-mt-10 bg-gradient-to-b from-emerald-950 via-emerald-900 to-emerald-950 pb-12 pt-20 sm:-mt-20 sm:pb-16 sm:pt-28">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
+            <div className="lg:col-span-6">
+              <div className="text-[11px] font-semibold tracking-[0.22em] text-emerald-200/80">
+                Why Choose Us
+              </div>
+              <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                Why Global Partners Choose Botanix Organic Services
+              </h2>
+              <div className="mt-5 h-1.5 w-16 rounded-full bg-[#7f9b3c]" />
+              <div className="mt-6 max-w-xl text-sm leading-relaxed text-emerald-100/80">
+                Semper pellentesque blandit tincidunt primis suspendisse feugiat
+                dictumst. Phasellus metus libero auctor luctus sollicitudin nam
+                maecenas.
+              </div>
+            </div>
+
+            <div className="lg:col-span-6">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div className="overflow-hidden rounded-3xl bg-white/5 ring-1 ring-white/10 backdrop-blur">
+                  <Image
+                    src="/img_4-2048x1024.jpg"
+                    alt="Consistent premium quality"
+                    width={900}
+                    height={600}
+                    sizes="(min-width: 1024px) 25vw, 100vw"
+                    className="h-44 w-full object-cover sm:h-48"
+                  />
+                  <div className="p-5">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <div className="text-sm font-semibold text-white">
+                          Consistent Premium Quality
+                        </div>
+                        <div className="mt-2 text-[12px] leading-relaxed text-emerald-100/70">
+                          Proin parturient dictumst sodales arcu vulputate
+                          lacinia senectus
+                        </div>
+                      </div>
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#7f9b3c] text-white shadow-[0_16px_40px_-26px_rgba(127,155,60,0.75)]">
+                        <CircleArrowRight className="h-5 w-5" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  {[
+                    "Certified Organic Standards",
+                    "Sustainable Farming Practices",
+                    "Traceable Farm-To-Market Process",
+                  ].map((title) => (
+                    <div
+                      key={title}
+                      className="flex items-center justify-between gap-4 rounded-2xl bg-white/5 px-5 py-4 ring-1 ring-white/10 backdrop-blur"
+                    >
+                      <div>
+                        <div className="text-sm font-semibold text-white">
+                          {title}
+                        </div>
+                        <div className="mt-1 text-[12px] leading-relaxed text-emerald-100/70">
+                          Proin parturient dictumst sodales arcu vulputate
+                          lacinia senectus
+                        </div>
+                      </div>
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#7f9b3c] text-white shadow-[0_16px_40px_-26px_rgba(127,155,60,0.75)] shrink-0">
+                        <ArrowRight className="h-4 w-4" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

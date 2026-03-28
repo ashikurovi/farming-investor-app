@@ -17,10 +17,9 @@ export default function HomeGalleryPreview() {
   const displayImages = items.map((item) => ({
     id: item.id,
     src: cleanUrl(item.photoUrl || item.photo),
-    alt: item.project?.title || "Gallery Image",
-    category: item.project?.category || "General",
+    alt: item.projectName || item.project?.title || "Gallery Image",
     location: item.project?.location || "Bangladesh",
-    title: item.project?.title || "Gallery Image",
+    title: item.projectName || item.project?.title || "Gallery Image",
     description: item.project?.shortDescription || "",
     date: item.createdAt
       ? new Date(item.createdAt).toLocaleDateString("en-US", { timeZone: "UTC" })
@@ -142,11 +141,6 @@ export default function HomeGalleryPreview() {
                 </div>
 
                 <div className="translate-y-[10px] group-hover:translate-y-0 transition-transform duration-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2 py-1 rounded bg-emerald-500/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider">
-                      {image.category}
-                    </span>
-                  </div>
                   <h3 className="text-white text-xl font-medium leading-tight mb-2">
                     {image.alt}
                   </h3>
@@ -229,9 +223,6 @@ export default function HomeGalleryPreview() {
                     {displayImages[selectedImageIndex].date}
                   </span>
                 )}
-                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/50 text-emerald-400">
-                  {displayImages[selectedImageIndex].category}
-                </span>
               </div>
             </div>
           </div>
