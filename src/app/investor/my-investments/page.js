@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -19,9 +20,11 @@ import {
   Clock3,
   Hash,
   UserCircle2,
+  FileText,
 } from "lucide-react";
 import { useMeQuery } from "@/features/auth/authApiSlice";
 import { useGetMyInvestmentsQuery } from "@/features/investor/investments/investmentsApiSlice";
+import { useGetDeedsQuery } from "@/features/admin/deed/deedApiSlice";
 
 /* ─── helpers ─────────────────────────────────── */
 const cleanUrl = (u) =>
@@ -62,10 +65,13 @@ const STAT_COLORS = {
   },
 };
 
-const StatCard = ({ label, value, Icon, color = "zinc", currency = false }) => {
+const StatCard = ({ label, value, Icon, color = "zinc", currency = false, onClick }) => {
   const c = STAT_COLORS[color] ?? STAT_COLORS.zinc;
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm ring-1 ring-black/[0.03] transition-all hover:-translate-y-0.5 hover:shadow-md sm:p-5">
+    <div
+      onClick={onClick}
+      className={`relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm ring-1 ring-black/[0.03] transition-all hover:-translate-y-0.5 hover:shadow-md sm:p-5 ${onClick ? "cursor-pointer active:scale-95" : ""}`}
+    >
       <div
         className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${c.bar}`}
       />
@@ -127,9 +133,9 @@ const Sk = ({ className = "" }) => (
 
 const SkeletonRow = () => (
   <tr className="border-b border-zinc-100">
-    {[...Array(6)].map((_, i) => (
+    {[...Array(9)].map((_, i) => (
       <td key={i} className="px-3 py-3.5 sm:px-4">
-        <Sk className="h-4 w-full" />
+        <Sk className={`h-4 ${i === 0 ? "w-6" : "w-full"}`} />
       </td>
     ))}
   </tr>
@@ -206,6 +212,7 @@ const TablePagination = ({
 const PAGE_SIZE = 10;
 
 export default function MyInvestmentsPage() {
+  const router = useRouter();
   const { data: meResponse, isLoading, isError } = useMeQuery();
   const user = meResponse?.data ?? meResponse ?? null;
 
@@ -213,6 +220,7 @@ export default function MyInvestmentsPage() {
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [search, setSearch] = useState("");
   const [showActive, setShowActive] = useState(true);
+  const [filterDeed, setFilterDeed] = useState("all");
 
   const {
     data: myInvestments,
@@ -220,6 +228,11 @@ export default function MyInvestmentsPage() {
     isFetching: isInvFetching,
     isError: isInvError,
   } = useGetMyInvestmentsQuery({ page, limit: pageSize });
+
+  const { data: deedsData } = useGetDeedsQuery({ limit: 1000 });
+  const deedsByInvestmentId = new Map(
+    (deedsData?.data ?? deedsData?.items ?? deedsData ?? []).map((d) => [String(d.investmentId), d])
+  );
 
   const investments = myInvestments?.items ?? [];
   const meta = myInvestments?.meta ?? {
@@ -229,16 +242,26 @@ export default function MyInvestmentsPage() {
   };
   const isInvestmentsBusy = isInvLoading || isInvFetching;
 
-  const filteredByStatus = investments.filter(inv => inv.isActive === showActive);
+  const filteredByStatus = investments.filter((inv) => {
+    const isExpired = inv.endDate && new Date(inv.endDate) < new Date();
+    const effectiveActive = inv.isActive && !isExpired;
+    return effectiveActive === showActive;
+  });
 
-  const filtered = search.trim()
-    ? filteredByStatus.filter(
-      (r) =>
-        (r.reference || "").toLowerCase().includes(search.toLowerCase()) ||
-        (r.date || "").includes(search) ||
-        String(r.amount || "").includes(search),
-    )
-    : filteredByStatus;
+  const filtered = filteredByStatus.filter((r) => {
+    const matchesSearch = !search.trim() || (
+      (r.reference || "").toLowerCase().includes(search.toLowerCase()) ||
+      (r.date || "").includes(search) ||
+      String(r.amount || "").includes(search)
+    );
+    const hasDeed = deedsByInvestmentId.has(String(r.id));
+    const matchesDeedFilter = filterDeed === "all" || (filterDeed === "pending" ? !hasDeed : hasDeed);
+    return matchesSearch && matchesDeedFilter;
+  });
+
+  const pendingDeedsCount = investments.filter(
+    (inv) => !deedsByInvestmentId.has(String(inv.id))
+  ).length;
 
   return (
     <main className="min-h-screen space-y-4 bg-zinc-50/60 p-3 sm:space-y-6 sm:p-6">
@@ -261,7 +284,7 @@ export default function MyInvestmentsPage() {
       </div>
 
       {/* ── PROFILE + STATS ── */}
-      <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+      <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
         {/* Profile card — full width on mobile, spans on larger */}
         <div className="relative col-span-2 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm ring-1 ring-black/[0.03] sm:p-5 lg:col-span-1">
           <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-emerald-400 to-teal-400" />
@@ -337,6 +360,16 @@ export default function MyInvestmentsPage() {
           color="zinc"
           currency
         />
+        <StatCard
+          label="Pending Deeds"
+          value={pendingDeedsCount}
+          Icon={FileText}
+          color="zinc"
+          onClick={() => {
+            setFilterDeed("pending");
+            setPage(1);
+          }}
+        />
       </section>
 
       {/* ── INVESTMENTS TABLE ── */}
@@ -348,17 +381,25 @@ export default function MyInvestmentsPage() {
           <div className="flex flex-col gap-2.5 border-b border-zinc-100 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
             <div className="flex items-center gap-4">
               <button
-                onClick={() => { setShowActive(true); setPage(1); }}
-                className={`text-sm font-bold transition-colors ${showActive ? "text-emerald-600 underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
+                onClick={() => { setShowActive(true); setFilterDeed("all"); setPage(1); }}
+                className={`text-sm font-bold transition-colors ${showActive && filterDeed === "all" ? "text-emerald-600 underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
               >
                 Active Investments
               </button>
               <button
-                onClick={() => { setShowActive(false); setPage(1); }}
-                className={`text-sm font-bold transition-colors ${!showActive ? "text-emerald-600 underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
+                onClick={() => { setShowActive(false); setFilterDeed("all"); setPage(1); }}
+                className={`text-sm font-bold transition-colors ${!showActive && filterDeed === "all" ? "text-emerald-600 underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
               >
                 Previous Investments
               </button>
+              {pendingDeedsCount > 0 && (
+                <button
+                  onClick={() => { setFilterDeed("pending"); setPage(1); }}
+                  className={`text-sm font-bold transition-colors ${filterDeed === "pending" ? "text-amber-600 underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
+                >
+                  Pending Deeds ({pendingDeedsCount})
+                </button>
+              )}
             </div>
             <div className="flex flex-col items-end">
               <p className="text-[11px] text-zinc-400">
@@ -402,26 +443,37 @@ export default function MyInvestmentsPage() {
             <table className="min-w-full table-fixed divide-y divide-zinc-100 text-sm">
               <colgroup>
                 <col className="w-10" />
-                <col className="w-36 min-w-[130px]" />
-                <col className="w-28 min-w-[105px]" />
-                <col className="w-24 min-w-[95px]" />
-                <col className="w-40 min-w-[148px]" />
+                <col className="min-w-[130px]" />
+                <col className="min-w-[110px]" />
+                <col className="min-w-[110px]" />
+                <col className="min-w-[80px]" />
+                <col className="min-w-[100px]" />
+                <col className="min-w-[100px]" />
+                <col className="min-w-[120px]" />
                 <col className="w-14" />
               </colgroup>
 
               <thead>
                 <tr className="bg-zinc-50">
-                  {["#", "Amount (BDT)", "Date", "Time", "Reference", ""].map(
-                    (h) => (
-                      <th
-                        key={h}
-                        scope="col"
-                        className="px-3 py-3 text-left text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-400 first:pl-4 sm:px-4 sm:text-[11px]"
-                      >
-                        {h}
-                      </th>
-                    ),
-                  )}
+                  {[
+                    "#",
+                    "Amount (BDT)",
+                    "Start Date",
+                    "End Date",
+                    "Days",
+                    "Status",
+                    "Deed",
+                    "Reference",
+                    "",
+                  ].map((h) => (
+                    <th
+                      key={h}
+                      scope="col"
+                      className="px-3 py-3 text-left text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-400 first:pl-4 sm:px-4 sm:text-[11px]"
+                    >
+                      {h}
+                    </th>
+                  ))}
                 </tr>
               </thead>
 
@@ -466,7 +518,8 @@ export default function MyInvestmentsPage() {
                   filtered.map((row, idx) => (
                     <tr
                       key={row.id}
-                      className="group transition-colors hover:bg-emerald-50/40"
+                      className="group cursor-pointer transition-colors hover:bg-emerald-50/40"
+                      onClick={() => router.push(`/investor/my-investments/${row.id}`)}
                     >
                       {/* SL */}
                       <td className="pl-4 pr-3 py-3.5 text-xs font-semibold tabular-nums text-zinc-400 sm:pl-5">
@@ -478,20 +531,63 @@ export default function MyInvestmentsPage() {
                         <AmountBadge amount={row.amount} />
                       </td>
 
-                      {/* Date */}
                       <td className="px-3 py-3.5 sm:px-4">
                         <span className="inline-flex items-center gap-1 text-xs text-zinc-600">
-                          <CalendarDays className="h-3 w-3 shrink-0 text-zinc-400" />
-                          {row.date || "—"}
+                          {row.startDate || row.date || "—"}
                         </span>
                       </td>
 
-                      {/* Time */}
+                      {/* End Date */}
                       <td className="px-3 py-3.5 sm:px-4">
                         <span className="inline-flex items-center gap-1 text-xs text-zinc-600">
-                          <Clock3 className="h-3 w-3 shrink-0 text-zinc-400" />
-                          {row.time || "—"}
+                          {row.endDate || "—"}
                         </span>
+                      </td>
+
+                      {/* Days */}
+                      <td className="px-3 py-3.5 sm:px-4 text-xs font-medium text-zinc-500">
+                        {row.startDate && row.endDate ? (
+                          <span>
+                            {Math.ceil(
+                              Math.abs(new Date(row.endDate) - new Date(row.startDate)) /
+                              (1000 * 60 * 60 * 24)
+                            )}d
+                          </span>
+                        ) : "—"}
+                      </td>
+
+                      {/* Status */}
+                      <td className="px-3 py-3.5 sm:px-4">
+                        {(() => {
+                          const isExpired = row.endDate && new Date(row.endDate) < new Date();
+                          return (
+                            <span
+                              className={`inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-bold ring-1 ring-inset ${isExpired
+                                ? "bg-red-50 text-red-700 ring-red-600/10"
+                                : "bg-emerald-50 text-emerald-700 ring-emerald-600/10"
+                                }`}
+                            >
+                              {isExpired ? "Expired" : "Active"}
+                            </span>
+                          );
+                        })()}
+                      </td>
+
+                      {/* Deed */}
+                      <td className="px-3 py-3.5 sm:px-4">
+                        {(() => {
+                          const hasDeed = deedsByInvestmentId.has(String(row.id));
+                          return (
+                            <span
+                              className={`inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-bold ring-1 ring-inset ${hasDeed
+                                ? "bg-zinc-50 text-zinc-700 ring-zinc-600/10"
+                                : "bg-amber-50 text-amber-700 ring-amber-600/10"
+                                }`}
+                            >
+                              {hasDeed ? "Issued" : "Pending"}
+                            </span>
+                          );
+                        })()}
                       </td>
 
                       {/* Reference */}

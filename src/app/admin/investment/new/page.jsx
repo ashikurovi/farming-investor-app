@@ -9,7 +9,6 @@ import { toast } from "sonner";
 import {
   useCreateInvestmentAdminMutation,
 } from "@/features/investor/investments/investmentsApiSlice";
-import { useCreateDeedMutation } from "@/features/admin/deed/deedApiSlice";
 import { useGetUsersQuery } from "@/features/admin/users/usersApiSlice";
 
 export default function AdminInvestmentCreatePage() {
@@ -30,16 +29,9 @@ export default function AdminInvestmentCreatePage() {
     startDate: defaultDate,
     endDate: "",
     reference: "",
-    // Deed fields
-    deedTitle: "",
   });
   const [photoFile, setPhotoFile] = useState(null);
-  const [deedFile, setDeedFile] = useState(null);
-  const [deedPdf, setDeedPdf] = useState(null);
-  const [deedSignature, setDeedSignature] = useState(null);
-
   const [createInvestment, { isLoading: isCreating }] = useCreateInvestmentAdminMutation();
-  const [createDeed, { isLoading: isCreatingDeed }] = useCreateDeedMutation();
 
   const { data: usersData, isLoading: isUsersLoading } = useGetUsersQuery({
     page: 1,
@@ -97,7 +89,7 @@ export default function AdminInvestmentCreatePage() {
     }
 
     try {
-      const investmentResponse = await createInvestment({
+      await createInvestment({
         investorId: Number(formValues.investorId),
         amount: amountNumber,
         date: formValues.date,
@@ -108,22 +100,7 @@ export default function AdminInvestmentCreatePage() {
         photoFile: photoFile || undefined,
       }).unwrap();
 
-      const investmentId = investmentResponse?.id;
-
-      if (investmentId && formValues.deedTitle) {
-        const deedFormData = new FormData();
-        deedFormData.append("title", formValues.deedTitle);
-        deedFormData.append("investmentId", String(investmentId));
-        if (formValues.date) deedFormData.append("issueDate", formValues.date);
-        if (deedFile) deedFormData.append("file", deedFile);
-        if (deedPdf) deedFormData.append("uploadPdf", deedPdf);
-        if (deedSignature) deedFormData.append("signature", deedSignature);
-
-        await createDeed(deedFormData).unwrap();
-        toast.success("Investment and Deed created successfully");
-      } else {
-        toast.success("Investment created successfully");
-      }
+      toast.success("Investment created successfully");
 
       router.push("/admin/investment");
     } catch (error) {
@@ -365,100 +342,6 @@ export default function AdminInvestmentCreatePage() {
             </div>
           </div>
 
-          {/* Deed Section */}
-          <div className="space-y-6 border-t border-zinc-100 pt-8">
-            <div className="flex items-center gap-2">
-              <FileText className="h-5 w-5 text-emerald-600" />
-              <h2 className="text-lg font-semibold text-zinc-900">Deed Details (Optional)</h2>
-            </div>
-            
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <label
-                    htmlFor="deedTitle"
-                    className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500 flex items-center gap-1.5"
-                  >
-                    Deed Title
-                  </label>
-                  <Input
-                    id="deedTitle"
-                    value={formValues.deedTitle}
-                    onChange={(e) => handleChange("deedTitle", e.target.value)}
-                    placeholder="e.g. Land Property Deed"
-                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <label className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500">
-                      Deed File
-                    </label>
-                    <div className="relative h-11">
-                      <input
-                        type="file"
-                        onChange={(e) => setDeedFile(e.target.files?.[0] ?? null)}
-                        className="absolute inset-0 z-10 w-full cursor-pointer opacity-0"
-                      />
-                      <div className="flex h-full items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/50 px-3 transition-colors group-hover:bg-white">
-                        <span className="truncate text-xs text-zinc-500">
-                          {deedFile ? deedFile.name : "Choose file..."}
-                        </span>
-                        <Upload className="h-4 w-4 text-zinc-400" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500">
-                      Upload PDF
-                    </label>
-                    <div className="relative h-11">
-                      <input
-                        type="file"
-                        accept=".pdf"
-                        onChange={(e) => setDeedPdf(e.target.files?.[0] ?? null)}
-                        className="absolute inset-0 z-10 w-full cursor-pointer opacity-0"
-                      />
-                      <div className="flex h-full items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/50 px-3 transition-colors group-hover:bg-white">
-                        <span className="truncate text-xs text-zinc-500">
-                          {deedPdf ? deedPdf.name : "Choose PDF..."}
-                        </span>
-                        <FileText className="h-4 w-4 text-zinc-400" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500">
-                  Signature Image
-                </label>
-                <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 transition-colors hover:border-emerald-500/50 hover:bg-emerald-50/30 h-[100px]">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setDeedSignature(e.target.files?.[0] ?? null)}
-                    className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
-                  />
-                  <div className="flex h-full flex-col items-center justify-center gap-2 text-center p-2">
-                    {deedSignature ? (
-                      <span className="text-xs font-medium text-emerald-600 truncate max-w-full px-2">
-                        {deedSignature.name}
-                      </span>
-                    ) : (
-                      <>
-                        <Upload className="h-4 w-4 text-zinc-400" />
-                        <span className="text-[10px] font-medium text-zinc-500">Upload signature</span>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
           {/* Action Buttons */}
           <div className="flex items-center justify-end gap-4 border-t border-zinc-100 pt-6">
@@ -472,10 +355,10 @@ export default function AdminInvestmentCreatePage() {
             </Button>
             <Button
               type="submit"
-              disabled={isCreating || isCreatingDeed}
+              disabled={isCreating}
               className="h-11 rounded-xl bg-emerald-600 px-8 text-sm font-semibold text-white shadow-md shadow-emerald-200 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-200/50 disabled:opacity-70 disabled:shadow-none transition-all"
             >
-              {isCreating || isCreatingDeed ? (
+              {isCreating ? (
                 <div className="flex items-center gap-2">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
                   <span>Saving...</span>

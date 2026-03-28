@@ -7,6 +7,7 @@ export function DataTable({
   renderActions,
   loadingLabel = "Loading...",
   onRowClick,
+  getRowClassName,
   minWidth = "min-w-[700px] md:min-w-full",
 }) {
   const hasActions = typeof renderActions === "function";
@@ -128,7 +129,7 @@ export function DataTable({
                     onClick={(e) => onRowClick && onRowClick(row, e)}
                     className={`group border-b border-zinc-100 last:border-b-0 transition-colors hover:bg-zinc-50/80 ${
                       onRowClick ? "cursor-pointer" : ""
-                    }`}
+                    } ${getRowClassName ? getRowClassName(row) : ""}`}
                   >
                     {columns.map((column, colIndex) => (
                       <td

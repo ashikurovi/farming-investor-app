@@ -1,13 +1,13 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { 
-  ArrowLeft, 
-  CalendarDays, 
-  Clock3, 
-  Hash, 
-  BadgeDollarSign, 
-  Landmark, 
+import {
+  ArrowLeft,
+  CalendarDays,
+  Clock3,
+  Hash,
+  BadgeDollarSign,
+  Landmark,
   Eye,
   Wallet,
   TrendingUp,
@@ -36,7 +36,7 @@ export default function InvestmentDetailPage() {
     return (
       <div className="flex h-screen flex-col items-center justify-center gap-4 bg-zinc-50/60 text-zinc-500">
         <p className="text-lg font-semibold">Investment not found</p>
-        <button 
+        <button
           onClick={() => router.back()}
           className="flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-bold shadow-sm ring-1 ring-black/5 hover:bg-zinc-50"
         >
@@ -60,7 +60,7 @@ export default function InvestmentDetailPage() {
         <div className="w-10" /> {/* Spacer */}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div className=" gap-6 ">
         {/* Main Details Card */}
         <div className="lg:col-span-2 space-y-6">
           <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm transition-all hover:shadow-md">
@@ -79,12 +79,18 @@ export default function InvestmentDetailPage() {
                     </h2>
                   </div>
                 </div>
-                <div className="inline-flex items-center gap-2 rounded-2xl bg-zinc-50 px-4 py-2 ring-1 ring-zinc-200">
-                  <div className={`h-2.5 w-2.5 rounded-full ${investment.isActive ? "bg-emerald-500" : "bg-zinc-300"}`} />
-                  <span className={`text-xs font-bold uppercase tracking-wider ${investment.isActive ? "text-emerald-700" : "text-zinc-500"}`}>
-                    {investment.isActive ? "Active" : "Inactive"}
-                  </span>
-                </div>
+                {(() => {
+                  const isExpired = investment.endDate && new Date(investment.endDate) < new Date();
+                  const effectiveActive = investment.isActive && !isExpired;
+                  return (
+                    <div className="inline-flex items-center gap-2 rounded-2xl bg-zinc-50 px-4 py-2 ring-1 ring-zinc-200">
+                      <div className={`h-2.5 w-2.5 rounded-full ${isExpired ? "bg-red-500" : effectiveActive ? "bg-emerald-500" : "bg-zinc-300"}`} />
+                      <span className={`text-xs font-bold uppercase tracking-wider ${isExpired ? "text-red-700" : effectiveActive ? "text-emerald-700" : "text-zinc-500"}`}>
+                        {isExpired ? "Expired" : effectiveActive ? "Active" : "Inactive"}
+                      </span>
+                    </div>
+                  );
+                })()}
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -148,24 +154,6 @@ export default function InvestmentDetailPage() {
           </div>
         </div>
 
-        {/* Sidebar Status/Quick Actions */}
-        <div className="space-y-6">
-          <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
-            <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-zinc-400">Impact Summary</h3>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between rounded-2xl bg-blue-50 p-4 ring-1 ring-blue-100">
-                <div className="flex items-center gap-3">
-                  <TrendingUp className="h-5 w-5 text-blue-600" />
-                  <span className="text-xs font-bold text-blue-700">Earnings Potential</span>
-                </div>
-                <span className="text-sm font-black text-blue-900">PRO</span>
-              </div>
-              <p className="px-2 text-[11px] leading-relaxed text-zinc-500">
-                This investment contributes to your total farming portfolio activity. Active status means you participate in daily cost and profit sharing.
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </main>
   );

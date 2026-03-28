@@ -14,6 +14,7 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Briefcase,
+  FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,6 +34,7 @@ import {
   useDeleteInvestmentAdminMutation,
 } from "@/features/investor/investments/investmentsApiSlice";
 import { useGetUsersQuery } from "@/features/admin/users/usersApiSlice";
+import { useGetDeedsQuery } from "@/features/admin/deed/deedApiSlice";
 import { toast } from "sonner";
 
 const PAGE_SIZE = 10;
@@ -44,6 +46,7 @@ export default function AdminInvestmentsPage() {
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
 
   const [confirmState, setConfirmState] = useState({
     isOpen: false,
@@ -72,9 +75,27 @@ export default function AdminInvestmentsPage() {
 
   const usersById = new Map((usersData?.items ?? []).map((u) => [u.id, u]));
 
+  const { data: deedsData } = useGetDeedsQuery({
+    page: 1,
+    limit: 1000,
+  });
+  const deedsByInvestmentId = new Map(
+    (deedsData?.data ?? deedsData?.items ?? []).map((d) => [d.investmentId, d])
+  );
+
   const allInvestments = Array.isArray(data) ? data : [];
-  const filteredInvestments = search
-    ? allInvestments.filter((inv) => {
+  const filteredInvestments = allInvestments.filter((inv) => {
+    // Expiration check
+    const end = inv.endDate ? new Date(inv.endDate) : null;
+    const isExpired = end && !isNaN(end) && end < new Date();
+    const effectiveActive = inv.isActive && !isExpired;
+
+    // Status filter
+    if (filterStatus === "active" && !effectiveActive) return false;
+    if (filterStatus === "expired" && effectiveActive) return false;
+
+    // Search filter
+    if (search) {
       const user = usersById.get(inv.investorId);
       const haystack = [
         String(inv.id ?? ""),
@@ -87,8 +108,9 @@ export default function AdminInvestmentsPage() {
         .join(" ")
         .toLowerCase();
       return haystack.includes(search.toLowerCase());
-    })
-    : allInvestments;
+    }
+    return true;
+  });
   const total = filteredInvestments.length;
   const startIndex = (page - 1) * pageSize;
   const endIndex = startIndex + pageSize;
@@ -155,6 +177,9 @@ export default function AdminInvestmentsPage() {
     filteredInvestments.map((inv) => inv.investorId),
   ).size;
   const avgAmount = total > 0 ? totalAmount / total : 0;
+  const pendingDeedsCount = filteredInvestments.filter(
+    (inv) => !deedsByInvestmentId.has(inv.id)
+  ).length;
 
   // Mock trend calculations (randomized for demo feel, or simple logic)
   const growthRate = 12.5; // Example fixed growth
@@ -162,42 +187,66 @@ export default function AdminInvestmentsPage() {
 
   return (
     <div className="w-full space-y-8 pb-10">
-      <header className="flex flex-col gap-6 rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
-            <Briefcase className="h-6 w-6" />
+      <header className="flex flex-col gap-6 rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
+              <Briefcase className="h-6 w-6" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold tracking-tight text-zinc-900">
+                Investments Management
+              </h1>
+              <p className="text-sm font-medium text-zinc-500">
+                View and manage all investments across projects.
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight text-zinc-900">
-              Investments Management
-            </h1>
-            <p className="text-sm font-medium text-zinc-500">
-              View and manage all investments across projects.
-            </p>
+
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <AdminSearchBar
+              value={searchInput}
+              onChange={handleSearchChange}
+              placeholder="Search by project or investor..."
+              className="w-full sm:w-64"
+            />
+
+            <Button
+              type="button"
+              onClick={() => router.push("/admin/investment/new")}
+              className="inline-flex h-10 items-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:bg-zinc-800 hover:shadow-xl hover:shadow-zinc-900/30 active:scale-95"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Investment</span>
+            </Button>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <AdminSearchBar
-            value={searchInput}
-            onChange={handleSearchChange}
-            placeholder="Search by project or investor..."
-            className="w-full sm:w-64"
-          />
-
-          <Button
-            type="button"
-            onClick={() => router.push("/admin/investment/new")}
-            className="inline-flex h-10 items-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:bg-zinc-800 hover:shadow-xl hover:shadow-zinc-900/30 active:scale-95"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Add Investment</span>
-          </Button>
+        <div className="flex flex-wrap items-center gap-2 border-t border-zinc-50 pt-4">
+          {[
+            { id: "all", label: "All Investments" },
+            { id: "active", label: "Active" },
+            { id: "expired", label: "Expired" },
+          ].map((status) => (
+            <button
+              key={status.id}
+              onClick={() => {
+                setFilterStatus(status.id);
+                setPage(1);
+              }}
+              className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${filterStatus === status.id
+                ? "bg-emerald-600 text-white shadow-md shadow-emerald-100"
+                : "bg-zinc-100 text-zinc-500 hover:bg-zinc-200"
+                }`}
+            >
+              {status.label}
+            </button>
+          ))}
         </div>
       </header>
 
       {/* Stats Grid */}
-      <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {/* Total Investments */}
         <div className="group relative overflow-hidden rounded-3xl border border-zinc-100 bg-white p-6 shadow-sm transition-all hover:shadow-md">
           <div className="absolute right-0 top-0 h-24 w-24 translate-x-8 translate-y--8 rounded-full bg-emerald-50/50 blur-3xl transition-all group-hover:bg-emerald-100/50"></div>
@@ -295,10 +344,37 @@ export default function AdminInvestmentsPage() {
             <div className="h-full w-[45%] rounded-full bg-red-500"></div>
           </div>
         </div>
+
+        {/* Pending Deeds */}
+        <div className="group relative overflow-hidden rounded-3xl border border-zinc-200 bg-amber-50/10 p-6 shadow-sm transition-all hover:shadow-md hover:bg-amber-50/20">
+          <div className="absolute right-0 top-0 h-24 w-24 translate-x-8 translate-y--8 rounded-full bg-amber-100/30 blur-3xl transition-all group-hover:bg-amber-200/30"></div>
+          <div className="flex items-center justify-between">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
+              <FileText className="h-5 w-5" />
+            </div>
+            <div className="flex items-center gap-1 rounded-full bg-amber-100/50 px-2 py-1 text-[10px] font-bold text-amber-800">
+              <span>Required</span>
+            </div>
+          </div>
+          <div className="mt-4 space-y-1">
+            <h3 className="text-sm font-medium text-zinc-500">
+              Pending Deeds
+            </h3>
+            <p className="text-2xl font-bold text-amber-700">
+              {isLoading ? "..." : pendingDeedsCount}
+            </p>
+          </div>
+          <div className="mt-4 h-1 w-full rounded-full bg-amber-100/30">
+            <div
+              className="h-full rounded-full bg-amber-500"
+              style={{ width: `${(pendingDeedsCount / (total || 1)) * 100}%` }}
+            ></div>
+          </div>
+        </div>
       </section>
 
       {/* Table Section */}
-      <section className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
+      <section className="overflow-hidden w-[1100px] rounded-3xl border border-zinc-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
           <DataTable
             columns={[
@@ -356,19 +432,81 @@ export default function AdminInvestmentsPage() {
                 ),
               },
               {
-                key: "date",
-                header: "DATE & TIME",
+                key: "startDate",
+                header: "START DATE",
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (investment) => (
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium text-zinc-700">
-                      {investment?.date ?? "-"}
-                    </span>
-                    <span className="text-xs text-zinc-500">
-                      {investment?.time ?? "-"}
-                    </span>
-                  </div>
+                  <span className="text-sm font-medium text-zinc-700">
+                    {investment?.startDate || "-"}
+                  </span>
                 ),
+              },
+              {
+                key: "endDate",
+                header: "END DATE",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (investment) => (
+                  <span className="text-sm font-medium text-zinc-700">
+                    {investment?.endDate || "-"}
+                  </span>
+                ),
+              },
+              {
+                key: "totalDays",
+                header: "TOTAL DAYS",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (investment) => {
+                  const start = investment?.startDate ? new Date(investment.startDate) : null;
+                  const end = investment?.endDate ? new Date(investment.endDate) : null;
+                  if (start && end && !isNaN(start) && !isNaN(end)) {
+                    const diffTime = Math.abs(end - start);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    return (
+                      <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
+                        {diffDays} Days
+                      </span>
+                    );
+                  }
+                  return "-";
+                },
+              },
+              {
+                key: "status",
+                header: "STATUS",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (investment) => {
+                  const end = investment?.endDate ? new Date(investment.endDate) : null;
+                  const now = new Date();
+                  const isExpired = end && !isNaN(end) && end < now;
+                  return (
+                    <span
+                      className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${isExpired
+                        ? "bg-red-50 text-red-700 ring-red-600/10"
+                        : "bg-emerald-50 text-emerald-700 ring-emerald-600/10"
+                        }`}
+                    >
+                      {isExpired ? "Expired" : "Active"}
+                    </span>
+                  );
+                },
+              },
+              {
+                key: "deedStatus",
+                header: "DEED",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (investment) => {
+                  const hasDeed = deedsByInvestmentId.has(investment.id);
+                  return (
+                    <span
+                      className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${hasDeed
+                        ? "bg-zinc-50 text-zinc-700 ring-zinc-600/10"
+                        : "bg-amber-50 text-amber-700 ring-amber-600/10"
+                        }`}
+                    >
+                      {hasDeed ? "Issued" : "Deed Pending"}
+                    </span>
+                  );
+                },
               },
               {
                 key: "reference",
@@ -386,6 +524,9 @@ export default function AdminInvestmentsPage() {
             emptyMessage="No investments found."
             loadingLabel="Loading investments..."
             getRowKey={(investment) => investment.id}
+            getRowClassName={(investment) =>
+              !deedsByInvestmentId.has(investment.id) ? "bg-amber-50/30" : ""
+            }
             onRowClick={(investment) =>
               router.push(`/admin/investment/${investment.id}`)
             }

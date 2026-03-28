@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
   ArrowLeft,
@@ -11,11 +11,17 @@ import {
   User,
   ImageIcon,
   Trash2,
-  Pencil
+  Pencil,
+  Plus,
+  ExternalLink,
+  ShieldCheck,
+  AlertCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useGetInvestmentAdminQuery, useDeleteInvestmentAdminMutation } from "@/features/investor/investments/investmentsApiSlice";
 import { useGetUserQuery } from "@/features/admin/users/usersApiSlice";
+import { useGetDeedsQuery, useCreateDeedMutation } from "@/features/admin/deed/deedApiSlice";
 import { toast } from "sonner";
 
 export default function AdminInvestmentDetailPage() {
@@ -45,6 +51,54 @@ export default function AdminInvestmentDetailPage() {
 
   const investorId = investment?.investorId;
   const { data: user, isLoading: isUserLoading } = useGetUserQuery(investorId, { skip: !investorId });
+
+  const { data: deedsData, isLoading: isDeedsLoading } = useGetDeedsQuery({ limit: 1000 });
+  const deed = useMemo(() => {
+    const items = deedsData?.data ?? deedsData?.items ?? deedsData ?? [];
+    return items.find(d => String(d.investmentId) === String(id));
+  }, [deedsData, id]);
+
+  const [createDeed, { isLoading: isCreatingDeed }] = useCreateDeedMutation();
+
+  const [deedForm, setDeedForm] = useState({
+    title: `Deed for Investment #${id}`,
+    issueDate: new Date().toISOString().split("T")[0],
+    file: null,
+    uploadPdf: null,
+    signature: null,
+  });
+
+  const handleDeedFormChange = (field, value) => {
+    setDeedForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleDeedSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!deedForm.title.trim()) {
+      toast.error("Deed title is required");
+      return;
+    }
+    if (!deedForm.issueDate) {
+      toast.error("Issue date is required");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("title", deedForm.title.trim());
+      formData.append("investmentId", id);
+      if (deedForm.issueDate) formData.append("issueDate", deedForm.issueDate);
+      if (deedForm.file) formData.append("file", deedForm.file);
+      if (deedForm.uploadPdf) formData.append("uploadPdf", deedForm.uploadPdf);
+      if (deedForm.signature) formData.append("signature", deedForm.signature);
+
+      await createDeed(formData).unwrap();
+      toast.success("Deed created successfully");
+    } catch (error) {
+      toast.error("Failed to create deed", { description: error?.data?.message || "Please try again." });
+    }
+  };
 
   const handleDelete = async () => {
     if (!investment) return;
@@ -189,9 +243,22 @@ export default function AdminInvestmentDetailPage() {
                 </div>
                 Transaction Details
               </h2>
-              <div className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
-                Verified
-              </div>
+              {(() => {
+                const end = investment?.endDate ? new Date(investment.endDate) : null;
+                const now = new Date();
+                const isExpired = end && !isNaN(end) && end < now;
+                const effectiveActive = investment.isActive && !isExpired;
+                return (
+                  <div className={`rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset ${isExpired
+                    ? "bg-red-50 text-red-700 ring-red-600/20"
+                    : effectiveActive
+                      ? "bg-emerald-50 text-emerald-700 ring-emerald-600/20"
+                      : "bg-zinc-100 text-zinc-600 ring-zinc-500/20"
+                    }`}>
+                    {isExpired ? "Expired" : effectiveActive ? "Active" : "Inactive"}
+                  </div>
+                );
+              })()}
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2">
@@ -255,6 +322,160 @@ export default function AdminInvestmentDetailPage() {
                 </div>
               </div>
             </div>
+          </section>
+
+          {/* Deed Section */}
+          <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+            <div className="mb-6 flex items-center justify-between">
+              <h2 className="flex items-center gap-2 text-lg font-semibold text-zinc-900">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
+                  <FileText className="h-4 w-4" />
+                </div>
+                Investment Deed
+              </h2>
+              {deed && (
+                <div className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 ring-1 ring-inset ring-indigo-600/20">
+                  Issued
+                </div>
+              )}
+            </div>
+
+            {isDeedsLoading ? (
+              <div className="animate-pulse space-y-3">
+                <div className="h-4 w-full rounded bg-zinc-100"></div>
+                <div className="h-4 w-2/3 rounded bg-zinc-100"></div>
+              </div>
+            ) : deed ? (
+              <div className="space-y-6">
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500">Title</label>
+                    <div className="text-base font-medium text-zinc-900">{deed.title}</div>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500">Issue Date</label>
+                    <div className="text-base font-medium text-zinc-900">{deed.issueDate || "-"}</div>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-3">
+                  {deed.file && (
+                    <a
+                      href={deed.file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50 p-3 transition-colors hover:bg-zinc-100"
+                    >
+                      <div className="flex items-center gap-2">
+                        <ImageIcon className="h-4 w-4 text-zinc-400" />
+                        <span className="text-sm font-medium text-zinc-700">Photo</span>
+                      </div>
+                      <ExternalLink className="h-4 w-4 text-zinc-400" />
+                    </a>
+                  )}
+                  {deed.uploadPdf && (
+                    <a
+                      href={deed.uploadPdf}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50 p-3 transition-colors hover:bg-zinc-100"
+                    >
+                      <div className="flex items-center gap-2">
+                        <FileText className="h-4 w-4 text-zinc-400" />
+                        <span className="text-sm font-medium text-zinc-700">PDF</span>
+                      </div>
+                      <ExternalLink className="h-4 w-4 text-zinc-400" />
+                    </a>
+                  )}
+                  {deed.signature && (
+                    <a
+                      href={deed.signature}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50 p-3 transition-colors hover:bg-zinc-100"
+                    >
+                      <div className="flex items-center gap-2">
+                        <ShieldCheck className="h-4 w-4 text-zinc-400" />
+                        <span className="text-sm font-medium text-zinc-700">Signature</span>
+                      </div>
+                      <ExternalLink className="h-4 w-4 text-zinc-400" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <div className="flex items-center gap-3 rounded-2xl bg-amber-50 p-4 text-amber-800 ring-1 ring-inset ring-amber-600/10">
+                  <AlertCircle className="h-5 w-5 shrink-0" />
+                  <p className="text-sm font-medium">No deed has been issued for this investment yet.</p>
+                </div>
+
+                <form onSubmit={handleDeedSubmit} className="space-y-4 rounded-2xl border border-zinc-100 bg-zinc-50/50 p-6">
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-900">Issue New Deed</h3>
+                  
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Deed Title</label>
+                      <Input
+                        value={deedForm.title}
+                        onChange={(e) => handleDeedFormChange("title", e.target.value)}
+                        placeholder="e.g. Agreement Deed"
+                        required
+                        className="bg-white"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Issue Date</label>
+                      <Input
+                        type="date"
+                        value={deedForm.issueDate}
+                        onChange={(e) => handleDeedFormChange("issueDate", e.target.value)}
+                        required
+                        className="bg-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-3">
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Deed Photo</label>
+                      <Input
+                        type="file"
+                        onChange={(e) => handleDeedFormChange("file", e.target.files?.[0])}
+                        className="bg-white text-xs file:text-xs"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Deed PDF</label>
+                      <Input
+                        type="file"
+                        accept=".pdf"
+                        onChange={(e) => handleDeedFormChange("uploadPdf", e.target.files?.[0])}
+                        className="bg-white text-xs file:text-xs"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Signature</label>
+                      <Input
+                        type="file"
+                        onChange={(e) => handleDeedFormChange("signature", e.target.files?.[0])}
+                        className="bg-white text-xs file:text-xs"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="pt-2">
+                    <Button
+                      type="submit"
+                      disabled={isCreatingDeed}
+                      className="w-full bg-indigo-600 hover:bg-indigo-500"
+                    >
+                      {isCreatingDeed ? "Issuing Deed..." : "Issue Deed Now"}
+                    </Button>
+                  </div>
+                </form>
+              </div>
+            )}
           </section>
         </div>
 

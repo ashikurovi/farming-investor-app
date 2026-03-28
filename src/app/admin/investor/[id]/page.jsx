@@ -294,78 +294,7 @@ export default function AdminInvestorDetailPage() {
         </div>
       </div>
 
-      {/* Recent Investme*/}
-      <div className="rounded-2xl border border-zinc-200 bg-white shadow-sm transition-all hover:shadow-md">
-        <div className="flex items-center justify-between border-b border-zinc-100 bg-zinc-50/50 px-6 py-4">
-          <h3 className="flex items-center gap-2 text-base font-semibold text-zinc-900">
-            <Wallet className="h-4 w-4 text-emerald-500" />
-            Recent Investments
-          </h3>
-          <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-500">
-            {investments.length} Projects
-          </span>
-        </div>
-        <div className="divide-y divide-zinc-100">
-          {investments.length > 0 ? (
-            investments.slice(0, 5).map((inv) => (
-              <div
-                key={inv.id}
-                className="flex items-center justify-between px-6 py-4 transition-colors hover:bg-zinc-50"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
-                    <TrendingUp className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-zinc-900">
-                      {inv.project?.title || `Project #${inv.projectId}`}
-                    </p>
-                    <p className="text-sm text-zinc-500">
-                      {new Date(inv.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="font-semibold text-zinc-900">
-                    ৳{Number(inv.amount).toLocaleString()}
-                  </p>
-                  <p
-                    className={`text-xs font-medium ${inv.status === "active"
-                      ? "text-emerald-600"
-                      : "text-zinc-500"
-                      }`}
-                  >
-                    {inv.status || "Completed"}
-                  </p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="flex flex-col items-center justify-center py-8 text-center">
-              <div className="mb-3 rounded-full bg-zinc-50 p-3">
-                <Wallet className="h-6 w-6 text-zinc-300" />
-              </div>
-              <p className="text-sm font-medium text-zinc-900">
-                No investments found
-              </p>
-              <p className="text-xs text-zinc-500">
-                This investor hasn't invested in any projects yet.
-              </p>
-            </div>
-          )}
-        </div>
-        {investments.length > 5 && (
-          <div className="border-t border-zinc-100 bg-zinc-50/30 p-4 text-center">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-xs text-zinc-500 hover:text-zinc-900"
-            >
-              View All Investments
-            </Button>
-          </div>
-        )}
-      </div>
+
       <AdminInvestorRecentInvestments investments={investments} />
     </div>
   );
