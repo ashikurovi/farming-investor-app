@@ -1,5 +1,5 @@
 import AdminChrome from "./AdminChrome";
-// import GlobalApiLoader from "./components/GlobalApiLoader";
+import { ThemeProvider } from "@/lib/ThemeContext";
 
 export const metadata = {
   title: "Admin Dashboard | Framing Investor App",
@@ -7,6 +7,8 @@ export const metadata = {
 
 export default function AdminLayout({ children }) {
   return (
-    <AdminChrome>{children}</AdminChrome>
+    <ThemeProvider>
+      <AdminChrome>{children}</AdminChrome>
+    </ThemeProvider>
   );
 }

@@ -227,53 +227,62 @@ export default function AdminBannerPage() {
         </div>
       </header>
 
-      <section className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
           <DataTable
             columns={[
               {
                 key: "sl",
-                header: "SL",
+                header: "#",
                 tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-500",
+                  "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16",
                 cell: (banner) =>
                   items.findIndex((b) => b.id === banner.id) + 1,
               },
               {
                 key: "title",
-                header: "Title",
+                header: "TITLE",
                 tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm font-medium text-zinc-900",
+                  "whitespace-nowrap px-6 py-4 text-sm font-semibold text-zinc-900",
                 cell: (banner) => banner.title || "-",
               },
               {
                 key: "shortDescription",
-                header: "Description",
+                header: "DESCRIPTION",
                 tdClassName:
-                  "px-4 py-3 text-sm text-zinc-700 max-w-xs truncate",
+                  "px-6 py-4 text-sm text-zinc-500 max-w-xs truncate",
                 cell: (banner) => banner.shortDescription || "-",
               },
               {
                 key: "order",
-                header: "Order",
-                tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
+                header: "ORDER",
+                tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (banner) =>
-                  banner.order != null ? String(banner.order) : "-",
+                  banner.order != null ? (
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-bold text-zinc-700 ring-1 ring-inset ring-zinc-500/10">
+                      #{banner.order}
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic">
+                      —
+                    </span>
+                  ),
               },
               {
                 key: "photo",
-                header: "Photo",
-                tdClassName: "whitespace-nowrap px-4 py-3",
+                header: "PHOTO",
+                tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (banner) =>
                   banner.photoUrl ? (
                     <img
                       src={banner.photoUrl}
                       alt="Banner"
-                      className="h-16 w-32 rounded-md object-cover border border-zinc-200"
+                      className="h-16 w-32 rounded-lg object-cover border border-zinc-200"
                     />
                   ) : (
-                    <span className="text-sm text-zinc-400">No image</span>
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic">
+                      No image
+                    </span>
                   ),
               },
             ]}
@@ -284,44 +293,48 @@ export default function AdminBannerPage() {
             getRowKey={(banner) => banner.id}
             renderActions={(banner) => (
               <div className="flex items-center justify-end gap-2">
-                <button
-                  type="button"
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => openEditModal(banner)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
                 >
-                  <Edit2 className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  type="button"
+                  <Edit2 className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => confirmDelete(banner)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-white text-red-600 hover:bg-red-50"
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
             )}
           />
         </div>
 
-        <Pagination
-          page={meta.page}
-          pageCount={meta.pageCount}
-          total={meta.total}
-          pageSize={pageSize}
-          onPageChange={(newPage) =>
-            setPage((p) =>
-              newPage < 1
-                ? 1
-                : meta.pageCount
-                  ? Math.min(meta.pageCount, newPage)
-                  : newPage,
-            )
-          }
-          onPageSizeChange={(newSize) => {
-            setPageSize(newSize);
-            setPage(1);
-          }}
-        />
+        <div className="border-t border-zinc-100 bg-zinc-50/50 px-6 py-4">
+          <Pagination
+            page={meta.page}
+            pageCount={meta.pageCount}
+            total={meta.total}
+            pageSize={pageSize}
+            onPageChange={(newPage) =>
+              setPage((p) =>
+                newPage < 1
+                  ? 1
+                  : meta.pageCount
+                    ? Math.min(meta.pageCount, newPage)
+                    : newPage,
+              )
+            }
+            onPageSizeChange={(newSize) => {
+              setPageSize(newSize);
+              setPage(1);
+            }}
+          />
+        </div>
       </section>
 
       <ConfirmDialog

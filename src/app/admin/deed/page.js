@@ -218,94 +218,100 @@ export default function AdminDeedPage() {
         </div>
       </header>
 
-      <section className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
           <DataTable
             columns={[
               {
                 key: "sl",
-                header: "SL",
-                tdClassName: "whitespace-nowrap px-4 py-3 text-sm text-zinc-500",
+                header: "#",
+                tdClassName: "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16",
                 cell: (deed) => items.findIndex((d) => d.id === deed.id) + 1,
               },
               {
                 key: "title",
-                header: "Title",
-                tdClassName: "whitespace-nowrap px-4 py-3 text-sm font-medium text-zinc-900",
+                header: "TITLE",
+                tdClassName: "whitespace-nowrap px-6 py-4 text-sm font-semibold text-zinc-900",
                 cell: (deed) => deed.title || "-",
               },
               {
                 key: "investment",
-                header: "Investment",
-                tdClassName: "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
+                header: "INVESTMENT",
+                tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (deed) => (
                   <div className="flex flex-col">
-                    <span className="font-medium text-zinc-900">Inv #{deed.investmentId || "-"}</span>
+                    <span className="text-sm font-semibold text-zinc-900">Inv #{deed.investmentId || "-"}</span>
                     <span className="text-xs text-zinc-500">{deed.investment?.investor?.name || deed.investment?.investor?.email || "-"}</span>
                   </div>
                 ),
               },
               {
                 key: "issueDate",
-                header: "Issue Date",
-                tdClassName: "whitespace-nowrap px-4 py-3 text-sm",
-                cell: (deed) => deed.issueDate || "-",
+                header: "ISSUE DATE",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (deed) => deed.issueDate ? (
+                  <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10">
+                    {deed.issueDate}
+                  </span>
+                ) : (
+                  <span className="text-zinc-400 italic text-xs">—</span>
+                ),
               },
               {
                 key: "file",
-                header: "File",
-                tdClassName: "whitespace-nowrap px-4 py-3 text-sm",
+                header: "FILE",
+                tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (deed) =>
                   deed.file ? (
                     <a
                       href={deed.file}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-emerald-600 hover:text-emerald-500 font-medium"
+                      className="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10 hover:bg-emerald-100"
                     >
-                      <ExternalLink className="h-4 w-4" />
+                      <ExternalLink className="h-3 w-3" />
                       View
                     </a>
                   ) : (
-                    <span className="text-zinc-500">None</span>
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic">None</span>
                   ),
               },
               {
                 key: "uploadPdf",
                 header: "PDF",
-                tdClassName: "whitespace-nowrap px-4 py-3 text-sm",
+                tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (deed) =>
                   deed.uploadPdf ? (
                     <a
                       href={deed.uploadPdf}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-emerald-600 hover:text-emerald-500 font-medium"
+                      className="inline-flex items-center gap-1.5 rounded-md bg-blue-50 px-2 py-1 text-xs font-bold text-blue-700 ring-1 ring-inset ring-blue-600/10 hover:bg-blue-100"
                     >
-                      <ExternalLink className="h-4 w-4" />
+                      <ExternalLink className="h-3 w-3" />
                       PDF
                     </a>
                   ) : (
-                    <span className="text-zinc-500">None</span>
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic">None</span>
                   ),
               },
               {
                 key: "signature",
-                header: "Signature",
-                tdClassName: "whitespace-nowrap px-4 py-3 text-sm",
+                header: "SIGNATURE",
+                tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (deed) =>
                   deed.signature ? (
                     <a
                       href={deed.signature}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-emerald-600 hover:text-emerald-500 font-medium"
+                      className="inline-flex items-center gap-1.5 rounded-md bg-purple-50 px-2 py-1 text-xs font-bold text-purple-700 ring-1 ring-inset ring-purple-600/10 hover:bg-purple-100"
                     >
-                      <ExternalLink className="h-4 w-4" />
+                      <ExternalLink className="h-3 w-3" />
                       Sign
                     </a>
                   ) : (
-                    <span className="text-zinc-500">None</span>
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic">None</span>
                   ),
               },
             ]}
@@ -316,50 +322,58 @@ export default function AdminDeedPage() {
             getRowKey={(deed) => deed.id}
             renderActions={(deed) => (
               <div className="flex items-center justify-end gap-2">
-                <Link
-                  href={`/admin/deed/${deed.id}`}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  asChild
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600"
                 >
-                  <Eye className="h-3.5 w-3.5" />
-                </Link>
-                <button
-                  type="button"
+                  <Link href={`/admin/deed/${deed.id}`}>
+                    <Eye className="h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => openEditModal(deed)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
                 >
-                  <Edit2 className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  type="button"
+                  <Edit2 className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => confirmDelete(deed)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-white text-red-600 hover:bg-red-50"
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
             )}
           />
         </div>
 
-        <Pagination
-          page={meta.currentPage ?? meta.page}
-          pageCount={meta.totalPages ?? meta.pageCount}
-          total={meta.totalItems ?? meta.total}
-          pageSize={pageSize}
-          onPageChange={(newPage) =>
-            setPage((p) =>
-              newPage < 1
-                ? 1
-                : (meta.totalPages ?? meta.pageCount)
-                  ? Math.min(meta.totalPages ?? meta.pageCount, newPage)
-                  : newPage,
-            )
-          }
-          onPageSizeChange={(newSize) => {
-            setPageSize(newSize);
-            setPage(1);
-          }}
-        />
+        <div className="border-t border-zinc-100 bg-zinc-50/50 px-6 py-4">
+          <Pagination
+            page={meta.currentPage ?? meta.page}
+            pageCount={meta.totalPages ?? meta.pageCount}
+            total={meta.totalItems ?? meta.total}
+            pageSize={pageSize}
+            onPageChange={(newPage) =>
+              setPage((p) =>
+                newPage < 1
+                  ? 1
+                  : (meta.totalPages ?? meta.pageCount)
+                    ? Math.min(meta.totalPages ?? meta.pageCount, newPage)
+                    : newPage,
+              )
+            }
+            onPageSizeChange={(newSize) => {
+              setPageSize(newSize);
+              setPage(1);
+            }}
+          />
+        </div>
       </section>
 
       <ConfirmDialog

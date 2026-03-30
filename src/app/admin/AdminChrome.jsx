@@ -7,7 +7,7 @@ const TopNavbar = dynamic(() => import("./components/TopNavbar"), { ssr: false }
 
 export default function AdminChrome({ children }) {
   return (
-    <div className="flex min-h-screen bg-zinc-100 text-zinc-900">
+    <div className="flex min-h-screen bg-zinc-100 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 transition-colors duration-300">
       <Sidebar />
       <div className="flex flex-1 flex-col">
         <TopNavbar />

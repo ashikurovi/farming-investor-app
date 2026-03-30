@@ -6,6 +6,7 @@ import { Pagination } from "@/components/ui/pagination";
 import { AdminSearchBar } from "@/app/admin/components/AdminSearchBar";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { AdminInvestorTypeFormModal } from "@/app/admin/components/investorType/AdminInvestorTypeFormModal";
+import { DataTable } from "@/components/ui/data-table";
 import {
   useGetInvestorTypesQuery,
   useCreateInvestorTypeMutation,
@@ -223,94 +224,99 @@ export default function AdminInvestorTypePage() {
         </div>
       </header>
 
-      {/* Grid Section */}
-      <div className="space-y-4">
-        {isBusy ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {[...Array(4)].map((_, i) => (
-              <div
-                key={i}
-                className="h-40 animate-pulse rounded-2xl bg-zinc-100"
-              />
-            ))}
-          </div>
-        ) : items.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {items.map((item) => (
-              <div
-                key={item.id}
-                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm transition-all hover:border-emerald-100 hover:shadow-md"
-              >
-                <div className="mb-4 flex items-start justify-between">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-                    <PieChart className="h-5 w-5" />
+      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm">
+        <div className="overflow-x-auto">
+          <DataTable
+            columns={[
+              {
+                key: "sl",
+                header: "#",
+                tdClassName: "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16",
+                cell: (item) => items.findIndex((i) => i.id === item.id) + 1,
+              },
+              {
+                key: "type",
+                header: "TYPE NAME",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (item) => (
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+                      <PieChart className="h-4 w-4" />
+                    </div>
+                    <span className="text-sm font-semibold text-zinc-900">{item.type}</span>
                   </div>
-                  <div className="flex gap-2 opacity-0 transition-opacity group-hover:opacity-100">
-                    <button
-                      onClick={() => openEditModal(item)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-50 text-zinc-600 transition-colors hover:bg-emerald-50 hover:text-emerald-600"
-                    >
-                      <Edit2 className="h-4 w-4" />
-                    </button>
-                    <button
-                      onClick={() => confirmDelete(item)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-50 text-zinc-600 transition-colors hover:bg-red-50 hover:text-red-600"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
+                ),
+              },
+              {
+                key: "percentage",
+                header: "SHARE %",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (item) => (
+                  <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
+                    <Percent className="h-3 w-3" />
+                    {item.percentage}% Share
+                  </span>
+                ),
+              },
+            ]}
+            data={items}
+            isLoading={isBusy}
+            emptyMessage={
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-50">
+                  <PieChart className="h-6 w-6 text-zinc-400" />
                 </div>
-
-                <div>
-                  <h3 className="text-lg font-semibold text-zinc-900">
-                    {item.type}
-                  </h3>
-                  <div className="mt-2 flex items-center gap-2">
-                    <span className="flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
-                      <Percent className="h-3 w-3" />
-                      {item.percentage}% Share
-                    </span>
-                  </div>
-                </div>
+                <h3 className="mt-2 text-sm font-semibold text-zinc-900">No investor types found</h3>
+                <p className="mt-1 text-sm text-zinc-500">Get started by creating a new investor type.</p>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-50">
-              <PieChart className="h-6 w-6 text-zinc-400" />
-            </div>
-            <h3 className="mt-2 text-sm font-semibold text-zinc-900">
-              No investor types found
-            </h3>
-            <p className="mt-1 text-sm text-zinc-500">
-              Get started by creating a new investor type.
-            </p>
-          </div>
-        )}
-      </div>
+            }
+            loadingLabel="Loading investor types..."
+            getRowKey={(item) => item.id}
+            renderActions={(item) => (
+              <div className="flex items-center justify-end gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => openEditModal(item)}
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
+                >
+                  <Edit2 className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => confirmDelete(item)}
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+          />
+        </div>
 
-      <div className="flex justify-center pt-8">
-        <Pagination
-          page={meta.page}
-          pageCount={meta.pageCount}
-          total={meta.total}
-          pageSize={pageSize}
-          onPageChange={(newPage) =>
-            setPage((p) =>
-              newPage < 1
-                ? 1
-                : meta.pageCount
-                  ? Math.min(meta.pageCount, newPage)
-                  : newPage,
-            )
-          }
-          onPageSizeChange={(newSize) => {
-            setPageSize(newSize);
-            setPage(1);
-          }}
-        />
-      </div>
+        <div className="border-t border-zinc-100 bg-zinc-50/50 px-6 py-4">
+          <Pagination
+            page={meta.page}
+            pageCount={meta.pageCount}
+            total={meta.total}
+            pageSize={pageSize}
+            onPageChange={(newPage) =>
+              setPage((p) =>
+                newPage < 1
+                  ? 1
+                  : meta.pageCount
+                    ? Math.min(meta.pageCount, newPage)
+                    : newPage,
+              )
+            }
+            onPageSizeChange={(newSize) => {
+              setPageSize(newSize);
+              setPage(1);
+            }}
+          />
+        </div>
+      </section>
 
       <ConfirmDialog
         isOpen={confirmState.isOpen}

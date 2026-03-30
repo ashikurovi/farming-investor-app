@@ -314,32 +314,25 @@ export default function AdminInvestorPage() {
         </div>
       </header>
 
-      <section className="overflow-hidden w-[1100px] rounded-xl border border-gray-200 bg-white shadow-sm ring-1 ring-gray-950/5">
+      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm">
+        <div className="overflow-x-auto">
         <DataTable
-          minWidth="min-w-[500px]"
           columns={[
             {
               key: "sl",
-              header: "SL",
-              className: "hidden sm:table-cell",
+              header: "#",
               tdClassName:
-                "whitespace-nowrap px-6 py-4 text-xs font-medium text-gray-500 w-[50px]",
-              cell: (user) => (
-                <span className="text-gray-400 font-mono">
-                  {String(
-                    investors.findIndex((u) => u.id === user.id) + 1,
-                  ).padStart(2, "0")}
-                </span>
-              ),
+                "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16",
+              cell: (user) =>
+                investors.findIndex((u) => u.id === user.id) + 1,
             },
             {
               key: "name",
-              header: "Name",
-              tdClassName:
-                "whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900",
+              header: "INVESTOR",
+              tdClassName: "whitespace-nowrap px-6 py-4",
               cell: (user) => (
                 <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold ring-2 ring-white shadow-sm">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">
                     {user.photo ? (
                       <img
                         src={
@@ -355,41 +348,34 @@ export default function AdminInvestorPage() {
                     )}
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-semibold text-gray-900">
+                    <span className="text-sm font-semibold text-zinc-900">
                       {user.name || "Unknown"}
                     </span>
-                    <span className="text-xs text-gray-400 font-normal">
-                      {user.email}
-                    </span>
+                    {user.email && (
+                      <span className="text-xs text-zinc-500">{user.email}</span>
+                    )}
                   </div>
                 </div>
               ),
             },
             {
-              key: "email",
-              header: "Contact Info", // Changed header to be more descriptive if showing more
-              tdClassName: "hidden", // Hiding original email column as it's now under Name
-              cell: () => null,
-            },
-            {
               key: "investorType",
-              header: "Investor Type",
-              className: "hidden lg:table-cell",
-              tdClassName: "whitespace-nowrap px-6 py-4 text-sm",
+              header: "INVESTOR TYPE",
+              tdClassName: "whitespace-nowrap px-6 py-4",
               cell: (user) => (
                 <div className="flex flex-col gap-1">
                   {user.investorType ? (
                     <>
-                      <span className="font-medium text-gray-700">
+                      <span className="text-sm font-medium text-zinc-700">
                         {user.investorType.type}
                       </span>
-                      <span className="text-xs text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full w-fit">
+                      <span className="inline-flex w-fit items-center rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
                         {user.investorType.percentage}% Share
                       </span>
                     </>
                   ) : (
-                    <span className="text-gray-400 text-xs italic">
-                      No Type Assigned
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic">
+                      No Type
                     </span>
                   )}
                 </div>
@@ -397,77 +383,79 @@ export default function AdminInvestorPage() {
             },
             {
               key: "totalInvestment",
-              header: "Investment",
-              className: "hidden md:table-cell",
-              tdClassName:
-                "whitespace-nowrap px-6 py-4 text-sm text-gray-700 font-mono text-right",
+              header: "INVESTMENT",
+              tdClassName: "whitespace-nowrap px-6 py-4",
               cell: (user) => (
-                <span className="font-medium text-gray-900">
-                  ৳
-                  {Number(user.totalInvestment ?? 0).toLocaleString("en-US", {
-                    minimumFractionDigits: 2,
-                  })}
-                </span>
+                <div className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-50 text-zinc-500">
+                    <span className="text-xs font-bold">৳</span>
+                  </div>
+                  <span className="text-sm font-bold text-zinc-900">
+                    {Number(user.totalInvestment ?? 0).toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                    })}
+                  </span>
+                </div>
               ),
             },
             {
               key: "totalProfit",
-              header: "Profit",
-              className: "hidden md:table-cell",
-              tdClassName:
-                "whitespace-nowrap px-6 py-4 text-sm text-emerald-600 font-mono text-right font-medium",
-              cell: (user) =>
-                `৳${Number(user.totalProfit ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
+              header: "PROFIT",
+              tdClassName: "whitespace-nowrap px-6 py-4",
+              cell: (user) => (
+                <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
+                  ৳{Number(user.totalProfit ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                </span>
+              ),
             },
             {
               key: "balance",
-              header: "Balance",
-              className: "hidden xl:table-cell",
-              tdClassName:
-                "whitespace-nowrap px-6 py-4 text-sm text-blue-600 font-mono text-right font-medium",
-              cell: (user) =>
-                `৳${Number(user.balance ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
+              header: "BALANCE",
+              tdClassName: "whitespace-nowrap px-6 py-4",
+              cell: (user) => (
+                <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-bold text-blue-700 ring-1 ring-inset ring-blue-600/10">
+                  ৳{Number(user.balance ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                </span>
+              ),
             },
             {
               key: "totalCost",
-              header: "Total Cost",
-              className: "hidden xl:table-cell",
-              tdClassName:
-                "whitespace-nowrap px-6 py-4 text-sm text-gray-500 font-mono text-right",
-              cell: (user) =>
-                `৳${Number(user.totalCost ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
+              header: "TOTAL COST",
+              tdClassName: "whitespace-nowrap px-6 py-4",
+              cell: (user) => (
+                <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10">
+                  ৳{Number(user.totalCost ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                </span>
+              ),
             },
             {
               key: "status",
-              header: "Status",
-              className: "hidden sm:table-cell",
-              tdClassName: "whitespace-nowrap px-6 py-4 text-xs text-center",
+              header: "STATUS",
+              tdClassName: "whitespace-nowrap px-6 py-4",
               cell: (user) => (
                 <span
-                  className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-medium ring-1 ring-inset ${user.isBanned
-                    ? "bg-red-50 text-red-700 ring-red-600/10"
-                    : "bg-emerald-50 text-emerald-700 ring-emerald-600/10"
-                    }`}
+                  className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${
+                    user.isBanned
+                      ? "bg-red-50 text-red-700 ring-red-600/10"
+                      : "bg-emerald-50 text-emerald-700 ring-emerald-600/10"
+                  }`}
                 >
-                  <span
-                    className={`h-1.5 w-1.5 rounded-full ${user.isBanned ? "bg-red-500" : "bg-emerald-500"}`}
-                  />
                   {user.isBanned ? "Banned" : "Active"}
                 </span>
               ),
             },
-          ].filter((col) => col.key !== "email")} // Filter out the email column since we merged it
+          ]}
           data={investors}
           isLoading={isBusy}
           emptyMessage={
             <div className="flex flex-col items-center justify-center py-12 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-50">
-                <Users className="h-6 w-6 text-gray-400" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-50">
+                <Users className="h-6 w-6 text-zinc-400" />
               </div>
-              <h3 className="mt-2 text-sm font-semibold text-gray-900">
+              <h3 className="mt-2 text-sm font-semibold text-zinc-900">
                 No investors found
               </h3>
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-zinc-500">
                 Get started by creating a new investor profile.
               </p>
               <div className="mt-6">
@@ -482,39 +470,43 @@ export default function AdminInvestorPage() {
           getRowKey={(user) => user.id}
           onRowClick={handleRowClick}
           renderActions={(user) => (
-            <div className="flex items-center justify-end gap-2 pr-4">
-              <button
-                type="button"
+            <div className="flex items-center justify-end gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={(e) => {
                   e.stopPropagation();
                   router.push(`/admin/investor/${user.id}`);
                 }}
-                className="group relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-600 transition-all hover:bg-blue-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600"
                 title="View Details"
               >
                 <Eye className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={(e) => {
                   e.stopPropagation();
                   openEditModal(user);
                 }}
-                className="group relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-amber-50 text-amber-600 transition-all hover:bg-amber-100 hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+                className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
                 title="Edit Profile"
               >
                 <Pencil className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={(e) => {
                   e.stopPropagation();
                   confirmToggleBan(user);
                 }}
-                className={`group relative inline-flex h-8 w-8 items-center justify-center rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${user.isBanned
-                  ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-700 focus:ring-emerald-500"
-                  : "bg-purple-50 text-purple-600 hover:bg-purple-100 hover:text-purple-700 focus:ring-purple-500"
-                  }`}
+                className={`h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 ${
+                  user.isBanned
+                    ? "hover:text-emerald-600"
+                    : "hover:text-purple-600"
+                }`}
                 title={user.isBanned ? "Unban User" : "Ban User"}
               >
                 {user.isBanned ? (
@@ -522,23 +514,25 @@ export default function AdminInvestorPage() {
                 ) : (
                   <ShieldBan className="h-4 w-4" />
                 )}
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={(e) => {
                   e.stopPropagation();
                   confirmDelete(user);
                 }}
-                className="group relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-red-50 text-red-600 transition-all hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
                 title="Delete User"
               >
                 <Trash2 className="h-4 w-4" />
-              </button>
+              </Button>
             </div>
           )}
         />
+        </div>
 
-        <div className="border-t border-gray-100 bg-gray-50/50 px-6 py-4">
+        <div className="border-t border-zinc-100 bg-zinc-50/50 px-6 py-4">
           <Pagination
             page={meta.page}
             pageCount={meta.pageCount}

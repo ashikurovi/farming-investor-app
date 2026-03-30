@@ -89,73 +89,85 @@ export default function AdminContactsPage() {
         </div>
       </header>
 
-      <section className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
           <DataTable
             columns={[
               {
                 key: "sl",
-                header: "SL",
+                header: "#",
                 tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-500",
+                  "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16",
                 cell: (contact) =>
                   contacts.findIndex((c) => c.id === contact.id) + 1,
               },
               {
                 key: "name",
-                header: "Name",
-                tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm font-medium text-zinc-900",
-                cell: (contact) =>
-                  `${contact.firstName || ""} ${contact.lastName || ""}`.trim() ||
-                  contact.email ||
-                  "-",
-              },
-              {
-                key: "email",
-                header: "Email",
-                tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                cell: (contact) => contact.email || "-",
+                header: "NAME",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (contact) => (
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">
+                      {(contact.firstName || contact.email || "?").charAt(0).toUpperCase()}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-semibold text-zinc-900">
+                        {`${contact.firstName || ""} ${contact.lastName || ""}`.trim() || "-"}
+                      </span>
+                      {contact.email && (
+                        <span className="text-xs text-zinc-500">{contact.email}</span>
+                      )}
+                    </div>
+                  </div>
+                ),
               },
               {
                 key: "phone",
-                header: "Phone",
+                header: "PHONE",
                 tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                cell: (contact) => contact.phone || "-",
+                  "whitespace-nowrap px-6 py-4 text-sm text-zinc-700",
+                cell: (contact) => contact.phone || (
+                  <span className="text-zinc-400 italic text-xs">—</span>
+                ),
               },
               {
                 key: "country",
-                header: "Country",
-                tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                cell: (contact) => contact.country || "-",
+                header: "COUNTRY",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (contact) => contact.country ? (
+                  <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-700 ring-1 ring-inset ring-zinc-500/10">
+                    {contact.country}
+                  </span>
+                ) : (
+                  <span className="text-zinc-400 italic text-xs">—</span>
+                ),
               },
               {
                 key: "investorType",
-                header: "Investor type",
-                tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
+                header: "INVESTOR TYPE",
+                tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (contact) => (
-                  <span className="inline-flex items-center rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-800">
+                  <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
                     {contact.investorType || "-"}
                   </span>
                 ),
               },
               {
                 key: "subject",
-                header: "Subject",
+                header: "SUBJECT",
                 tdClassName:
-                  "px-4 py-3 text-sm text-zinc-700 max-w-xs truncate",
+                  "px-6 py-4 text-sm text-zinc-500 max-w-xs truncate",
                 cell: (contact) => contact.subject || "-",
               },
               {
                 key: "createdAt",
-                header: "Received at",
-                tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-xs text-zinc-600",
-                cell: (contact) => formatDateUTC(contact.createdAt, { year: "numeric", month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" }),
+                header: "RECEIVED AT",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (contact) => (
+                  <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10">
+                    {formatDateUTC(contact.createdAt, { year: "numeric", month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" })}
+                  </span>
+                ),
               },
             ]}
             data={contacts}
@@ -165,20 +177,22 @@ export default function AdminContactsPage() {
             getRowKey={(contact) => contact.id}
             renderActions={(contact) => (
               <div className="flex items-center justify-end gap-2">
-                <button
-                  type="button"
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => router.push(`/admin/contact/${contact.id}`)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600"
                 >
-                  <Eye className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  type="button"
+                  <Eye className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => confirmDelete(contact)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-white text-red-600 hover:bg-red-50"
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
             )}
           />

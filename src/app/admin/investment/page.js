@@ -374,7 +374,7 @@ export default function AdminInvestmentsPage() {
       </section>
 
       {/* Table Section */}
-      <section className="overflow-hidden w-[1100px] rounded-3xl border border-zinc-200 bg-white shadow-sm">
+      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
           <DataTable
             columns={[
@@ -567,6 +567,22 @@ export default function AdminInvestmentsPage() {
                 </Button>
               </div>
             )}
+          />
+        </div>
+
+        <div className="border-t border-zinc-100 bg-zinc-50/50 px-6 py-4">
+          <Pagination
+            page={page}
+            pageCount={Math.max(1, Math.ceil(total / pageSize))}
+            total={total}
+            pageSize={pageSize}
+            onPageChange={(newPage) =>
+              setPage(Math.max(1, Math.min(Math.ceil(total / pageSize), newPage)))
+            }
+            onPageSizeChange={(newSize) => {
+              setPageSize(newSize);
+              setPage(1);
+            }}
           />
         </div>
       </section>

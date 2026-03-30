@@ -374,7 +374,7 @@ export default function MyInvestmentsPage() {
 
       {/* ── INVESTMENTS TABLE ── */}
       <section>
-        <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+        <div className="w-full overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
           <div className="h-[3px] w-full bg-gradient-to-r from-teal-400 to-emerald-400" />
 
           {/* Toolbar */}
@@ -442,34 +442,34 @@ export default function MyInvestmentsPage() {
           <div className="w-full overflow-x-auto">
             <table className="min-w-full table-fixed divide-y divide-zinc-100 text-sm">
               <colgroup>
-                <col className="w-10" />
+                <col className="w-16" />
+                <col className="min-w-[160px]" />
                 <col className="min-w-[130px]" />
+                <col className="min-w-[130px]" />
+                <col className="min-w-[90px]" />
                 <col className="min-w-[110px]" />
                 <col className="min-w-[110px]" />
-                <col className="min-w-[80px]" />
-                <col className="min-w-[100px]" />
-                <col className="min-w-[100px]" />
-                <col className="min-w-[120px]" />
-                <col className="w-14" />
+                <col className="min-w-[140px]" />
+                <col className="w-16" />
               </colgroup>
 
               <thead>
                 <tr className="bg-zinc-50">
                   {[
                     "#",
-                    "Amount (BDT)",
-                    "Start Date",
-                    "End Date",
-                    "Days",
-                    "Status",
-                    "Deed",
-                    "Reference",
+                    "AMOUNT (BDT)",
+                    "START DATE",
+                    "END DATE",
+                    "DAYS",
+                    "STATUS",
+                    "DEED",
+                    "REFERENCE",
                     "",
                   ].map((h) => (
                     <th
                       key={h}
                       scope="col"
-                      className="px-3 py-3 text-left text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-400 first:pl-4 sm:px-4 sm:text-[11px]"
+                      className="px-6 py-4 text-left text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-400 sm:text-[11px]"
                     >
                       {h}
                     </th>
@@ -522,47 +522,47 @@ export default function MyInvestmentsPage() {
                       onClick={() => router.push(`/investor/my-investments/${row.id}`)}
                     >
                       {/* SL */}
-                      <td className="pl-4 pr-3 py-3.5 text-xs font-semibold tabular-nums text-zinc-400 sm:pl-5">
+                      <td className="pl-6 pr-4 py-4 text-xs font-bold tabular-nums text-zinc-400">
                         {(page - 1) * pageSize + idx + 1}
                       </td>
 
                       {/* Amount */}
-                      <td className="px-3 py-3.5 sm:px-4">
+                      <td className="px-6 py-4">
                         <AmountBadge amount={row.amount} />
                       </td>
 
-                      <td className="px-3 py-3.5 sm:px-4">
-                        <span className="inline-flex items-center gap-1 text-xs text-zinc-600">
+                      <td className="px-6 py-4">
+                        <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10">
                           {row.startDate || row.date || "—"}
                         </span>
                       </td>
 
                       {/* End Date */}
-                      <td className="px-3 py-3.5 sm:px-4">
-                        <span className="inline-flex items-center gap-1 text-xs text-zinc-600">
+                      <td className="px-6 py-4">
+                        <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10">
                           {row.endDate || "—"}
                         </span>
                       </td>
 
                       {/* Days */}
-                      <td className="px-3 py-3.5 sm:px-4 text-xs font-medium text-zinc-500">
+                      <td className="px-6 py-4">
                         {row.startDate && row.endDate ? (
-                          <span>
+                          <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-bold text-zinc-700 ring-1 ring-inset ring-zinc-500/10">
                             {Math.ceil(
                               Math.abs(new Date(row.endDate) - new Date(row.startDate)) /
                               (1000 * 60 * 60 * 24)
                             )}d
                           </span>
-                        ) : "—"}
+                        ) : <span className="text-zinc-300 text-xs">—</span>}
                       </td>
 
                       {/* Status */}
-                      <td className="px-3 py-3.5 sm:px-4">
+                      <td className="px-6 py-4">
                         {(() => {
                           const isExpired = row.endDate && new Date(row.endDate) < new Date();
                           return (
                             <span
-                              className={`inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-bold ring-1 ring-inset ${isExpired
+                              className={`inline-flex items-center rounded-md px-2 py-1 text-[10px] font-bold ring-1 ring-inset ${isExpired
                                 ? "bg-red-50 text-red-700 ring-red-600/10"
                                 : "bg-emerald-50 text-emerald-700 ring-emerald-600/10"
                                 }`}
@@ -574,12 +574,12 @@ export default function MyInvestmentsPage() {
                       </td>
 
                       {/* Deed */}
-                      <td className="px-3 py-3.5 sm:px-4">
+                      <td className="px-6 py-4">
                         {(() => {
                           const hasDeed = deedsByInvestmentId.has(String(row.id));
                           return (
                             <span
-                              className={`inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-bold ring-1 ring-inset ${hasDeed
+                              className={`inline-flex items-center rounded-md px-2 py-1 text-[10px] font-bold ring-1 ring-inset ${hasDeed
                                 ? "bg-zinc-50 text-zinc-700 ring-zinc-600/10"
                                 : "bg-amber-50 text-amber-700 ring-amber-600/10"
                                 }`}
@@ -591,9 +591,9 @@ export default function MyInvestmentsPage() {
                       </td>
 
                       {/* Reference */}
-                      <td className="px-3 py-3.5 sm:px-4">
+                      <td className="px-6 py-4">
                         {row.reference ? (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-2 py-0.5 font-mono text-[10px] text-zinc-600 ring-1 ring-zinc-200 sm:px-2.5 sm:text-[11px]">
+                          <span className="inline-flex items-center gap-1 rounded-md bg-zinc-50 px-2 py-1 font-mono text-[10px] text-zinc-600 ring-1 ring-inset ring-zinc-500/10">
                             <Hash className="h-2.5 w-2.5 text-zinc-400" />
                             {row.reference}
                           </span>
@@ -603,13 +603,13 @@ export default function MyInvestmentsPage() {
                       </td>
 
                       {/* Action */}
-                      <td className="px-3 py-3.5 text-right sm:px-4">
+                      <td className="px-6 py-4 text-right">
                         <Link
                           href={`/investor/my-investments/${row.id}`}
-                          className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-400 shadow-sm transition-all group-hover:border-emerald-200 group-hover:bg-emerald-50 group-hover:text-emerald-700 hover:scale-110 sm:h-8 sm:w-8"
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-50 hover:text-blue-600"
                           aria-label="View investment details"
                         >
-                          <Eye className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                          <Eye className="h-4 w-4" />
                         </Link>
                       </td>
                     </tr>

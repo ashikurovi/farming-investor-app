@@ -11,6 +11,15 @@
   --secondary-foreground: #111827;
 }
 
+.dark {
+  --background: #09090b;
+  --foreground: #fafafa;
+  --primary: #22c55e;
+  --primary-foreground: #022c22;
+  --secondary: #27272a;
+  --secondary-foreground: #f4f4f5;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;

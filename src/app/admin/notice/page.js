@@ -222,31 +222,30 @@ export default function AdminNoticePage() {
         </div>
       </header>
 
-      <section className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
           <DataTable
             columns={[
               {
                 key: "sl",
-                header: "SL",
+                header: "#",
                 tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm text-zinc-500",
+                  "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16",
                 cell: (notice) =>
                   items.findIndex((n) => n.id === notice.id) + 1,
               },
               {
                 key: "title",
-                header: "Title",
+                header: "TITLE",
                 tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm font-medium text-zinc-900",
+                  "whitespace-nowrap px-6 py-4 text-sm font-semibold text-zinc-900",
                 cell: (notice) => notice.title || "-",
               },
               {
                 key: "description",
-                header: "Description",
-                tdClassName:
-                  "px-4 py-3 text-sm text-zinc-700 max-w-xs",
-                cell: (notice) => 
+                header: "DESCRIPTION",
+                tdClassName: "px-6 py-4 text-sm text-zinc-500 max-w-xs",
+                cell: (notice) =>
                   notice.description ? (
                     <div
                       className="truncate max-w-xs [&>*]:inline [&>*]:truncate"
@@ -258,15 +257,14 @@ export default function AdminNoticePage() {
               },
               {
                 key: "isPublic",
-                header: "Visibility",
-                tdClassName:
-                  "whitespace-nowrap px-4 py-3 text-sm",
+                header: "VISIBILITY",
+                tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (notice) => (
                   <span
-                    className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
+                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${
                       notice.isPublic
-                        ? "bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20"
-                        : "bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20"
+                        ? "bg-emerald-50 text-emerald-700 ring-emerald-600/10"
+                        : "bg-red-50 text-red-700 ring-red-600/10"
                     }`}
                   >
                     {notice.isPublic ? "Public" : "Private"}
@@ -275,21 +273,23 @@ export default function AdminNoticePage() {
               },
               {
                 key: "file",
-                header: "Attachment",
-                tdClassName: "whitespace-nowrap px-4 py-3 text-sm",
+                header: "ATTACHMENT",
+                tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (notice) =>
                   notice.fileUrl ? (
                     <a
                       href={notice.fileUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-emerald-600 hover:text-emerald-500 font-medium"
+                      className="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10 hover:bg-emerald-100"
                     >
-                      <ExternalLink className="h-4 w-4" />
+                      <ExternalLink className="h-3 w-3" />
                       View File
                     </a>
                   ) : (
-                     <span className="text-zinc-500">None</span>
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic">
+                      None
+                    </span>
                   ),
               },
             ]}
@@ -300,50 +300,58 @@ export default function AdminNoticePage() {
             getRowKey={(notice) => notice.id}
             renderActions={(notice) => (
               <div className="flex items-center justify-end gap-2">
-                <Link
-                  href={`/admin/notice/${notice.id}`}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  asChild
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600"
                 >
-                  <Eye className="h-3.5 w-3.5" />
-                </Link>
-                <button
-                  type="button"
+                  <Link href={`/admin/notice/${notice.id}`}>
+                    <Eye className="h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => openEditModal(notice)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
                 >
-                  <Edit2 className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  type="button"
+                  <Edit2 className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => confirmDelete(notice)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-white text-red-600 hover:bg-red-50"
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
             )}
           />
         </div>
 
-        <Pagination
-          page={meta.page}
-          pageCount={meta.pageCount}
-          total={meta.total}
-          pageSize={pageSize}
-          onPageChange={(newPage) =>
-            setPage((p) =>
-              newPage < 1
-                ? 1
-                : meta.pageCount
-                  ? Math.min(meta.pageCount, newPage)
-                  : newPage,
-            )
-          }
-          onPageSizeChange={(newSize) => {
-            setPageSize(newSize);
-            setPage(1);
-          }}
-        />
+        <div className="border-t border-zinc-100 bg-zinc-50/50 px-6 py-4">
+          <Pagination
+            page={meta.page}
+            pageCount={meta.pageCount}
+            total={meta.total}
+            pageSize={pageSize}
+            onPageChange={(newPage) =>
+              setPage((p) =>
+                newPage < 1
+                  ? 1
+                  : meta.pageCount
+                    ? Math.min(meta.pageCount, newPage)
+                    : newPage,
+              )
+            }
+            onPageSizeChange={(newSize) => {
+              setPageSize(newSize);
+              setPage(1);
+            }}
+          />
+        </div>
       </section>
 
       <ConfirmDialog

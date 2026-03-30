@@ -105,46 +105,56 @@ export function AdminProjectDailyReportsTab({ project, isBusy, isError }) {
               columns={[
                 {
                   key: "sl",
-                  header: "SL",
-                  thClassName: "whitespace-nowrap bg-zinc-50/90 px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 backdrop-blur rounded-tl-2xl",
-                  tdClassName: "whitespace-nowrap px-4 py-3 text-sm text-zinc-500",
+                  header: "#",
+                  tdClassName: "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16",
                   cell: (row) =>
                     project.dailyReports.findIndex((r) => r.id === row.id) + 1,
                 },
                 {
                   key: "dailyCost",
-                  header: "Daily Cost",
-                  thClassName: "whitespace-nowrap bg-zinc-50/90 px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 backdrop-blur",
-                  tdClassName: "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                  cell: (row) => String(row.dailyCost ?? "0"),
+                  header: "DAILY COST",
+                  tdClassName: "whitespace-nowrap px-6 py-4",
+                  cell: (row) => (
+                    <span className="inline-flex items-center rounded-md bg-orange-50 px-2 py-1 text-xs font-bold text-orange-700 ring-1 ring-inset ring-orange-600/10">
+                      ৳{Number(row.dailyCost ?? 0).toLocaleString("en-US")}
+                    </span>
+                  ),
                 },
                 {
                   key: "dailySell",
-                  header: "Daily Sell",
-                  thClassName: "whitespace-nowrap bg-zinc-50/90 px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 backdrop-blur",
-                  tdClassName: "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
-                  cell: (row) => String(row.dailySell ?? "0"),
+                  header: "DAILY SELL",
+                  tdClassName: "whitespace-nowrap px-6 py-4",
+                  cell: (row) => (
+                    <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
+                      ৳{Number(row.dailySell ?? 0).toLocaleString("en-US")}
+                    </span>
+                  ),
                 },
                 {
                   key: "reason",
-                  header: "Reason",
-                  thClassName: "whitespace-nowrap bg-zinc-50/90 px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 backdrop-blur",
-                  tdClassName: "px-4 py-3 text-sm text-zinc-700 min-w-[200px]",
+                  header: "REASON",
+                  tdClassName: "px-6 py-4 text-sm text-zinc-500 min-w-[200px]",
                   cell: (row) => row.reason ?? "-",
                 },
                 {
                   key: "date",
-                  header: "Date",
-                  thClassName: "whitespace-nowrap bg-zinc-50/90 px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 backdrop-blur",
-                  tdClassName: "whitespace-nowrap px-4 py-3 text-xs text-zinc-600",
-                  cell: (row) => row.date ?? "-",
+                  header: "DATE",
+                  tdClassName: "whitespace-nowrap px-6 py-4",
+                  cell: (row) => row.date ? (
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10">
+                      {row.date}
+                    </span>
+                  ) : "-",
                 },
                 {
                   key: "time",
-                  header: "Time",
-                  thClassName: "whitespace-nowrap bg-zinc-50/90 px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 backdrop-blur",
-                  tdClassName: "whitespace-nowrap px-4 py-3 text-xs text-zinc-600",
-                  cell: (row) => row.time ?? "-",
+                  header: "TIME",
+                  tdClassName: "whitespace-nowrap px-6 py-4",
+                  cell: (row) => row.time ? (
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10">
+                      {row.time}
+                    </span>
+                  ) : "-",
                 },
               ]}
               data={project.dailyReports}
@@ -155,15 +165,15 @@ export function AdminProjectDailyReportsTab({ project, isBusy, isError }) {
                 <div className="flex items-center justify-end gap-2">
                   <Button
                     type="button"
+                    variant="ghost"
                     size="sm"
-                    variant="outline"
                     disabled={!row.photoUrl}
                     onClick={() => {
                       if (row.photoUrl) {
                         window.open(row.photoUrl, "_blank", "noopener,noreferrer");
                       }
                     }}
-                    className="h-8 rounded-full text-xs"
+                    className="h-8 rounded-full text-xs text-zinc-400 hover:bg-zinc-50 hover:text-blue-600 disabled:opacity-40"
                   >
                     View Image
                   </Button>
