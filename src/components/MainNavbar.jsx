@@ -14,12 +14,7 @@ import {
   LayoutDashboard,
   LogOut,
   ChevronDown,
-  TrendingUp,
-  Bell,
-  Settings,
   ExternalLink,
-  BadgeHelp,
-  LifeBuoy,
 } from "lucide-react";
 import { useLogoutMutation } from "@/features/auth/authApiSlice";
 import { toast } from "sonner";
@@ -32,7 +27,7 @@ const NAV_LINKS = [
   { href: "/landing/about", label: "About", icon: LayoutDashboard },
 ];
 
-/* ── Nav link with animated underline ── */
+/* ── Desktop Nav Link with underline animation ── */
 function NavLink({ href, label }) {
   const pathname = usePathname();
   const isActive = href === "/" ? pathname === href : pathname.startsWith(href);
@@ -40,19 +35,23 @@ function NavLink({ href, label }) {
   return (
     <Link
       href={href}
-      className={`relative group flex items-center gap-1.5 text-[13px] font-semibold tracking-[0.04em] py-1 transition-colors duration-200 whitespace-nowrap ${isActive ? "text-emerald-400" : "text-zinc-300 hover:text-white"
-        }`}
+      className={`relative group flex items-center gap-1.5 text-sm font-semibold tracking-wider py-1.5 px-5 transition-all duration-300 rounded-xl ${
+        isActive
+          ? "text-white bg-white/10"
+          : "text-zinc-300 hover:text-white hover:bg-white/5"
+      }`}
     >
       {label}
       <span
-        className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-emerald-400 transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"
-          }`}
+        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 transition-all duration-300 ${
+          isActive ? "w-6" : "w-0 group-hover:w-6"
+        }`}
       />
     </Link>
   );
 }
 
-/* ── User dropdown menu ── */
+/* ── Premium User Dropdown ── */
 function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -69,47 +68,45 @@ function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((p) => !p)}
-        className="flex items-center gap-2.5 pl-1 pr-3 py-1 rounded-full bg-white/10 hover:bg-white/15 border border-white/10 hover:border-white/20 transition-all duration-200"
+        className="flex items-center gap-3 pl-2 pr-5 py-2 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 hover:border-emerald-500/30 transition-all duration-300 backdrop-blur-md"
       >
-        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-xs font-bold uppercase shadow-sm">
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 via-teal-400 to-cyan-500 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-emerald-500/30 ring-1 ring-white/20">
           {user?.name?.[0] ?? "U"}
         </div>
-        <span className="text-sm font-medium text-white/90 max-w-[90px] truncate leading-none">
-          {user?.name ?? "Account"}
-        </span>
+        <div className="text-left">
+          <span className="text-sm font-semibold text-white block leading-none">
+            {user?.name ?? "Account"}
+          </span>
+          <span className="text-[10px] text-zinc-400 truncate max-w-[140px]">
+            {user?.email ?? ""}
+          </span>
+        </div>
         <ChevronDown
-          className={`h-3.5 w-3.5 text-white/50 transition-transform duration-200 ${open ? "rotate-180" : ""
-            }`}
+          className={`h-4 w-4 text-white/60 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
         />
       </button>
 
       {open && (
-        <div className="absolute right-0 top-[calc(100%+10px)] w-56 bg-[#0f1a14] border border-white/10 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-50">
-          <div className="px-4 py-3 border-b border-white/8">
-            <p className="text-white text-sm font-semibold truncate">
-              {user?.name ?? "User"}
-            </p>
-            <p className="text-zinc-400 text-xs truncate mt-0.5">
-              {user?.email ?? ""}
-            </p>
+        <div className="absolute right-0 top-[calc(100%+12px)] w-64 bg-[#0a1610] border border-white/10 rounded-3xl shadow-2xl shadow-black/70 overflow-hidden backdrop-blur-2xl z-50">
+          <div className="px-6 py-5 border-b border-white/10">
+            <p className="text-white font-semibold">{user?.name}</p>
+            <p className="text-zinc-400 text-sm mt-0.5">{user?.email}</p>
           </div>
 
-          <div className="p-2 flex flex-col gap-0.5">
+          <div className="p-3">
             <Link
               href={dashboardHref}
               onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-zinc-300 hover:bg-white/8 hover:text-white transition-colors"
+              className="flex items-center gap-3 px-4 py-3 rounded-2xl text-zinc-300 hover:bg-white/10 hover:text-white transition-all"
             >
-              <LayoutDashboard className="h-4 w-4 text-emerald-400 shrink-0" />
-              <span className="text-xs font-semibold tracking-wide uppercase">
-                {role === "admin" ? "Admin" : "Investor"} Dashboard
+              <LayoutDashboard className="h-4 w-4 text-emerald-400" />
+              <span className="text-sm font-medium">
+                {role === "admin" ? "Admin Dashboard" : "Investor Dashboard"}
               </span>
-              <ExternalLink className="h-3 w-3 ml-auto text-zinc-600" />
+              <ExternalLink className="h-3.5 w-3.5 ml-auto opacity-60" />
             </Link>
 
-
-
-            <div className="h-px bg-white/8 my-1" />
+            <div className="h-px bg-white/10 my-2 mx-2" />
 
             <button
               onClick={() => {
@@ -117,11 +114,11 @@ function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
                 onLogout();
               }}
               disabled={isLoggingOut}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50 w-full text-left"
+              className="flex items-center gap-3 w-full px-4 py-3 rounded-2xl text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-50"
             >
-              <LogOut className="h-4 w-4 shrink-0" />
-              <span className="text-xs font-semibold tracking-wide uppercase">
-                {isLoggingOut ? "Logging out…" : "Sign Out"}
+              <LogOut className="h-4 w-4" />
+              <span className="text-sm font-medium">
+                {isLoggingOut ? "Logging out..." : "Sign Out"}
               </span>
             </button>
           </div>
@@ -131,6 +128,7 @@ function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
   );
 }
 
+/* ── Main Navbar Component ── */
 export function MainNavbar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -149,75 +147,71 @@ export function MainNavbar() {
   const handleLogout = async () => {
     try {
       await logout().unwrap();
-    } catch {
-    } finally {
-      toast.success("Logged out");
+    } catch {}
+    finally {
+      toast.success("Logged out successfully");
       router.push("/");
     }
   };
 
+  // Scroll effect for navbar
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 10);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Close mobile menu when route changes
   useEffect(() => setMobileOpen(false), [pathname]);
 
   return (
     <>
-      {/* ══════════════════════════════════════════
-          DESKTOP NAVBAR — md and above ONLY
-      ══════════════════════════════════════════ */}
+      {/* ==================== DESKTOP NAVBAR (Premium) ==================== */}
       <div className="hidden md:block fixed top-0 inset-x-0 z-50">
-        {/* ── Top utility bar ── */}
-
-
-        {/* ── Main nav bar ── */}
         <header
-          className={`transition-all duration-300 ${scrolled
-            ? "bg-[#0d1f12]/95 backdrop-blur-xl shadow-lg shadow-black/30 border-b border-white/5"
-            : "bg-[#0d1f12] border-b border-white/4"
-            }`}
+          className={`transition-all duration-500 ${
+            scrolled
+              ? "bg-[#0a1610]/95 backdrop-blur-2xl shadow-xl shadow-black/40 border-b border-white/10"
+              : "bg-[#0a1610] border-b border-white/5"
+          }`}
         >
-          <div className="mx-auto max-w-7xl px-8 h-[80px] flex items-center gap-8">
+          <div className="mx-auto max-w-7xl px-8 h-20 flex items-center justify-between">
+            
             {/* Logo */}
-            <Link href="/" className="shrink-0 flex items-center">
-              <Image
-                src="/favicon.ico"
-                alt="XINZO"
-                width={40}
-                height={40}
-                priority
-                className="h-40 w-40 object-contain"
-              />
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30 transition-transform group-hover:scale-105">
+                <Image
+                  src="/favicon.ico"
+                  alt="XINZO"
+                  width={38}
+                  height={38}
+                  className="object-contain"
+                  priority
+                />
+              </div>
+              <span className="text-2xl font-bold tracking-tighter text-white">XINZO</span>
             </Link>
 
-            {/* Divider */}
-            <div className="h-5 w-px bg-white/6 shrink-0" />
-
-            {/* Nav links */}
-            <nav className="flex  items-center gap-7">
+            {/* Navigation Links */}
+            <nav className="flex items-center gap-2">
               {NAV_LINKS.map(({ href, label }) => (
                 <NavLink key={href} href={href} label={label} />
               ))}
             </nav>
 
-            {/* Spacer */}
-            <div className="flex-1" />
-
-            {/* Right actions */}
-            <div className="flex items-center gap-3 shrink-0">
+            {/* Right Side Actions */}
+            <div className="flex items-center gap-4">
               {isAuthenticated ? (
                 <>
                   <Link
                     href={dashboardHref}
-                    className="flex items-center gap-2 text-[11px] font-bold tracking-[0.16em] uppercase px-4 py-2 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/25 hover:bg-emerald-500/25 hover:border-emerald-400/40 hover:text-emerald-200 transition-all duration-200"
+                    className="flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-400 text-emerald-300 hover:text-white text-sm font-semibold tracking-wider transition-all duration-300"
                   >
-                    <LayoutDashboard className="h-3.5 w-3.5" />
+                    <LayoutDashboard className="h-4 w-4" />
                     Dashboard
                   </Link>
+
                   <UserDropdown
                     user={user}
                     dashboardHref={dashboardHref}
@@ -229,7 +223,7 @@ export function MainNavbar() {
               ) : (
                 <Link
                   href="/login"
-                  className="text-[12px] font-bold tracking-[0.16em] uppercase px-5 py-2 rounded-lg border border-white/10 bg-white/5 text-white/90 hover:bg-white/10 hover:border-white/15 transition-all duration-200"
+                  className="px-8 py-3 rounded-2xl border border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/40 text-white font-semibold tracking-wider text-sm transition-all duration-300"
                 >
                   Log in
                 </Link>
@@ -239,12 +233,10 @@ export function MainNavbar() {
         </header>
       </div>
 
-      {/* Desktop spacer: top bar 36px + main nav 60px = 96px */}
-      <div className="hidden md:block h-[96px]" />
+      {/* Desktop Spacer */}
+      <div className="hidden md:block h-20" />
 
-      {/* ══════════════════════════════════════════
-          MOBILE — completely UNCHANGED
-      ══════════════════════════════════════════ */}
+      {/* ==================== MOBILE BOTTOM NAV (অপরিবর্তিত) ==================== */}
       <nav className="fixed bottom-0 inset-x-0 z-50 md:hidden bg-white border-t border-zinc-200 shadow-[0_-4px_20px_rgba(0,0,0,0.07)]">
         <div className="flex items-center justify-around px-1 h-[62px]">
           {/* Home */}
@@ -256,10 +248,18 @@ export function MainNavbar() {
                 className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
               >
                 <div
-                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${isActive ? "bg-emerald-50 ring-2 ring-emerald-400 ring-offset-1" : ""}`}
+                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
+                    isActive
+                      ? "bg-emerald-50 ring-2 ring-emerald-400 ring-offset-1"
+                      : ""
+                  }`}
                 >
                   <Home
-                    className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-600" : "text-zinc-400 group-hover:text-zinc-600"}`}
+                    className={`h-5 w-5 transition-colors ${
+                      isActive
+                        ? "text-emerald-600"
+                        : "text-zinc-400 group-hover:text-zinc-600"
+                    }`}
                   />
                 </div>
                 <span className="sr-only">Home</span>
@@ -277,11 +277,17 @@ export function MainNavbar() {
               >
                 <div className="w-10 h-10 flex items-center justify-center">
                   <FolderGit2
-                    className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`}
+                    className={`h-5 w-5 transition-colors ${
+                      isActive
+                        ? "text-emerald-500"
+                        : "text-zinc-400 group-hover:text-zinc-600"
+                    }`}
                   />
                 </div>
                 <span
-                  className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"}`}
+                  className={`text-[10px] font-semibold leading-none ${
+                    isActive ? "text-emerald-600" : "text-zinc-400"
+                  }`}
                 >
                   Project
                 </span>
@@ -298,12 +304,18 @@ export function MainNavbar() {
                 className="flex flex-col items-center gap-0.5 pb-1 -mt-3 min-w-[56px] group"
               >
                 <div
-                  className={`w-12 h-12 flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${isActive ? "bg-emerald-500" : "bg-emerald-400 group-hover:bg-emerald-500"}`}
+                  className={`w-12 h-12 flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${
+                    isActive
+                      ? "bg-emerald-500"
+                      : "bg-emerald-400 group-hover:bg-emerald-500"
+                  }`}
                 >
                   <User className="h-5 w-5 text-white" />
                 </div>
                 <span
-                  className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"}`}
+                  className={`text-[10px] font-semibold leading-none ${
+                    isActive ? "text-emerald-600" : "text-zinc-400"
+                  }`}
                 >
                   Contact
                 </span>
@@ -321,11 +333,17 @@ export function MainNavbar() {
               >
                 <div className="w-10 h-10 flex items-center justify-center">
                   <Images
-                    className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`}
+                    className={`h-5 w-5 transition-colors ${
+                      isActive
+                        ? "text-emerald-500"
+                        : "text-zinc-400 group-hover:text-zinc-600"
+                    }`}
                   />
                 </div>
                 <span
-                  className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"}`}
+                  className={`text-[10px] font-semibold leading-none ${
+                    isActive ? "text-emerald-600" : "text-zinc-400"
+                  }`}
                 >
                   Gallery
                 </span>
@@ -340,11 +358,17 @@ export function MainNavbar() {
           >
             <div className="w-10 h-10 flex items-center justify-center">
               <Menu
-                className={`h-5 w-5 transition-colors ${mobileOpen ? "text-emerald-500" : "text-zinc-400 group-hover:text-zinc-600"}`}
+                className={`h-5 w-5 transition-colors ${
+                  mobileOpen
+                    ? "text-emerald-500"
+                    : "text-zinc-400 group-hover:text-zinc-600"
+                }`}
               />
             </div>
             <span
-              className={`text-[10px] font-semibold leading-none ${mobileOpen ? "text-emerald-600" : "text-zinc-400"}`}
+              className={`text-[10px] font-semibold leading-none ${
+                mobileOpen ? "text-emerald-600" : "text-zinc-400"
+              }`}
             >
               More
             </span>
@@ -374,6 +398,7 @@ export function MainNavbar() {
                 </span>
               </Link>
               <div className="h-px bg-zinc-100 mx-2 my-1" />
+
               {isAuthenticated ? (
                 <>
                   <Link

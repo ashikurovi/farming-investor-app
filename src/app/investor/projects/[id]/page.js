@@ -297,65 +297,67 @@ export default function ProjectDetailPage() {
         {/* Gradient accent bar */}
         <div className="h-1 w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500" />
 
-        <div className="flex flex-col gap-5 p-6 sm:flex-row sm:items-start sm:gap-6">
-          {/* Project image thumbnail */}
-          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-zinc-100 ring-1 ring-zinc-200 sm:h-24 sm:w-24">
-            {busy ? (
-              <div className="h-full w-full animate-pulse bg-zinc-100" />
-            ) : imgUrl ? (
-              <Image
-                src={imgUrl}
-                alt={project?.name || "Project"}
-                fill
-                sizes="96px"
-                className="object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-100">
-                <Layers className="h-8 w-8 text-emerald-300" />
-              </div>
-            )}
-          </div>
+        <div className="flex flex-col gap-5 p-6 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+          <div className="flex min-w-0 items-start gap-4">
+            {/* Project image thumbnail */}
+            <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-zinc-100 ring-1 ring-zinc-200 sm:h-24 sm:w-24">
+              {busy ? (
+                <div className="h-full w-full animate-pulse bg-zinc-100" />
+              ) : imgUrl ? (
+                <Image
+                  src={imgUrl}
+                  alt={project?.name || "Project"}
+                  fill
+                  sizes="96px"
+                  className="object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-100">
+                  <Layers className="h-8 w-8 text-emerald-300" />
+                </div>
+              )}
+            </div>
 
-          {/* Title + meta */}
-          <div className="flex flex-1 flex-col gap-2">
-            {/* Breadcrumb */}
-            <nav className="flex items-center gap-1.5 text-[11px] text-zinc-400">
-              <Link
-                href="/investor/projects"
-                className="transition-colors hover:text-emerald-600"
-              >
-                Projects
-              </Link>
-              <ChevronRight className="h-3 w-3" />
-              <span className="truncate font-medium text-zinc-600">
-                {busy ? "Loading…" : (project?.name ?? "Project details")}
-              </span>
-            </nav>
+            {/* Title + meta */}
+            <div className="flex min-w-0 flex-1 flex-col gap-2">
+              {/* Breadcrumb */}
+              <nav className="flex items-center gap-1.5 text-[11px] text-zinc-400">
+                <Link
+                  href="/investor/projects"
+                  className="transition-colors hover:text-emerald-600"
+                >
+                  Projects
+                </Link>
+                <ChevronRight className="h-3 w-3" />
+                <span className="truncate font-medium text-zinc-600">
+                  {busy ? "Loading…" : (project?.name ?? "Project details")}
+                </span>
+              </nav>
 
-            {busy ? (
-              <div className="space-y-2">
-                <Skeleton className="h-6 w-48" />
-                <Skeleton className="h-4 w-32" />
-              </div>
-            ) : (
-              <>
-                <h1 className="text-xl font-bold tracking-tight text-zinc-900">
-                  {project?.name ?? "Project details"}
-                </h1>
-                {project?.location && (
-                  <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-600">
-                    <MapPin className="h-3.5 w-3.5 shrink-0" />
-                    {project.location}
-                  </p>
-                )}
-                {project?.description && (
-                  <p className="line-clamp-2 text-xs leading-relaxed text-zinc-500">
-                    {project.description}
-                  </p>
-                )}
-              </>
-            )}
+              {busy ? (
+                <div className="space-y-2">
+                  <Skeleton className="h-6 w-48" />
+                  <Skeleton className="h-4 w-32" />
+                </div>
+              ) : (
+                <>
+                  <h1 className="text-xl font-bold tracking-tight text-zinc-900">
+                    {project?.name ?? "Project details"}
+                  </h1>
+                  {project?.location && (
+                    <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-600">
+                      <MapPin className="h-3.5 w-3.5 shrink-0" />
+                      {project.location}
+                    </p>
+                  )}
+                  {project?.description && (
+                    <p className="line-clamp-2 text-xs leading-relaxed text-zinc-500">
+                      {project.description}
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
           </div>
 
           {/* Back button */}
