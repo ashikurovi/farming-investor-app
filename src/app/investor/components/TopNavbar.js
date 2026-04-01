@@ -28,10 +28,16 @@ export default function TopNavbar() {
   const user = useSelector((s) => s.auth?.user);
   useMeQuery(undefined, { skip: !!user || !token });
 
-  const cleanUrl = (u) => (typeof u === "string" ? u.replace(/`/g, "").trim() : "");
+  const cleanUrl = (u) =>
+    typeof u === "string" ? u.replace(/`/g, "").trim() : "";
   const displayName =
-    user?.name || user?.fullName || (typeof user?.email === "string" ? user.email.split("@")[0] : "") || "Investor";
-  const initials = displayName ? displayName.substring(0, 2).toUpperCase() : "IN";
+    user?.name ||
+    user?.fullName ||
+    (typeof user?.email === "string" ? user.email.split("@")[0] : "") ||
+    "Investor";
+  const initials = displayName
+    ? displayName.substring(0, 2).toUpperCase()
+    : "IN";
   const photoUrl = cleanUrl(user?.photoUrl);
 
   useEffect(() => {
@@ -81,12 +87,26 @@ export default function TopNavbar() {
             type="button"
             size="icon"
             variant="ghost"
-            className="text-zinc-500 hover:bg-zinc-100/50 hover:text-zinc-900 lg:hidden"
+            className="hidden"
             aria-label="Open navigation"
             onClick={() => setMobileMenuOpen(true)}
           >
             <Menu className="h-5 w-5" />
           </Button>
+
+          <div className="flex items-center gap-2 md:hidden">
+            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-emerald-500 text-[11px] font-extrabold text-white shadow-lg shadow-emerald-300/30">
+              FI
+            </div>
+            <div className="leading-tight">
+              <div className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-emerald-600">
+                Farming Intel
+              </div>
+              <div className="text-[12px] font-semibold tracking-tight text-zinc-900">
+                Investor
+              </div>
+            </div>
+          </div>
 
           <div className="hidden md:flex flex-1 max-w-md">
             <div className="relative w-full group">
@@ -142,7 +162,11 @@ export default function TopNavbar() {
             className="text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100/80 rounded-full h-9 w-9 transition-transform hover:scale-105"
             onClick={() => setDarkMode(!darkMode)}
           >
-            {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {darkMode ? (
+              <Sun className="h-4 w-4" />
+            ) : (
+              <Moon className="h-4 w-4" />
+            )}
           </Button>
 
           <div className="relative">
@@ -168,7 +192,9 @@ export default function TopNavbar() {
             {notifOpen && (
               <div className="absolute right-0 top-12 z-50 w-80 sm:w-96 rounded-2xl border border-zinc-100 bg-white/95 p-2 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-2xl ring-1 ring-zinc-900/5 animate-in fade-in zoom-in-95 duration-200">
                 <div className="flex items-center justify-between px-4 py-3">
-                  <span className="text-sm font-semibold text-zinc-900">Notifications</span>
+                  <span className="text-sm font-semibold text-zinc-900">
+                    Notifications
+                  </span>
                   <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-[10px] font-medium text-zinc-600">
                     {unreadCount} New
                   </span>
@@ -179,17 +205,27 @@ export default function TopNavbar() {
                       key={n.id}
                       className={`group flex gap-4 px-4 py-3 hover:bg-zinc-50/80 rounded-xl cursor-pointer transition-all ${n.unread ? "bg-blue-50/30" : ""}`}
                     >
-                      <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full shadow-sm ring-1 ring-inset ring-black/5 ${n.color} text-white`}>
+                      <div
+                        className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full shadow-sm ring-1 ring-inset ring-black/5 ${n.color} text-white`}
+                      >
                         <n.icon className="h-4 w-4" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2 mb-0.5">
-                          <p className="text-xs font-semibold text-zinc-900 truncate">{n.title}</p>
-                          <span className="text-[10px] text-zinc-400 whitespace-nowrap">{n.time}</span>
+                          <p className="text-xs font-semibold text-zinc-900 truncate">
+                            {n.title}
+                          </p>
+                          <span className="text-[10px] text-zinc-400 whitespace-nowrap">
+                            {n.time}
+                          </span>
                         </div>
-                        <p className="text-[11px] text-zinc-500 leading-relaxed line-clamp-2">{n.desc}</p>
+                        <p className="text-[11px] text-zinc-500 leading-relaxed line-clamp-2">
+                          {n.desc}
+                        </p>
                       </div>
-                      {n.unread && <div className="self-center h-1.5 w-1.5 rounded-full bg-blue-500 ring-2 ring-blue-100" />}
+                      {n.unread && (
+                        <div className="self-center h-1.5 w-1.5 rounded-full bg-blue-500 ring-2 ring-blue-100" />
+                      )}
                     </div>
                   ))}
                 </div>
@@ -228,7 +264,9 @@ export default function TopNavbar() {
                   Portal
                 </p>
               </div>
-              <ChevronDown className={`hidden sm:block h-3 w-3 text-zinc-400 transition-transform duration-300 ${profileOpen ? "rotate-180" : "group-hover:text-zinc-600"}`} />
+              <ChevronDown
+                className={`hidden sm:block h-3 w-3 text-zinc-400 transition-transform duration-300 ${profileOpen ? "rotate-180" : "group-hover:text-zinc-600"}`}
+              />
             </button>
 
             {profileOpen && (
@@ -246,19 +284,26 @@ export default function TopNavbar() {
                     </div>
                   )}
                   <div>
-                    <p className="text-xs font-semibold text-zinc-900">{displayName}</p>
+                    <p className="text-xs font-semibold text-zinc-900">
+                      {displayName}
+                    </p>
                     <p className="text-[10px] text-zinc-500 font-medium">
                       {user?.email || "-"}
                     </p>
                   </div>
                 </div>
                 <div className="space-y-0.5">
-                  {[{ label: "Profile Settings", icon: Settings }].map((item) => (
-                    <button key={item.label} className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors">
-                      <item.icon className="h-3.5 w-3.5 text-zinc-400" />
-                      {item.label}
-                    </button>
-                  ))}
+                  {[{ label: "Profile Settings", icon: Settings }].map(
+                    (item) => (
+                      <button
+                        key={item.label}
+                        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors"
+                      >
+                        <item.icon className="h-3.5 w-3.5 text-zinc-400" />
+                        {item.label}
+                      </button>
+                    ),
+                  )}
                 </div>
               </div>
             )}
@@ -288,10 +333,16 @@ export default function TopNavbar() {
         >
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500 text-xs font-semibold text-white">FI</div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500 text-xs font-semibold text-white">
+                FI
+              </div>
               <div>
-                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-500">Farming</div>
-                <div className="text-sm font-semibold tracking-tight text-zinc-900">Investor</div>
+                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-500">
+                  Farming
+                </div>
+                <div className="text-sm font-semibold tracking-tight text-zinc-900">
+                  Investor
+                </div>
               </div>
             </div>
 
