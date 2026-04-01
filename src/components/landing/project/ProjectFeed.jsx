@@ -43,18 +43,33 @@ export function ProjectFeed() {
   }
 
   return (
-    <section id="project-feed" className="py-24 bg-zinc-50 min-h-screen">
+    <section id="project-feed" className="py-14 bg-zinc-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="mb-10 flex items-end justify-between gap-6">
-          <div className="space-y-2">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-900">
-              Projects
+        <div className="mb-14 flex flex-col md:flex-row md:items-end justify-between gap-8">
+          <div className="space-y-4 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
+                Projects
+              </span>
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
+              Explore <span className="font-serif italic">real</span>{" "}
+              <span className="font-serif italic text-emerald-700">
+                farming investments
+              </span>
+              .
             </h2>
-            <p className="text-sm text-zinc-500">
-              Browse active investment opportunities.
+
+            <p className="text-zinc-500 text-xs md:text-lg leading-relaxed max-w-xl">
+              Browse active opportunities with transparent cost, funding, and
+              progress updates.
             </p>
           </div>
-          <div className="hidden md:block text-sm text-zinc-500">
+
+          <div className="hidden md:flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs font-bold uppercase tracking-widest text-zinc-600 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
             {projects.length} items
           </div>
         </div>
@@ -69,7 +84,7 @@ export function ProjectFeed() {
             </p>
           </div>
         ) : projects.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-3">
             {projects.map((project) => (
               <ProjectCard key={project.projectId} project={project} />
             ))}
