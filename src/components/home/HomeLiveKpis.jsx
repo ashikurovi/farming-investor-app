@@ -1,12 +1,10 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
 import { Leaf, Sprout, Truck, BadgeCheck } from "lucide-react";
 
 export default function HomeLiveKpis() {
   return (
-    <section id="live-kpis" className="relative overflow-hidden py-14 sm:py-20">
+    <section id="live-kpis" className="relative overflow-hidden ">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-white via-white to-emerald-50/40" />
         <div className="absolute inset-0 opacity-25 [background:radial-gradient(circle_at_1px_1px,rgba(16,185,129,0.22)_1px,transparent_1px)] [background-size:18px_18px]" />
@@ -30,24 +28,21 @@ export default function HomeLiveKpis() {
               mollis venenatis diam ante adipiscing in pretium.
             </p>
             <div className="mt-6">
-              <Link
+              <a
                 href="/landing/about"
                 className="inline-flex items-center justify-center rounded-full bg-[#7f9b3c] px-7 py-3 text-[13px] font-semibold text-white shadow-[0_18px_48px_-30px_rgba(127,155,60,0.85)] transition hover:bg-[#8cab44] active:scale-[0.99]"
               >
                 Discover more
-              </Link>
+              </a>
             </div>
           </div>
 
           <div className="lg:col-span-6">
             <div className="grid grid-cols-2 grid-rows-2 gap-4">
               <div className="row-span-2 overflow-hidden rounded-3xl bg-zinc-200 shadow-sm ring-1 ring-zinc-200">
-                <Image
+                <img
                   src="/img_7-2048x1024.jpg"
                   alt="Sustainable farming"
-                  width={900}
-                  height={1200}
-                  sizes="(min-width: 1024px) 50vw, 100vw"
                   className="h-full w-full object-cover"
                 />
               </div>
@@ -66,12 +61,9 @@ export default function HomeLiveKpis() {
               </div>
 
               <div className="overflow-hidden rounded-3xl bg-zinc-200 shadow-sm ring-1 ring-zinc-200">
-                <Image
+                <img
                   src="/img_4-2048x1024.jpg"
                   alt="Fresh harvest"
-                  width={900}
-                  height={600}
-                  sizes="(min-width: 1024px) 25vw, 100vw"
                   className="h-full w-full object-cover"
                 />
               </div>

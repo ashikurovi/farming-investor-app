@@ -147,8 +147,8 @@ export function MainNavbar() {
   const handleLogout = async () => {
     try {
       await logout().unwrap();
-    } catch {}
-    finally {
+    } catch {
+    } finally {
       toast.success("Logged out successfully");
       router.push("/");
     }
@@ -177,7 +177,6 @@ export function MainNavbar() {
           }`}
         >
           <div className="mx-auto max-w-7xl px-8 h-20 flex items-center justify-between">
-            
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
               <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30 transition-transform group-hover:scale-105">
@@ -190,7 +189,9 @@ export function MainNavbar() {
                   priority
                 />
               </div>
-              <span className="text-2xl font-bold tracking-tighter text-white">XINZO</span>
+              <span className="text-2xl font-bold tracking-tighter text-white">
+                XINZO
+              </span>
             </Link>
 
             {/* Navigation Links */}

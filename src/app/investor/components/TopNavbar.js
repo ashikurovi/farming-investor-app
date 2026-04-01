@@ -81,26 +81,12 @@ export default function TopNavbar() {
             type="button"
             size="icon"
             variant="ghost"
-            className="hidden"
+            className="text-zinc-500 hover:bg-zinc-100/50 hover:text-zinc-900 lg:hidden"
             aria-label="Open navigation"
             onClick={() => setMobileMenuOpen(true)}
           >
             <Menu className="h-5 w-5" />
           </Button>
-
-          <div className="flex items-center gap-2 lg:hidden">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-emerald-500 text-[11px] font-extrabold text-white shadow-lg shadow-emerald-300/30">
-              FI
-            </div>
-            <div className="leading-tight">
-              <div className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-emerald-600">
-                Farming Intel
-              </div>
-              <div className="text-[12px] font-semibold tracking-tight text-zinc-900">
-                Investor
-              </div>
-            </div>
-          </div>
 
           <div className="hidden md:flex flex-1 max-w-md">
             <div className="relative w-full group">
