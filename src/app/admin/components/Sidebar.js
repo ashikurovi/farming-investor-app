@@ -126,13 +126,13 @@ export default function Sidebar() {
   return (
     <aside
       className={`
-        hidden min-h-screen ${sidebarWidth} flex-col
+        hidden h-screen ${sidebarWidth} flex-col
         border-r border-zinc-100 dark:border-zinc-800
         bg-white dark:bg-zinc-900
         px-3 py-5
         transition-all duration-300 ease-in-out
         lg:flex
-        relative
+        sticky top-0 overflow-hidden relative
       `}
       style={{
         background: undefined,
@@ -170,7 +170,7 @@ export default function Sidebar() {
       <div className="mb-4 h-px bg-gradient-to-r from-transparent via-zinc-200 to-transparent dark:via-zinc-700" />
 
       {/* ── Nav ── */}
-      <nav className="flex-1 space-y-0.5 text-sm">
+      <nav className="flex-1 space-y-0.5 text-sm overflow-y-auto pr-1">
         {sidebarNavigation.map((item, idx) => {
           if (item.type === "group") {
             if (collapsed) {
