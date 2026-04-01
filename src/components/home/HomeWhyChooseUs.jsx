@@ -1,62 +1,44 @@
 "use client";
 import Image from "next/image";
 import { ArrowRight, Play, CircleArrowRight } from "lucide-react";
-import { useState } from "react";
 
-const VIDEO_EMBED_URL =
-  "https://www.youtube-nocookie.com/embed/ysz5S6PUM-U?rel=0";
+const YOUTUBE_VIDEO_URL = "https://www.youtube.com/watch?v=ysz5S6PUM-U";
 
 export default function HomeWhyChooseUs() {
-  const [isPlaying, setIsPlaying] = useState(false);
-
   return (
     <section className="relative py-8 sm:py-14">
       <div className="relative z-20 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-2xl bg-zinc-200 shadow-[0_40px_100px_-70px_rgba(0,0,0,0.65)] ring-1 ring-zinc-200 sm:rounded-[28px]">
-          {!isPlaying ? (
-            <button
-              type="button"
-              onClick={() => setIsPlaying(true)}
-              className="relative block w-full text-left"
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10" />
-              <Image
-                src="/img_7-2048x1024.jpg"
-                alt="Organic farming"
-                width={1600}
-                height={900}
-                sizes="(min-width: 1024px) 960px, 100vw"
-                className="h-[240px] w-full object-cover sm:h-[360px] lg:h-[420px]"
-              />
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center sm:px-6">
-                <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/30 shadow-[0_18px_60px_-30px_rgba(0,0,0,0.75)] backdrop-blur-md sm:h-[74px] sm:w-[74px]">
-                  <div className="absolute -inset-6 rounded-full bg-white/10 blur-xl" />
-                  <Play className="relative h-6 w-6 text-white sm:h-8 sm:w-8" />
-                </div>
-                <h3 className="mt-4 max-w-3xl font-serif text-2xl font-semibold leading-tight tracking-tight text-white drop-shadow-sm sm:mt-5 sm:text-5xl">
-                  Organic Farming Pricing Designed For Growing Businesses
-                </h3>
-                <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#7f9b3c] px-4 py-2 text-[11px] font-semibold text-white shadow-[0_18px_48px_-30px_rgba(127,155,60,0.85)] sm:mt-6">
-                  Book Now - It&apos;s Free!
-                  <ArrowRight className="h-4 w-4" />
-                </div>
+          <a
+            href={YOUTUBE_VIDEO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative block w-full text-left"
+            aria-label="Open YouTube video"
+          >
+            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10" />
+            <Image
+              src="/img_7-2048x1024.jpg"
+              alt="Organic farming"
+              width={1600}
+              height={900}
+              sizes="(min-width: 1024px) 960px, 100vw"
+              className="h-[240px] w-full object-cover sm:h-[360px] lg:h-[420px]"
+            />
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center sm:px-6">
+              <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/30 shadow-[0_18px_60px_-30px_rgba(0,0,0,0.75)] backdrop-blur-md sm:h-[74px] sm:w-[74px]">
+                <div className="absolute -inset-6 rounded-full bg-white/10 blur-xl" />
+                <Play className="relative h-6 w-6 text-white sm:h-8 sm:w-8" />
               </div>
-            </button>
-          ) : (
-            <div className="relative w-full">
-              <div className="h-[240px] w-full sm:h-[360px] lg:h-[420px]">
-                <iframe
-                  className="h-full w-full"
-                  src={VIDEO_EMBED_URL}
-                  title="YouTube video player"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  loading="lazy"
-                  allowFullScreen
-                />
+              <h3 className="mt-4 max-w-3xl font-serif text-2xl font-semibold leading-tight tracking-tight text-white drop-shadow-sm sm:mt-5 sm:text-5xl">
+                Organic Farming Pricing Designed For Growing Businesses
+              </h3>
+              <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#7f9b3c] px-4 py-2 text-[11px] font-semibold text-white shadow-[0_18px_48px_-30px_rgba(127,155,60,0.85)] sm:mt-6">
+                Book Now - It&apos;s Free!
+                <ArrowRight className="h-4 w-4" />
               </div>
             </div>
-          )}
+          </a>
         </div>
       </div>
 

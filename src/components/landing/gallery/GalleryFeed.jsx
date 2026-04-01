@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
-import { Search, Filter, Calendar, MapPin, ArrowUpRight, X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import { Search, Filter, Calendar, X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import { useGetGlarryQuery } from "@/features/admin/glarry/glarryApiSlice";
 import { Loader } from "@/components/ui/loader";
 
@@ -108,26 +108,30 @@ export function GalleryFeed() {
           </div>
         </div>
 
-        {/* Masonry-style Grid */}
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+        {/* Desktop/Laptop Bento Grid */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:auto-rows-[180px] lg:gap-6">
           {filteredItems.map((item, index) => (
             <div
               key={item.id}
               onClick={() => openLightbox(index)}
-              className="group break-inside-avoid relative overflow-hidden rounded-2xl bg-white shadow-sm border border-zinc-100 cursor-zoom-in hover:shadow-2xl hover:shadow-emerald-900/10 transition-all duration-500 hover:-translate-y-1"
+              className={[
+                "group relative overflow-hidden rounded-2xl bg-white shadow-sm border border-zinc-100 cursor-zoom-in hover:shadow-2xl hover:shadow-emerald-900/10 transition-all duration-500 hover:-translate-y-1 lg:h-full",
+                index === 0 ? "lg:row-span-2" : "",
+                index === 2 ? "lg:row-span-2" : "",
+                index === 4 ? "lg:row-span-2" : "",
+                index === 7 ? "lg:row-span-2" : "",
+              ].join(" ")}
             >
               {/* Image Container */}
-              <div className="relative w-full aspect-[4/3] sm:aspect-auto">
-                 {/* Use next/image for optimization */}
-                 <Image
-                    src={item.image}
-                    alt={item.title}
-                    width={800}
-                    height={600}
-                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative w-full aspect-[4/3] lg:aspect-auto lg:h-full">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
 
               {/* Hover Overlay Content */}
