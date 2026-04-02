@@ -17,9 +17,45 @@ export default function Home() {
   return (
     <main className="min-h-screen space-y-10 bg-zinc-50">
       <HomeHero />
+<<<<<<< HEAD
       {/* <HomeStatsSnapshot /> */}
       <div className="py-5">
         <HomeLiveKpis />
+=======
+
+      <div className="mx-auto md:max-w-7xl px-0 lg:px-8 space-y-20 -mt-10">
+        <section id="live-kpis">
+          <HomeLiveKpis />
+        </section>
+
+        <section id="recent-projects" className="space-y-6">
+          <HomeRecentProjects projects={recentProjects} />
+        </section>
+
+        <section id="how-it-works" className="border-t border-zinc-200 pt-16">
+          <HomeHowItWorks />
+        </section>
+
+        <section id="why-choose-us" className="border-t border-zinc-200 pt-16">
+          <HomeWhyChooseUs />
+        </section>
+
+        <section id="gallery" className="border-t border-zinc-200 pt-16">
+          <HomeGalleryPreview />
+        </section>
+
+        <section id="blog" className="border-t border-zinc-200 pt-16">
+          <HomeBlogSection />
+        </section>
+
+        <section id="testimonials" className="border-t border-zinc-200 pt-16">
+          <HomeTestimonials />
+        </section>
+
+        <section id="faq" className="border-t border-zinc-200 pt-16 pb-20">
+          <HomeFaq />
+        </section>
+>>>>>>> e1ab076 (update)
       </div>
       <div className="py-5">
         <HomeRecentProjects projects={recentProjects} />
