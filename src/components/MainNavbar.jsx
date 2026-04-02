@@ -35,17 +35,15 @@ function NavLink({ href, label }) {
   return (
     <Link
       href={href}
-      className={`relative group flex items-center gap-1.5 text-sm font-semibold tracking-wider py-1.5 px-5 transition-all duration-300 rounded-xl ${
-        isActive
-          ? "text-white bg-white/10"
-          : "text-zinc-300 hover:text-white hover:bg-white/5"
-      }`}
+      className={`relative group flex items-center gap-1.5 text-sm font-semibold tracking-wider py-1.5 px-5 transition-all duration-300 rounded-xl ${isActive
+        ? "text-white bg-white/10"
+        : "text-zinc-300 hover:text-white hover:bg-white/5"
+        }`}
     >
       {label}
       <span
-        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 transition-all duration-300 ${
-          isActive ? "w-6" : "w-0 group-hover:w-6"
-        }`}
+        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 transition-all duration-300 ${isActive ? "w-6" : "w-0 group-hover:w-6"
+          }`}
       />
     </Link>
   );
@@ -170,11 +168,10 @@ export function MainNavbar() {
       {/* ==================== DESKTOP NAVBAR (Premium) ==================== */}
       <div className="hidden md:block fixed top-0 inset-x-0 z-50">
         <header
-          className={`transition-all duration-500 ${
-            scrolled
-              ? "bg-[#0a1610]/95 backdrop-blur-2xl shadow-xl shadow-black/40 border-b border-white/10"
-              : "bg-[#0a1610] border-b border-white/5"
-          }`}
+          className={`transition-all duration-500 ${scrolled
+            ? "bg-[#0a1610]/95 backdrop-blur-2xl shadow-xl shadow-black/40 border-b border-white/10"
+            : "bg-[#0a1610] border-b border-white/5"
+            }`}
         >
           <div className="mx-auto max-w-7xl px-8 h-20 flex items-center justify-between">
             {/* Logo */}
@@ -240,44 +237,25 @@ export function MainNavbar() {
       {/* ==================== MOBILE BOTTOM NAV (অপরিবর্তিত) ==================== */}
       <nav className="fixed bottom-0 inset-x-0 z-50 md:hidden bg-white border-t border-zinc-200 shadow-[0_-4px_20px_rgba(0,0,0,0.07)]">
         <div className="flex items-center justify-around px-1 h-[62px]">
-<<<<<<< HEAD
-=======
-
->>>>>>> d7fecf0 (update home pages)
           {/* Home */}
           {(() => {
             const isActive = pathname === "/";
             return (
-<<<<<<< HEAD
               <Link
                 href="/"
                 className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
               >
                 <div
-                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
-                    isActive
-                      ? "bg-emerald-50 ring-2 ring-emerald-400 ring-offset-1"
-                      : ""
-                  }`}
-                >
-                  <Home
-                    className={`h-5 w-5 transition-colors ${
-                      isActive
-                        ? "text-emerald-600"
-                        : "text-zinc-400 group-hover:text-zinc-600"
-=======
-              <Link href="/" className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group">
-                <div
-                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
-                    isActive ? "bg-emerald-50 ring-2 ring-emerald-400 ring-offset-1" : ""
-                  }`}
-                  aria-label="Home"
-                >
-                  <Home
-                    className={`h-5 w-5 transition-colors ${
-                      isActive ? "text-emerald-600" : "text-zinc-400 group-hover:text-zinc-600"
->>>>>>> d7fecf0 (update home pages)
+                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${isActive
+                    ? "bg-emerald-50 ring-2 ring-emerald-400 ring-offset-1"
+                    : ""
                     }`}
+                >
+                  <Home
+                    className={`h-5 w-5 transition-colors ${isActive
+                      ? "text-emerald-600"
+                      : "text-zinc-400 group-hover:text-zinc-600"
+                      }`}
                   />
                 </div>
                 <span className="sr-only">Home</span>
@@ -289,27 +267,21 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/project");
             return (
-<<<<<<< HEAD
               <Link
                 href="/landing/project"
                 className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
               >
-=======
-              <Link href="/landing/project" className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group">
->>>>>>> d7fecf0 (update home pages)
                 <div className="w-10 h-10 flex items-center justify-center">
                   <FolderGit2
-                    className={`h-5 w-5 transition-colors ${
-                      isActive
-                        ? "text-emerald-500"
-                        : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
+                    className={`h-5 w-5 transition-colors ${isActive
+                      ? "text-emerald-500"
+                      : "text-zinc-400 group-hover:text-zinc-600"
+                      }`}
                   />
                 </div>
                 <span
-                  className={`text-[10px] font-semibold leading-none ${
-                    isActive ? "text-emerald-600" : "text-zinc-400"
-                  }`}
+                  className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"
+                    }`}
                 >
                   Project
                 </span>
@@ -321,28 +293,21 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/contact");
             return (
-<<<<<<< HEAD
               <Link
                 href="/landing/contact"
                 className="flex flex-col items-center gap-0.5 pb-1 -mt-3 min-w-[56px] group"
               >
                 <div
-                  className={`w-12 h-12 flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${
-                    isActive
-                      ? "bg-emerald-500"
-                      : "bg-emerald-400 group-hover:bg-emerald-500"
-                  }`}
+                  className={`w-12 h-12 flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${isActive
+                    ? "bg-emerald-500"
+                    : "bg-emerald-400 group-hover:bg-emerald-500"
+                    }`}
                 >
-=======
-              <Link href="/landing/contact" className="flex flex-col items-center gap-0.5 pb-1 -mt-3 min-w-[56px] group">
-                <div className={`w-12 h-12 flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${isActive ? "bg-emerald-500" : "bg-emerald-400 group-hover:bg-emerald-500"}`}>
->>>>>>> d7fecf0 (update home pages)
                   <User className="h-5 w-5 text-white" />
                 </div>
                 <span
-                  className={`text-[10px] font-semibold leading-none ${
-                    isActive ? "text-emerald-600" : "text-zinc-400"
-                  }`}
+                  className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"
+                    }`}
                 >
                   Contact
                 </span>
@@ -354,27 +319,21 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/gallery");
             return (
-<<<<<<< HEAD
               <Link
                 href="/landing/gallery"
                 className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
               >
-=======
-              <Link href="/landing/gallery" className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group">
->>>>>>> d7fecf0 (update home pages)
                 <div className="w-10 h-10 flex items-center justify-center">
                   <Images
-                    className={`h-5 w-5 transition-colors ${
-                      isActive
-                        ? "text-emerald-500"
-                        : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
+                    className={`h-5 w-5 transition-colors ${isActive
+                      ? "text-emerald-500"
+                      : "text-zinc-400 group-hover:text-zinc-600"
+                      }`}
                   />
                 </div>
                 <span
-                  className={`text-[10px] font-semibold leading-none ${
-                    isActive ? "text-emerald-600" : "text-zinc-400"
-                  }`}
+                  className={`text-[10px] font-semibold leading-none ${isActive ? "text-emerald-600" : "text-zinc-400"
+                    }`}
                 >
                   Gallery
                 </span>
@@ -389,17 +348,15 @@ export function MainNavbar() {
           >
             <div className="w-10 h-10 flex items-center justify-center">
               <Menu
-                className={`h-5 w-5 transition-colors ${
-                  mobileOpen
-                    ? "text-emerald-500"
-                    : "text-zinc-400 group-hover:text-zinc-600"
-                }`}
+                className={`h-5 w-5 transition-colors ${mobileOpen
+                  ? "text-emerald-500"
+                  : "text-zinc-400 group-hover:text-zinc-600"
+                  }`}
               />
             </div>
             <span
-              className={`text-[10px] font-semibold leading-none ${
-                mobileOpen ? "text-emerald-600" : "text-zinc-400"
-              }`}
+              className={`text-[10px] font-semibold leading-none ${mobileOpen ? "text-emerald-600" : "text-zinc-400"
+                }`}
             >
               More
             </span>
