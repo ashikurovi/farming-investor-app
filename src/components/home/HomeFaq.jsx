@@ -52,11 +52,15 @@ export default function HomeFaq() {
 
           <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900">
             Common questions,{" "}
-            <span className="font-serif italic text-emerald-700">clarified</span>.
+            <span className="font-serif italic text-emerald-700">
+              clarified
+            </span>
+            .
           </h2>
 
           <p className="mt-3 text-base text-zinc-600">
-            Everything you need to know about investing in sustainable agriculture and growing your wealth with us.
+            Everything you need to know about investing in sustainable
+            agriculture and growing your wealth with us.
           </p>
         </div>
 
@@ -70,25 +74,28 @@ export default function HomeFaq() {
                 <div
                   key={index}
                   onClick={() => toggleFaq(index)}
-                  className={`group border rounded-2xl overflow-hidden bg-white cursor-pointer transition-all duration-300 ${isOpen
+                  className={`group border rounded-2xl overflow-hidden bg-white cursor-pointer transition-all duration-300 ${
+                    isOpen
                       ? "border-emerald-300 shadow-xl shadow-emerald-100/70"
                       : "border-zinc-200 hover:border-emerald-200 hover:shadow-md"
-                    }`}
+                  }`}
                 >
                   {/* Question Header */}
                   <div className="flex items-center justify-between px-6 py-5">
                     <h3
-                      className={`text-[15px] font-medium transition-colors ${isOpen ? "text-emerald-900" : "text-zinc-900"
-                        }`}
+                      className={`text-[15px] font-medium transition-colors ${
+                        isOpen ? "text-emerald-900" : "text-zinc-900"
+                      }`}
                     >
                       {faq.question}
                     </h3>
 
                     <div
-                      className={`h-7 w-7 flex items-center justify-center rounded-xl transition-all duration-300 ${isOpen
+                      className={`h-7 w-7 flex items-center justify-center rounded-xl transition-all duration-300 ${
+                        isOpen
                           ? "bg-emerald-600 text-white rotate-180"
                           : "bg-zinc-100 text-zinc-400 group-hover:bg-emerald-50 group-hover:text-emerald-600"
-                        }`}
+                      }`}
                     >
                       <ChevronDown className="h-4 w-4" />
                     </div>
@@ -96,8 +103,9 @@ export default function HomeFaq() {
 
                   {/* Answer */}
                   <div
-                    className={`overflow-hidden transition-all duration-300 ${isOpen ? "max-h-96 pb-6" : "max-h-0"
-                      }`}
+                    className={`overflow-hidden transition-all duration-300 ${
+                      isOpen ? "max-h-96 pb-6" : "max-h-0"
+                    }`}
                   >
                     <div className="px-6">
                       <div className="h-px bg-emerald-100 mb-4" />
@@ -115,7 +123,9 @@ export default function HomeFaq() {
           <div className="lg:col-span-4 space-y-6">
             {/* Need Personal Help Card */}
             <div className="bg-zinc-900 text-white rounded-3xl p-6 shadow-2xl relative overflow-hidden">
-              <h3 className="text-xl font-semibold mb-1.5">Need personal help?</h3>
+              <h3 className="text-xl font-semibold mb-1.5">
+                Need personal help?
+              </h3>
               <p className="text-zinc-400 mb-6 text-sm">
                 Our investment specialists are ready to assist you anytime.
               </p>
@@ -126,8 +136,12 @@ export default function HomeFaq() {
                     <MessageCircle className="w-5 h-5 text-emerald-400" />
                   </div>
                   <div className="text-left">
-                    <div className="text-[11px] uppercase tracking-widest text-emerald-400">LIVE CHAT</div>
-                    <div className="font-medium text-sm">Start conversation now</div>
+                    <div className="text-[11px] uppercase tracking-widest text-emerald-400">
+                      LIVE CHAT
+                    </div>
+                    <div className="font-medium text-sm">
+                      Start conversation now
+                    </div>
                   </div>
                 </button>
 
@@ -136,8 +150,12 @@ export default function HomeFaq() {
                     <Mail className="w-5 h-5 text-blue-400" />
                   </div>
                   <div className="text-left">
-                    <div className="text-[11px] uppercase tracking-widest text-blue-400">EMAIL SUPPORT</div>
-                    <div className="font-medium text-sm">support@xinzofarms.com</div>
+                    <div className="text-[11px] uppercase tracking-widest text-blue-400">
+                      EMAIL SUPPORT
+                    </div>
+                    <div className="font-medium text-sm">
+                      support@xinzofarms.com
+                    </div>
                   </div>
                 </button>
               </div>
@@ -150,7 +168,9 @@ export default function HomeFaq() {
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="font-semibold text-base">Call us directly</div>
+                  <div className="font-semibold text-base">
+                    Call us directly
+                  </div>
                   <div className="text-xs text-zinc-500 mt-1">
                     Monday to Friday, 9:00 AM – 6:00 PM
                   </div>

@@ -5,29 +5,35 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary: #16a34a;
+  --primary: #4d8c1e;
   --primary-foreground: #f9fafb;
-  --secondary: #e5e7eb;
-  --secondary-foreground: #111827;
+  --secondary: #eef7e6;
+  --secondary-foreground: #1f2a18;
+  --brand-from: #4d8c1e;
+  --brand-to: #7cc22e;
 }
 
 .dark {
   --background: #09090b;
   --foreground: #fafafa;
-  --primary: #22c55e;
-  --primary-foreground: #022c22;
+  --primary: #7cc22e;
+  --primary-foreground: #06110a;
   --secondary: #27272a;
   --secondary-foreground: #f4f4f5;
+  --brand-from: #4d8c1e;
+  --brand-to: #7cc22e;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-    --primary: #22c55e;
-    --primary-foreground: #022c22;
-    --secondary: #374151;
+    --primary: #7cc22e;
+    --primary-foreground: #06110a;
+    --secondary: #1f2a18;
     --secondary-foreground: #f9fafb;
+    --brand-from: #4d8c1e;
+    --brand-to: #7cc22e;
   }
 }
 
@@ -36,11 +42,13 @@ body {
   color: var(--foreground);
   font-family: var(--font-bai-jamjuree), sans-serif;
   overscroll-behavior-y: none;
+  /* overflow-x: hidden; */
 }
 
 html {
   background: #0a0a0a;
   overscroll-behavior-y: none;
+  /* overflow-x: hidden; */
 }
 
 /* Custom Scrollbar Styling */

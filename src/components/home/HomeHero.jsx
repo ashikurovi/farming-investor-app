@@ -83,7 +83,7 @@ export default function HomeHero() {
                     <div className="mt-6 flex items-center gap-3">
                       <button
                         onClick={scrollToContent}
-                        className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 py-3 text-[12px] font-semibold text-white shadow-[0_16px_40px_-18px_rgba(16,185,129,0.9)] transition hover:bg-emerald-400 active:scale-[0.98]"
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#4d8c1e,#7cc22e)] px-6 py-3 text-[12px] font-semibold text-white shadow-[0_16px_40px_-18px_rgba(77,140,30,0.85)] transition hover:brightness-[1.05] active:scale-[0.98]"
                       >
                         Learn More
                         <ArrowRight className="h-4 w-4" />
@@ -148,7 +148,7 @@ export default function HomeHero() {
           transition: all 0.35s ease;
         }
         .swiper-pagination-bullet-active {
-          background: #10b981;
+          background: #4d8c1e;
           border-radius: 6px;
           width: 32px;
         }

@@ -6,7 +6,8 @@ const baseClasses =
   "disabled:pointer-events-none disabled:opacity-50";
 
 const variantClasses = {
-  primary: "bg-primary text-primary-foreground hover:opacity-90",
+  primary:
+    "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-primary-foreground hover:brightness-[1.05]",
   secondary:
     "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-secondary-foreground",
   outline:

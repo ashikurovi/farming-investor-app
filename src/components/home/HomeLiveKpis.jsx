@@ -22,7 +22,7 @@ const bottomCards = [
 
 export default function HomeLiveKpis() {
   return (
-    <section id="live-kpis" className="relative overflow-hidden bg-[#f6f7f4] py-16 lg:py-24">
+    <section id="live-kpis" className="relative overflow-hidden  py-16 lg:py-24">
       <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
 
         {/* TOP GRID */}

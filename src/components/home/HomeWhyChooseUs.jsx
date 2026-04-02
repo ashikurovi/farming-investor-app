@@ -33,7 +33,7 @@ export default function HomeWhyChooseUs() {
               <h3 className="mt-4 max-w-3xl font-serif text-2xl font-semibold leading-tight tracking-tight text-white drop-shadow-sm sm:mt-5 sm:text-5xl">
                 Organic Farming Pricing Designed For Growing Businesses
               </h3>
-              <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#7f9b3c] px-4 py-2 text-[11px] font-semibold text-white shadow-[0_18px_48px_-30px_rgba(127,155,60,0.85)] sm:mt-6">
+              <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-4 py-2 text-[11px] font-semibold text-white shadow-[0_18px_48px_-30px_rgba(77,140,30,0.75)] sm:mt-6">
                 Book Now - It&apos;s Free!
                 <ArrowRight className="h-4 w-4" />
               </div>

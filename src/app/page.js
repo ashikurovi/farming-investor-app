@@ -13,36 +13,20 @@ import WhatsAppButton from "../components/WhatsAppButton";
 
 export default function Home() {
   const recentProjects = getRecentProjects(4);
-// bg-[#f6f7f4] aii sectionns er bg coloor hoba ai ta
+  // bg-[#f6f7f4] aii sectionns er bg coloor hoba ai ta
   return (
-    <main className="min-h-screen space-y-10 bg-zinc-50">
+    <main className="min-h-screen space-y-0 bg-[#f6f7f4] mb-10">
       <HomeHero />
       {/* <HomeStatsSnapshot /> */}
-      <div className="py-5">
-        <HomeLiveKpis />
-      </div>
-      <div className="py-5">
-        <HomeRecentProjects projects={recentProjects} />
-      </div>
-      <div className="py-5">
-        <HomeHowItWorks />
-      </div>
-      <div className="py-5">
-        <HomeWhyChooseUs />
-      </div>
-      <div className="py-5">
-        <HomeGalleryPreview />
-      </div>
-      <div className="py-5">
-        <HomeBlogSection />
-      </div>
+      <HomeLiveKpis />
+      <HomeRecentProjects projects={recentProjects} />
+      <HomeHowItWorks />
+      <HomeWhyChooseUs />
+      <HomeGalleryPreview />
+      <HomeBlogSection />
       {/* Blog */}
-      <div className="py-5">
-        <HomeTestimonials />
-      </div>
-      <div className="py-5">
-        <HomeFaq />
-      </div>
+      <HomeTestimonials />
+      <HomeFaq />
       <WhatsAppButton />
     </main>
   );

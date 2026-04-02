@@ -27,7 +27,7 @@ const NAV_LINKS = [
   { href: "/landing/about", label: "About", icon: LayoutDashboard },
 ];
 
-/* ── Desktop Nav Link with underline animation ── */
+/* ── Desktop Nav Link with premium gradient underline ── */
 function NavLink({ href, label }) {
   const pathname = usePathname();
   const isActive = href === "/" ? pathname === href : pathname.startsWith(href);
@@ -37,13 +37,13 @@ function NavLink({ href, label }) {
       href={href}
       className={`relative group flex items-center gap-1.5 text-sm font-semibold tracking-wider py-1.5 px-5 transition-all duration-300 rounded-xl ${
         isActive
-          ? "text-white bg-white/10"
-          : "text-zinc-300 hover:text-white hover:bg-white/5"
+          ? "text-white bg-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]"
+          : "text-white/80 hover:text-white hover:bg-white/5"
       }`}
     >
       {label}
       <span
-        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 transition-all duration-300 ${
+        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-[#7cc22e] to-[#4d8c1e] transition-all duration-300 ${
           isActive ? "w-6" : "w-0 group-hover:w-6"
         }`}
       />
@@ -68,16 +68,16 @@ function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((p) => !p)}
-        className="flex items-center gap-3 pl-2 pr-5 py-2 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 hover:border-emerald-500/30 transition-all duration-300 backdrop-blur-md"
+        className="flex items-center gap-3 pl-2 pr-5 py-2 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 hover:border-[#7cc22e]/40 transition-all duration-300 backdrop-blur-md"
       >
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 via-teal-400 to-cyan-500 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-emerald-500/30 ring-1 ring-white/20">
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#7cc22e] to-[#4d8c1e] flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-[#7cc22e]/30 ring-1 ring-white/20">
           {user?.name?.[0] ?? "U"}
         </div>
         <div className="text-left">
           <span className="text-sm font-semibold text-white block leading-none">
             {user?.name ?? "Account"}
           </span>
-          <span className="text-[10px] text-zinc-400 truncate max-w-[140px]">
+          <span className="text-[10px] text-white/60 truncate max-w-[140px]">
             {user?.email ?? ""}
           </span>
         </div>
@@ -87,19 +87,19 @@ function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-[calc(100%+12px)] w-64 bg-[#0a1610] border border-white/10 rounded-3xl shadow-2xl shadow-black/70 overflow-hidden backdrop-blur-2xl z-50">
+        <div className="absolute right-0 top-[calc(100%+12px)] w-64 bg-[#0a1610]/95 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl shadow-black/70 overflow-hidden z-50">
           <div className="px-6 py-5 border-b border-white/10">
             <p className="text-white font-semibold">{user?.name}</p>
-            <p className="text-zinc-400 text-sm mt-0.5">{user?.email}</p>
+            <p className="text-white/60 text-sm mt-0.5">{user?.email}</p>
           </div>
 
           <div className="p-3">
             <Link
               href={dashboardHref}
               onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-4 py-3 rounded-2xl text-zinc-300 hover:bg-white/10 hover:text-white transition-all"
+              className="flex items-center gap-3 px-4 py-3 rounded-2xl text-white/80 hover:bg-white/10 hover:text-white transition-all"
             >
-              <LayoutDashboard className="h-4 w-4 text-emerald-400" />
+              <LayoutDashboard className="h-4 w-4 text-[#7cc22e]" />
               <span className="text-sm font-medium">
                 {role === "admin" ? "Admin Dashboard" : "Investor Dashboard"}
               </span>
@@ -133,7 +133,6 @@ export function MainNavbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
   const token = useSelector((state) => state.auth?.token);
   const user = useSelector((state) => state.auth?.user);
@@ -147,50 +146,41 @@ export function MainNavbar() {
   const handleLogout = async () => {
     try {
       await logout().unwrap();
-    } catch {
-    } finally {
       toast.success("Logged out successfully");
       router.push("/");
+    } catch {
+      toast.error("Logout failed");
     }
   };
-
-  // Scroll effect for navbar
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   // Close mobile menu when route changes
   useEffect(() => setMobileOpen(false), [pathname]);
 
+  // Gradient background style
+  const navbarGradient = {
+    background: "linear-gradient(135deg, #4d8c1e, #7cc22e)",
+  };
+
   return (
     <>
-      {/* ==================== DESKTOP NAVBAR (Premium) ==================== */}
+      {/* ==================== DESKTOP NAVBAR (Premium with Green Gradient) ==================== */}
       <div className="hidden md:block fixed top-0 inset-x-0 z-50">
-        <header
-          className={`transition-all duration-500 ${
-            scrolled
-              ? "bg-[#0a1610]/95 backdrop-blur-2xl shadow-xl shadow-black/40 border-b border-white/10"
-              : "bg-[#0a1610] border-b border-white/5"
-          }`}
-        >
+        <header style={navbarGradient} className="shadow-xl shadow-black/20">
           <div className="mx-auto max-w-7xl px-8 h-20 flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30 transition-transform group-hover:scale-105">
+              <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg transition-transform group-hover:scale-105">
                 <Image
                   src="/favicon.ico"
-                  alt="XINZO"
+                  alt="ARTMAN"
                   width={38}
                   height={38}
-                  className="object-contain"
+                  className="object-contain brightness-0 invert"
                   priority
                 />
               </div>
-              <span className="text-2xl font-bold tracking-tighter text-white">
-                XINZO
+              <span className="text-2xl font-bold tracking-tighter text-white drop-shadow-md">
+                ARTMAN
               </span>
             </Link>
 
@@ -207,7 +197,7 @@ export function MainNavbar() {
                 <>
                   <Link
                     href={dashboardHref}
-                    className="flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-400 text-emerald-300 hover:text-white text-sm font-semibold tracking-wider transition-all duration-300"
+                    className="flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 hover:border-white/50 text-white text-sm font-semibold tracking-wider transition-all duration-300 shadow-md"
                   >
                     <LayoutDashboard className="h-4 w-4" />
                     Dashboard
@@ -224,7 +214,7 @@ export function MainNavbar() {
               ) : (
                 <Link
                   href="/login"
-                  className="px-8 py-3 rounded-2xl border border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/40 text-white font-semibold tracking-wider text-sm transition-all duration-300"
+                  className="px-8 py-3 rounded-2xl bg-white/20 backdrop-blur-sm hover:bg-white/30 border border-white/30 hover:border-white/50 text-white font-semibold tracking-wider text-sm transition-all duration-300 shadow-md"
                 >
                   Log in
                 </Link>
@@ -237,7 +227,7 @@ export function MainNavbar() {
       {/* Desktop Spacer */}
       <div className="hidden md:block h-20" />
 
-      {/* ==================== MOBILE BOTTOM NAV (অপরিবর্তিত) ==================== */}
+      {/* ==================== MOBILE BOTTOM NAV (Premium Updated) ==================== */}
       <nav className="fixed bottom-0 inset-x-0 z-50 md:hidden bg-white border-t border-zinc-200 shadow-[0_-4px_20px_rgba(0,0,0,0.07)]">
         <div className="flex items-center justify-around px-1 h-[62px]">
           {/* Home */}
@@ -251,14 +241,14 @@ export function MainNavbar() {
                 <div
                   className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
                     isActive
-                      ? "bg-emerald-50 ring-2 ring-emerald-400 ring-offset-1"
+                      ? "bg-[#7cc22e]/10 ring-2 ring-[#7cc22e] ring-offset-1"
                       : ""
                   }`}
                 >
                   <Home
                     className={`h-5 w-5 transition-colors ${
                       isActive
-                        ? "text-emerald-600"
+                        ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
                     }`}
                   />
@@ -280,14 +270,14 @@ export function MainNavbar() {
                   <FolderGit2
                     className={`h-5 w-5 transition-colors ${
                       isActive
-                        ? "text-emerald-500"
+                        ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
                     }`}
                   />
                 </div>
                 <span
                   className={`text-[10px] font-semibold leading-none ${
-                    isActive ? "text-emerald-600" : "text-zinc-400"
+                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
                   }`}
                 >
                   Project
@@ -307,15 +297,15 @@ export function MainNavbar() {
                 <div
                   className={`w-12 h-12 flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${
                     isActive
-                      ? "bg-emerald-500"
-                      : "bg-emerald-400 group-hover:bg-emerald-500"
+                      ? "bg-gradient-to-br from-[#4d8c1e] to-[#7cc22e]"
+                      : "bg-gradient-to-br from-[#7cc22e] to-[#4d8c1e] group-hover:from-[#4d8c1e] group-hover:to-[#7cc22e]"
                   }`}
                 >
                   <User className="h-5 w-5 text-white" />
                 </div>
                 <span
                   className={`text-[10px] font-semibold leading-none ${
-                    isActive ? "text-emerald-600" : "text-zinc-400"
+                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
                   }`}
                 >
                   Contact
@@ -336,14 +326,14 @@ export function MainNavbar() {
                   <Images
                     className={`h-5 w-5 transition-colors ${
                       isActive
-                        ? "text-emerald-500"
+                        ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
                     }`}
                   />
                 </div>
                 <span
                   className={`text-[10px] font-semibold leading-none ${
-                    isActive ? "text-emerald-600" : "text-zinc-400"
+                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
                   }`}
                 >
                   Gallery
@@ -361,14 +351,14 @@ export function MainNavbar() {
               <Menu
                 className={`h-5 w-5 transition-colors ${
                   mobileOpen
-                    ? "text-emerald-500"
+                    ? "text-[#4d8c1e]"
                     : "text-zinc-400 group-hover:text-zinc-600"
                 }`}
               />
             </div>
             <span
               className={`text-[10px] font-semibold leading-none ${
-                mobileOpen ? "text-emerald-600" : "text-zinc-400"
+                mobileOpen ? "text-[#4d8c1e]" : "text-zinc-400"
               }`}
             >
               More

@@ -255,8 +255,8 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                   Project Highlights
                 </h2>
                 <p className="max-w-2xl text-[13px] leading-relaxed text-zinc-600 sm:text-base">
-                  Transparent updates, curated documentation, and clear milestones to help you
-                  evaluate this project with confidence.
+                  Transparent updates, curated documentation, and clear
+                  milestones to help you evaluate this project with confidence.
                 </p>
               </div>
 
@@ -270,10 +270,26 @@ export function ProjectDetails({ project, similarProjects = [] }) {
 
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {[
-                { title: "Secure Documentation", desc: "All records and updates in one place", Icon: ShieldCheck },
-                { title: "Sustainable Practices", desc: "Long‑term farming focus", Icon: Leaf },
-                { title: "Weekly Updates", desc: "Progress shared on schedule", Icon: Calendar },
-                { title: "Support Team", desc: "Get help when you need it", Icon: Headset },
+                {
+                  title: "Secure Documentation",
+                  desc: "All records and updates in one place",
+                  Icon: ShieldCheck,
+                },
+                {
+                  title: "Sustainable Practices",
+                  desc: "Long‑term farming focus",
+                  Icon: Leaf,
+                },
+                {
+                  title: "Weekly Updates",
+                  desc: "Progress shared on schedule",
+                  Icon: Calendar,
+                },
+                {
+                  title: "Support Team",
+                  desc: "Get help when you need it",
+                  Icon: Headset,
+                },
               ].map(({ title, desc, Icon }) => (
                 <div
                   key={title}
