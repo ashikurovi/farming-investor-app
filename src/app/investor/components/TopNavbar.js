@@ -333,9 +333,7 @@ export default function TopNavbar() {
         >
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500 text-xs font-semibold text-white">
-                FI
-              </div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500 text-xs font-semibold text-white">FI</div>
               <div>
                 <div className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-500">
                   Farming

@@ -316,220 +316,218 @@ export default function AdminInvestorPage() {
 
       <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
-        <DataTable
-          columns={[
-            {
-              key: "sl",
-              header: "#",
-              tdClassName:
-                "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16",
-              cell: (user) =>
-                investors.findIndex((u) => u.id === user.id) + 1,
-            },
-            {
-              key: "name",
-              header: "INVESTOR",
-              tdClassName: "whitespace-nowrap px-6 py-4",
-              cell: (user) => (
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">
-                    {user.photo ? (
-                      <img
-                        src={
-                          typeof user.photo === "string"
-                            ? user.photo
-                            : URL.createObjectURL(user.photo)
-                        }
-                        alt={user.name}
-                        className="h-full w-full rounded-full object-cover"
-                      />
+          <DataTable
+            columns={[
+              {
+                key: "sl",
+                header: "#",
+                tdClassName:
+                  "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16",
+                cell: (user) =>
+                  investors.findIndex((u) => u.id === user.id) + 1,
+              },
+              {
+                key: "name",
+                header: "INVESTOR",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (user) => (
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">
+                      {user.photo ? (
+                        <img
+                          src={
+                            typeof user.photo === "string"
+                              ? user.photo
+                              : URL.createObjectURL(user.photo)
+                          }
+                          alt={user.name}
+                          className="h-full w-full rounded-full object-cover"
+                        />
+                      ) : (
+                        (user.name || "U").charAt(0).toUpperCase()
+                      )}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-semibold text-zinc-900">
+                        {user.name || "Unknown"}
+                      </span>
+                      {user.email && (
+                        <span className="text-xs text-zinc-500">{user.email}</span>
+                      )}
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                key: "investorType",
+                header: "INVESTOR TYPE",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (user) => (
+                  <div className="flex flex-col gap-1">
+                    {user.investorType ? (
+                      <>
+                        <span className="text-sm font-medium text-zinc-700">
+                          {user.investorType.type}
+                        </span>
+                        <span className="inline-flex w-fit items-center rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
+                          {user.investorType.percentage}% Share
+                        </span>
+                      </>
                     ) : (
-                      (user.name || "U").charAt(0).toUpperCase()
+                      <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic">
+                        No Type
+                      </span>
                     )}
                   </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm font-semibold text-zinc-900">
-                      {user.name || "Unknown"}
+                ),
+              },
+              {
+                key: "totalInvestment",
+                header: "INVESTMENT",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (user) => (
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-50 text-zinc-500">
+                      <span className="text-xs font-bold">৳</span>
+                    </div>
+                    <span className="text-sm font-bold text-zinc-900">
+                      {Number(user.totalInvestment ?? 0).toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                      })}
                     </span>
-                    {user.email && (
-                      <span className="text-xs text-zinc-500">{user.email}</span>
-                    )}
                   </div>
-                </div>
-              ),
-            },
-            {
-              key: "investorType",
-              header: "INVESTOR TYPE",
-              tdClassName: "whitespace-nowrap px-6 py-4",
-              cell: (user) => (
-                <div className="flex flex-col gap-1">
-                  {user.investorType ? (
-                    <>
-                      <span className="text-sm font-medium text-zinc-700">
-                        {user.investorType.type}
-                      </span>
-                      <span className="inline-flex w-fit items-center rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
-                        {user.investorType.percentage}% Share
-                      </span>
-                    </>
-                  ) : (
-                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic">
-                      No Type
-                    </span>
-                  )}
-                </div>
-              ),
-            },
-            {
-              key: "totalInvestment",
-              header: "INVESTMENT",
-              tdClassName: "whitespace-nowrap px-6 py-4",
-              cell: (user) => (
-                <div className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-50 text-zinc-500">
-                    <span className="text-xs font-bold">৳</span>
-                  </div>
-                  <span className="text-sm font-bold text-zinc-900">
-                    {Number(user.totalInvestment ?? 0).toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                    })}
+                ),
+              },
+              {
+                key: "totalProfit",
+                header: "PROFIT",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (user) => (
+                  <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
+                    ৳{Number(user.totalProfit ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
                   </span>
+                ),
+              },
+              {
+                key: "balance",
+                header: "BALANCE",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (user) => (
+                  <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-bold text-blue-700 ring-1 ring-inset ring-blue-600/10">
+                    ৳{Number(user.balance ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                  </span>
+                ),
+              },
+              {
+                key: "totalCost",
+                header: "TOTAL COST",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (user) => (
+                  <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10">
+                    ৳{Number(user.totalCost ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                  </span>
+                ),
+              },
+              {
+                key: "status",
+                header: "STATUS",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (user) => (
+                  <span
+                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${user.isBanned
+                        ? "bg-red-50 text-red-700 ring-red-600/10"
+                        : "bg-emerald-50 text-emerald-700 ring-emerald-600/10"
+                      }`}
+                  >
+                    {user.isBanned ? "Banned" : "Active"}
+                  </span>
+                ),
+              },
+            ]}
+            data={investors}
+            isLoading={isBusy}
+            emptyMessage={
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-50">
+                  <Users className="h-6 w-6 text-zinc-400" />
                 </div>
-              ),
-            },
-            {
-              key: "totalProfit",
-              header: "PROFIT",
-              tdClassName: "whitespace-nowrap px-6 py-4",
-              cell: (user) => (
-                <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
-                  ৳{Number(user.totalProfit ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
-                </span>
-              ),
-            },
-            {
-              key: "balance",
-              header: "BALANCE",
-              tdClassName: "whitespace-nowrap px-6 py-4",
-              cell: (user) => (
-                <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-bold text-blue-700 ring-1 ring-inset ring-blue-600/10">
-                  ৳{Number(user.balance ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
-                </span>
-              ),
-            },
-            {
-              key: "totalCost",
-              header: "TOTAL COST",
-              tdClassName: "whitespace-nowrap px-6 py-4",
-              cell: (user) => (
-                <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10">
-                  ৳{Number(user.totalCost ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
-                </span>
-              ),
-            },
-            {
-              key: "status",
-              header: "STATUS",
-              tdClassName: "whitespace-nowrap px-6 py-4",
-              cell: (user) => (
-                <span
-                  className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${
-                    user.isBanned
-                      ? "bg-red-50 text-red-700 ring-red-600/10"
-                      : "bg-emerald-50 text-emerald-700 ring-emerald-600/10"
-                  }`}
-                >
-                  {user.isBanned ? "Banned" : "Active"}
-                </span>
-              ),
-            },
-          ]}
-          data={investors}
-          isLoading={isBusy}
-          emptyMessage={
-            <div className="flex flex-col items-center justify-center py-12 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-50">
-                <Users className="h-6 w-6 text-zinc-400" />
+                <h3 className="mt-2 text-sm font-semibold text-zinc-900">
+                  No investors found
+                </h3>
+                <p className="mt-1 text-sm text-zinc-500">
+                  Get started by creating a new investor profile.
+                </p>
+                <div className="mt-6">
+                  <Button size="sm" onClick={openCreateModal} variant="outline">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Investor
+                  </Button>
+                </div>
               </div>
-              <h3 className="mt-2 text-sm font-semibold text-zinc-900">
-                No investors found
-              </h3>
-              <p className="mt-1 text-sm text-zinc-500">
-                Get started by creating a new investor profile.
-              </p>
-              <div className="mt-6">
-                <Button size="sm" onClick={openCreateModal} variant="outline">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Investor
+            }
+            loadingLabel="Loading investors..."
+            getRowKey={(user) => user.id}
+            onRowClick={handleRowClick}
+            renderActions={(user) => (
+              <div className="flex items-center justify-end gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(`/admin/investor/${user.id}`);
+                  }}
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600"
+                  title="View Details"
+                >
+                  <Eye className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openEditModal(user);
+                  }}
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
+                  title="Edit Profile"
+                >
+                  <Pencil className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    confirmToggleBan(user);
+                  }}
+                  className={`h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 ${user.isBanned
+                      ? "hover:text-emerald-600"
+                      : "hover:text-purple-600"
+                    }`}
+                  title={user.isBanned ? "Unban User" : "Ban User"}
+                >
+                  {user.isBanned ? (
+                    <ShieldCheck className="h-4 w-4" />
+                  ) : (
+                    <ShieldBan className="h-4 w-4" />
+                  )}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    confirmDelete(user);
+                  }}
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
+                  title="Delete User"
+                >
+                  <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
-            </div>
-          }
-          loadingLabel="Loading investors..."
-          getRowKey={(user) => user.id}
-          onRowClick={handleRowClick}
-          renderActions={(user) => (
-            <div className="flex items-center justify-end gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  router.push(`/admin/investor/${user.id}`);
-                }}
-                className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600"
-                title="View Details"
-              >
-                <Eye className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openEditModal(user);
-                }}
-                className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
-                title="Edit Profile"
-              >
-                <Pencil className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  confirmToggleBan(user);
-                }}
-                className={`h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 ${
-                  user.isBanned
-                    ? "hover:text-emerald-600"
-                    : "hover:text-purple-600"
-                }`}
-                title={user.isBanned ? "Unban User" : "Ban User"}
-              >
-                {user.isBanned ? (
-                  <ShieldCheck className="h-4 w-4" />
-                ) : (
-                  <ShieldBan className="h-4 w-4" />
-                )}
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  confirmDelete(user);
-                }}
-                className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
-                title="Delete User"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
-          )}
-        />
+            )}
+          />
         </div>
 
         <div className="border-t border-zinc-100 bg-zinc-50/50 px-6 py-4">
