@@ -2,6 +2,7 @@ import {
   LayoutDashboard,
   Users,
   Sprout,
+  Briefcase,
   ReceiptIndianRupee,
   Images,
   Image as ImageIcon,
@@ -24,6 +25,7 @@ export const sidebarNavigation = [
     icon: ClipboardList,
     items: [
       { name: "Investors", href: "/admin/investor", icon: Users },
+      { name: "Partners", href: "/admin/partner", icon: Briefcase },
       {
         name: "Investments",
         href: "/admin/investment",
