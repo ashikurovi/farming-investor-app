@@ -4,13 +4,11 @@ import { useState, useEffect } from "react";
 import {
   Menu,
   X,
-  Bell,
   Search,
   Settings,
   ChevronDown,
   Moon,
   Sun,
-  Calendar,
   TrendingUp,
   LogOut,
 } from "lucide-react";
@@ -24,8 +22,6 @@ import { useTheme } from "@/lib/ThemeContext";
 
 export default function TopNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState([]);
   const [currentTime, setCurrentTime] = useState(null);
@@ -75,42 +71,10 @@ export default function TopNavbar() {
     timeZone: "UTC",
   });
 
-  const notifications = [
-    {
-      id: 1,
-      title: "New contact submitted",
-      desc: "John Doe filled the contact form",
-      time: "2m ago",
-      unread: true,
-      color: "bg-blue-500",
-      icon: TrendingUp,
-    },
-    {
-      id: 2,
-      title: "Portfolio updated",
-      desc: "Farm #4 metrics refreshed",
-      time: "1h ago",
-      unread: true,
-      color: "bg-emerald-500",
-      icon: TrendingUp,
-    },
-    {
-      id: 3,
-      title: "Report ready",
-      desc: "Q2 investor report is ready",
-      time: "3h ago",
-      unread: false,
-      color: "bg-violet-500",
-      icon: Calendar,
-    },
-  ];
-
-  const unreadCount = notifications.filter((n) => n.unread).length;
-
   return (
     <>
       <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-zinc-200/60 bg-white/80 px-4 backdrop-blur-xl transition-all duration-300 lg:px-8 dark:border-zinc-800/60 dark:bg-zinc-900/80">
-        {/* LEFT — Burger + Search */}
+        {/* LEFT — Burger */}
         <div className="flex flex-1 items-center gap-4">
           <Button
             type="button"
@@ -122,38 +86,10 @@ export default function TopNavbar() {
           >
             <Menu className="h-5 w-5" />
           </Button>
-
-          {/* Search bar (desktop) */}
-          <div className="hidden md:flex flex-1 max-w-md">
-            <div className="relative w-full group">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-[color:var(--brand-to)] transition-colors" />
-              <input
-                type="text"
-                placeholder="Search farms, investors, reports…"
-                className="w-full rounded-2xl border border-zinc-200/80 bg-zinc-50/50 py-2 pl-10 pr-12 text-sm text-zinc-700 placeholder-zinc-400 outline-none focus:border-[color:rgba(77,140,30,0.45)] focus:bg-white focus:ring-4 focus:ring-[color:rgba(77,140,30,0.14)] transition-all duration-300 dark:border-zinc-700/80 dark:bg-zinc-800/50 dark:text-zinc-200 dark:placeholder-zinc-500 dark:focus:bg-zinc-800 dark:focus:border-[color:rgba(124,194,46,0.45)]"
-              />
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1">
-                <kbd className="hidden sm:inline-flex items-center justify-center rounded-[6px] border border-zinc-200 bg-white px-2 py-0.5 text-[10px] font-medium text-zinc-400 shadow-[0_1px_2px_rgba(0,0,0,0.05)] dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-500">
-                  ⌘K
-                </kbd>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* RIGHT — Actions */}
         <div className="flex items-center gap-2">
-          {/* Live badge */}
-          <div className="hidden sm:flex items-center gap-2 rounded-full border border-[color:rgba(77,140,30,0.25)] bg-[color:rgba(124,194,46,0.10)] px-3 py-1 text-[11px] font-medium text-[color:rgb(77,140,30)] backdrop-blur-sm dark:border-[color:rgba(124,194,46,0.25)] dark:bg-[color:rgba(124,194,46,0.10)] dark:text-[color:rgb(124,194,46)]">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[color:rgb(124,194,46)] opacity-60"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[color:rgb(77,140,30)]"></span>
-            </span>
-            Live System
-          </div>
-
-          <div className="h-6 w-px bg-zinc-200/60 mx-2 hidden sm:block dark:bg-zinc-700/60" />
-
           {/* Date/Time */}
           <div className="hidden xl:flex flex-col items-end mr-2">
             <span className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
@@ -163,17 +99,6 @@ export default function TopNavbar() {
               {formattedTime || "—"}
             </span>
           </div>
-
-          {/* Mobile search trigger */}
-          <Button
-            type="button"
-            size="icon"
-            variant="ghost"
-            className="md:hidden text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100/80 rounded-full h-9 w-9 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800/80"
-            onClick={() => setSearchOpen(!searchOpen)}
-          >
-            <Search className="h-4 w-4" />
-          </Button>
 
           {/* Theme Toggle */}
           <Button
@@ -191,79 +116,6 @@ export default function TopNavbar() {
             )}
           </Button>
 
-          {/* Notifications */}
-          <div className="relative">
-            <Button
-              type="button"
-              size="icon"
-              variant="ghost"
-              className="relative text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100/80 rounded-full h-9 w-9 transition-transform hover:scale-105 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800/80"
-              onClick={() => {
-                setNotifOpen(!notifOpen);
-                setProfileOpen(false);
-              }}
-            >
-              <Bell className="h-4 w-4" />
-              {unreadCount > 0 && (
-                <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500 border-2 border-white dark:border-zinc-900"></span>
-                </span>
-              )}
-            </Button>
-
-            {notifOpen && (
-              <div className="absolute right-0 top-12 z-50 w-80 sm:w-96 rounded-2xl border border-zinc-100 bg-white/95 p-2 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-2xl ring-1 ring-zinc-900/5 animate-in fade-in zoom-in-95 duration-200 dark:border-zinc-800 dark:bg-zinc-900/95 dark:ring-zinc-100/5">
-                <div className="flex items-center justify-between px-4 py-3">
-                  <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                    Notifications
-                  </span>
-                  <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-[10px] font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-                    {unreadCount} New
-                  </span>
-                </div>
-
-                <div className="max-h-[320px] overflow-y-auto space-y-1">
-                  {notifications.map((n) => (
-                    <div
-                      key={n.id}
-                      className={`group flex gap-4 px-4 py-3 hover:bg-zinc-50/80 rounded-xl cursor-pointer transition-all dark:hover:bg-zinc-800/80 ${n.unread ? "bg-blue-50/30 dark:bg-blue-500/5" : ""}`}
-                    >
-                      <div
-                        className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full shadow-sm ring-1 ring-inset ring-black/5 ${n.color} text-white`}
-                      >
-                        <n.icon className="h-4 w-4" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2 mb-0.5">
-                          <p className="text-xs font-semibold text-zinc-900 truncate dark:text-zinc-100">
-                            {n.title}
-                          </p>
-                          <span className="text-[10px] text-zinc-400 whitespace-nowrap dark:text-zinc-500">
-                            {n.time}
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-zinc-500 leading-relaxed line-clamp-2 dark:text-zinc-400">
-                          {n.desc}
-                        </p>
-                      </div>
-                      {n.unread && (
-                        <div className="self-center h-1.5 w-1.5 rounded-full bg-blue-500 ring-2 ring-blue-100 dark:ring-blue-500/20" />
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-2 border-t border-zinc-100 pt-2 dark:border-zinc-800">
-                  <button className="flex w-full items-center justify-center gap-2 rounded-xl py-2 text-xs font-medium text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900 transition-colors dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100">
-                    View all activity
-                    <TrendingUp className="h-3 w-3" />
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-
           {/* Profile */}
           <div className="relative pl-1">
             <button
@@ -271,7 +123,6 @@ export default function TopNavbar() {
               className="group flex items-center gap-2 rounded-full border border-zinc-200/60 bg-white pl-1 pr-3 py-1 hover:border-emerald-200 hover:ring-2 hover:ring-emerald-500/10 hover:bg-zinc-50 transition-all duration-300 dark:border-zinc-700/60 dark:bg-zinc-800 dark:hover:border-emerald-700 dark:hover:bg-zinc-700"
               onClick={() => {
                 setProfileOpen(!profileOpen);
-                setNotifOpen(false);
               }}
             >
               <div className="relative">
@@ -337,29 +188,11 @@ export default function TopNavbar() {
         </div>
       </header>
 
-      {/* Mobile search bar */}
-      {searchOpen && (
-        <div className="md:hidden border-b border-zinc-200 bg-white/95 backdrop-blur-xl px-4 py-3 z-30 sticky top-16 animate-in slide-in-from-top-2 dark:border-zinc-800 dark:bg-zinc-900/95">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
-            <input
-              type="text"
-              autoFocus
-              placeholder="Search farms, investors…"
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2.5 pl-10 pr-4 text-sm text-zinc-700 placeholder-zinc-400 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 transition dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:placeholder-zinc-500 dark:focus:border-emerald-500"
-            />
-          </div>
-        </div>
-      )}
-
       {/* Backdrop for dropdowns */}
-      {(notifOpen || profileOpen) && (
+      {profileOpen && (
         <div
           className="fixed inset-0 z-30 bg-black/5 backdrop-blur-[1px] transition-opacity dark:bg-black/20"
-          onClick={() => {
-            setNotifOpen(false);
-            setProfileOpen(false);
-          }}
+          onClick={() => setProfileOpen(false)}
         />
       )}
 

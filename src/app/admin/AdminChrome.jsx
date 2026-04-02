@@ -3,7 +3,9 @@
 import dynamic from "next/dynamic";
 
 const Sidebar = dynamic(() => import("./components/Sidebar"), { ssr: false });
-const TopNavbar = dynamic(() => import("./components/TopNavbar"), { ssr: false });
+const TopNavbar = dynamic(() => import("./components/TopNavbar"), {
+  ssr: false,
+});
 
 export default function AdminChrome({ children }) {
   return (
