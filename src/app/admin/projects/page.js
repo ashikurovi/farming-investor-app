@@ -207,16 +207,16 @@ export default function AdminProjectsPage() {
   return (
     <div className="space-y-8 -mt-6 p-4 md:p-5 max-w-[1600px] mx-auto">
       {/* Header Section */}
-      <header className="flex flex-col gap-6 rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+      <header className="flex flex-col gap-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[color:rgba(124,194,46,0.14)] text-[color:rgb(77,140,30)] ring-1 ring-[color:rgba(77,140,30,0.18)] dark:bg-[color:rgba(124,194,46,0.14)] dark:text-[color:rgb(124,194,46)] dark:ring-[color:rgba(124,194,46,0.22)]">
             <LayoutGrid className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-zinc-900">
+            <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
               Projects Overview
             </h1>
-            <p className="text-sm font-medium text-zinc-500">
+            <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
               Manage your agricultural investment portfolio.
             </p>
           </div>
@@ -232,7 +232,7 @@ export default function AdminProjectsPage() {
           <Button
             type="button"
             onClick={() => router.push("/admin/projects/new")}
-            className="inline-flex h-10 items-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:bg-zinc-800 hover:shadow-xl hover:shadow-zinc-900/30 active:scale-95"
+            className="inline-flex h-10 items-center gap-2 rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-5 text-sm font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] transition-all hover:brightness-[1.05] active:scale-95"
           >
             <Plus className="h-4 w-4" />
             <span>New Project</span>
@@ -246,10 +246,10 @@ export default function AdminProjectsPage() {
       {/* Grid Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-zinc-900">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
             Active Projects
           </h2>
-          <div className="text-xs font-medium text-zinc-500">
+          <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
             Showing {visibleProjects.length} of {meta.total} projects
           </div>
         </div>

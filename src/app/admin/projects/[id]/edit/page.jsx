@@ -2,7 +2,16 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, MapPin, Upload, Type, FileText, Image as ImageIcon, Save, X } from "lucide-react";
+import {
+  ArrowLeft,
+  MapPin,
+  Upload,
+  Type,
+  FileText,
+  Image as ImageIcon,
+  Save,
+  X,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -49,7 +58,8 @@ export default function AdminProjectEditPage() {
 
   const isBusy = isLoading || isFetching;
 
-  const cleanUrl = (u) => (typeof u === "string" ? u.replace(/`/g, "").trim() : u);
+  const cleanUrl = (u) =>
+    typeof u === "string" ? u.replace(/`/g, "").trim() : u;
 
   const previewUrl = useMemo(() => {
     if (imageFile) {
@@ -117,16 +127,16 @@ export default function AdminProjectEditPage() {
             variant="outline"
             size="icon"
             onClick={() => router.push("/admin/projects")}
-            className="mt-1 h-10 w-10 shrink-0 rounded-xl border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 transition-colors"
+            className="mt-1 h-10 w-10 shrink-0 rounded-xl border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 transition-colors dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
 
           <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
               Edit Project
             </h1>
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
               Update project details, location, and visual assets.
             </p>
           </div>
@@ -134,29 +144,35 @@ export default function AdminProjectEditPage() {
       </header>
 
       {/* Main Content */}
-      <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+      <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-900">
         {(isBusy || (project && !isInitialized)) && (
           <div className="flex h-64 items-center justify-center">
             <div className="flex flex-col items-center gap-2">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-200 border-t-emerald-600"></div>
-              <p className="text-sm font-medium text-zinc-500">Loading project details...</p>
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-200 border-t-emerald-600 dark:border-zinc-700 dark:border-t-emerald-400"></div>
+              <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                Loading project details...
+              </p>
             </div>
           </div>
         )}
 
         {!isBusy && isError && (
-          <div className="flex h-64 items-center justify-center rounded-2xl bg-red-50 p-6 text-center">
+          <div className="flex h-64 items-center justify-center rounded-2xl bg-red-50 p-6 text-center dark:bg-red-500/10">
             <div className="space-y-2">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-300">
                 <X className="h-6 w-6" />
               </div>
-              <h3 className="text-sm font-semibold text-red-900">Failed to load project</h3>
-              <p className="text-xs text-red-600">Please check your connection and try again.</p>
+              <h3 className="text-sm font-semibold text-red-900 dark:text-red-300">
+                Failed to load project
+              </h3>
+              <p className="text-xs text-red-600 dark:text-red-400">
+                Please check your connection and try again.
+              </p>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => window.location.reload()}
-                className="mt-2 border-red-200 bg-white text-red-700 hover:bg-red-50"
+                className="mt-2 border-red-200 bg-white text-red-700 hover:bg-red-50 dark:border-red-500/30 dark:bg-zinc-900 dark:text-red-300 dark:hover:bg-red-500/10"
               >
                 Retry
               </Button>
@@ -185,7 +201,7 @@ export default function AdminProjectEditPage() {
                         onChange={(e) => handleChange("name", e.target.value)}
                         placeholder="e.g. Sustainable Tomato Farming"
                         required
-                        className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal"
+                        className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                       />
                     </div>
                   </div>
@@ -202,9 +218,11 @@ export default function AdminProjectEditPage() {
                       <Input
                         id="location"
                         value={formValues.location}
-                        onChange={(e) => handleChange("location", e.target.value)}
+                        onChange={(e) =>
+                          handleChange("location", e.target.value)
+                        }
                         placeholder="e.g. Gazipur, Dhaka"
-                        className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal"
+                        className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                       />
                     </div>
                   </div>
@@ -222,9 +240,11 @@ export default function AdminProjectEditPage() {
                     id="description"
                     rows={8}
                     value={formValues.description}
-                    onChange={(e) => handleChange("description", e.target.value)}
+                    onChange={(e) =>
+                      handleChange("description", e.target.value)
+                    }
                     placeholder="Describe the project, its objectives, financial goals, and expected outcomes..."
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 p-4 text-sm leading-relaxed text-zinc-900 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10 transition-all resize-none placeholder:text-zinc-400"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 p-4 text-sm leading-relaxed text-zinc-900 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10 transition-all resize-none placeholder:text-zinc-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                   />
                 </div>
               </div>
@@ -240,7 +260,7 @@ export default function AdminProjectEditPage() {
                     Cover Image
                   </label>
 
-                  <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 transition-colors hover:border-emerald-500/50 hover:bg-emerald-50/30">
+                  <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 transition-colors hover:border-emerald-500/50 hover:bg-emerald-50/30 dark:border-zinc-700 dark:bg-zinc-900">
                     <input
                       id="photo"
                       type="file"
@@ -257,24 +277,28 @@ export default function AdminProjectEditPage() {
                           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
-                          <div className="rounded-full bg-white/90 px-4 py-2 text-xs font-semibold text-zinc-900 shadow-lg backdrop-blur-sm">
+                          <div className="rounded-full bg-white/90 px-4 py-2 text-xs font-semibold text-zinc-900 shadow-lg backdrop-blur-sm dark:bg-zinc-900 dark:text-zinc-100">
                             Change Image
                           </div>
                         </div>
                       </div>
                     ) : (
                       <div className="flex aspect-[4/3] flex-col items-center justify-center gap-3 p-6 text-center">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-zinc-200">
-                          <Upload className="h-5 w-5 text-zinc-400" />
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-700">
+                          <Upload className="h-5 w-5 text-zinc-400 dark:text-zinc-500" />
                         </div>
                         <div className="space-y-1">
-                          <p className="text-sm font-medium text-zinc-700">Click to upload</p>
-                          <p className="text-xs text-zinc-500">SVG, PNG, JPG or GIF</p>
+                          <p className="text-sm font-medium text-zinc-700 dark:text-zinc-200">
+                            Click to upload
+                          </p>
+                          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                            SVG, PNG, JPG or GIF
+                          </p>
                         </div>
                       </div>
                     )}
                   </div>
-                  <p className="text-[10px] text-zinc-500">
+                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
                     Recommended size: 1200x800px. Max file size: 5MB.
                   </p>
                 </div>
@@ -282,19 +306,19 @@ export default function AdminProjectEditPage() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center justify-end gap-4 border-t border-zinc-100 pt-6">
+            <div className="flex items-center justify-end gap-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => router.push("/admin/projects")}
-                className="h-11 rounded-xl border-zinc-200 px-6 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900"
+                className="h-11 rounded-xl border-zinc-200 px-6 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={isUpdating}
-                className="h-11 rounded-xl bg-emerald-600 px-8 text-sm font-semibold text-white shadow-md shadow-emerald-200 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-200/50 disabled:opacity-70 disabled:shadow-none transition-all"
+                className="h-11 rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-8 text-sm font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] hover:brightness-[1.05] disabled:opacity-70 disabled:shadow-none transition-all"
               >
                 {isUpdating ? (
                   <div className="flex items-center gap-2">

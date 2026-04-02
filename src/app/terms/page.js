@@ -16,17 +16,15 @@ import {
 import { cn } from "@/lib/utils";
 
 export default function TermsOfService() {
-  const [lastUpdated, setLastUpdated] = useState("");
-  useEffect(() => {
+  const [lastUpdated] = useState(() => {
     const d = new Date();
-    const s = d.toLocaleDateString("en-US", {
+    return d.toLocaleDateString("en-US", {
       month: "long",
       day: "numeric",
       year: "numeric",
       timeZone: "UTC",
     });
-    setLastUpdated(s);
-  }, []);
+  });
   const [activeSection, setActiveSection] = useState("agreement");
 
   // Handle scroll spy
@@ -162,7 +160,8 @@ export default function TermsOfService() {
                   </div>
                   <div className="prose prose-zinc max-w-none prose-headings:font-light prose-headings:tracking-tight prose-a:text-emerald-600 hover:prose-a:text-emerald-700">
                     <p className="text-zinc-600 text-lg leading-relaxed">
-                      These Terms of Service constitute a legally binding agreement made between you, whether personally or on behalf of an entity ("you") and <span className="font-semibold text-zinc-900">Farming Investor</span> ("we," "us," or "our"), concerning your access to and use of our website and services.
+                      These Terms of Service constitute a legally binding agreement made between you, whether personally or on behalf of an entity (&quot;you&quot;) and{" "}
+                      <span className="font-semibold text-zinc-900">Farming Investor</span> (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), concerning your access to and use of our website and services.
                     </p>
                   </div>
                 </div>
@@ -265,7 +264,7 @@ export default function TermsOfService() {
                     </h2>
                   </div>
                   <p className="text-zinc-600 leading-relaxed">
-                    Unless otherwise indicated, the Site is our proprietary property and all source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics on the Site (collectively, the "Content") and the trademarks, service marks, and logos contained therein (the "Marks") are owned or controlled by us or licensed to us, and are protected by copyright and trademark laws.
+                    Unless otherwise indicated, the Site is our proprietary property and all source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics on the Site (collectively, the &quot;Content&quot;) and the trademarks, service marks, and logos contained therein (the &quot;Marks&quot;) are owned or controlled by us or licensed to us, and are protected by copyright and trademark laws.
                   </p>
                 </div>
               </section>
