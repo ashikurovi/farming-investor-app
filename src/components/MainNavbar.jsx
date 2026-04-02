@@ -240,10 +240,15 @@ export function MainNavbar() {
       {/* ==================== MOBILE BOTTOM NAV (অপরিবর্তিত) ==================== */}
       <nav className="fixed bottom-0 inset-x-0 z-50 md:hidden bg-white border-t border-zinc-200 shadow-[0_-4px_20px_rgba(0,0,0,0.07)]">
         <div className="flex items-center justify-around px-1 h-[62px]">
+<<<<<<< HEAD
+=======
+
+>>>>>>> d7fecf0 (update home pages)
           {/* Home */}
           {(() => {
             const isActive = pathname === "/";
             return (
+<<<<<<< HEAD
               <Link
                 href="/"
                 className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
@@ -260,6 +265,18 @@ export function MainNavbar() {
                       isActive
                         ? "text-emerald-600"
                         : "text-zinc-400 group-hover:text-zinc-600"
+=======
+              <Link href="/" className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group">
+                <div
+                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
+                    isActive ? "bg-emerald-50 ring-2 ring-emerald-400 ring-offset-1" : ""
+                  }`}
+                  aria-label="Home"
+                >
+                  <Home
+                    className={`h-5 w-5 transition-colors ${
+                      isActive ? "text-emerald-600" : "text-zinc-400 group-hover:text-zinc-600"
+>>>>>>> d7fecf0 (update home pages)
                     }`}
                   />
                 </div>
@@ -272,10 +289,14 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/project");
             return (
+<<<<<<< HEAD
               <Link
                 href="/landing/project"
                 className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
               >
+=======
+              <Link href="/landing/project" className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group">
+>>>>>>> d7fecf0 (update home pages)
                 <div className="w-10 h-10 flex items-center justify-center">
                   <FolderGit2
                     className={`h-5 w-5 transition-colors ${
@@ -300,6 +321,7 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/contact");
             return (
+<<<<<<< HEAD
               <Link
                 href="/landing/contact"
                 className="flex flex-col items-center gap-0.5 pb-1 -mt-3 min-w-[56px] group"
@@ -311,6 +333,10 @@ export function MainNavbar() {
                       : "bg-emerald-400 group-hover:bg-emerald-500"
                   }`}
                 >
+=======
+              <Link href="/landing/contact" className="flex flex-col items-center gap-0.5 pb-1 -mt-3 min-w-[56px] group">
+                <div className={`w-12 h-12 flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${isActive ? "bg-emerald-500" : "bg-emerald-400 group-hover:bg-emerald-500"}`}>
+>>>>>>> d7fecf0 (update home pages)
                   <User className="h-5 w-5 text-white" />
                 </div>
                 <span
@@ -328,10 +354,14 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/gallery");
             return (
+<<<<<<< HEAD
               <Link
                 href="/landing/gallery"
                 className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
               >
+=======
+              <Link href="/landing/gallery" className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group">
+>>>>>>> d7fecf0 (update home pages)
                 <div className="w-10 h-10 flex items-center justify-center">
                   <Images
                     className={`h-5 w-5 transition-colors ${
