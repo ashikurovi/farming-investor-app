@@ -8,12 +8,10 @@ import {
   Heart,
   Facebook,
   MessageCircle,
-  TrendingUp,
-  CircleDollarSign,
-  ShoppingCart,
-  Wallet,
-  BadgeDollarSign,
-  BarChart3,
+  ShieldCheck,
+  Leaf,
+  Calendar,
+  Headset,
 } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
@@ -21,14 +19,19 @@ import { useState, useEffect, useRef } from "react";
 export function ProjectDetails({ project, similarProjects = [] }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isShareMenuOpen, setIsShareMenuOpen] = useState(false);
-  const shareMenuRef = useRef(null);
+  const shareMenuDesktopRef = useRef(null);
+  const shareMenuMobileRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        shareMenuRef.current &&
-        !shareMenuRef.current.contains(event.target)
-      ) {
+      const clickedDesktop =
+        shareMenuDesktopRef.current &&
+        shareMenuDesktopRef.current.contains(event.target);
+      const clickedMobile =
+        shareMenuMobileRef.current &&
+        shareMenuMobileRef.current.contains(event.target);
+
+      if (!clickedDesktop && !clickedMobile) {
         setIsShareMenuOpen(false);
       }
     };
@@ -69,52 +72,6 @@ export function ProjectDetails({ project, similarProjects = [] }) {
     .map((p) => p.trim())
     .filter((p) => p.length > 0);
 
-  const totalInvestment = Number(project.totalInvestment || 0);
-  const totalCost = Number(project.totalCost || 0);
-  const totalSell = Number(project.totalSell || 0);
-  const totalProfit = Number(project.totalProfit || 0);
-  const distributed = Number(project.distributedProfit || 0);
-
-  const fundedPct =
-    totalCost > 0
-      ? Math.min(100, Math.round((totalInvestment / totalCost) * 100))
-      : 0;
-  const roi = totalCost > 0 ? Math.round((totalProfit / totalCost) * 100) : 0;
-  const remaining = Math.max(0, totalCost - totalInvestment);
-
-  const fmt = (n) => `৳${Number(n).toLocaleString("en-US")}`;
-
-  const statCards = [
-    {
-      label: "Total Cost",
-      value: fmt(totalCost),
-      Icon: BadgeDollarSign,
-      color: "text-zinc-700",
-      bg: "bg-zinc-100",
-    },
-    {
-      label: "Total Sell",
-      value: fmt(totalSell),
-      Icon: ShoppingCart,
-      color: "text-sky-700",
-      bg: "bg-sky-50",
-    },
-    {
-      label: "Total Profit",
-      value: fmt(totalProfit),
-      Icon: TrendingUp,
-      color: "text-emerald-700",
-      bg: "bg-emerald-50",
-    },
-    {
-      label: "Distributed Profit",
-      value: fmt(distributed),
-      Icon: Wallet,
-      color: "text-amber-700",
-      bg: "bg-amber-50",
-    },
-  ];
-
   return (
     <div className="bg-zinc-50 min-h-screen pb-20">
       {/* ── Hero ── */}
@@ -148,6 +105,66 @@ export function ProjectDetails({ project, similarProjects = [] }) {
           </div>
         </div>
 
+        <div className="absolute top-6 right-6 z-40 flex gap-3 md:hidden">
+          <button
+            type="button"
+            onClick={() => setIsLiked(!isLiked)}
+            className={`p-3 rounded-full backdrop-blur-md border transition-all ${
+              isLiked
+                ? "bg-red-500/20 border-red-500/50 text-red-400"
+                : "bg-white/10 border-white/20 text-white hover:bg-white/20"
+            }`}
+            aria-label="Like"
+          >
+            <Heart className={`w-5 h-5 ${isLiked ? "fill-current" : ""}`} />
+          </button>
+
+          <div className="relative" ref={shareMenuMobileRef}>
+            <button
+              type="button"
+              onClick={() => setIsShareMenuOpen(!isShareMenuOpen)}
+              className="p-3 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 backdrop-blur-md transition-all"
+              aria-label="Share"
+            >
+              <Share2 className="w-5 h-5" />
+            </button>
+
+            {isShareMenuOpen && (
+              <div className="absolute right-0 mt-3 w-48 bg-white rounded-2xl shadow-2xl border border-zinc-100 py-2 z-[100] animate-in fade-in zoom-in duration-200 origin-top-right">
+                <button
+                  onClick={() => handleShare("facebook")}
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-50 transition-colors"
+                >
+                  <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
+                    <Facebook className="w-4 h-4" />
+                  </div>
+                  Facebook
+                </button>
+                <button
+                  onClick={() => handleShare("messenger")}
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-50 transition-colors"
+                >
+                  <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                    <MessageCircle className="w-4 h-4" />
+                  </div>
+                  Messenger
+                </button>
+                {typeof navigator !== "undefined" && navigator.share && (
+                  <button
+                    onClick={() => handleShare("native")}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-50 border-t border-zinc-100 transition-colors"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-600">
+                      <Share2 className="w-4 h-4" />
+                    </div>
+                    More Options
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Title + actions */}
         <div className="absolute bottom-0 left-0 right-0 z-40 pb-8 sm:pb-12">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -162,7 +179,7 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                 </div>
               </div>
 
-              <div className="flex gap-3">
+              <div className="hidden md:flex gap-3">
                 <button
                   onClick={() => setIsLiked(!isLiked)}
                   className={`p-3 rounded-full backdrop-blur-md border transition-all ${
@@ -176,7 +193,7 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                   />
                 </button>
 
-                <div className="relative" ref={shareMenuRef}>
+                <div className="relative" ref={shareMenuDesktopRef}>
                   <button
                     onClick={() => setIsShareMenuOpen(!isShareMenuOpen)}
                     className="p-3 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 backdrop-blur-md transition-all"
@@ -227,97 +244,54 @@ export function ProjectDetails({ project, similarProjects = [] }) {
       {/* ── Main Content ── */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 -mt-8 relative z-30">
         <div className="max-w-4xl mx-auto w-full space-y-6">
-          {/* Investment Received banner */}
-          <div className="bg-emerald-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl shadow-emerald-900/10 text-white relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32 transition-transform group-hover:scale-110" />
-            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="space-y-2">
-                <span className="text-emerald-100 text-xs sm:text-sm font-bold uppercase tracking-widest flex items-center gap-2">
-                  <CircleDollarSign className="w-4 h-4" />
-                  Investment Received
-                </span>
-                <div className="text-2xl md:text-3xl font-black tracking-tight">
-                  BDT {totalInvestment.toLocaleString("en-US")}
+          <div className="rounded-2xl sm:rounded-3xl border border-zinc-200 bg-white p-6 sm:p-8 shadow-sm">
+            <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-700">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                  Verified Project
                 </div>
-                <p className="text-emerald-100/80 text-xs sm:text-sm font-medium">
-                  Total funding committed by investors to this project
+                <h2 className="text-xl font-bold tracking-tight text-zinc-900 sm:text-2xl">
+                  Project Highlights
+                </h2>
+                <p className="max-w-2xl text-[13px] leading-relaxed text-zinc-600 sm:text-base">
+                  Transparent updates, curated documentation, and clear milestones to help you
+                  evaluate this project with confidence.
                 </p>
               </div>
-              <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4 sm:p-6 border border-white/20 w-full md:w-auto">
-                <div className="text-center">
-                  <div className="text-2xl font-bold mb-1">Growth</div>
-                  <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest opacity-80 flex items-center justify-center gap-1">
-                    <TrendingUp className="w-3.5 h-3.5" />
-                    Steady Returns
+
+              <Link
+                href="/landing/contact"
+                className="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-600 px-6 py-3 text-xs font-bold uppercase tracking-[0.18em] text-white shadow-[0_18px_55px_-40px_rgba(16,185,129,0.75)] transition hover:bg-emerald-500 md:w-auto"
+              >
+                Contact Us
+              </Link>
+            </div>
+
+            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {[
+                { title: "Secure Documentation", desc: "All records and updates in one place", Icon: ShieldCheck },
+                { title: "Sustainable Practices", desc: "Long‑term farming focus", Icon: Leaf },
+                { title: "Weekly Updates", desc: "Progress shared on schedule", Icon: Calendar },
+                { title: "Support Team", desc: "Get help when you need it", Icon: Headset },
+              ].map(({ title, desc, Icon }) => (
+                <div
+                  key={title}
+                  className="flex items-start gap-3 rounded-2xl border border-zinc-200 bg-zinc-50/60 p-4"
+                >
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white text-emerald-700 ring-1 ring-emerald-100">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-sm font-bold text-zinc-900">
+                      {title}
+                    </div>
+                    <div className="mt-1 text-[12px] leading-relaxed text-zinc-600">
+                      {desc}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Financial stats grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {statCards.map(({ label, value, Icon, color, bg }) => (
-              <div
-                key={label}
-                className="bg-white rounded-2xl border border-zinc-100 p-4 flex flex-col gap-3"
-              >
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center ${bg}`}
-                >
-                  <Icon className={`w-4 h-4 ${color}`} />
-                </div>
-                <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-widest text-zinc-400 mb-0.5">
-                    {label}
-                  </p>
-                  <p className={`text-[14px] font-bold ${color}`}>{value}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Funding progress */}
-          <div className="bg-white rounded-2xl sm:rounded-3xl border border-zinc-100 p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <BarChart3 className="w-5 h-5 text-emerald-600" />
-              <h3 className="text-[15px] font-bold text-zinc-900">
-                Funding Progress
-              </h3>
-            </div>
-            <div className="flex items-end justify-between mb-2">
-              <div>
-                <p className="text-[11px] text-zinc-400 mb-0.5 uppercase tracking-widest font-semibold">
-                  Raised
-                </p>
-                <p className="text-xl font-bold text-zinc-900">
-                  {fmt(totalInvestment)}
-                </p>
-              </div>
-              <div className="text-right">
-                <p className="text-3xl font-black text-emerald-600">
-                  {fundedPct}%
-                </p>
-                <p className="text-[11px] text-zinc-400">of {fmt(totalCost)}</p>
-              </div>
-            </div>
-            <div className="h-2.5 w-full rounded-full bg-zinc-100 overflow-hidden mb-2">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-700"
-                style={{ width: `${fundedPct}%` }}
-              />
-            </div>
-            <div className="flex justify-between text-[12px]">
-              <span className="text-zinc-400">
-                ROI:{" "}
-                <span className="text-emerald-600 font-semibold">{roi}%</span>
-              </span>
-              <span className="text-zinc-400">
-                Remaining:{" "}
-                <span className="font-semibold text-zinc-700">
-                  {fmt(remaining)}
-                </span>
-              </span>
+              ))}
             </div>
           </div>
 
