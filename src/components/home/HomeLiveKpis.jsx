@@ -1,6 +1,90 @@
 "use client";
 
-import { Leaf, Sprout, Truck, BadgeCheck } from "lucide-react";
+import { Leaf, Sprout, Truck, BadgeCheck, Droplets, Wind, Sun, TrendingUp, Coins, Users } from "lucide-react";
+
+const WeatherIcon = ({ code, className }) => {
+  return <Sun className={className} />;
+};
+
+const weather = {
+  isLoaded: true,
+  code: 'sunny',
+  condition: 'Sunny',
+  temp: 28,
+  humidity: 65,
+  wind: 12
+};
+
+const kpis = [
+  {
+    label: "Total Yield",
+    value: "2,450 ton",
+    trend: "+12.5%",
+    theme: {
+      bar: "from-emerald-400 to-teal-400",
+      iconBg: "bg-emerald-50",
+      iconRing: "ring-emerald-100",
+      iconColor: "text-emerald-600",
+      pillBg: "bg-emerald-50",
+      pillText: "text-emerald-700",
+      pillBorder: "border-emerald-200",
+      spark: "bg-emerald-400",
+    },
+    icon: Sprout,
+    sparkHeights: [12, 18, 15, 24, 20, 32, 28, 40]
+  },
+  {
+    label: "Active Projects",
+    value: "14",
+    trend: "+2",
+    theme: {
+      bar: "from-blue-400 to-indigo-400",
+      iconBg: "bg-blue-50",
+      iconRing: "ring-blue-100",
+      iconColor: "text-blue-600",
+      pillBg: "bg-blue-50",
+      pillText: "text-blue-700",
+      pillBorder: "border-blue-200",
+      spark: "bg-blue-400",
+    },
+    icon: Leaf,
+    sparkHeights: [10, 15, 12, 20, 18, 25, 22, 30]
+  },
+  {
+    label: "Total Investment",
+    value: "$1.2M",
+    trend: "+18%",
+    theme: {
+      bar: "from-amber-400 to-orange-400",
+      iconBg: "bg-amber-50",
+      iconRing: "ring-amber-100",
+      iconColor: "text-amber-600",
+      pillBg: "bg-amber-50",
+      pillText: "text-amber-700",
+      pillBorder: "border-amber-200",
+      spark: "bg-amber-400",
+    },
+    icon: Coins,
+    sparkHeights: [8, 12, 16, 14, 22, 28, 24, 35]
+  },
+  {
+    label: "Total Investors",
+    value: "450",
+    trend: "+5.2%",
+    theme: {
+      bar: "from-purple-400 to-pink-400",
+      iconBg: "bg-purple-50",
+      iconRing: "ring-purple-100",
+      iconColor: "text-purple-600",
+      pillBg: "bg-purple-50",
+      pillText: "text-purple-700",
+      pillBorder: "border-purple-200",
+      spark: "bg-purple-400",
+    },
+    icon: Users,
+    sparkHeights: [15, 10, 18, 25, 20, 22, 30, 28]
+  }
+];
 
 const bottomCards = [
   {

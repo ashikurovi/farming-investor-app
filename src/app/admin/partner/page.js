@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useGetPartnersQuery, useGetPartnerByIdQuery, useDistributeCommissionMutation, useAddPartnerMutation, useAddInvestmentMutation } from "@/features/partner/partnerApiSlice";
+import { useGetPartnersQuery, useGetPartnerByIdQuery, useAddPartnerMutation, useAddInvestmentMutation, useWithdrawPartnerProfitMutation } from "@/features/partner/partnerApiSlice";
 import { toast } from "sonner";
 import { Loader2, Plus, Users, Landmark, Banknote, Shield, Briefcase, Activity, TrendingUp, RefreshCw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -122,24 +122,9 @@ function PartnerDashboard({ userId }) {
 
 function AdminPartnerDashboard() {
   const { data: partners, isLoading, refetch } = useGetPartnersQuery();
-  const [distributeTask, { isLoading: isDistributing }] = useDistributeCommissionMutation();
-  const [distAmount, setDistAmount] = useState("");
-
   const [activePartnerId, setActivePartnerId] = useState(null);
-
-  const handleDistribute = async (e) => {
-    e.preventDefault();
-    if (!distAmount || Number(distAmount) <= 0) return toast.error("Enter a valid amount");
-
-    try {
-      await distributeTask({ amount: Number(distAmount) }).unwrap();
-      toast.success("Commission distributed successfully!");
-      setDistAmount("");
-      refetch();
-    } catch (err) {
-      toast.error(err?.data?.message || "Failed to distribute commission");
-    }
-  };
+  const [payoutPartnerId, setPayoutPartnerId] = useState(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   if (isLoading) {
     return (
@@ -157,13 +142,18 @@ function AdminPartnerDashboard() {
       animate={{ opacity: 1, y: 0 }}
       className="space-y-8"
     >
-      <div className="grid gap-6 lg:grid-cols-3">
-         <div className="lg:col-span-2 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5 dark:bg-gray-900 dark:ring-white/10">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                <Users className="h-5 w-5 text-indigo-500" /> Partner Directory
-              </h2>
-            </div>
+      <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5 dark:bg-gray-900 dark:ring-white/10">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <Users className="h-5 w-5 text-indigo-500" /> Partner Directory
+          </h2>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="flex items-center gap-1.5 rounded-xl bg-gray-900 px-4 py-2 font-semibold text-white shadow-sm hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 transition-colors"
+          >
+            <Plus className="h-4 w-4" /> Add Partner
+          </button>
+        </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm text-gray-600 dark:text-gray-400">
                 <thead className="bg-gray-50 text-gray-900 dark:bg-gray-800/50 dark:text-white">
@@ -196,12 +186,20 @@ function AdminPartnerDashboard() {
                           ৳{Number(p.totalProfit).toLocaleString()}
                         </td>
                         <td className="px-4 py-4 text-center">
-                          <button
-                            onClick={() => setActivePartnerId(p.id)}
-                            className="inline-flex items-center gap-1 rounded bg-indigo-50 px-2 py-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-400 dark:hover:bg-indigo-500/20 transition-colors"
-                          >
-                            <Plus className="h-3 w-3" /> Add Fund
-                          </button>
+                          <div className="flex items-center justify-center gap-2">
+                            <button
+                              onClick={() => setActivePartnerId(p.id)}
+                              className="inline-flex items-center gap-1 rounded bg-indigo-50 px-2 py-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-400 dark:hover:bg-indigo-500/20 transition-colors"
+                            >
+                              <Plus className="h-3 w-3" /> Add Fund
+                            </button>
+                            <button
+                              onClick={() => setPayoutPartnerId(p.id)}
+                              className="inline-flex items-center gap-1 rounded bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-600 hover:bg-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:hover:bg-emerald-500/20 transition-colors"
+                            >
+                              <Banknote className="h-3 w-3" /> Payout
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     );
@@ -218,45 +216,6 @@ function AdminPartnerDashboard() {
             </div>
          </div>
 
-         <div className="space-y-6">
-            <div className="rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 p-6 text-white shadow-lg shadow-indigo-500/20">
-               <h3 className="text-lg font-bold flex items-center gap-2 mb-2">
-                 <Activity className="h-5 w-5 text-indigo-100" /> Distribute Commission
-               </h3>
-               <p className="text-indigo-100 text-sm mb-6 leading-relaxed">
-                 Generate commission relative to individual investment portions dynamically. Total Pool: ৳{totalPool.toLocaleString()}
-               </p>
-
-               <form onSubmit={handleDistribute} className="space-y-4">
-                 <div>
-                   <label className="sr-only">Amount to distribute</label>
-                   <div className="relative">
-                     <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-200">৳</span>
-                     <input
-                       type="number"
-                       min="0.01"
-                       step="0.01"
-                       value={distAmount}
-                       onChange={(e) => setDistAmount(e.target.value)}
-                       className="block w-full rounded-xl border-0 bg-white/10 py-3 pl-8 pr-4 text-white placeholder:text-indigo-200 focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm sm:text-sm"
-                       placeholder="Enter amount..."
-                     />
-                   </div>
-                 </div>
-                 <button
-                   disabled={isDistributing}
-                   type="submit"
-                   className="w-full flex items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all disabled:opacity-70"
-                 >
-                   {isDistributing ? <Loader2 className="h-4 w-4 animate-spin" /> : "Distribute Profit"}
-                 </button>
-               </form>
-            </div>
-
-            <CreatePartnerForm onCreated={refetch} />
-         </div>
-      </div>
-
       <AnimatePresence>
         {activePartnerId && (
           <AddInvestmentModal 
@@ -265,12 +224,25 @@ function AdminPartnerDashboard() {
             onSuccess={refetch}
           />
         )}
+        {payoutPartnerId && (
+          <PayoutProfitModal 
+            partnerId={payoutPartnerId} 
+            onClose={() => setPayoutPartnerId(null)} 
+            onSuccess={refetch}
+          />
+        )}
+        {showCreateModal && (
+          <CreatePartnerModal
+            onClose={() => setShowCreateModal(false)}
+            onSuccess={refetch}
+          />
+        )}
       </AnimatePresence>
     </motion.div>
   );
 }
 
-function CreatePartnerForm({ onCreated }) {
+function CreatePartnerModal({ onClose, onSuccess }) {
   const [addPartner, { isLoading }] = useAddPartnerMutation();
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", password: "" });
 
@@ -279,33 +251,39 @@ function CreatePartnerForm({ onCreated }) {
     try {
       await addPartner(formData).unwrap();
       toast.success("Partner added successfully!");
-      setFormData({ name: "", email: "", phone: "", password: "" });
-      onCreated();
+      onSuccess();
+      onClose();
     } catch (err) {
       toast.error(err?.data?.message || "Failed to create partner");
     }
   };
 
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5 dark:bg-gray-900 dark:ring-white/10">
-      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Add New Partner</h3>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <input required type="text" placeholder="Full Name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="block w-full rounded-lg border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:ring-white/10" />
-        </div>
-        <div>
-          <input required type="email" placeholder="Email Address" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="block w-full rounded-lg border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:ring-white/10" />
-        </div>
-        <div>
-          <input required type="text" placeholder="Phone Number" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} className="block w-full rounded-lg border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:ring-white/10" />
-        </div>
-        <div>
-          <input required type="password" placeholder="Password (Min 6 chars)" minLength={6} value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} className="block w-full rounded-lg border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:ring-white/10" />
-        </div>
-        <button disabled={isLoading} type="submit" className="w-full flex items-center justify-center rounded-lg bg-gray-900 px-3 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 disabled:opacity-70 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 transition-colors">
-          {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Register Partner"}
-        </button>
-      </form>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" onClick={onClose} />
+      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900 dark:ring-1 dark:ring-white/10">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Add New Partner</h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <input required type="text" placeholder="Full Name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="block w-full rounded-xl border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:ring-white/10" />
+          </div>
+          <div>
+            <input required type="email" placeholder="Email Address" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="block w-full rounded-xl border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:ring-white/10" />
+          </div>
+          <div>
+            <input required type="text" placeholder="Phone Number" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} className="block w-full rounded-xl border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:ring-white/10" />
+          </div>
+          <div>
+            <input required type="password" placeholder="Password (Min 6 chars)" minLength={6} value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} className="block w-full rounded-xl border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:ring-white/10" />
+          </div>
+          <div className="flex gap-3 pt-2">
+             <button type="button" onClick={onClose} className="flex-1 rounded-xl bg-gray-100 px-4 py-3 font-semibold text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors">Cancel</button>
+             <button disabled={isLoading} type="submit" className="flex-1 flex items-center justify-center rounded-xl bg-gray-900 px-4 py-3 font-semibold text-white shadow-sm hover:bg-gray-800 disabled:opacity-70 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 transition-colors">
+               {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Register"}
+             </button>
+          </div>
+        </form>
+      </motion.div>
     </div>
   );
 }

@@ -32,7 +32,15 @@ export const partnerApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["Partners"],
+    }),
+    withdrawPartnerProfit: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/partner/${id}/withdraw-profit`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Partners"],
     }),
   }),
 });
@@ -43,4 +51,5 @@ export const {
   useAddPartnerMutation,
   useAddInvestmentMutation,
   useDistributeCommissionMutation,
+  useWithdrawPartnerProfitMutation,
 } = partnerApiSlice;
