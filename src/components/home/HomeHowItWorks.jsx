@@ -22,7 +22,7 @@ export default function AgricultureEvolvingSection() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
 
         {/* ── LEFT COLUMN ── */}
-        <div className="flex flex-col gap-8">
+        <div className="order-2 lg:order-1 flex flex-col gap-8">
 
           {/* Top Image */}
           <div className="relative rounded-3xl overflow-hidden aspect-[4/3] max-w-full group">
@@ -84,7 +84,7 @@ export default function AgricultureEvolvingSection() {
         </div>
 
         {/* ── RIGHT COLUMN ── */}
-        <div className="flex flex-col gap-10 lg:pt-2">
+        <div className="order-1 lg:order-2 flex flex-col gap-10 lg:pt-2">
 
           {/* Heading */}
           <div className="flex flex-col gap-5">

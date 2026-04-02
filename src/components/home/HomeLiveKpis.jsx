@@ -2,114 +2,140 @@
 
 import { Leaf, Sprout, Truck, BadgeCheck } from "lucide-react";
 
+const bottomCards = [
+  {
+    icon: <Sprout className="h-5 w-5" />,
+    title: "Organic Crop Production",
+    desc: "Augue laoreet mattis platea nec nullam suscipit aliquam lorem.",
+  },
+  {
+    icon: <Leaf className="h-5 w-5" />,
+    title: "Sustainable Farm Management",
+    desc: "Augue laoreet mattis platea nec nullam suscipit aliquam lorem.",
+  },
+  {
+    icon: <Truck className="h-5 w-5" />,
+    title: "Export & Supply Partnership",
+    desc: "Augue laoreet mattis platea nec nullam suscipit aliquam lorem.",
+  },
+];
+
 export default function HomeLiveKpis() {
   return (
-    <section id="live-kpis" className="relative overflow-hidden py-16">
-     
+    <section id="live-kpis" className="relative overflow-hidden bg-[#f6f7f4] py-16 lg:py-24">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
 
-      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
+        {/* TOP GRID */}
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+
           {/* LEFT */}
-          <div className="lg:col-span-6">
-            <div className="text-[11px] font-semibold tracking-[0.3em] text-emerald-600 uppercase">
-              Who We Are
+          <div className="flex flex-col">
+            <div className="mb-4 inline-flex items-center gap-2 w-fit">
+              <span className="w-2 h-2 rounded-full bg-[#4d8c1e]" />
+              <span className="text-[10px] font-bold tracking-[0.18em] uppercase text-[#4d8c1e]">
+                Who We Are
+              </span>
             </div>
 
-            <h2 className="mt-4 text-4xl font-bold tracking-tight text-zinc-900 sm:text-5xl leading-tight">
-              Our Journey Toward Sustainable And Responsible Agriculture
+            <h2
+              className="text-[clamp(28px,3.5vw,44px)] font-bold text-[#1a1f14] leading-[1.15] mb-5"
+              style={{ fontFamily: "'Georgia', serif" }}
+            >
+              Our Journey Toward{" "}
+              <span className="block">Sustainable And</span>
+              <span
+                className="font-light text-[#4d8c1e]"
+                style={{ fontStyle: "italic" }}
+              >
+                Responsible Agriculture
+              </span>
             </h2>
 
-            <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-zinc-500">
+            <p className="text-[15px] leading-relaxed text-[#6b7466] font-light max-w-[420px] mb-7">
               Luctus felis diam lectus in aptent vehicula curabitur duis
               ultrices. Consequat nulla nostra tempor ridiculus sociosqu maximus
               laoreet.
             </p>
 
-            <div className="mt-7">
-              <a
-                href="/landing/about"
-                className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#6b8e23] to-[#9acd32] px-8 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.97]"
-              >
-                Discover more
-              </a>
-            </div>
+            <a
+              href="/landing/about"
+              className="inline-flex items-center gap-2 w-fit rounded-full px-7 py-3 text-[13px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl active:scale-[0.97]"
+              style={{
+                background: "linear-gradient(135deg, #4d8c1e, #7cc22e)",
+                boxShadow: "0 4px 20px rgba(77,140,30,0.3)",
+              }}
+            >
+              Discover more
+              <span className="transition-transform duration-300">&#8594;</span>
+            </a>
           </div>
 
-          {/* RIGHT */}
-          <div className="lg:col-span-6">
-            <div className="grid grid-cols-2 grid-rows-2 gap-4">
-              {/* Big Image */}
-              <div className="row-span-2 overflow-hidden rounded-3xl group">
-                <img
-                  src="/img_7-2048x1024.jpg"
-                  alt="Sustainable farming"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+          {/* RIGHT — 2-col image grid */}
+          <div
+            className="grid grid-cols-2 gap-3.5"
+            style={{ gridTemplateRows: "auto auto" }}
+          >
+            {/* Big image spanning 2 rows */}
+            <div className="row-span-2 rounded-3xl overflow-hidden group min-h-[320px] lg:min-h-[360px]">
+              <img
+                src="/img_7-2048x1024.jpg"
+                alt="Sustainable farming"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
+
+            {/* Glass info card */}
+            <div className="rounded-3xl bg-white p-5 shadow-md border border-white/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+              <div
+                className="mb-3.5 flex h-11 w-11 items-center justify-center rounded-2xl text-white shadow-md"
+                style={{ background: "linear-gradient(135deg,#4d8c1e,#7cc22e)" }}
+              >
+                <BadgeCheck className="h-5 w-5" />
               </div>
+              <p className="text-[14px] font-semibold text-[#1a1f14] mb-1.5">
+                Organic Farming Expertise
+              </p>
+              <p className="text-[12px] text-[#8a9185] leading-relaxed">
+                Dictumst feugiat mauris conubia et enim pellentesque porttitor.
+              </p>
+            </div>
 
-              {/* Glass Card */}
-              <div className="rounded-3xl backdrop-blur-xl bg-white/40 p-6 border border-white/30 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-r from-emerald-700 to-lime-500 text-white shadow-md">
-                  <BadgeCheck className="h-5 w-5" />
-                </div>
-
-                <div className="mt-4 text-base font-semibold text-zinc-900">
-                  Organic Farming Expertise
-                </div>
-
-                <div className="mt-2 text-sm text-zinc-600">
-                  Dictumst feugiat mauris conubia et enim pellentesque
-                  porttitor.
-                </div>
-              </div>
-
-              {/* Small Image */}
-              <div className="overflow-hidden rounded-3xl group">
-                <img
-                  src="/img_4-2048x1024.jpg"
-                  alt="Fresh harvest"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
+            {/* Small image */}
+            <div className="rounded-3xl overflow-hidden group min-h-[150px]">
+              <img
+                src="/img_4-2048x1024.jpg"
+                alt="Fresh harvest"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
             </div>
           </div>
         </div>
 
-        {/* Bottom Cards */}
-        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
-          {[
-            {
-              icon: <Sprout className="h-5 w-5" />,
-              title: "Organic Crop Production",
-            },
-            {
-              icon: <Leaf className="h-5 w-5" />,
-              title: "Sustainable Farm Management",
-            },
-            {
-              icon: <Truck className="h-5 w-5" />,
-              title: "Export & Supply Partnership",
-            },
-          ].map((item, i) => (
+        {/* BOTTOM CARDS */}
+        <div className="mt-10 grid grid-cols-1 gap-3.5 sm:grid-cols-2 md:grid-cols-3">
+          {bottomCards.map((item, i) => (
             <div
               key={i}
-              className="group flex items-start gap-4 rounded-2xl bg-white/70 backdrop-blur-lg px-5 py-5 border border-zinc-100 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+              className="group flex items-start gap-4 rounded-2xl bg-white px-5 py-5 border border-[#edf0e8] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[#c8dea8]"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-r from-[#6b8e23] to-[#9acd32] text-white shadow-md group-hover:scale-110 transition">
+              <div
+                className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl text-white shadow-md transition-transform duration-300 group-hover:scale-110"
+                style={{ background: "linear-gradient(135deg,#4d8c1e,#7cc22e)" }}
+              >
                 {item.icon}
               </div>
-
               <div>
-                <div className="text-base font-semibold text-zinc-900">
+                <p className="text-[14px] font-semibold text-[#1a1f14] mb-1">
                   {item.title}
-                </div>
-                <div className="mt-1 text-sm text-zinc-500">
-                  Augue laoreet mattis platea nec nullam suscipit aliquam lorem.
-                </div>
+                </p>
+                <p className="text-[12px] text-[#8a9185] leading-relaxed">
+                  {item.desc}
+                </p>
               </div>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );

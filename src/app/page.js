@@ -13,7 +13,7 @@ import WhatsAppButton from "../components/WhatsAppButton";
 
 export default function Home() {
   const recentProjects = getRecentProjects(4);
-
+// bg-[#f6f7f4] aii sectionns er bg coloor hoba ai ta
   return (
     <main className="min-h-screen space-y-10 bg-zinc-50">
       <HomeHero />
