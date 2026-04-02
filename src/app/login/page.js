@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Sprout, ArrowLeft } from "lucide-react";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { LoginImageSlider } from "@/components/auth/LoginImageSlider";
+import { MobileLoginBackground } from "@/components/auth/MobileLoginBackground";
 
 export const metadata = {
   title: "Login | Framing Investor App",
@@ -13,17 +14,7 @@ export default function LoginPage() {
   return (
     <div className="relative min-h-screen w-full flex lg:grid lg:grid-cols-2">
       {/* Mobile Background Image */}
-      <div className="absolute inset-0 z-0 lg:hidden">
-         <Image
-            src="https://images.pexels.com/photos/2132126/pexels-photo-2132126.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt="Farm Landscape"
-            fill
-            className="object-cover"
-            priority
-            quality={90}
-          />
-          <div className="absolute inset-0 bg-zinc-900/60 backdrop-blur-[2px]" />
-      </div>
+      <MobileLoginBackground />
 
       {/* Left Column: Login Form Container */}
       <div className="relative z-10 flex w-full flex-col items-center justify-center p-4 sm:p-6 lg:p-12">
