@@ -1,102 +1,147 @@
 "use client";
-import { UserPlus, Search, Sprout, Landmark, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { useEffect, useRef } from "react";
 
-function StepCard({ id, title, description, Icon }) {
+export default function AgricultureEvolvingSection() {
+  const barRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && barRef.current) {
+          barRef.current.style.width = "73%";
+        }
+      },
+      { threshold: 0.3 }
+    );
+    if (barRef.current) observer.observe(barRef.current.parentElement);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="group relative bg-white p-8 rounded-3xl border border-zinc-100 shadow-sm hover:shadow-xl hover:border-emerald-100 transition-all duration-500 overflow-hidden">
-      {/* Background Decorative Number */}
-      <div className="absolute -right-4 -top-4 text-[120px] font-bold text-zinc-50 group-hover:text-emerald-50/80 transition-colors duration-500 select-none leading-none z-0">
-        {id}
-      </div>
+    <section className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col h-full">
-        <div className="mb-8 inline-flex p-4 rounded-2xl bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-500 w-fit shadow-sm group-hover:shadow-emerald-200">
-          <Icon className="w-8 h-8" strokeWidth={1.5} />
-        </div>
+        {/* ── LEFT COLUMN ── */}
+        <div className="flex flex-col gap-8">
 
-        <h3 className="text-xl font-bold text-zinc-900 mb-4 group-hover:text-emerald-700 transition-colors">
-          {title}
-        </h3>
-
-        <p className="text-zinc-500 leading-relaxed mb-8 flex-grow">
-          {description}
-        </p>
-
-        <div className="flex items-center text-sm font-semibold text-emerald-600 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-          Learn more <ArrowRight className="w-4 h-4 ml-2" />
-        </div>
-      </div>
-
-      {/* Bottom Gradient Line */}
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-    </div>
-  );
-}
-
-const steps = [
-  {
-    id: "01",
-    title: "Create Profile",
-    description:
-      "Join our exclusive network of accredited agricultural investors. Complete your verification securely in minutes.",
-    icon: UserPlus,
-  },
-  {
-    id: "02",
-    title: "Select Assets",
-    description:
-      "Browse vetted high-yield farmland opportunities. Filter by crop type, region, and risk profile to match your strategy.",
-    icon: Search,
-  },
-  {
-    id: "03",
-    title: "Invest & Grow",
-    description:
-      "Allocate capital directly to operational farms. Your funds facilitate modern equipment, seeds, and sustainable practices.",
-    icon: Sprout,
-  },
-  {
-    id: "04",
-    title: "Harvest Returns",
-    description:
-      "Track real-time crop performance and receive seasonal dividend payouts directly to your secure wallet.",
-    icon: Landmark,
-  },
-];
-
-export default function HomeHowItWorks() {
-  return (
-    <section className="">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-          <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
-                Simple Process
+          {/* Top Image */}
+          <div className="relative rounded-3xl overflow-hidden aspect-[4/3] max-w-full group">
+            <img
+              src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=800&q=80"
+              alt="Farmers in greenhouse"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            {/* Live Badge */}
+            <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-white/90 backdrop-blur-md rounded-xl px-4 py-2.5 border border-white/60 shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-xs font-semibold text-emerald-800 tracking-wide">
+                Smart Farming Active
               </span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
-              Cultivate <span className="font-serif italic">wealth</span> in
-              four simple{" "}
-              <span className="font-serif italic text-emerald-700">steps</span>.
-            </h2>
+          </div>
+
+          {/* Text + Stats */}
+          <div className="flex flex-col gap-5">
+            <p className="text-[15px] leading-relaxed text-zinc-500 font-light">
+              Farmers today face{" "}
+              <strong className="text-green-800 font-medium">
+                rising costs, climate uncertainty
+              </strong>
+              , and limited visibility into their operations. Decisions are
+              often reactive, not strategic — leading to wasted resources and
+              unpredictable outcomes.
+            </p>
+            <p className="text-[15px] leading-relaxed text-zinc-500 font-light">
+              We transform fragmented farm data into clear,{" "}
+              <strong className="text-green-800 font-medium">
+                actionable intelligence
+              </strong>{" "}
+              — enabling farmers and agribusinesses to operate with confidence,
+              precision, and long-term sustainability.
+            </p>
+
+            {/* Stats Row */}
+            <div className="flex gap-8 pt-2 border-t border-zinc-100">
+              {[
+                { num: "3.2×", label: "Yield Growth" },
+                { num: "40%", label: "Cost Reduced" },
+                { num: "12k+", label: "Farms Served" },
+              ].map(({ num, label }) => (
+                <div key={label} className="flex flex-col gap-1">
+                  <span
+                    className="font-serif italic text-3xl text-green-800 leading-none"
+                    style={{ fontFamily: "'Georgia', serif" }}
+                  >
+                    {num}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-semibold">
+                    {label}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
-          {steps.map((step, index) => (
-            <StepCard
-              key={index}
-              id={step.id}
-              title={step.title}
-              description={step.description}
-              Icon={step.icon}
+        {/* ── RIGHT COLUMN ── */}
+        <div className="flex flex-col gap-10 lg:pt-2">
+
+          {/* Heading */}
+          <div className="flex flex-col gap-5">
+            {/* Tag */}
+            <div className="inline-flex items-center gap-2 bg-white border border-zinc-200 rounded-full px-3 py-1 w-fit">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">
+                The Problem
+              </span>
+            </div>
+
+            <h2 className="text-2xl md:text-4xl text-zinc-900 leading-tight font-light tracking-tight">
+              Agriculture Is Evolving.{" "}
+              <span className="block">Traditional Systems</span>
+              <span
+                className="italic text-emerald-700"
+                style={{ fontFamily: "'Georgia', serif" }}
+              >
+                Can&rsquo;t Keep Up.
+              </span>
+            </h2>
+          </div>
+
+          {/* Main Image with floating card */}
+          <div className="relative rounded-3xl overflow-hidden aspect-[3/2] group">
+            <img
+              src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=900&q=80"
+              alt="Farmer walking in sunset field"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
             />
-          ))}
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+
+            {/* Floating Analytics Card */}
+            <div className="absolute bottom-4 right-4 bg-white/95 backdrop-blur-xl rounded-2xl p-3.5 shadow-xl border border-white/70 min-w-[160px]">
+              <p className="text-[9px] uppercase tracking-widest text-zinc-400 font-semibold mb-2">
+                Crop Efficiency
+              </p>
+              <div className="w-full h-1.5 bg-emerald-50 rounded-full overflow-hidden">
+                <div
+                  ref={barRef}
+                  className="h-full bg-gradient-to-r from-emerald-400 to-green-600 rounded-full transition-all duration-1000 ease-out"
+                  style={{ width: "0%" }}
+                />
+              </div>
+              <div className="flex justify-between mt-1.5">
+                <span className="text-[11px] font-semibold text-zinc-700">
+                  Season Progress
+                </span>
+                <span className="text-[11px] font-bold text-emerald-500">
+                  +73%
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
+
       </div>
     </section>
   );

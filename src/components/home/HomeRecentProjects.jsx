@@ -1,8 +1,6 @@
 "use client";
 import Link from "next/link";
-import {
-  ArrowRight,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useGetProjectsQuery } from "@/features/admin/projects/projectsApiSlice";
 import { Loader } from "@/components/ui/loader";
 import { ProjectCard } from "@/components/landing/project/ProjectCard";

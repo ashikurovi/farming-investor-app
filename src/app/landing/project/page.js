@@ -3,7 +3,8 @@ import { ProjectFeed } from "../../../components/landing/project/ProjectFeed";
 
 export const metadata = {
   title: "Projects | Farming Investor App",
-  description: "Browse high-yield agricultural investment opportunities. From livestock to seasonal crops, find sustainable projects that grow your wealth.",
+  description:
+    "Browse high-yield agricultural investment opportunities. From livestock to seasonal crops, find sustainable projects that grow your wealth.",
 };
 
 export default function ProjectsPage() {

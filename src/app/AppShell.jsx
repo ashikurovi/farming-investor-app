@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { MainNavbar } from "../components/MainNavbar";
@@ -16,7 +16,8 @@ export function AppShell({ children }) {
 // ...App
   const token = useSelector((state) => state.auth?.token);
   const user = useSelector((state) => state.auth?.user);
-  const [authHydrated, setAuthHydrated] = useState(false);
+  const storedToken =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   const isAuthRoute =
     pathname.startsWith("/login") ||
@@ -28,21 +29,20 @@ export function AppShell({ children }) {
   const isProtectedRoute = isAdminRoute || isInvestorRoute;
 
   const { isFetching } = useMeQuery(undefined, {
-    skip: !authHydrated || !token,
+    skip: !token,
   });
 
   useEffect(() => {
-    const t = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-    if (t && !token) {
-      dispatch(setCredentials({ token: t, user: user ?? null }));
+    if (storedToken && !token) {
+      dispatch(setCredentials({ token: storedToken, user: user ?? null }));
     }
-    setAuthHydrated(true);
-  }, [dispatch, token, user]);
+  }, [dispatch, storedToken, token, user]);
 
   useEffect(() => {
-    if (!isProtectedRoute || !authHydrated) return;
+    if (!isProtectedRoute) return;
 
-    if (!token) {
+    const effectiveToken = token || storedToken;
+    if (!effectiveToken) {
       toast.error("Please log in to continue.");
       router.replace("/login");
       return;
@@ -72,10 +72,10 @@ export function AppShell({ children }) {
     isAdminRoute,
     isInvestorRoute,
     token,
+    storedToken,
     user,
     isFetching,
     router,
-    authHydrated,
   ]);
 
   const isBareLayoutRoute = isProtectedRoute || isAuthRoute;
@@ -87,7 +87,9 @@ export function AppShell({ children }) {
   return (
     <div className="relative flex min-h-screen flex-col bg-background text-foreground">
       <MainNavbar />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 pb-[calc(env(safe-area-inset-bottom)+62px)] md:pb-0">
+        {children}
+      </main>
       <MainFooter />
     </div>
   );
