@@ -182,7 +182,7 @@ export default function Sidebar() {
       </aside>
 
       <nav className="fixed inset-x-0 bottom-0 z-50 lg:hidden border-t border-zinc-200/70 bg-white/85 backdrop-blur-xl">
-        <div className="mx-auto grid max-w-md grid-cols-4 px-2 pt-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)]">
+        <div className="mx-auto grid max-w-lg grid-cols-5 px-2 pt-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)]">
           {sidebarNavigation.map((item) => {
             const isActive =
               pathname === item.href ||
@@ -217,6 +217,21 @@ export default function Sidebar() {
               </Link>
             );
           })}
+
+          <button
+            type="button"
+            disabled={isLoggingOut}
+            onClick={handleLogout}
+            className="flex flex-col items-center justify-center gap-1.5 py-1.5 disabled:opacity-60"
+            aria-label="Logout"
+          >
+            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-rose-50 text-rose-600 ring-1 ring-rose-200 transition-all active:scale-[0.98]">
+              <LogOut className="h-5 w-5" />
+            </span>
+            <span className="text-[10px] font-semibold leading-none text-rose-600">
+              Logout
+            </span>
+          </button>
         </div>
       </nav>
     </>

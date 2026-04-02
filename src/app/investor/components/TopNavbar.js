@@ -149,7 +149,7 @@ export default function TopNavbar() {
             type="button"
             size="icon"
             variant="ghost"
-            className="md:hidden text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100/80 rounded-full h-9 w-9"
+            className="hidden"
             onClick={() => setSearchOpen(!searchOpen)}
           >
             <Search className="h-4 w-4" />
