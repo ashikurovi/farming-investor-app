@@ -49,17 +49,17 @@ export function ConfirmDialog({
     <Modal isOpen={isOpen} onClose={onCancel} size="sm">
       <div className="flex flex-col items-center text-center p-4 sm:p-6">
         <div
-          className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full ${currentVariant.iconBg} mb-5 ring-4 ring-white shadow-sm`}
+          className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full ${currentVariant.iconBg} mb-5 ring-4 ring-white shadow-sm dark:ring-zinc-900`}
         >
           <Icon className={`h-7 w-7 ${currentVariant.iconColor}`} />
         </div>
 
-        <h3 className="text-xl font-bold text-gray-900 mb-2 tracking-tight">
+        <h3 className="text-xl font-bold text-gray-900 mb-2 tracking-tight dark:text-zinc-100">
           {title}
         </h3>
 
         {description && (
-          <p className="text-sm text-gray-500 mb-8 max-w-[280px] leading-relaxed">
+          <p className="text-sm text-gray-500 mb-8 max-w-[280px] leading-relaxed dark:text-zinc-400">
             {description}
           </p>
         )}
@@ -70,7 +70,7 @@ export function ConfirmDialog({
             variant="outline"
             onClick={onCancel}
             disabled={isConfirming}
-            className="w-full sm:flex-1 h-11 rounded-xl border-gray-200 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-gray-900 hover:border-gray-300 transition-all"
+            className="w-full sm:flex-1 h-11 rounded-xl border-gray-200 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-gray-900 hover:border-gray-300 transition-all dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           >
             {cancelLabel}
           </Button>

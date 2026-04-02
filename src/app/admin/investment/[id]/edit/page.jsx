@@ -188,16 +188,16 @@ export default function AdminInvestmentEditPage() {
             variant="outline"
             size="icon"
             onClick={() => router.push("/admin/investment")}
-            className="mt-1 h-10 w-10 shrink-0 rounded-xl border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 transition-colors"
+            className="mt-1 h-10 w-10 shrink-0 rounded-xl border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 transition-colors dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
 
           <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
               Edit Investment
             </h1>
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
               Update details for investment #{id}.
             </p>
           </div>
@@ -222,7 +222,7 @@ export default function AdminInvestmentEditPage() {
       </header>
 
       {/* Main Content */}
-      <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+      <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-900">
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             {/* Left Column: Investment Details */}
@@ -234,13 +234,13 @@ export default function AdminInvestmentEditPage() {
                   <User className="h-3.5 w-3.5" />
                   Investor (Read-only)
                 </label>
-                <div className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50/50 p-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600 font-bold">
+                <div className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50/50 p-3 dark:border-zinc-700 dark:bg-zinc-800">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600 font-bold dark:bg-blue-500/10 dark:text-blue-300">
                     {user?.name?.charAt(0) || user?.email?.charAt(0) || "U"}
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-zinc-900">{user?.name || "Unknown"}</div>
-                    <div className="text-xs text-zinc-500">{user?.email || `ID: ${investorId}`}</div>
+                    <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{user?.name || "Unknown"}</div>
+                    <div className="text-xs text-zinc-500 dark:text-zinc-400">{user?.email || `ID: ${investorId}`}</div>
                   </div>
                 </div>
               </div>
@@ -263,7 +263,7 @@ export default function AdminInvestmentEditPage() {
                     onChange={(e) => handleChange("amount", e.target.value)}
                     placeholder="e.g. 50000"
                     required
-                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal"
+                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal dark:border-zinc-700 dark:bg-zinc-900"
                   />
                 </div>
 
@@ -280,7 +280,7 @@ export default function AdminInvestmentEditPage() {
                     value={formValues.reference}
                     onChange={(e) => handleChange("reference", e.target.value)}
                     placeholder="Check No, Transaction ID, etc."
-                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal"
+                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                   />
                 </div>
               </div>
@@ -300,7 +300,7 @@ export default function AdminInvestmentEditPage() {
                     value={formValues.date}
                     onChange={(e) => handleChange("date", e.target.value)}
                     required
-                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all"
+                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                   />
                 </div>
 
@@ -318,7 +318,7 @@ export default function AdminInvestmentEditPage() {
                     value={formValues.time}
                     onChange={(e) => handleChange("time", e.target.value)}
                     required
-                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all"
+                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                   />
                 </div>
               </div>
@@ -337,7 +337,7 @@ export default function AdminInvestmentEditPage() {
                     type="date"
                     value={formValues.startDate}
                     onChange={(e) => handleChange("startDate", e.target.value)}
-                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all"
+                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                   />
                 </div>
 
@@ -354,7 +354,7 @@ export default function AdminInvestmentEditPage() {
                     type="date"
                     value={formValues.endDate}
                     onChange={(e) => handleChange("endDate", e.target.value)}
-                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all"
+                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                   />
                 </div>
               </div>
@@ -371,7 +371,7 @@ export default function AdminInvestmentEditPage() {
                   Payment Proof / Photo
                 </label>
 
-                <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 transition-colors hover:border-emerald-500/50 hover:bg-emerald-50/30">
+                <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 transition-colors hover:border-emerald-500/50 hover:bg-emerald-50/30 dark:border-zinc-700 dark:bg-zinc-900">
                   <input
                     id="photo"
                     type="file"
@@ -395,12 +395,12 @@ export default function AdminInvestmentEditPage() {
                     </div>
                   ) : (
                     <div className="flex aspect-[4/3] flex-col items-center justify-center gap-3 p-6 text-center">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-zinc-200">
-                        <Upload className="h-5 w-5 text-zinc-400" />
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-700">
+                        <Upload className="h-5 w-5 text-zinc-400 dark:text-zinc-500" />
                       </div>
                       <div className="space-y-1">
-                        <p className="text-sm font-medium text-zinc-700">Click to upload</p>
-                        <p className="text-xs text-zinc-500">SVG, PNG, JPG or GIF</p>
+                        <p className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Click to upload</p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400">SVG, PNG, JPG or GIF</p>
                       </div>
                     </div>
                   )}
@@ -410,19 +410,19 @@ export default function AdminInvestmentEditPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-4 border-t border-zinc-100 pt-6">
+          <div className="flex items-center justify-end gap-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
             <Button
               type="button"
               variant="outline"
               onClick={() => router.push("/admin/investment")}
-              className="h-11 rounded-xl border-zinc-200 px-6 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900"
+              className="h-11 rounded-xl border-zinc-200 px-6 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={isUpdating}
-              className="h-11 rounded-xl bg-emerald-600 px-8 text-sm font-semibold text-white shadow-md shadow-emerald-200 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-200/50 disabled:opacity-70 disabled:shadow-none transition-all"
+              className="h-11 rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-8 text-sm font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] hover:brightness-[1.05] disabled:opacity-70 disabled:shadow-none transition-all"
             >
               {isUpdating ? (
                 <div className="flex items-center gap-2">

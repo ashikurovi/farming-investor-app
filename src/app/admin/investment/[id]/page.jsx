@@ -15,13 +15,19 @@ import {
   Plus,
   ExternalLink,
   ShieldCheck,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useGetInvestmentAdminQuery, useDeleteInvestmentAdminMutation } from "@/features/investor/investments/investmentsApiSlice";
+import {
+  useGetInvestmentAdminQuery,
+  useDeleteInvestmentAdminMutation,
+} from "@/features/investor/investments/investmentsApiSlice";
 import { useGetUserQuery } from "@/features/admin/users/usersApiSlice";
-import { useGetDeedsQuery, useCreateDeedMutation } from "@/features/admin/deed/deedApiSlice";
+import {
+  useGetDeedsQuery,
+  useCreateDeedMutation,
+} from "@/features/admin/deed/deedApiSlice";
 import { toast } from "sonner";
 
 export default function AdminInvestmentDetailPage() {
@@ -50,12 +56,16 @@ export default function AdminInvestmentDetailPage() {
     });
 
   const investorId = investment?.investorId;
-  const { data: user, isLoading: isUserLoading } = useGetUserQuery(investorId, { skip: !investorId });
+  const { data: user, isLoading: isUserLoading } = useGetUserQuery(investorId, {
+    skip: !investorId,
+  });
 
-  const { data: deedsData, isLoading: isDeedsLoading } = useGetDeedsQuery({ limit: 1000 });
+  const { data: deedsData, isLoading: isDeedsLoading } = useGetDeedsQuery({
+    limit: 1000,
+  });
   const deed = useMemo(() => {
     const items = deedsData?.data ?? deedsData?.items ?? deedsData ?? [];
-    return items.find(d => String(d.investmentId) === String(id));
+    return items.find((d) => String(d.investmentId) === String(id));
   }, [deedsData, id]);
 
   const [createDeed, { isLoading: isCreatingDeed }] = useCreateDeedMutation();
@@ -96,7 +106,9 @@ export default function AdminInvestmentDetailPage() {
       await createDeed(formData).unwrap();
       toast.success("Deed created successfully");
     } catch (error) {
-      toast.error("Failed to create deed", { description: error?.data?.message || "Please try again." });
+      toast.error("Failed to create deed", {
+        description: error?.data?.message || "Please try again.",
+      });
     }
   };
 
@@ -123,7 +135,7 @@ export default function AdminInvestmentDetailPage() {
   if (isBusy) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent"></div>
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent dark:border-emerald-400"></div>
       </div>
     );
   }
@@ -131,12 +143,17 @@ export default function AdminInvestmentDetailPage() {
   if (isError || !investment) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 py-20">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-50 text-red-600">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-300">
           <Trash2 className="h-6 w-6" />
         </div>
         <div className="text-center">
-          <h3 className="text-lg font-semibold text-zinc-900">Investment Not Found</h3>
-          <p className="text-sm text-zinc-500">The investment you are looking for does not exist or has been deleted.</p>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+            Investment Not Found
+          </h3>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+            The investment you are looking for does not exist or has been
+            deleted.
+          </p>
         </div>
         <Button onClick={() => router.push("/admin/investment")}>
           Go Back
@@ -155,16 +172,16 @@ export default function AdminInvestmentDetailPage() {
             variant="outline"
             size="icon"
             onClick={() => router.push("/admin/investment")}
-            className="mt-1 h-10 w-10 shrink-0 rounded-xl border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 transition-colors"
+            className="mt-1 h-10 w-10 shrink-0 rounded-xl border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 transition-colors dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
 
           <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
               Investment Details
             </h1>
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
               View comprehensive information about this investment record.
             </p>
           </div>
@@ -174,7 +191,7 @@ export default function AdminInvestmentDetailPage() {
           <Button
             variant="outline"
             onClick={() => router.push(`/admin/investment/${id}/edit`)}
-            className="h-10 gap-2 rounded-xl border-zinc-200 text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900"
+            className="h-10 gap-2 rounded-xl border-zinc-200 text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           >
             <Pencil className="h-4 w-4" />
             <span className="hidden sm:inline">Edit</span>
@@ -201,7 +218,7 @@ export default function AdminInvestmentDetailPage() {
         {/* Left Column: Details */}
         <div className="lg:col-span-2 space-y-6">
           {/* Investor Info Card */}
-          <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+          <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-900">
             <div className="mb-6 flex items-center justify-between">
               <h2 className="flex items-center gap-2 text-lg font-semibold text-zinc-900">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
@@ -211,7 +228,7 @@ export default function AdminInvestmentDetailPage() {
               </h2>
             </div>
 
-            <div className="rounded-2xl bg-zinc-50/50 p-4 border border-zinc-100">
+            <div className="rounded-2xl bg-zinc-50/50 p-4 border border-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/30">
               {isUserLoading ? (
                 <div className="animate-pulse space-y-2">
                   <div className="h-4 w-1/3 rounded bg-zinc-200"></div>
@@ -223,39 +240,56 @@ export default function AdminInvestmentDetailPage() {
                     {user.name?.charAt(0) || user.email?.charAt(0) || "U"}
                   </div>
                   <div className="space-y-1">
-                    <h3 className="font-semibold text-zinc-900">{user.name || "Unknown Name"}</h3>
-                    <p className="text-sm text-zinc-500">{user.email}</p>
-                    <p className="text-xs text-zinc-400">ID: #{user.id} • {user.phone || "No phone"}</p>
+                    <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">
+                      {user.name || "Unknown Name"}
+                    </h3>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                      {user.email}
+                    </p>
+                    <p className="text-xs text-zinc-400 dark:text-zinc-500">
+                      ID: #{user.id} • {user.phone || "No phone"}
+                    </p>
                   </div>
                 </div>
               ) : (
-                <div className="text-sm text-zinc-500">Investor information unavailable</div>
+                <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                  Investor information unavailable
+                </div>
               )}
             </div>
           </section>
 
           {/* Investment Details Card */}
-          <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+          <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-900">
             <div className="mb-6 flex items-center justify-between">
-              <h2 className="flex items-center gap-2 text-lg font-semibold text-zinc-900">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+              <h2 className="flex items-center gap-2 text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300">
                   <Wallet2 className="h-4 w-4" />
                 </div>
                 Transaction Details
               </h2>
               {(() => {
-                const end = investment?.endDate ? new Date(investment.endDate) : null;
+                const end = investment?.endDate
+                  ? new Date(investment.endDate)
+                  : null;
                 const now = new Date();
                 const isExpired = end && !isNaN(end) && end < now;
                 const effectiveActive = investment.isActive && !isExpired;
                 return (
-                  <div className={`rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset ${isExpired
-                    ? "bg-red-50 text-red-700 ring-red-600/20"
-                    : effectiveActive
-                      ? "bg-emerald-50 text-emerald-700 ring-emerald-600/20"
-                      : "bg-zinc-100 text-zinc-600 ring-zinc-500/20"
-                    }`}>
-                    {isExpired ? "Expired" : effectiveActive ? "Active" : "Inactive"}
+                  <div
+                    className={`rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset ${
+                      isExpired
+                        ? "bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-500/10 dark:text-red-300 dark:ring-red-500/20"
+                        : effectiveActive
+                          ? "bg-emerald-50 text-emerald-700 ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20"
+                          : "bg-zinc-100 text-zinc-600 ring-zinc-500/20 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700"
+                    }`}
+                  >
+                    {isExpired
+                      ? "Expired"
+                      : effectiveActive
+                        ? "Active"
+                        : "Inactive"}
                   </div>
                 );
               })()}
@@ -267,7 +301,7 @@ export default function AdminInvestmentDetailPage() {
                   <Wallet2 className="h-3.5 w-3.5" />
                   Amount
                 </label>
-                <div className="text-2xl font-bold text-zinc-900">
+                <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
                   ৳{formatNumber(investment.amount)}
                 </div>
               </div>
@@ -277,7 +311,7 @@ export default function AdminInvestmentDetailPage() {
                   <FileText className="h-3.5 w-3.5" />
                   Reference
                 </label>
-                <div className="text-base font-medium text-zinc-900">
+                <div className="text-base font-medium text-zinc-900 dark:text-zinc-100">
                   {investment.reference || "N/A"}
                 </div>
               </div>
@@ -287,7 +321,7 @@ export default function AdminInvestmentDetailPage() {
                   <Calendar className="h-3.5 w-3.5" />
                   Date
                 </label>
-                <div className="text-base font-medium text-zinc-900">
+                <div className="text-base font-medium text-zinc-900 dark:text-zinc-100">
                   {investment.date || "-"}
                 </div>
               </div>
@@ -297,7 +331,7 @@ export default function AdminInvestmentDetailPage() {
                   <Clock className="h-3.5 w-3.5" />
                   Time
                 </label>
-                <div className="text-base font-medium text-zinc-900">
+                <div className="text-base font-medium text-zinc-900 dark:text-zinc-100">
                   {investment.time || "-"}
                 </div>
               </div>
@@ -307,7 +341,7 @@ export default function AdminInvestmentDetailPage() {
                   <Calendar className="h-3.5 w-3.5" />
                   Start Date
                 </label>
-                <div className="text-base font-medium text-zinc-900">
+                <div className="text-base font-medium text-zinc-900 dark:text-zinc-100">
                   {investment.startDate || "-"}
                 </div>
               </div>
@@ -317,7 +351,7 @@ export default function AdminInvestmentDetailPage() {
                   <Calendar className="h-3.5 w-3.5" />
                   End Date
                 </label>
-                <div className="text-base font-medium text-zinc-900">
+                <div className="text-base font-medium text-zinc-900 dark:text-zinc-100">
                   {investment.endDate || "-"}
                 </div>
               </div>
@@ -325,7 +359,7 @@ export default function AdminInvestmentDetailPage() {
           </section>
 
           {/* Deed Section */}
-          <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+          <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-900">
             <div className="mb-6 flex items-center justify-between">
               <h2 className="flex items-center gap-2 text-lg font-semibold text-zinc-900">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
@@ -334,7 +368,7 @@ export default function AdminInvestmentDetailPage() {
                 Investment Deed
               </h2>
               {deed && (
-                <div className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 ring-1 ring-inset ring-indigo-600/20">
+                <div className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 ring-1 ring-inset ring-indigo-600/20 dark:bg-indigo-500/10 dark:text-indigo-300 dark:ring-indigo-500/20">
                   Issued
                 </div>
               )}
@@ -349,12 +383,20 @@ export default function AdminInvestmentDetailPage() {
               <div className="space-y-6">
                 <div className="grid gap-6 sm:grid-cols-2">
                   <div className="space-y-1">
-                    <label className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500">Title</label>
-                    <div className="text-base font-medium text-zinc-900">{deed.title}</div>
+                    <label className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500 dark:text-zinc-400">
+                      Title
+                    </label>
+                    <div className="text-base font-medium text-zinc-900 dark:text-zinc-100">
+                      {deed.title}
+                    </div>
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500">Issue Date</label>
-                    <div className="text-base font-medium text-zinc-900">{deed.issueDate || "-"}</div>
+                    <label className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500 dark:text-zinc-400">
+                      Issue Date
+                    </label>
+                    <div className="text-base font-medium text-zinc-900 dark:text-zinc-100">
+                      {deed.issueDate || "-"}
+                    </div>
                   </div>
                 </div>
 
@@ -364,13 +406,15 @@ export default function AdminInvestmentDetailPage() {
                       href={deed.file}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50 p-3 transition-colors hover:bg-zinc-100"
+                      className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50 p-3 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/40 dark:hover:bg-zinc-800"
                     >
                       <div className="flex items-center gap-2">
-                        <ImageIcon className="h-4 w-4 text-zinc-400" />
-                        <span className="text-sm font-medium text-zinc-700">Photo</span>
+                        <ImageIcon className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+                        <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">
+                          Photo
+                        </span>
                       </div>
-                      <ExternalLink className="h-4 w-4 text-zinc-400" />
+                      <ExternalLink className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                     </a>
                   )}
                   {deed.uploadPdf && (
@@ -378,13 +422,15 @@ export default function AdminInvestmentDetailPage() {
                       href={deed.uploadPdf}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50 p-3 transition-colors hover:bg-zinc-100"
+                      className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50 p-3 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/40 dark:hover:bg-zinc-800"
                     >
                       <div className="flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-zinc-400" />
-                        <span className="text-sm font-medium text-zinc-700">PDF</span>
+                        <FileText className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+                        <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">
+                          PDF
+                        </span>
                       </div>
-                      <ExternalLink className="h-4 w-4 text-zinc-400" />
+                      <ExternalLink className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                     </a>
                   )}
                   {deed.signature && (
@@ -392,74 +438,103 @@ export default function AdminInvestmentDetailPage() {
                       href={deed.signature}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50 p-3 transition-colors hover:bg-zinc-100"
+                      className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50 p-3 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/40 dark:hover:bg-zinc-800"
                     >
                       <div className="flex items-center gap-2">
-                        <ShieldCheck className="h-4 w-4 text-zinc-400" />
-                        <span className="text-sm font-medium text-zinc-700">Signature</span>
+                        <ShieldCheck className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+                        <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">
+                          Signature
+                        </span>
                       </div>
-                      <ExternalLink className="h-4 w-4 text-zinc-400" />
+                      <ExternalLink className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                     </a>
                   )}
                 </div>
               </div>
             ) : (
               <div className="space-y-6">
-                <div className="flex items-center gap-3 rounded-2xl bg-amber-50 p-4 text-amber-800 ring-1 ring-inset ring-amber-600/10">
+                <div className="flex items-center gap-3 rounded-2xl bg-amber-50 p-4 text-amber-800 ring-1 ring-inset ring-amber-600/10 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-500/20">
                   <AlertCircle className="h-5 w-5 shrink-0" />
-                  <p className="text-sm font-medium">No deed has been issued for this investment yet.</p>
+                  <p className="text-sm font-medium">
+                    No deed has been issued for this investment yet.
+                  </p>
                 </div>
 
-                <form onSubmit={handleDeedSubmit} className="space-y-4 rounded-2xl border border-zinc-100 bg-zinc-50/50 p-6">
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-900">Issue New Deed</h3>
-                  
+                <form
+                  onSubmit={handleDeedSubmit}
+                  className="space-y-4 rounded-2xl border border-zinc-100 bg-zinc-50/50 p-6 dark:border-zinc-800 dark:bg-zinc-800/30"
+                >
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">
+                    Issue New Deed
+                  </h3>
+
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Deed Title</label>
+                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                        Deed Title
+                      </label>
                       <Input
                         value={deedForm.title}
-                        onChange={(e) => handleDeedFormChange("title", e.target.value)}
+                        onChange={(e) =>
+                          handleDeedFormChange("title", e.target.value)
+                        }
                         placeholder="e.g. Agreement Deed"
                         required
-                        className="bg-white"
+                        className="bg-white dark:bg-zinc-900 dark:text-zinc-100"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Issue Date</label>
+                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                        Issue Date
+                      </label>
                       <Input
                         type="date"
                         value={deedForm.issueDate}
-                        onChange={(e) => handleDeedFormChange("issueDate", e.target.value)}
+                        onChange={(e) =>
+                          handleDeedFormChange("issueDate", e.target.value)
+                        }
                         required
-                        className="bg-white"
+                        className="bg-white dark:bg-zinc-900 dark:text-zinc-100"
                       />
                     </div>
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-3">
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Deed Photo</label>
+                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                        Deed Photo
+                      </label>
                       <Input
                         type="file"
-                        onChange={(e) => handleDeedFormChange("file", e.target.files?.[0])}
-                        className="bg-white text-xs file:text-xs"
+                        onChange={(e) =>
+                          handleDeedFormChange("file", e.target.files?.[0])
+                        }
+                        className="bg-white text-xs file:text-xs dark:bg-zinc-900 dark:text-zinc-100"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Deed PDF</label>
+                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                        Deed PDF
+                      </label>
                       <Input
                         type="file"
                         accept=".pdf"
-                        onChange={(e) => handleDeedFormChange("uploadPdf", e.target.files?.[0])}
-                        className="bg-white text-xs file:text-xs"
+                        onChange={(e) =>
+                          handleDeedFormChange("uploadPdf", e.target.files?.[0])
+                        }
+                        className="bg-white text-xs file:text-xs dark:bg-zinc-900 dark:text-zinc-100"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Signature</label>
+                      <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                        Signature
+                      </label>
                       <Input
                         type="file"
-                        onChange={(e) => handleDeedFormChange("signature", e.target.files?.[0])}
-                        className="bg-white text-xs file:text-xs"
+                        onChange={(e) =>
+                          handleDeedFormChange("signature", e.target.files?.[0])
+                        }
+                        className="bg-white text-xs file:text-xs dark:bg-zinc-900 dark:text-zinc-100"
                       />
                     </div>
                   </div>
@@ -468,7 +543,7 @@ export default function AdminInvestmentDetailPage() {
                     <Button
                       type="submit"
                       disabled={isCreatingDeed}
-                      className="w-full bg-indigo-600 hover:bg-indigo-500"
+                      className="w-full bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-400"
                     >
                       {isCreatingDeed ? "Issuing Deed..." : "Issue Deed Now"}
                     </Button>
@@ -481,15 +556,15 @@ export default function AdminInvestmentDetailPage() {
 
         {/* Right Column: Proof/Photo */}
         <div className="space-y-6">
-          <section className="h-full rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-            <h2 className="mb-6 flex items-center gap-2 text-lg font-semibold text-zinc-900">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
+          <section className="h-full rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-900">
+            <h2 className="mb-6 flex items-center gap-2 text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-50 text-purple-600 dark:bg-purple-500/10 dark:text-purple-300">
                 <ImageIcon className="h-4 w-4" />
               </div>
               Payment Proof
             </h2>
 
-            <div className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50">
+            <div className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/30">
               {investment.photo ? (
                 <div className="relative aspect-[4/3] w-full">
                   <img
@@ -497,12 +572,12 @@ export default function AdminInvestmentDetailPage() {
                     alt="Payment Proof"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/10">
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/20">
                     <a
                       href={investment.photo}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rounded-full bg-white/90 px-4 py-2 text-xs font-semibold text-zinc-900 shadow-lg backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="rounded-full bg-white/90 px-4 py-2 text-xs font-semibold text-zinc-900 shadow-lg backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity dark:bg-zinc-900 dark:text-zinc-100"
                     >
                       View Full Size
                     </a>
@@ -510,10 +585,12 @@ export default function AdminInvestmentDetailPage() {
                 </div>
               ) : (
                 <div className="flex aspect-[4/3] flex-col items-center justify-center gap-3 p-6 text-center">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-100 text-zinc-400">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500">
                     <ImageIcon className="h-6 w-6" />
                   </div>
-                  <p className="text-sm font-medium text-zinc-500">No payment proof uploaded</p>
+                  <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                    No payment proof uploaded
+                  </p>
                 </div>
               )}
             </div>
