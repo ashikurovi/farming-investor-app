@@ -112,8 +112,8 @@ export function LoginForm() {
 
         .lf-input:focus {
           background: #ffffff;
-          border-color: #5a8a6a;
-          box-shadow: 0 0 0 3px rgba(90, 138, 106, 0.1);
+          border-color: #4d8c1e;
+          box-shadow: 0 0 0 3px rgba(77, 140, 30, 0.14);
         }
 
         .lf-input-pr {
@@ -121,7 +121,7 @@ export function LoginForm() {
         }
 
         .lf-field:focus-within .lf-field-icon {
-          color: #5a8a6a;
+          color: #4d8c1e;
         }
 
         .lf-toggle-pw {
@@ -142,7 +142,7 @@ export function LoginForm() {
         }
 
         .lf-toggle-pw:hover {
-          color: #5a8a6a;
+          color: #4d8c1e;
         }
 
         .lf-divider {
@@ -156,7 +156,7 @@ export function LoginForm() {
           font-size: 0.62rem;
           letter-spacing: 0.07em;
           text-transform: uppercase;
-          color: #5a8a6a;
+          color: #4d8c1e;
           text-decoration: none;
           transition: opacity 0.2s ease;
         }
@@ -186,7 +186,7 @@ export function LoginForm() {
           align-items: center;
           justify-content: center;
           gap: 8px;
-          background: linear-gradient(135deg, #3d7a52 0%, #2e6642 100%);
+          background: linear-gradient(135deg, #4d8c1e 0%, #7cc22e 100%);
           color: #f0f7f3;
           border: none;
           border-radius: 12px;
@@ -198,7 +198,7 @@ export function LoginForm() {
           position: relative;
           overflow: hidden;
           transition: opacity 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
-          box-shadow: 0 4px 20px rgba(46, 102, 66, 0.28), inset 0 1px 0 rgba(255,255,255,0.08);
+          box-shadow: 0 4px 24px rgba(77, 140, 30, 0.28), inset 0 1px 0 rgba(255,255,255,0.08);
         }
 
         .lf-submit::before {
@@ -210,13 +210,13 @@ export function LoginForm() {
         }
 
         .lf-submit:hover:not(:disabled) {
-          box-shadow: 0 6px 28px rgba(46, 102, 66, 0.38), inset 0 1px 0 rgba(255,255,255,0.1);
+          box-shadow: 0 8px 34px rgba(77, 140, 30, 0.4), inset 0 1px 0 rgba(255,255,255,0.1);
           transform: translateY(-1px);
         }
 
         .lf-submit:active:not(:disabled) {
           transform: translateY(0px);
-          box-shadow: 0 2px 12px rgba(46, 102, 66, 0.2);
+          box-shadow: 0 2px 14px rgba(77, 140, 30, 0.22);
         }
 
         .lf-submit:disabled {

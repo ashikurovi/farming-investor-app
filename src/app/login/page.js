@@ -38,10 +38,21 @@ export default function LoginPage() {
         {/* Desktop Branding (Logo only) */}
         <div className="absolute top-8 left-8 hidden lg:block">
            <Link href="/" className="flex items-center gap-2 text-lg font-medium hover:opacity-80 transition-opacity">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600/10 border border-emerald-600/20 text-emerald-600 backdrop-blur-md">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)]">
               <Sprout className="h-6 w-6" />
             </div>
             <span className="font-display font-bold tracking-tight text-xl text-zinc-900">Framing</span>
+          </Link>
+        </div>
+
+        {/* Back to Home (Desktop/Laptop) */}
+        <div className="absolute top-8 right-8 hidden lg:block">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-700 shadow-sm transition hover:border-emerald-200 hover:bg-zinc-50"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Home
           </Link>
         </div>
 
@@ -67,7 +78,7 @@ export default function LoginPage() {
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link href="/privacy" className="underline underline-offset-4 hover:text-zinc-900 transition-colors">
+            <Link href="/privacy-policy" className="underline underline-offset-4 hover:text-zinc-900 transition-colors">
               Privacy Policy
             </Link>
             .
