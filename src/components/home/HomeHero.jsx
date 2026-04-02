@@ -9,6 +9,16 @@ import { ArrowRight } from "lucide-react";
 import { useGetBannersQuery } from "@/features/admin/banner/bannerApiSlice";
 import { Loader } from "@/components/ui/loader";
 
+/* ─── tiny trust-pill ──────────────────────────── */
+const TrustPill = ({ Icon, label }) => (
+  <div className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 backdrop-blur-md">
+    <Icon className="h-3.5 w-3.5 shrink-0 text-emerald-300" />
+    <span className="text-[11px] font-semibold text-white/90 whitespace-nowrap">
+      {label}
+    </span>
+  </div>
+);
+
 export default function HomeHero() {
   const { data: bannerData, isLoading } = useGetBannersQuery();
   const banners = bannerData?.items ?? bannerData ?? [];

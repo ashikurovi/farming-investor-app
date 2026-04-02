@@ -437,7 +437,6 @@ export default function MyInvestmentsPage() {
             </div>
           </div>
 
-
           {/* Table */}
           <div className="w-full overflow-x-auto">
             <table className="min-w-full table-fixed divide-y divide-zinc-100 text-sm">

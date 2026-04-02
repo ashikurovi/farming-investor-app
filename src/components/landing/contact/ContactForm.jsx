@@ -49,7 +49,6 @@ export function ContactForm() {
       {/* Decorative gradients */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-400/10 rounded-full blur-[60px] -z-10 pointer-events-none transition-transform duration-700 group-hover/form:scale-110" />
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-400/10 rounded-full blur-[60px] -z-10 pointer-events-none transition-transform duration-700 group-hover/form:scale-110" />
-
       <div className="mb-10 relative">
         <h3 className="text-3xl font-bold text-zinc-900 tracking-tight">
           Send us a message
