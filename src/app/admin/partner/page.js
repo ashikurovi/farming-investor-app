@@ -350,3 +350,47 @@ function StatCard({ title, value, icon, gradient }) {
     </div>
   );
 }
+
+function PayoutProfitModal({ partnerId, onClose, onSuccess }) {
+  const [withdrawProfit, { isLoading }] = useWithdrawPartnerProfitMutation();
+  const [amount, setAmount] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!amount || Number(amount) <= 0) return toast.error("Enter a valid payout amount");
+
+    try {
+      await withdrawProfit({ id: partnerId, data: { amount: Number(amount) } }).unwrap();
+      toast.success("Profit paid out successfully!");
+      onSuccess();
+      onClose();
+    } catch (err) {
+      toast.error(err?.data?.message || "Failed to withdraw profit");
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" onClick={onClose} />
+      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900 dark:ring-1 dark:ring-white/10">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Payout Profit</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Withdraw profit for this partner. The amount will be deducted directly from their total profit balance.</p>
+        
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <div className="relative">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">৳</span>
+              <input type="number" required min="1" autoFocus value={amount} onChange={(e) => setAmount(e.target.value)} className="block w-full rounded-xl border-0 py-3 pl-8 pr-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-lg sm:leading-6 dark:bg-white/5 dark:text-white dark:ring-white/10 focus:ring-emerald-500" placeholder="0.00" />
+            </div>
+          </div>
+          <div className="flex gap-3">
+             <button type="button" onClick={onClose} className="flex-1 rounded-xl bg-gray-100 px-4 py-3 font-semibold text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors">Cancel</button>
+             <button disabled={isLoading} type="submit" className="flex-1 flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white shadow-sm hover:bg-emerald-500 disabled:opacity-70 transition-colors">
+               {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Confirm"}
+             </button>
+          </div>
+        </form>
+      </motion.div>
+    </div>
+  );
+}
