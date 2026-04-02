@@ -34,6 +34,9 @@ export default function HomeRecentProjects() {
     images: item.photoUrl ? [resolveImageSrc(item.photoUrl)] : [],
     totalCost: Number(item.totalCost || 0),
     totalInvestment: Number(item.totalInvestment || 0),
+    totalSell: Number(item.totalSell || 0),
+    totalProfit: Number(item.totalProfit || 0),
+    distributedProfit: Number(item.distributedProfit || 0),
     project_details: item.description || "No description available.",
   }));
 

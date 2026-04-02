@@ -20,7 +20,7 @@ export function ProjectFeed() {
 
   const projects = rawProjects.map((item) => {
     const cleanUrl = (u) =>
-      typeof u === "string" ? u.replace(/[`]/g, "").trim() : u;
+      typeof u === "string" ? u.replace(/[`]/g, "").trim() : "";
     return {
       projectId: item.id,
       title: item.name || "Untitled Project",
@@ -30,6 +30,9 @@ export function ProjectFeed() {
       images: [cleanUrl(item.photoUrl)],
       totalCost: Number(item.totalCost || 0),
       totalInvestment: Number(item.totalInvestment || 0),
+      totalSell: Number(item.totalSell || 0),
+      totalProfit: Number(item.totalProfit || 0),
+      distributedProfit: Number(item.distributedProfit || 0),
       project_details: item.description || "No description available.",
     };
   });

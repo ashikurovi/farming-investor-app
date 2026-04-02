@@ -38,8 +38,8 @@ export default function ProjectDetailsPage({ params }) {
           Project Not Found
         </h3>
         <p className="max-w-xs text-sm text-zinc-500">
-          We couldn't retrieve the project details. It might have been deleted
-          or doesn't exist.
+          We could not retrieve the project details. It might have been deleted
+          or does not exist.
         </p>
         <Button onClick={() => router.back()} variant="outline">
           Go Back
@@ -50,7 +50,7 @@ export default function ProjectDetailsPage({ params }) {
 
   // Helper for URL cleaning
   const cleanUrl = (u) =>
-    typeof u === "string" ? u.replace(/[`]/g, "").trim() : u;
+    typeof u === "string" ? u.replace(/[`]/g, "").trim() : "";
 
   // Map API response to component props
   const project = {
@@ -61,6 +61,12 @@ export default function ProjectDetailsPage({ params }) {
     description: rawProject.description || "No description available.",
     glarry: rawProject.glarry || [],
     totalInvestment: rawProject.totalInvestment || 0,
+    totalCost: rawProject.totalCost || 0,
+    totalSell: rawProject.totalSell || 0,
+    totalProfit: rawProject.totalProfit || 0,
+    distributedProfit: rawProject.distributedProfit || 0,
+    category: rawProject.category || "Others",
+    roi: rawProject.roi || 0,
   };
 
   // Process similar projects

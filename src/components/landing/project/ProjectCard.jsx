@@ -106,7 +106,9 @@ export function ProjectCard({ project }) {
           </div>
 
           <div>
-            <p className="text-[11px] text-zinc-400 mb-0.5">Distributed profit</p>
+            <p className="text-[11px] text-zinc-400 mb-0.5">
+              Distributed profit
+            </p>
             <p className="text-[13px] font-semibold text-emerald-700">
               ৳{distributedProfit.toLocaleString("en-US")}
             </p>
@@ -122,7 +124,9 @@ export function ProjectCard({ project }) {
                 ৳{totalInvestment.toLocaleString("en-US")}
               </span>
             </div>
-            <span className="text-[12px] font-semibold text-green-600">{fundedPct}%</span>
+            <span className="text-[12px] font-semibold text-green-600">
+              {fundedPct}%
+            </span>
           </div>
 
           <div className="h-1.5 w-full rounded-full bg-zinc-100 overflow-hidden">
@@ -148,7 +152,6 @@ export function ProjectCard({ project }) {
             <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </div>
         </div>
-
       </div>
     </Link>
   );
