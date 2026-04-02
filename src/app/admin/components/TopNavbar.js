@@ -126,11 +126,11 @@ export default function TopNavbar() {
           {/* Search bar (desktop) */}
           <div className="hidden md:flex flex-1 max-w-md">
             <div className="relative w-full group">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-emerald-500 transition-colors" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-[color:var(--brand-to)] transition-colors" />
               <input
                 type="text"
                 placeholder="Search farms, investors, reports…"
-                className="w-full rounded-2xl border border-zinc-200/80 bg-zinc-50/50 py-2 pl-10 pr-12 text-sm text-zinc-700 placeholder-zinc-400 outline-none focus:border-emerald-500/30 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all duration-300 dark:border-zinc-700/80 dark:bg-zinc-800/50 dark:text-zinc-200 dark:placeholder-zinc-500 dark:focus:bg-zinc-800 dark:focus:border-emerald-500/30"
+                className="w-full rounded-2xl border border-zinc-200/80 bg-zinc-50/50 py-2 pl-10 pr-12 text-sm text-zinc-700 placeholder-zinc-400 outline-none focus:border-[color:rgba(77,140,30,0.45)] focus:bg-white focus:ring-4 focus:ring-[color:rgba(77,140,30,0.14)] transition-all duration-300 dark:border-zinc-700/80 dark:bg-zinc-800/50 dark:text-zinc-200 dark:placeholder-zinc-500 dark:focus:bg-zinc-800 dark:focus:border-[color:rgba(124,194,46,0.45)]"
               />
               <div className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1">
                 <kbd className="hidden sm:inline-flex items-center justify-center rounded-[6px] border border-zinc-200 bg-white px-2 py-0.5 text-[10px] font-medium text-zinc-400 shadow-[0_1px_2px_rgba(0,0,0,0.05)] dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-500">
@@ -144,10 +144,10 @@ export default function TopNavbar() {
         {/* RIGHT — Actions */}
         <div className="flex items-center gap-2">
           {/* Live badge */}
-          <div className="hidden sm:flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-3 py-1 text-[11px] font-medium text-emerald-700 backdrop-blur-sm dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-400">
+          <div className="hidden sm:flex items-center gap-2 rounded-full border border-[color:rgba(77,140,30,0.25)] bg-[color:rgba(124,194,46,0.10)] px-3 py-1 text-[11px] font-medium text-[color:rgb(77,140,30)] backdrop-blur-sm dark:border-[color:rgba(124,194,46,0.25)] dark:bg-[color:rgba(124,194,46,0.10)] dark:text-[color:rgb(124,194,46)]">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[color:rgb(124,194,46)] opacity-60"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[color:rgb(77,140,30)]"></span>
             </span>
             Live System
           </div>

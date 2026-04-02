@@ -23,14 +23,12 @@ export default function AdminDashboardPage() {
       value: statsLoading ? "—" : formatCurrencyBDT(stats?.totalInvestment),
       change: "",
       icon: Wallet,
-      color: "emerald",
     },
     {
       label: "Total projects",
       value: statsLoading ? "—" : formatNumber(stats?.totalProjects),
       change: "",
       icon: Sprout,
-      color: "amber",
     },
     {
       label: "Avg. yield (12m)",
@@ -39,14 +37,12 @@ export default function AdminDashboardPage() {
         : `${Number(stats?.avgYieldPercent ?? 0).toFixed(1)}%`,
       change: "",
       icon: TrendingUp,
-      color: "blue",
     },
     {
       label: "Total profit",
       value: statsLoading ? "—" : formatCurrencyBDT(stats?.totalProfit),
       change: "",
       icon: Activity,
-      color: "rose",
     },
   ];
 
@@ -63,18 +59,24 @@ export default function AdminDashboardPage() {
           >
             {/* Dynamic background gradient blob */}
             <div
-              className={`absolute -right-10 -top-10 h-40 w-40 rounded-full bg-${card.color}-50/50 blur-3xl transition-all duration-700 group-hover:bg-${card.color}-100/60 group-hover:scale-150 dark:bg-${card.color}-900/20 dark:group-hover:bg-${card.color}-900/30`}
+              className="absolute -right-10 -top-10 h-40 w-40 rounded-full blur-3xl transition-all duration-700 group-hover:scale-150"
+              style={{ background: "rgba(124,194,46,0.18)" }}
             />
 
             {/* Bottom left blob for balance */}
             <div
-              className={`absolute -left-10 -bottom-10 h-32 w-32 rounded-full bg-${card.color}-50/30 blur-3xl transition-all duration-700 group-hover:bg-${card.color}-100/40 group-hover:scale-150 dark:bg-${card.color}-900/10 dark:group-hover:bg-${card.color}-900/20`}
+              className="absolute -left-10 -bottom-10 h-32 w-32 rounded-full blur-3xl transition-all duration-700 group-hover:scale-150"
+              style={{ background: "rgba(77,140,30,0.14)" }}
             />
 
             <div className="relative flex flex-col h-full justify-between z-10">
               <div className="flex items-center justify-between mb-6">
                 <div
-                  className={`relative rounded-2xl bg-${card.color}-50 p-3 text-${card.color}-600 ring-1 ring-${card.color}-100 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-lg group-hover:ring-${card.color}-200 dark:bg-${card.color}-900/30 dark:ring-${card.color}-800 dark:text-${card.color}-400`}
+                  className="relative rounded-2xl p-3 text-white ring-1 ring-[color:rgba(124,194,46,0.25)] transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-lg"
+                  style={{
+                    background:
+                      "linear-gradient(135deg,var(--brand-from),var(--brand-to))",
+                  }}
                 >
                   <card.icon className="h-6 w-6 transition-transform duration-500 group-hover:-rotate-12" />
                 </div>
@@ -105,7 +107,7 @@ export default function AdminDashboardPage() {
         <div className="group rounded-3xl border border-zinc-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-emerald-100/50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-emerald-800/50">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-emerald-50 p-2.5 text-emerald-600 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 dark:bg-emerald-900/30 dark:text-emerald-400">
+              <div className="rounded-2xl bg-[color:rgba(124,194,46,0.18)] p-2.5 text-[color:rgb(77,140,30)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 dark:bg-[color:rgba(124,194,46,0.18)] dark:text-[color:rgb(124,194,46)]">
                 <Activity className="h-5 w-5" />
               </div>
               <div>
@@ -122,12 +124,12 @@ export default function AdminDashboardPage() {
             </span>
           </div>
 
-          <div className="relative mt-6 overflow-hidden rounded-2xl border border-dashed border-emerald-100 bg-gradient-to-br from-emerald-50/30 via-white to-emerald-50/10 group-hover:border-emerald-200 transition-colors duration-300 dark:border-emerald-800/50 dark:from-emerald-900/10 dark:via-zinc-900 dark:to-emerald-900/5 dark:group-hover:border-emerald-700/50">
+          <div className="relative mt-6 overflow-hidden rounded-2xl border border-dashed border-[color:rgba(77,140,30,0.25)] bg-gradient-to-br from-[color:rgba(124,194,46,0.10)] via-white to-[color:rgba(77,140,30,0.06)] group-hover:border-[color:rgba(77,140,30,0.38)] transition-colors duration-300 dark:border-[color:rgba(124,194,46,0.20)] dark:from-[color:rgba(124,194,46,0.08)] dark:via-zinc-900 dark:to-[color:rgba(77,140,30,0.04)] dark:group-hover:border-[color:rgba(124,194,46,0.28)]">
             <div className="flex items-start justify-between p-3">
               <div className="text-xs font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
                 Weekly Investments
               </div>
-              <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
+              <div className="text-xs font-bold text-[color:rgb(77,140,30)] dark:text-[color:rgb(124,194,46)]">
                 {recentLoading ? "—" : formatCurrencyBDT((recent ?? []).reduce((s, r) => s + Number(r.amount || 0), 0))}
               </div>
             </div>
@@ -158,8 +160,8 @@ export default function AdminDashboardPage() {
                     <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="h-full w-full">
                       <defs>
                         <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#10b981" stopOpacity="0.25" />
-                          <stop offset="100%" stopColor="#10b981" stopOpacity="0.02" />
+                          <stop offset="0%" stopColor="#7cc22e" stopOpacity="0.22" />
+                          <stop offset="100%" stopColor="#4d8c1e" stopOpacity="0.03" />
                         </linearGradient>
                       </defs>
                       <rect x="0" y="0" width={W} height={H} fill="transparent" />
@@ -176,9 +178,9 @@ export default function AdminDashboardPage() {
                         />
                       ))}
                       <path d={area} fill="url(#grad)" />
-                      <path d={path} fill="none" stroke="#10b981" strokeWidth="2" />
+                      <path d={path} fill="none" stroke="#4d8c1e" strokeWidth="2" />
                       {points.map(([x, y], i) => (
-                        <circle key={i} cx={x} cy={y} r="2.5" fill="#10b981" />
+                        <circle key={i} cx={x} cy={y} r="2.5" fill="#7cc22e" />
                       ))}
                     </svg>
                   );

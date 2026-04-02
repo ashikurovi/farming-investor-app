@@ -68,14 +68,14 @@ export default function Sidebar() {
           "group relative flex items-center gap-3 rounded-xl px-2.5 py-2 font-medium transition-all duration-200",
           collapsed ? "justify-center" : "",
           isActive
-            ? "bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-200/60 dark:shadow-emerald-900/50"
-            : "text-zinc-500 hover:bg-emerald-50/80 hover:text-emerald-700 dark:text-zinc-400 dark:hover:bg-emerald-900/20 dark:hover:text-emerald-400",
+            ? "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-lg shadow-emerald-200/60"
+            : "text-zinc-500 hover:bg-[color:rgba(124,194,46,0.12)] hover:text-[color:rgb(77,140,30)] dark:text-zinc-400 dark:hover:bg-[color:rgba(124,194,46,0.14)] dark:hover:text-[color:rgb(124,194,46)]",
           isNested && !collapsed ? "text-xs" : "text-[13px]",
         ].join(" ")}
       >
         {/* Active left accent bar */}
         {isActive && !collapsed && (
-          <span className="absolute -left-4 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-emerald-400" />
+          <span className="absolute -left-4 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-[color:rgb(124,194,46)]" />
         )}
 
         {/* Tree connector */}
@@ -89,7 +89,7 @@ export default function Sidebar() {
               "relative flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200 shrink-0",
               isActive
                 ? "bg-white/20 text-white"
-                : "bg-zinc-100 text-zinc-500 group-hover:bg-emerald-100 group-hover:text-emerald-600 dark:bg-zinc-800 dark:text-zinc-400 dark:group-hover:bg-emerald-900/40 dark:group-hover:text-emerald-400",
+                : "bg-zinc-100 text-zinc-500 group-hover:bg-[color:rgba(124,194,46,0.18)] group-hover:text-[color:rgb(77,140,30)] dark:bg-zinc-800 dark:text-zinc-400 dark:group-hover:bg-[color:rgba(124,194,46,0.18)] dark:group-hover:text-[color:rgb(124,194,46)]",
             ].join(" ")}
           >
             <item.icon className="h-5 w-5" />
@@ -139,24 +139,24 @@ export default function Sidebar() {
       }}
     >
       {/* Subtle top glow */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-emerald-50/60 to-transparent dark:from-emerald-900/20" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[color:rgba(124,194,46,0.18)] to-transparent dark:from-[color:rgba(124,194,46,0.12)]" />
 
       {/* ── Logo ── */}
       <div
         className={`relative mb-6 flex items-center ${collapsed ? "justify-center" : "gap-3 px-1"}`}
       >
         <div
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl text-xs font-bold text-white shadow-lg shadow-emerald-300/40 dark:shadow-emerald-900/60"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl text-xs font-bold text-white shadow-lg shadow-emerald-300/40"
           style={{
             background:
-              "linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%)",
+              "linear-gradient(135deg, var(--brand-from), var(--brand-to))",
           }}
         >
           FI
         </div>
         {!collapsed && (
           <div className="overflow-hidden">
-            <div className="text-[9px] font-extrabold uppercase tracking-[0.28em] text-emerald-500 dark:text-emerald-400">
+            <div className="text-[9px] font-extrabold uppercase tracking-[0.28em] text-[color:rgb(77,140,30)] dark:text-[color:rgb(124,194,46)]">
               Farming Intel
             </div>
             <div className="text-[13px] font-semibold tracking-tight text-zinc-800 dark:text-zinc-200">

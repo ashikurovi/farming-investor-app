@@ -9,15 +9,15 @@ const FALLBACK_IMAGE =
 
 export function MobileLoginBackground() {
   const { data: galleryData } = useGetGlarryQuery({ limit: 6 });
-  const items = galleryData?.items ?? galleryData ?? [];
 
   const images = useMemo(() => {
+    const items = galleryData?.items ?? galleryData ?? [];
     const cleanUrl = (u) =>
       typeof u === "string" ? u.replace(/[`]/g, "").trim() : "";
     return items
       .map((item) => cleanUrl(item?.photoUrl || item?.photo))
       .filter(Boolean);
-  }, [items]);
+  }, [galleryData]);
 
   const [index, setIndex] = useState(0);
 
@@ -45,4 +45,3 @@ export function MobileLoginBackground() {
     </div>
   );
 }
-

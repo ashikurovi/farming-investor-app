@@ -142,6 +142,7 @@ export function MainNavbar() {
   const role = user?.role;
   const dashboardHref =
     role === "admin" ? "/admin" : role === "investor" ? "/investor" : "/";
+  const isLoginRoute = pathname.startsWith("/login");
 
   const handleLogout = async () => {
     try {
@@ -153,8 +154,11 @@ export function MainNavbar() {
     }
   };
 
-  // Close mobile menu when route changes
-  useEffect(() => setMobileOpen(false), [pathname]);
+  useEffect(() => {
+    if (!mobileOpen) return undefined;
+    const id = window.setTimeout(() => setMobileOpen(false), 0);
+    return () => window.clearTimeout(id);
+  }, [pathname, mobileOpen]);
 
   // Gradient background style
   const navbarGradient = {

@@ -78,7 +78,7 @@ export function AppShell({ children }) {
     router,
   ]);
 
-  const isBareLayoutRoute = isProtectedRoute || isAuthRoute;
+  const isBareLayoutRoute = isProtectedRoute;
 
   if (isBareLayoutRoute) {
     return <>{children}</>;
