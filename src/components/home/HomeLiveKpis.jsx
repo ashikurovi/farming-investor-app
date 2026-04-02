@@ -22,33 +22,19 @@ const bottomCards = [
 
 export default function HomeLiveKpis() {
   return (
-    <section id="live-kpis" className="relative overflow-hidden bg-[#f6f7f4] py-16 lg:py-24">
-      <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
-
-        {/* TOP GRID */}
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-
-          {/* LEFT */}
-          <div className="flex flex-col">
-            <div className="mb-4 inline-flex items-center gap-2 w-fit">
-              <span className="w-2 h-2 rounded-full bg-[#4d8c1e]" />
-              <span className="text-[10px] font-bold tracking-[0.18em] uppercase text-[#4d8c1e]">
-                Who We Are
+    <section id="live-kpis" className="relative">
+      <div className="absolute inset-0 pointer-events-none [background:radial-gradient(80%_60%_at_50%_-10%,rgba(16,185,129,0.08),transparent)]" />
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+          <div className="space-y-3 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-emerald-100 w-fit shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700">
+                Live KPIs
               </span>
             </div>
-
-            <h2
-              className="text-[clamp(28px,3.5vw,44px)] font-bold text-[#1a1f14] leading-[1.15] mb-5"
-              style={{ fontFamily: "'Georgia', serif" }}
-            >
-              Our Journey Toward{" "}
-              <span className="block">Sustainable And</span>
-              <span
-                className="font-light text-[#4d8c1e]"
-                style={{ fontStyle: "italic" }}
-              >
-                Responsible Agriculture
-              </span>
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-zinc-900 leading-tight">
+              Real-time portfolio indicators and field conditions
             </h2>
 
             <p className="text-[15px] leading-relaxed text-[#6b7466] font-light max-w-[420px] mb-7">
@@ -70,27 +56,23 @@ export default function HomeLiveKpis() {
             </a>
           </div>
 
-          {/* RIGHT — 2-col image grid */}
-          <div
-            className="grid grid-cols-2 gap-3.5"
-            style={{ gridTemplateRows: "auto auto" }}
-          >
-            {/* Big image spanning 2 rows */}
-            <div className="row-span-2 rounded-3xl overflow-hidden group min-h-[320px] lg:min-h-[360px]">
-              <img
-                src="/img_7-2048x1024.jpg"
-                alt="Sustainable farming"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
+          <div className="flex flex-wrap gap-3 p-4 rounded-2xl bg-white/80 backdrop-blur-md border border-emerald-100 shadow-sm transition-all hover:shadow-md">
+            <div className="flex items-center gap-3 pr-4 border-r border-zinc-100 min-w-[140px]">
+              <WeatherIcon code={weather.code} className="w-8 h-8 text-amber-500" />
+              <div>
+                <div className="text-[10px] font-medium text-zinc-500 uppercase tracking-wider">
+                  Field Conditions
+                </div>
+                <div className="text-base md:text-lg font-bold text-zinc-900">
+                  {weather.condition}, {weather.temp}°C
+                </div>
+              </div>
             </div>
-
-            {/* Glass info card */}
-            <div className="rounded-3xl bg-white p-5 shadow-md border border-white/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-              <div
-                className="mb-3.5 flex h-11 w-11 items-center justify-center rounded-2xl text-white shadow-md"
-                style={{ background: "linear-gradient(135deg,#4d8c1e,#7cc22e)" }}
-              >
-                <BadgeCheck className="h-5 w-5" />
+            <div className="flex items-center gap-3 px-2">
+              <Droplets className="w-5 h-5 text-blue-500" />
+              <div>
+                <div className="text-[10px] uppercase tracking-wider text-zinc-500">Humidity</div>
+                <div className="font-semibold text-zinc-900">{weather.humidity}%</div>
               </div>
               <p className="text-[14px] font-semibold text-[#1a1f14] mb-1.5">
                 Organic Farming Expertise
@@ -99,38 +81,38 @@ export default function HomeLiveKpis() {
                 Dictumst feugiat mauris conubia et enim pellentesque porttitor.
               </p>
             </div>
-
-            {/* Small image */}
-            <div className="rounded-3xl overflow-hidden group min-h-[150px]">
-              <img
-                src="/img_4-2048x1024.jpg"
-                alt="Fresh harvest"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
+            <div className="flex items-center gap-3 px-2 border-l border-zinc-100 pl-4">
+              <Wind className="w-5 h-5 text-zinc-500" />
+              <div>
+                <div className="text-[10px] uppercase tracking-wider text-zinc-500">Wind</div>
+                <div className="font-semibold text-zinc-900">{weather.wind}km/h</div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* BOTTOM CARDS */}
-        <div className="mt-10 grid grid-cols-1 gap-3.5 sm:grid-cols-2 md:grid-cols-3">
-          {bottomCards.map((item, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {kpis.map((kpi, index) => (
             <div
-              key={i}
-              className="group flex items-start gap-4 rounded-2xl bg-white px-5 py-5 border border-[#edf0e8] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[#c8dea8]"
+              key={index}
+              className="p-6 rounded-2xl bg-white/80 backdrop-blur-md border border-emerald-100 hover:shadow-xl hover:shadow-emerald-900/10 transition-all duration-300 group"
             >
-              <div
-                className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl text-white shadow-md transition-transform duration-300 group-hover:scale-110"
-                style={{ background: "linear-gradient(135deg,#4d8c1e,#7cc22e)" }}
-              >
-                {item.icon}
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-2 rounded-lg bg-emerald-50 group-hover:bg-emerald-100 transition-colors">
+                  <kpi.icon className="w-5 h-5 text-emerald-600" />
+                </div>
+                <span className="text-xs font-medium px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                  {kpi.trend}
+                </span>
               </div>
-              <div>
-                <p className="text-[14px] font-semibold text-[#1a1f14] mb-1">
-                  {item.title}
-                </p>
-                <p className="text-[12px] text-[#8a9185] leading-relaxed">
-                  {item.desc}
-                </p>
+
+              <div className="space-y-1">
+                <div className="text-sm text-zinc-500 font-medium">{kpi.label}</div>
+                <div className="text-2xl font-bold text-zinc-900">{kpi.value}</div>
+              </div>
+
+              <div className="mt-4 h-2 w-full bg-emerald-50 rounded-full overflow-hidden">
+                <div className={`h-full w-[70%] rounded-full ${kpi.chart}`} />
               </div>
             </div>
           ))}
