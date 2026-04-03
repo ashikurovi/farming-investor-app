@@ -451,7 +451,7 @@ export default function InvestorDashboardPage() {
           </div>
 
           {/* Table */}
-          <div className="w-full overflow-x-auto">
+          {/* <div className="w-full overflow-x-auto">
             <table className="min-w-full table-fixed divide-y divide-zinc-100 text-sm">
               <colgroup>
                 <col className="w-12" />
@@ -538,9 +538,9 @@ export default function InvestorDashboardPage() {
                 )}
               </tbody>
             </table>
-          </div>
+          </div> */}
 
-          <TablePagination
+          {/* <TablePagination
             page={investorsMeta.page ?? investorPage}
             pageCount={investorsMeta.pageCount ?? 1}
             total={investorsMeta.total ?? investors.length}
@@ -551,14 +551,14 @@ export default function InvestorDashboardPage() {
               setInvestorPage(Math.max(1, Math.min(max, newPage)));
             }}
             onPageSizeChange={(s) => { setInvestorPageSize(s); setInvestorPage(1); }}
-          />
+          /> */}
         </div>
       </section>
 
       {/* MODAL */}
-      {detailOpen && (
+      {/* {detailOpen && (
         <InvestorDetailModal investor={selectedInvestor} onClose={closeDetail} />
-      )}
+      )} */}
     </div>
   );
 }

@@ -119,10 +119,49 @@ export default function AdminInvestmentsPage() {
 
     return true;
   });
-  const total = filteredInvestments.length;
+  
+  // Group investments by investor
+  const groupedInvestmentsMap = new Map();
+  filteredInvestments.forEach((inv) => {
+    const investorId = inv.investorId;
+    if (!groupedInvestmentsMap.has(investorId)) {
+      groupedInvestmentsMap.set(investorId, {
+        id: `grouped-${investorId}`,
+        investorId: investorId,
+        investments: [],
+        amount: 0,
+        startDate: null,
+        endDate: null,
+        isActive: false,
+        isExpired: false,
+        hasDeed: false,
+      });
+    }
+    const group = groupedInvestmentsMap.get(investorId);
+    group.investments.push(inv);
+    group.amount += Number(inv.amount || 0);
+
+    const end = inv.endDate ? new Date(inv.endDate) : null;
+    const isExpired = end && !isNaN(end) && end < new Date();
+    const effectiveActive = inv.isActive && !isExpired;
+
+    if (effectiveActive) group.isActive = true;
+    if (isExpired) group.isExpired = true;
+    if (deedsByInvestmentId.has(inv.id)) group.hasDeed = true;
+
+    if (!group.startDate || new Date(inv.startDate) < new Date(group.startDate)) {
+      group.startDate = inv.startDate;
+    }
+    if (!group.endDate || new Date(inv.endDate) > new Date(group.endDate)) {
+      group.endDate = inv.endDate;
+    }
+  });
+
+  const groupedInvestments = Array.from(groupedInvestmentsMap.values());
+  const total = groupedInvestments.length;
   const startIndex = (page - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const investments = filteredInvestments.slice(startIndex, endIndex);
+  const investments = groupedInvestments.slice(startIndex, endIndex);
 
   const handleSearchChange = (value) => {
     setSearchInput(value);
@@ -409,15 +448,23 @@ export default function AdminInvestmentsPage() {
                     user?.email ||
                     `Investor #${investment.investorId}`;
                   const email = user?.email || "";
+                  const count = investment.investments.length;
                   return (
                     <div className="flex items-center gap-3">
                       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[color:rgba(124,194,46,0.18)] text-xs font-bold text-[color:rgb(77,140,30)] dark:bg-[color:rgba(124,194,46,0.14)] dark:text-[color:rgb(124,194,46)]">
                         {name.charAt(0).toUpperCase()}
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                          {name}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                            {name}
+                          </span>
+                          {count > 1 && (
+                            <span className="inline-flex items-center rounded-md bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-800 ring-1 ring-inset ring-amber-600/20 dark:bg-amber-500/20 dark:text-amber-300">
+                              {count} Investments
+                            </span>
+                          )}
+                        </div>
                         {email && (
                           <span className="text-xs text-zinc-500 dark:text-zinc-400">
                             {email}
@@ -495,19 +542,14 @@ export default function AdminInvestmentsPage() {
                 header: "STATUS",
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (investment) => {
-                  const end = investment?.endDate
-                    ? new Date(investment.endDate)
-                    : null;
-                  const now = new Date();
-                  const isExpired = end && !isNaN(end) && end < now;
                   return (
                     <span
-                      className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${isExpired
+                      className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${!investment.isActive && investment.isExpired
                         ? "bg-red-50 text-red-700 ring-red-600/10 dark:bg-red-500/10 dark:text-red-300 dark:ring-red-500/20"
                         : "bg-emerald-50 text-emerald-700 ring-emerald-600/10 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20"
                         }`}
                     >
-                      {isExpired ? "Expired" : "Active"}
+                      {!investment.isActive && investment.isExpired ? "Expired" : "Active"}
                     </span>
                   );
                 },
@@ -517,15 +559,14 @@ export default function AdminInvestmentsPage() {
                 header: "DEED",
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (investment) => {
-                  const hasDeed = deedsByInvestmentId.has(investment.id);
                   return (
                     <span
-                      className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${hasDeed
+                      className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${investment.hasDeed
                         ? "bg-zinc-50 text-zinc-700 ring-zinc-600/10 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700"
                         : "bg-amber-50 text-amber-700 ring-amber-600/10 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-500/20"
                         }`}
                     >
-                      {hasDeed ? "Issued" : "Deed Pending"}
+                      {investment.hasDeed ? "Issued" : "Deed Pending"}
                     </span>
                   );
                 },
@@ -534,11 +575,21 @@ export default function AdminInvestmentsPage() {
                 key: "reference",
                 header: "REFERENCE",
                 tdClassName: "whitespace-nowrap px-6 py-4",
-                cell: (investment) => (
-                  <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700">
-                    {investment?.reference || "N/A"}
-                  </span>
-                ),
+                cell: (investment) => {
+                  const count = investment.investments.length;
+                  if (count > 1) {
+                    return (
+                      <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700">
+                        {count} References
+                      </span>
+                    );
+                  }
+                  return (
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700">
+                      {investment.investments[0]?.reference || "N/A"}
+                    </span>
+                  );
+                },
               },
             ]}
             data={investments}
@@ -546,9 +597,9 @@ export default function AdminInvestmentsPage() {
             emptyMessage="No investments found."
             loadingLabel="Loading investments..."
             getRowKey={(investment) => investment.id}
-            getRowClassName={() => ""}
+            getRowClassName={(investment) => investment.investments.length > 1 ? "bg-amber-50/10 hover:bg-amber-50/30 dark:bg-amber-900/10" : ""}
             onRowClick={(investment) =>
-              router.push(`/admin/investment/${investment.id}`)
+              router.push(`/admin/investment/investor/${investment.investorId}`)
             }
             renderActions={(investment) => (
               <div className="flex items-center justify-end gap-2">
@@ -557,38 +608,12 @@ export default function AdminInvestmentsPage() {
                   size="icon"
                   onClick={(e) => {
                     e.stopPropagation();
-                    router.push(`/admin/investment/${investment.id}`);
+                    router.push(`/admin/investment/investor/${investment.investorId}`);
                   }}
                   className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-emerald-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-emerald-300"
                 >
                   <Eye className="h-4 w-4" />
                 </Button>
-                {!isReadOnly && (
-                  <>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        router.push(`/admin/investment/${investment.id}/edit`);
-                      }}
-                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600"
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        confirmDelete(investment);
-                      }}
-                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </>
-                )}
               </div >
             )
             }

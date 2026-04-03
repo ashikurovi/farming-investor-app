@@ -12,8 +12,10 @@ export const dailyReportApiSlice = apiSlice.injectEndpoints({
         };
       },
       transformResponse: (response) => response?.data ?? response,
-      invalidatesTags: (result, error, { projectId }) =>
-        projectId ? [{ type: "Project", id: projectId }] : [],
+      invalidatesTags: (result, error, { projectId }) => [
+        { type: "DailyReport", id: "LIST" },
+        ...(projectId ? [{ type: "Project", id: projectId }] : []),
+      ],
     }),
     getDailyReports: builder.query({
       query: () => ({
@@ -21,6 +23,13 @@ export const dailyReportApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => response?.data ?? response,
+      providesTags: (result) =>
+        result?.items
+          ? [
+              ...result.items.map((item) => ({ type: "DailyReport", id: item.id })),
+              { type: "DailyReport", id: "LIST" },
+            ]
+          : [{ type: "DailyReport", id: "LIST" }],
     }),
     getDailyReport: builder.query({
       query: (id) => ({
@@ -28,6 +37,7 @@ export const dailyReportApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => response?.data ?? response,
+      providesTags: (result, error, id) => [{ type: "DailyReport", id }],
     }),
   }),
 });

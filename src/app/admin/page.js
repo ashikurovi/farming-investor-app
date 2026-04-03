@@ -9,6 +9,19 @@ import {
   TrendingUp,
   Activity,
   ArrowRight,
+  FileText,
+  Bell,
+  Monitor,
+  Camera,
+  MessageSquare,
+  CreditCard,
+  Shield,
+  Coins,
+  LayoutDashboard,
+  CircleDollarSign,
+  Banknote,
+  PiggyBank,
+  Briefcase
 } from "lucide-react";
 import { formatNumber, formatCurrencyBDT } from "@/lib/utils";
 
@@ -18,25 +31,52 @@ export default function AdminDashboardPage() {
     useGetRecentInvestmentsQuery({ limit: 5 });
 
   const statCards = [
+
     {
-      label: "Total investment",
-      value: statsLoading ? "—" : formatCurrencyBDT(stats?.totalInvestment),
+      label: "Investor capital",
+      value: statsLoading ? "—" : formatCurrencyBDT(stats?.investorTotalInvestment),
       change: "",
-      icon: Wallet,
+      icon: PiggyBank,
     },
+
+    {
+      label: "Partner capital",
+      value: statsLoading ? "—" : formatCurrencyBDT(stats?.partnerTotalInvestment),
+      change: "",
+      icon: Briefcase,
+    },
+
     {
       label: "Total projects",
       value: statsLoading ? "—" : formatNumber(stats?.totalProjects),
       change: "",
       icon: Sprout,
     },
+
     {
-      label: "Avg. yield (12m)",
-      value: statsLoading
-        ? "—"
-        : `${Number(stats?.avgYieldPercent ?? 0).toFixed(1)}%`,
+      label: "Active investors",
+      value: statsLoading ? "—" : formatNumber(stats?.activeInvestors),
       change: "",
-      icon: TrendingUp,
+      icon: Users,
+    },
+
+    {
+      label: "Project Collect Investment",
+      value: statsLoading ? "—" : formatCurrencyBDT(stats?.totalInvestment),
+      change: "",
+      icon: Wallet,
+    },
+    {
+      label: "Total sell",
+      value: statsLoading ? "—" : formatCurrencyBDT(stats?.totalSell),
+      change: "",
+      icon: Banknote,
+    },
+    {
+      label: "Total cost",
+      value: statsLoading ? "—" : formatCurrencyBDT(stats?.totalCost),
+      change: "",
+      icon: CircleDollarSign,
     },
     {
       label: "Total profit",
@@ -44,11 +84,40 @@ export default function AdminDashboardPage() {
       change: "",
       icon: Activity,
     },
+
+
+    // {
+    //   label: "Avg. yield (12m)",
+    //   value: statsLoading
+    //     ? "—"
+    //     : `${Number(stats?.avgYieldPercent ?? 0).toFixed(1)}%`,
+    //   change: "",
+    //   icon: TrendingUp,
+    // },
+  ];
+
+  const moduleCounters = [
+    { label: "Accounts", count: stats?.moduleCounts?.users ?? 0, icon: Users, color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-500/10", border: "border-blue-100 dark:border-blue-500/20" },
+    { label: "Investments", count: stats?.moduleCounts?.investments ?? 0, icon: TrendingUp, color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-500/10", border: "border-emerald-100 dark:border-emerald-500/20" },
+    { label: "Agreements", count: stats?.moduleCounts?.deeds ?? 0, icon: FileText, color: "text-amber-500", bg: "bg-amber-50 dark:bg-amber-500/10", border: "border-amber-100 dark:border-amber-500/20" },
+    // { label: "Yield Reports", count: stats?.moduleCounts?.reports ?? 0, icon: Activity, color: "text-cyan-500", bg: "bg-cyan-50 dark:bg-cyan-500/10", border: "border-cyan-100 dark:border-cyan-500/20" },
+    { label: "Partner Payouts", count: stats?.moduleCounts?.partnerPayouts ?? 0, icon: CreditCard, color: "text-violet-500", bg: "bg-violet-50 dark:bg-violet-500/10", border: "border-violet-100 dark:border-violet-500/20" },
+    { label: "Inquiries", count: stats?.moduleCounts?.contacts ?? 0, icon: MessageSquare, color: "text-rose-500", bg: "bg-rose-50 dark:bg-rose-500/10", border: "border-rose-100 dark:border-rose-500/20" },
+    { label: "Notices", count: stats?.moduleCounts?.notices ?? 0, icon: Bell, color: "text-red-500", bg: "bg-red-50 dark:bg-red-500/10", border: "border-red-100 dark:border-red-500/20" },
+    { label: "Banners", count: stats?.moduleCounts?.banners ?? 0, icon: Monitor, color: "text-purple-500", bg: "bg-purple-50 dark:bg-purple-500/10", border: "border-purple-100 dark:border-purple-500/20" },
+    { label: "Gallery", count: stats?.moduleCounts?.glarry ?? 0, icon: Camera, color: "text-pink-500", bg: "bg-pink-50 dark:bg-pink-500/10", border: "border-pink-100 dark:border-pink-500/20" },
+    { label: "Investor Types", count: stats?.moduleCounts?.investorTypes ?? 0, icon: Shield, color: "text-indigo-500", bg: "bg-indigo-50 dark:bg-indigo-500/10", border: "border-indigo-100 dark:border-indigo-500/20" },
+    { label: "Tier Packages", count: stats?.moduleCounts?.investAmounts ?? 0, icon: Coins, color: "text-orange-500", bg: "bg-orange-50 dark:bg-orange-500/10", border: "border-orange-100 dark:border-orange-500/20" },
   ];
 
   return (
     <div className="space-y-8 animate-[fadeIn_0.5s_ease-out]">
-      <section className="grid gap-6 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-2">
+        <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+          <CircleDollarSign className="w-5 h-5 text-emerald-500" /> Financial & Sales Overview
+        </h2>
+      </div>
+      <section className="grid gap-6 grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {statCards.map((card, index) => (
           <div
             key={card.label}
@@ -101,10 +170,53 @@ export default function AdminDashboardPage() {
         ))}
       </section>
 
+      {/* Module Counts Section */}
+      <section className="rounded-3xl border border-zinc-100 bg-white p-6 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="rounded-2xl bg-zinc-50 p-2.5 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+              <LayoutDashboard className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
+                System Overview
+              </h2>
+              <p className="text-xs font-medium text-zinc-400 dark:text-zinc-500">
+                Total counts across all platform modules
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          {moduleCounters.map((item, i) => (
+            <div
+              key={item.label}
+              className={`group flex items-center gap-4 rounded-2xl border ${item.border} p-4 transition-all duration-300 hover:scale-[1.02] hover:shadow-md bg-white dark:bg-zinc-800/20`}
+              style={{ animationDelay: `${50 * i}ms` }}
+            >
+              <div
+                className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl transition-transform duration-300 group-hover:-rotate-6 ${item.bg} ${item.color}`}
+              >
+                <item.icon className="h-5 w-5" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-2xl font-black text-zinc-900 dark:text-zinc-100">
+                  {statsLoading ? "—" : formatNumber(item.count)}
+                </span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 line-clamp-1">
+                  {item.label}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section >
+
       {/* Bottom Panels */}
-      <section className="grid gap-6 lg:grid-cols-[minmax(0,2fr),minmax(0,1.4fr)]">
+      < section className="grid gap-6 lg:grid-cols-[minmax(0,2fr),minmax(0,1.4fr)]" >
         {/* Activity Panel */}
-        <div className="group rounded-3xl border border-zinc-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-emerald-100/50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-emerald-800/50">
+        < div className="group rounded-3xl border border-zinc-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-emerald-100/50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-emerald-800/50" >
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <div className="rounded-2xl bg-[color:rgba(124,194,46,0.18)] p-2.5 text-[color:rgb(77,140,30)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 dark:bg-[color:rgba(124,194,46,0.18)] dark:text-[color:rgb(124,194,46)]">
@@ -188,10 +300,10 @@ export default function AdminDashboardPage() {
               )}
             </div>
           </div>
-        </div>
+        </div >
 
         {/* Recent Investments Panel */}
-        <div className="group rounded-3xl border border-zinc-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-blue-100/50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-800/50">
+        < div className="group rounded-3xl border border-zinc-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-blue-100/50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-800/50" >
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="rounded-2xl bg-blue-50 p-2.5 text-blue-600 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 dark:bg-blue-900/30 dark:text-blue-400">
@@ -272,8 +384,8 @@ export default function AdminDashboardPage() {
               })
             )}
           </div>
-        </div>
-      </section>
-    </div>
+        </div >
+      </section >
+    </div >
   );
 }
