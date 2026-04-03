@@ -504,21 +504,6 @@ export default function AdminInvestorPage() {
                 >
                   <Eye className="h-4 w-4" />
                 </Button>
-<<<<<<< HEAD
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    router.push(`/admin/investor/${user.id}`);
-                  }}
-                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600"
-                  title="View Details"
-                >
-                  <Eye className="h-4 w-4" />
-                </Button>
-=======
->>>>>>> devarko
                 {!isReadOnly && (
                   <>
                     <Button
@@ -541,13 +526,8 @@ export default function AdminInvestorPage() {
                         confirmToggleBan(user);
                       }}
                       className={`h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 ${user.isBanned
-<<<<<<< HEAD
-                          ? "hover:text-emerald-600"
-                          : "hover:text-purple-600"
-=======
                         ? "hover:text-emerald-600"
                         : "hover:text-purple-600"
->>>>>>> devarko
                         }`}
                       title={user.isBanned ? "Unban User" : "Ban User"}
                     >

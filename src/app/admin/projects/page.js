@@ -236,11 +236,7 @@ export default function AdminProjectsPage() {
             <Button
               type="button"
               onClick={() => router.push("/admin/projects/new")}
-<<<<<<< HEAD
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:bg-zinc-800 hover:shadow-xl hover:shadow-zinc-900/30 active:scale-95"
-=======
               className="inline-flex h-10 items-center gap-2 rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-5 text-sm font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] transition-all hover:brightness-[1.05] active:scale-95"
->>>>>>> devarko
             >
               <Plus className="h-4 w-4" />
               <span>New Project</span>
