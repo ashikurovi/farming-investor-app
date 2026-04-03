@@ -57,7 +57,7 @@ const CSS = `
   /* Section background with subtle leaf pattern */
   .faq-section {
     background: var(--bg);
-    padding: 96px 0 112px;
+    padding: 72px 0 84px;
     position: relative;
     overflow: hidden;
   }
@@ -91,7 +91,7 @@ const CSS = `
   }
 
   /* ── Header ── */
-  .faq-header { margin-bottom: 64px; }
+  .faq-header { margin-bottom: 48px; }
 
   .faq-eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
@@ -114,7 +114,7 @@ const CSS = `
 
   .faq-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(32px, 4vw, 52px);
+    font-size: 30px;
     font-weight: 400;
     color: var(--text-1);
     line-height: 1.15;
@@ -344,7 +344,7 @@ const CSS = `
   }
 
   @media (max-width: 768px) {
-    .faq-section { padding: 64px 0 80px; }
+    .faq-section { padding: 56px 0 68px; }
     .faq-header { margin-bottom: 40px; }
     .faq-sidebar { grid-template-columns: 1fr; }
     .faq-stats { grid-template-columns: 1fr; border-radius: 14px; }
@@ -356,8 +356,9 @@ const CSS = `
 
   @media (max-width: 480px) {
     .faq-inner { padding: 0 16px; }
-    .faq-title { font-size: 26px; }
-    .faq-section { padding: 48px 0 64px; }
+    .faq-title { font-size: 24px; }
+    .faq-subtitle { font-size: 14px; }
+    .faq-section { padding: 44px 0 56px; }
     .faq-item { border-radius: 14px; }
     .faq-q-text { font-size: 14px; }
     .faq-stats { margin-top: 36px; }

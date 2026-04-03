@@ -18,7 +18,8 @@ export default function AgricultureEvolvingSection() {
   }, []);
 
   return (
-    <section className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24">
+    <section className="home-section">
+      <div className="home-container">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
 
         {/* ── LEFT COLUMN ── */}
@@ -89,19 +90,16 @@ export default function AgricultureEvolvingSection() {
           {/* Heading */}
           <div className="flex flex-col gap-5">
             {/* Tag */}
-            <div className="inline-flex items-center gap-2 bg-white border border-zinc-200 rounded-full px-3 py-1 w-fit">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">
-                The Problem
-              </span>
+            <div className="home-tag w-fit">
+              <span className="home-tag-dot" />
+              The Problem
             </div>
 
-            <h2 className="text-2xl md:text-4xl text-zinc-900 leading-tight font-light tracking-tight">
+            <h2 className="mt-4 home-title leading-tight">
               Agriculture Is Evolving.{" "}
               <span className="block">Traditional Systems</span>
               <span
-                className="italic text-emerald-700"
-                style={{ fontFamily: "'Georgia', serif" }}
+                className="italic text-primary"
               >
                 Can&rsquo;t Keep Up.
               </span>
@@ -142,6 +140,7 @@ export default function AgricultureEvolvingSection() {
           </div>
         </div>
 
+      </div>
       </div>
     </section>
   );

@@ -16,7 +16,7 @@ export default function HomeWhyChooseUs() {
             className="relative block w-full text-left"
             aria-label="Open YouTube video"
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10"/>
             <Image
               src="/img_7-2048x1024.jpg"
               alt="Organic farming"
@@ -30,7 +30,7 @@ export default function HomeWhyChooseUs() {
                 <div className="absolute -inset-6 rounded-full bg-white/10 blur-xl" />
                 <Play className="relative h-6 w-6 text-white sm:h-8 sm:w-8" />
               </div>
-              <h3 className="mt-4 max-w-3xl font-serif text-2xl font-semibold leading-tight tracking-tight text-white drop-shadow-sm sm:mt-5 sm:text-5xl">
+              <h3 className="mt-5 max-w-3xl home-title leading-tight text-white drop-shadow-sm">
                 Organic Farming Pricing Designed For Growing Businesses
               </h3>
               <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-4 py-2 text-[11px] font-semibold text-white shadow-[0_18px_48px_-30px_rgba(77,140,30,0.75)] sm:mt-6">
@@ -46,14 +46,14 @@ export default function HomeWhyChooseUs() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-6">
-              <div className="text-[11px] font-semibold tracking-[0.22em] text-emerald-200/80">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-emerald-200/80">
                 Why Choose Us
               </div>
-              <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              <h2 className="mt-4 home-title leading-tight text-white">
                 Why Global Partners Choose Botanix Organic Services
               </h2>
               <div className="mt-5 h-1.5 w-16 rounded-full bg-[#7f9b3c]" />
-              <div className="mt-6 max-w-xl text-sm leading-relaxed text-emerald-100/80">
+              <div className="home-subtitle max-w-xl text-emerald-100/80">
                 Semper pellentesque blandit tincidunt primis suspendisse feugiat
                 dictumst. Phasellus metus libero auctor luctus sollicitudin nam
                 maecenas.

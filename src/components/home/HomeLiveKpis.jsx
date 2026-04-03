@@ -22,34 +22,29 @@ const bottomCards = [
 
 export default function HomeLiveKpis() {
   return (
-    <section id="live-kpis" className="relative overflow-hidden bg-[#f6f7f4] py-16 lg:py-24">
-      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+    <section
+      id="live-kpis"
+      className="relative overflow-hidden bg-[#f6f7f4] home-section"
+    >
+      <div className="home-container">
         {/* TOP GRID */}
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* LEFT */}
           <div className="flex flex-col">
-            <div className="mb-6 inline-flex items-center gap-2 w-fit">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#4d8c1e]" />
-              <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#4d8c1e]">
-                Who We Are
-              </span>
+            <div className="home-tag w-fit">
+              <span className="home-tag-dot" />
+              Who We Are
             </div>
 
-            <h2
-              className="text-4xl sm:text-5xl lg:text-[56px] font-bold text-[#1a1f14] leading-[1.1] mb-6 tracking-tight"
-              style={{ fontFamily: "'Georgia', serif" }}
-            >
+            <h2 className="mt-4 home-title leading-tight">
               Our Journey Toward{" "}
-              <span className="block mt-2">Sustainable And</span>
-              <span
-                className="block mt-2 font-light text-[#4d8c1e]"
-                style={{ fontStyle: "italic" }}
-              >
+              <span className="block">Sustainable And</span>
+              <span className="block italic text-primary font-semibold">
                 Responsible Agriculture
               </span>
             </h2>
 
-            <p className="text-base sm:text-lg leading-relaxed text-[#6b7466] font-light max-w-lg mb-8">
+            <p className="home-subtitle max-w-lg">
               Luctus felis diam lectus in aptent vehicula curabitur duis
               ultrices. Consequat nulla nostra tempor ridiculus sociosqu maximus
               laoreet.
@@ -108,7 +103,7 @@ export default function HomeLiveKpis() {
         </div>
 
         {/* BOTTOM CARDS */}
-        <div className="mt-16 sm:mt-20 grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {bottomCards.map((item, i) => (
             <div
               key={i}
