@@ -24,6 +24,7 @@ import {
   useDeleteInvestmentAdminMutation,
 } from "@/features/investor/investments/investmentsApiSlice";
 import { useGetUserQuery } from "@/features/admin/users/usersApiSlice";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import {
   useGetDeedsQuery,
   useCreateDeedMutation,
@@ -42,12 +43,15 @@ export default function AdminInvestorInvestmentsDetailPage() {
     isError,
   } = useGetInvestmentsAdminQuery(undefined, {
     skip: !id,
+    pollingInterval: 5000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
   });
 
   const allInvestments = Array.isArray(allInvestmentsData) ? allInvestmentsData : [];
   const investments = allInvestments.filter((inv) => String(inv.investorId) === String(id));
 
-  const isBusy = isInvestmentsLoading || isFetching;
+  const isBusy = isInvestmentsLoading;
 
   const [deleteInvestment, { isLoading: isDeleting }] = useDeleteInvestmentAdminMutation();
 
@@ -59,10 +63,17 @@ export default function AdminInvestorInvestmentsDetailPage() {
 
   const { data: user, isLoading: isUserLoading } = useGetUserQuery(id, {
     skip: !id,
+    pollingInterval: 5000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
   });
 
   const { data: deedsData, isLoading: isDeedsLoading } = useGetDeedsQuery({
     limit: 1000,
+  }, {
+    pollingInterval: 5000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
   });
 
   // unified deed logic: find if any of the investments has a deed
@@ -124,25 +135,53 @@ export default function AdminInvestorInvestmentsDetailPage() {
     }
   };
 
-  const handleDelete = async (investment) => {
-    const confirmed = window.confirm(
-      `Delete ${formatNumber(investment.amount)} BDT investment? This action cannot be undone.`
-    );
-    if (!confirmed) return;
+  const [confirmState, setConfirmState] = useState({
+    isOpen: false,
+    title: "",
+    description: "",
+    confirmLabel: "",
+    cancelLabel: "Cancel",
+    onConfirm: null,
+  });
 
-    try {
-      await deleteInvestment(investment.id).unwrap();
-      toast.success("Investment deleted successfully");
-      if (investments.length <= 1) {
-        router.push("/admin/investment");
-      }
-    } catch (error) {
-      const message =
-        error?.data?.message ||
-        (Array.isArray(error?.data?.message) ? error.data.message[0] : null) ||
-        "Failed to delete investment.";
-      toast.error("Delete failed", { description: message });
-    }
+  const closeConfirm = () =>
+    setConfirmState((prev) => ({ ...prev, isOpen: false, onConfirm: null }));
+
+  const openConfirm = (options) =>
+    setConfirmState({
+      isOpen: true,
+      title: "",
+      description: "",
+      confirmLabel: "Confirm",
+      cancelLabel: "Cancel",
+      onConfirm: null,
+      ...options,
+    });
+
+  const handleDelete = (investment) => {
+    openConfirm({
+      title: "Delete investment",
+      description: `Delete ${formatNumber(investment.amount)} BDT investment? This action cannot be undone.`,
+      confirmLabel: "Delete",
+      variant: "danger",
+      onConfirm: async () => {
+        try {
+          await deleteInvestment(investment.id).unwrap();
+          toast.success("Investment deleted successfully");
+          if (investments.length <= 1) {
+            router.push("/admin/investment");
+          }
+        } catch (error) {
+          const message =
+            error?.data?.message ||
+            (Array.isArray(error?.data?.message) ? error.data.message[0] : null) ||
+            "Failed to delete investment.";
+          toast.error("Delete failed", { description: message });
+        } finally {
+          closeConfirm();
+        }
+      },
+    });
   };
 
   if (isBusy) {
@@ -613,6 +652,15 @@ export default function AdminInvestorInvestmentsDetailPage() {
           </section>
         </div>
       </div>
+      <ConfirmDialog
+        isOpen={confirmState.isOpen}
+        title={confirmState.title}
+        description={confirmState.description}
+        confirmLabel={confirmState.confirmLabel}
+        cancelLabel={confirmState.cancelLabel}
+        onConfirm={confirmState.onConfirm}
+        onCancel={closeConfirm}
+      />
     </div>
   );
 }

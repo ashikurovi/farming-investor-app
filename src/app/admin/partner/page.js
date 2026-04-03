@@ -10,8 +10,14 @@ import {
   useWithdrawPartnerProfitMutation,
   useGetPartnerPayoutsQuery,
   useGetAllPartnerPayoutsQuery,
+  useDeletePartnerMutation,
+  useDeletePartnerPayoutMutation,
 } from "@/features/partner/partnerApiSlice";
-import { useGetInvestmentsAdminQuery } from "@/features/investor/investments/investmentsApiSlice";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { 
+  useGetInvestmentsAdminQuery,
+  useDeleteInvestmentAdminMutation
+} from "@/features/investor/investments/investmentsApiSlice";
 import { AdminSearchBar } from "@/app/admin/components/AdminSearchBar";
 import { toast } from "sonner";
 import {
@@ -28,6 +34,7 @@ import {
   Download,
   FileText,
   History,
+  Trash2,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -96,9 +103,17 @@ function PartnerDashboard({ userId }) {
     isLoading,
     refetch,
     isFetching,
-  } = useGetPartnerByIdQuery(userId);
+  } = useGetPartnerByIdQuery(userId, {
+    pollingInterval: 5000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true
+  });
   const { data: payouts, isLoading: isPayoutsLoading } =
-    useGetPartnerPayoutsQuery(userId);
+    useGetPartnerPayoutsQuery(userId, {
+      pollingInterval: 5000,
+      refetchOnFocus: true,
+      refetchOnMountOrArgChange: true
+    });
   const [printingInvoice, setPrintingInvoice] = useState(null);
   // jsdeefjkwenf
   const handlePrint = (payout) => {
@@ -335,11 +350,116 @@ function InvoiceTemplate({ payout }) {
 }
 
 function AdminPartnerDashboard() {
-  const { data: partners, isLoading, refetch } = useGetPartnersQuery();
+  const { data: partners, isLoading, refetch } = useGetPartnersQuery(undefined, {
+    pollingInterval: 5000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true
+  });
   const { data: globalPayouts, isLoading: isPayoutsLoading } =
-    useGetAllPartnerPayoutsQuery();
+    useGetAllPartnerPayoutsQuery(undefined, {
+      pollingInterval: 5000,
+      refetchOnFocus: true,
+      refetchOnMountOrArgChange: true
+    });
   const { data: allInvestments, isLoading: isInvestmentsLoading } =
-    useGetInvestmentsAdminQuery();
+    useGetInvestmentsAdminQuery(undefined, {
+      pollingInterval: 5000,
+      refetchOnFocus: true,
+      refetchOnMountOrArgChange: true
+    });
+
+  const [deletePartner, { isLoading: isDeletingPartner }] =
+    useDeletePartnerMutation();
+  const [deletePayout, { isLoading: isDeletingPayout }] = 
+    useDeletePartnerPayoutMutation();
+  const [deleteInvestment, { isLoading: isDeletingInvestment }] = 
+    useDeleteInvestmentAdminMutation();
+
+  const [confirmState, setConfirmState] = useState({
+    isOpen: false,
+    title: "",
+    description: "",
+    confirmLabel: "",
+    cancelLabel: "Cancel",
+    onConfirm: null,
+  });
+
+  const closeConfirm = () =>
+    setConfirmState((prev) => ({ ...prev, isOpen: false, onConfirm: null }));
+
+  const openConfirm = (options) =>
+    setConfirmState({
+      isOpen: true,
+      title: "",
+      description: "",
+      confirmLabel: "Confirm",
+      cancelLabel: "Cancel",
+      onConfirm: null,
+      ...options,
+    });
+
+  const handleDeletePartner = (partner) => {
+    openConfirm({
+      title: "Delete Partner",
+      description: `Are you sure you want to delete ${partner.name}? This action cannot be undone.`,
+      confirmLabel: "Delete",
+      variant: "danger",
+      onConfirm: async () => {
+        try {
+          await deletePartner(partner.id).unwrap();
+          toast.success("Partner deleted successfully");
+        } catch (error) {
+          const message =
+            error?.data?.message ||
+            (Array.isArray(error?.data?.message) ? error.data.message[0] : null) ||
+            "Failed to delete partner.";
+          toast.error("Delete failed", { description: message });
+        } finally {
+          closeConfirm();
+        }
+      },
+    });
+  };
+
+  const handleDeletePayout = (payout) => {
+    openConfirm({
+      title: "Delete Payout",
+      description: `Are you sure you want to delete payout #${payout.id}? This action cannot be undone.`,
+      confirmLabel: "Delete",
+      variant: "danger",
+      onConfirm: async () => {
+        try {
+          await deletePayout(payout.id).unwrap();
+          toast.success("Payout deleted successfully");
+        } catch (error) {
+          const message = error?.data?.message || "Failed to delete payout.";
+          toast.error("Delete failed", { description: message });
+        } finally {
+          closeConfirm();
+        }
+      },
+    });
+  };
+
+  const handleDeleteInvestment = (investment) => {
+    openConfirm({
+      title: "Delete Investment",
+      description: `Are you sure you want to delete investment #${investment.id}? This action cannot be undone.`,
+      confirmLabel: "Delete",
+      variant: "danger",
+      onConfirm: async () => {
+        try {
+          await deleteInvestment(investment.id).unwrap();
+          toast.success("Investment deleted successfully");
+        } catch (error) {
+          const message = error?.data?.message || "Failed to delete investment.";
+          toast.error("Delete failed", { description: message });
+        } finally {
+          closeConfirm();
+        }
+      },
+    });
+  };
 
   const [activePartnerId, setActivePartnerId] = useState(null);
   const [payoutPartnerId, setPayoutPartnerId] = useState(null);
@@ -554,6 +674,13 @@ function AdminPartnerDashboard() {
                           >
                             <Banknote className="h-3 w-3" /> Payout
                           </button>
+                          <button
+                            onClick={() => handleDeletePartner(p)}
+                            disabled={isDeletingPartner}
+                            className="inline-flex items-center gap-1 rounded bg-red-50 px-2 py-1 text-xs font-semibold text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
+                          >
+                            <Trash2 className="h-3 w-3" /> Delete
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -627,18 +754,27 @@ function AdminPartnerDashboard() {
                         ৳{Number(payout.amount).toLocaleString()}
                       </td>
                       <td className="px-4 py-4 text-center">
-                        <button
-                          onClick={() =>
-                            handlePrint({
-                              ...payout,
-                              partnerName: payout.partner?.name,
-                              partnerEmail: payout.partner?.email,
-                            })
-                          }
-                          className="inline-flex items-center gap-1 rounded px-2 py-1.5 text-xs font-semibold transition-colors bg-[color:rgba(124,194,46,0.12)] text-[color:rgb(77,140,30)] hover:bg-[color:rgba(124,194,46,0.18)] dark:bg-[color:rgba(124,194,46,0.12)] dark:text-[color:rgb(124,194,46)] dark:hover:bg-[color:rgba(124,194,46,0.18)]"
-                        >
-                          <Download className="h-3 w-3" /> Get PDF
-                        </button>
+                        <div className="flex items-center justify-center gap-2">
+                          <button
+                            onClick={() =>
+                              handlePrint({
+                                ...payout,
+                                partnerName: payout.partner?.name,
+                                partnerEmail: payout.partner?.email,
+                              })
+                            }
+                            className="inline-flex items-center gap-1 rounded px-2 py-1.5 text-xs font-semibold transition-colors bg-[color:rgba(124,194,46,0.12)] text-[color:rgb(77,140,30)] hover:bg-[color:rgba(124,194,46,0.18)] dark:bg-[color:rgba(124,194,46,0.12)] dark:text-[color:rgb(124,194,46)] dark:hover:bg-[color:rgba(124,194,46,0.18)]"
+                          >
+                            <Download className="h-3 w-3" /> Get PDF
+                          </button>
+                          <button
+                            onClick={() => handleDeletePayout(payout)}
+                            disabled={isDeletingPayout}
+                            className="inline-flex items-center gap-1 rounded bg-red-50 px-2 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
+                          >
+                            <Trash2 className="h-3 w-3" /> Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -714,14 +850,23 @@ function AdminPartnerDashboard() {
                           ৳{Number(inv.amount).toLocaleString()}
                         </td>
                         <td className="px-4 py-4 text-center">
-                          <button
-                            onClick={() =>
-                              handlePrintInvestment(inv, partner?.name)
-                            }
-                            className="inline-flex items-center gap-1 rounded px-2 py-1.5 text-xs font-semibold transition-colors bg-[color:rgba(124,194,46,0.12)] text-[color:rgb(77,140,30)] hover:bg-[color:rgba(124,194,46,0.18)] dark:bg-[color:rgba(124,194,46,0.12)] dark:text-[color:rgb(124,194,46)] dark:hover:bg-[color:rgba(124,194,46,0.18)]"
-                          >
-                            <FileText className="h-3 w-3" /> Get Receipt
-                          </button>
+                          <div className="flex items-center justify-center gap-2">
+                            <button
+                              onClick={() =>
+                                handlePrintInvestment(inv, partner?.name)
+                              }
+                              className="inline-flex items-center gap-1 rounded px-2 py-1.5 text-xs font-semibold transition-colors bg-[color:rgba(124,194,46,0.12)] text-[color:rgb(77,140,30)] hover:bg-[color:rgba(124,194,46,0.18)] dark:bg-[color:rgba(124,194,46,0.12)] dark:text-[color:rgb(124,194,46)] dark:hover:bg-[color:rgba(124,194,46,0.18)]"
+                            >
+                              <FileText className="h-3 w-3" /> Get Receipt
+                            </button>
+                            <button
+                              onClick={() => handleDeleteInvestment(inv)}
+                              disabled={isDeletingInvestment}
+                              className="inline-flex items-center gap-1 rounded bg-red-50 px-2 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
+                            >
+                              <Trash2 className="h-3 w-3" /> Delete
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     );
@@ -776,6 +921,15 @@ function AdminPartnerDashboard() {
           />
         )}
       </AnimatePresence>
+      <ConfirmDialog
+        isOpen={confirmState.isOpen}
+        title={confirmState.title}
+        description={confirmState.description}
+        confirmLabel={confirmState.confirmLabel}
+        cancelLabel={confirmState.cancelLabel}
+        onConfirm={confirmState.onConfirm}
+        onCancel={closeConfirm}
+      />
     </motion.div>
   );
 }

@@ -23,6 +23,7 @@ import {
   useDeleteInvestmentAdminMutation,
 } from "@/features/investor/investments/investmentsApiSlice";
 import { useGetUserQuery } from "@/features/admin/users/usersApiSlice";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
 function InvestmentEditForm({
   id,
@@ -351,27 +352,55 @@ export default function AdminInvestmentEditPage() {
     skip: !investorId,
   });
 
-  const handleDelete = async () => {
-    if (!investment) return;
-    const confirmed = window.confirm(
-      `Delete ${investment.amount} BDT investment for investor #${investment.investorId}? This action cannot be undone.`,
-    );
-    if (!confirmed) return;
+  const [confirmState, setConfirmState] = useState({
+    isOpen: false,
+    title: "",
+    description: "",
+    confirmLabel: "",
+    cancelLabel: "Cancel",
+    onConfirm: null,
+  });
 
-    try {
-      await deleteInvestment(investment.id).unwrap();
-      toast.success("Investment deleted successfully");
-      router.push("/admin/investment");
-    } catch (error) {
-      const message =
-        error?.data?.message ||
-        (Array.isArray(error?.data?.message) ? error.data.message[0] : null) ||
-        "Failed to delete investment.";
-      toast.error("Delete failed", { description: message });
-    }
+  const closeConfirm = () =>
+    setConfirmState((prev) => ({ ...prev, isOpen: false, onConfirm: null }));
+
+  const openConfirm = (options) =>
+    setConfirmState({
+      isOpen: true,
+      title: "",
+      description: "",
+      confirmLabel: "Confirm",
+      cancelLabel: "Cancel",
+      onConfirm: null,
+      ...options,
+    });
+
+  const handleDelete = () => {
+    if (!investment) return;
+    openConfirm({
+      title: "Delete investment",
+      description: `Delete ${investment.amount} BDT investment for investor #${investment.investorId}? This action cannot be undone.`,
+      confirmLabel: "Delete",
+      variant: "danger",
+      onConfirm: async () => {
+        try {
+          await deleteInvestment(investment.id).unwrap();
+          toast.success("Investment deleted successfully");
+          router.push("/admin/investment");
+        } catch (error) {
+          const message =
+            error?.data?.message ||
+            (Array.isArray(error?.data?.message) ? error.data.message[0] : null) ||
+            "Failed to delete investment.";
+          toast.error("Delete failed", { description: message });
+        } finally {
+          closeConfirm();
+        }
+      },
+    });
   };
 
-  const isBusy = isLoading || isFetching;
+  const isBusy = isLoading;
 
   if (isBusy) {
     return (
@@ -458,6 +487,15 @@ export default function AdminInvestmentEditPage() {
           onDone={() => router.push("/admin/investment")}
         />
       </section>
+      <ConfirmDialog
+        isOpen={confirmState.isOpen}
+        title={confirmState.title}
+        description={confirmState.description}
+        confirmLabel={confirmState.confirmLabel}
+        cancelLabel={confirmState.cancelLabel}
+        onConfirm={confirmState.onConfirm}
+        onCancel={closeConfirm}
+      />
     </div>
   );
 }

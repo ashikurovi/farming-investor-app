@@ -68,7 +68,12 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         body,
       }),
       transformResponse: (response) => response?.data ?? response,
-      invalidatesTags: (result, error, { id }) => [{ type: "Project", id }],
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Project", id: "LIST" },
+        { type: "Project", id: "STATS" },
+        { type: "Project", id: Number(id) },
+        { type: "Project", id: String(id) }
+      ],
     }),
 
     getProjectInvestors: builder.query({

@@ -126,22 +126,31 @@ export default function AdminNoticePage() {
     }
 
     try {
-      const formData = new FormData();
-      formData.append("title", formValues.title.trim());
-      formData.append("description", formValues.description.trim());
-      formData.append("isPublic", formValues.isPublic);
-
+      let payload;
+      
       if (formValues.file) {
-        formData.append("file", formValues.file);
-      } else if (formValues.fileUrl) {
-        formData.append("fileUrl", formValues.fileUrl);
+        payload = new FormData();
+        payload.append("title", formValues.title.trim());
+        payload.append("description", formValues.description.trim());
+        payload.append("isPublic", formValues.isPublic);
+        payload.append("file", formValues.file);
+        if (formValues.fileUrl) {
+          payload.append("fileUrl", formValues.fileUrl);
+        }
+      } else {
+        payload = {
+          title: formValues.title.trim(),
+          description: formValues.description.trim(),
+          isPublic: formValues.isPublic,
+          fileUrl: formValues.fileUrl || undefined,
+        };
       }
 
       if (editingNotice) {
-        await updateNotice({ id: editingNotice.id, formData }).unwrap();
+        await updateNotice({ id: editingNotice.id, formData: payload }).unwrap();
         toast.success("Notice updated successfully");
       } else {
-        await createNotice(formData).unwrap();
+        await createNotice(payload).unwrap();
         toast.success("Notice created successfully");
       }
 

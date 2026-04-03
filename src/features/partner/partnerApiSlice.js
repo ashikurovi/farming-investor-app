@@ -4,7 +4,7 @@ export const partnerApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getPartners: builder.query({
       query: () => "/partner",
-      providesTags: ["User"],
+      providesTags: [{ type: "User", id: "LIST" }, "User", "Partners"],
     }),
     getPartnerById: builder.query({
       query: (id) => `/partner/${id}`,
@@ -16,7 +16,14 @@ export const partnerApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: [{ type: "User", id: "LIST" }, "User", "Partners"],
+    }),
+    deletePartner: builder.mutation({
+      query: (id) => ({
+        url: `/users/${id}`, // Backend uses /users/:id to delete any user/partner
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "User", id: "LIST" }, "User", "Partners"],
     }),
     addInvestment: builder.mutation({
       query: ({ id, data }) => ({
@@ -24,7 +31,15 @@ export const partnerApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "User", id }, "User"],
+      invalidatesTags: (result, error, { id }) => [
+        { type: "User", id }, 
+        { type: "User", id: "LIST" }, 
+        "User", 
+        "Partners",
+        { type: "Investment", id: "LIST" },
+        { type: "Investment", id: "STATS" },
+        { type: "Investment", id: "RECENT" }
+      ],
     }),
     distributeCommission: builder.mutation({
       query: (data) => ({
@@ -32,7 +47,7 @@ export const partnerApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Partners"],
+      invalidatesTags: [{ type: "User", id: "LIST" }, "User", "Partners"],
     }),
     withdrawPartnerProfit: builder.mutation({
       query: ({ id, data }) => ({
@@ -40,7 +55,7 @@ export const partnerApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["User", "Partners"],
+      invalidatesTags: (result, error, { id }) => [{ type: "User", id }, { type: "User", id: "LIST" }, "User", "Partners"],
     }),
     getPartnerPayouts: builder.query({
       query: (id) => `/partner/${id}/payouts`,
@@ -49,6 +64,13 @@ export const partnerApiSlice = apiSlice.injectEndpoints({
     getAllPartnerPayouts: builder.query({
       query: () => `/partner/payouts`,
       providesTags: ["Partners"],
+    }),
+    deletePartnerPayout: builder.mutation({
+      query: (id) => ({
+        url: `/partner/payout/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Partners", "User"],
     }),
   }),
 });
@@ -62,4 +84,6 @@ export const {
   useWithdrawPartnerProfitMutation,
   useGetPartnerPayoutsQuery,
   useGetAllPartnerPayoutsQuery,
+  useDeletePartnerMutation,
+  useDeletePartnerPayoutMutation,
 } = partnerApiSlice;
