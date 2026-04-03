@@ -78,7 +78,7 @@ export default function PrivacyPolicy() {
         title={
           <>
             Privacy{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+            <span className="text-transparent bg-clip-text bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]">
               Policy
             </span>
           </>
@@ -107,7 +107,7 @@ export default function PrivacyPolicy() {
                         className={cn(
                           "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-left group",
                           activeSection === item.id
-                            ? "bg-emerald-50 text-emerald-700 shadow-sm ring-1 ring-emerald-100"
+                            ? "bg-secondary text-primary shadow-sm ring-1 ring-[color:rgba(77,140,30,0.18)]"
                             : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900",
                         )}
                       >
@@ -115,13 +115,13 @@ export default function PrivacyPolicy() {
                           className={cn(
                             "w-4 h-4 transition-colors",
                             activeSection === item.id
-                              ? "text-emerald-500"
+                              ? "text-primary"
                               : "text-zinc-400 group-hover:text-zinc-600",
                           )}
                         />
                         {item.label}
                         {activeSection === item.id && (
-                          <ChevronRight className="w-4 h-4 ml-auto text-emerald-500 animate-in fade-in slide-in-from-left-2" />
+                          <ChevronRight className="w-4 h-4 ml-auto text-primary animate-in fade-in slide-in-from-left-2" />
                         )}
                       </button>
                     ))}
@@ -129,16 +129,16 @@ export default function PrivacyPolicy() {
                 </div>
 
                 {/* Quick Contact Card */}
-                <div className="bg-emerald-900 rounded-2xl p-6 text-white relative overflow-hidden hidden lg:block">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                <div className="bg-zinc-900 rounded-2xl p-6 text-white relative overflow-hidden hidden lg:block">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[color:rgba(124,194,46,0.16)] rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
                   <h4 className="font-bold text-lg mb-2">Need Help?</h4>
-                  <p className="text-emerald-200/80 text-sm mb-4">
+                  <p className="text-zinc-300 text-sm mb-4">
                     If you have questions about your data privacy, our team is
                     here to assist.
                   </p>
                   <a
                     href="mailto:privacy@farming-investor.com"
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-300 hover:text-white transition-colors"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-[color:rgba(124,194,46,0.95)] hover:text-white transition-colors"
                   >
                     Contact Support <ChevronRight className="w-4 h-4" />
                   </a>
@@ -159,7 +159,7 @@ export default function PrivacyPolicy() {
                       1. Introduction
                     </h2>
                   </div>
-                  <div className="prose prose-zinc max-w-none prose-headings:font-light prose-headings:tracking-tight prose-a:text-emerald-600 hover:prose-a:text-emerald-700">
+                  <div className="prose prose-zinc max-w-none prose-headings:font-light prose-headings:tracking-tight prose-a:text-primary hover:prose-a:text-[color:var(--brand-to)]">
                     <p className="text-zinc-600 text-lg leading-relaxed">
                       At{" "}
                       <span className="font-semibold text-zinc-900">
@@ -209,7 +209,7 @@ export default function PrivacyPolicy() {
                       {
                         title: "Financial Data",
                         desc: "Bank account and payment card details (processed securely).",
-                        color: "bg-emerald-50 border-emerald-100",
+                        color: "bg-secondary border-[color:rgba(77,140,30,0.18)]",
                       },
                       {
                         title: "Transaction Data",
@@ -257,7 +257,7 @@ export default function PrivacyPolicy() {
                         key={i}
                         className="flex items-start gap-3 p-4 rounded-xl bg-zinc-50 border border-zinc-100"
                       >
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2.5 shrink-0" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2.5 shrink-0" />
                         <span className="text-zinc-700">{item}</span>
                       </li>
                     ))}
@@ -293,7 +293,7 @@ export default function PrivacyPolicy() {
                       </p>
                     </div>
                     <div className="w-full md:w-1/3 bg-zinc-50 rounded-2xl p-6 border border-zinc-100 text-center">
-                      <Server className="w-12 h-12 text-emerald-500 mx-auto mb-4" />
+                      <Server className="w-12 h-12 text-primary mx-auto mb-4" />
                       <h4 className="font-bold text-zinc-900 mb-1">
                         Encrypted
                       </h4>
@@ -345,27 +345,27 @@ export default function PrivacyPolicy() {
 
               {/* Contact */}
               <section id="contact" className="scroll-mt-32">
-                <div className="bg-emerald-50 rounded-3xl p-8 md:p-10 border border-emerald-100 text-center relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-200/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                <div className="bg-secondary rounded-3xl p-8 md:p-10 border border-[color:rgba(77,140,30,0.18)] text-center relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-[color:rgba(124,194,46,0.14)] rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
                   <div className="relative z-10">
-                    <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-6 text-emerald-600">
+                    <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-6 text-primary ring-1 ring-[color:rgba(77,140,30,0.14)]">
                       <Mail className="w-8 h-8" />
                     </div>
-                    <h2 className="text-2xl font-bold text-emerald-950 mb-4">
+                    <h2 className="text-2xl font-bold text-zinc-900 mb-4">
                       6. Contact Us
                     </h2>
-                    <p className="text-emerald-800/80 mb-8 max-w-lg mx-auto">
+                    <p className="text-zinc-600 mb-8 max-w-lg mx-auto">
                       If you have any questions about this privacy policy or our
                       privacy practices, please contact us.
                     </p>
 
-                    <div className="bg-white p-6 rounded-2xl border border-emerald-100/50 shadow-sm inline-block min-w-[300px]">
-                      <p className="text-emerald-950 font-bold mb-1">
+                    <div className="bg-white p-6 rounded-2xl border border-[color:rgba(77,140,30,0.16)] shadow-sm inline-block min-w-[300px]">
+                      <p className="text-zinc-900 font-bold mb-1">
                         Email Support
                       </p>
                       <a
                         href="mailto:privacy@farming-investor.com"
-                        className="text-emerald-600 hover:text-emerald-700 font-medium text-lg"
+                        className="text-primary hover:text-[color:var(--brand-to)] font-medium text-lg"
                       >
                         privacy@farming-investor.com
                       </a>

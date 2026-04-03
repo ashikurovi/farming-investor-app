@@ -7,7 +7,7 @@ export function ProjectCard({ project }) {
   return (
     <Link
       href={`/landing/project/${project.projectId}`}
-      className="group relative flex flex-col overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-900/10"
+      className="group relative flex flex-col overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[0_24px_70px_-55px_rgba(77,140,30,0.35)]"
     >
       {/* ── LIVE Badge ── */}
       {project.isLive && (
@@ -19,7 +19,7 @@ export function ProjectCard({ project }) {
       )}
 
       {/* ── Image ── */}
-      <div className="relative h-64 overflow-hidden bg-gradient-to-br from-emerald-50 via-teal-100 to-emerald-200 md:h-72">
+      <div className="relative h-64 overflow-hidden bg-[linear-gradient(135deg,rgba(124,194,46,0.12),rgba(77,140,30,0.16))] md:h-72">
         {project.images?.[0] ? (
           <img
             src={project.images[0]}
@@ -33,7 +33,7 @@ export function ProjectCard({ project }) {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <Sprout className="h-14 w-14 text-emerald-400" />
+            <Sprout className="h-14 w-14 text-primary" />
           </div>
         )}
 
@@ -52,7 +52,7 @@ export function ProjectCard({ project }) {
       <div className="flex flex-col flex-grow p-7">
         {/* Title + Location */}
         <div className="mb-5">
-          <h3 className="text-xl font-bold tracking-tight text-zinc-900 leading-snug mb-1 group-hover:text-emerald-700 transition-colors line-clamp-1">
+          <h3 className="text-xl font-bold tracking-tight text-zinc-900 leading-snug mb-1 group-hover:text-primary transition-colors line-clamp-1">
             {project.title}
           </h3>
           <div className="flex items-center gap-1.5 text-zinc-400 text-xs">
@@ -69,11 +69,11 @@ export function ProjectCard({ project }) {
 
         {/* Status + CTA */}
         <div className="flex items-center justify-between gap-3 mt-auto">
-          <span className="inline-block bg-green-50 text-green-700 text-[11px] font-medium px-3 py-1.5 rounded-full border border-green-200">
+          <span className="inline-block bg-secondary text-primary text-[11px] font-medium px-3 py-1.5 rounded-full border border-[color:rgba(77,140,30,0.18)]">
             {project.status ?? "Active"}
           </span>
 
-          <div className="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-600 text-white text-[12px] font-semibold px-5 py-2.5 rounded-full transition-colors duration-200 cursor-pointer group-hover:shadow-md group-hover:shadow-emerald-700/20">
+          <div className="inline-flex items-center gap-2 bg-primary hover:bg-[color:var(--brand-to)] text-primary-foreground text-[12px] font-semibold px-5 py-2.5 rounded-full transition-colors duration-200 cursor-pointer group-hover:shadow-md group-hover:shadow-[0_18px_40px_-26px_rgba(77,140,30,0.45)]">
             View Details
             <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </div>

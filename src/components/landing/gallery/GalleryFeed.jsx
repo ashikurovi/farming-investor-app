@@ -86,8 +86,8 @@ export function GalleryFeed() {
                 onClick={() => setSelectedProject(name)}
                 className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
                   selectedProject === name
-                    ? "bg-zinc-900 text-white shadow-lg shadow-zinc-900/20 scale-105"
-                    : "bg-white text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 border border-zinc-200"
+                    ? "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-primary-foreground shadow-[0_18px_48px_-30px_rgba(77,140,30,0.55)] scale-105"
+                    : "bg-white text-zinc-500 hover:bg-secondary hover:text-primary border border-zinc-200"
                 }`}
               >
                 {name}
@@ -97,13 +97,13 @@ export function GalleryFeed() {
  
           {/* Search */}
           <div className="relative w-full lg:w-72 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-emerald-500 transition-colors" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-primary transition-colors" />
             <input
               type="text"
               placeholder="Search moments..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 rounded-full border border-zinc-200 bg-white text-sm outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all shadow-sm group-hover:shadow-md"
+              className="w-full pl-11 pr-4 py-3 rounded-full border border-zinc-200 bg-white text-sm outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.16)] focus:border-[color:rgba(77,140,30,0.40)] transition-all shadow-sm group-hover:shadow-md"
             />
           </div>
         </div>
@@ -115,7 +115,7 @@ export function GalleryFeed() {
               key={item.id}
               onClick={() => openLightbox(index)}
               className={[
-                "group relative overflow-hidden rounded-2xl bg-white shadow-sm border border-zinc-100 cursor-zoom-in hover:shadow-2xl hover:shadow-emerald-900/10 transition-all duration-500 hover:-translate-y-1 lg:h-full",
+                "group relative overflow-hidden rounded-2xl bg-white shadow-sm border border-zinc-100 cursor-zoom-in hover:shadow-2xl hover:shadow-[0_24px_70px_-55px_rgba(77,140,30,0.35)] transition-all duration-500 hover:-translate-y-1 lg:h-full",
                 index === 0 ? "lg:row-span-2" : "",
                 index === 2 ? "lg:row-span-2" : "",
                 index === 4 ? "lg:row-span-2" : "",
@@ -153,7 +153,7 @@ export function GalleryFeed() {
               
               {/* Icon */}
               <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100">
-                <div className="p-2 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 hover:bg-white hover:text-emerald-600 transition-colors shadow-lg">
+                <div className="p-2 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 hover:bg-white hover:text-primary transition-colors shadow-lg">
                   <ZoomIn className="h-4 w-4" />
                 </div>
               </div>
@@ -173,7 +173,7 @@ export function GalleryFeed() {
             </p>
             <button 
               onClick={() => {setSelectedProject("All"); setSearchQuery("");}}
-              className="mt-8 px-6 py-2.5 rounded-full text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-600/20"
+              className="mt-8 px-6 py-2.5 rounded-full text-sm font-medium bg-primary text-primary-foreground hover:bg-[color:var(--brand-to)] transition-all shadow-lg shadow-[0_18px_48px_-30px_rgba(77,140,30,0.45)]"
             >
               Clear filters
             </button>

@@ -10,14 +10,14 @@ export function AboutMission() {
           <div className="space-y-8 animate-fade-in-up">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit">
-                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span className="w-2 h-2 rounded-full bg-primary"></span>
                 <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
                   Our Mission
                 </span>
               </div>
               <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
                 Building the <span className="font-serif italic">operating system</span> for{" "}
-                <span className="font-serif italic text-emerald-700">modern farm investing</span>.
+                <span className="font-serif italic text-primary">modern farm investing</span>.
               </h2>
             </div>
             
@@ -52,10 +52,10 @@ export function AboutMission() {
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
             {/* Stat 1 */}
-            <div className="group relative overflow-hidden rounded-2xl bg-zinc-50 p-8 border border-zinc-200 hover:border-emerald-500/30 transition-all hover:bg-white hover:shadow-xl hover:shadow-emerald-900/5">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="group relative overflow-hidden rounded-2xl bg-zinc-50 p-8 border border-zinc-200 hover:border-[color:rgba(77,140,30,0.24)] transition-all hover:bg-white hover:shadow-xl hover:shadow-[0_24px_70px_-55px_rgba(77,140,30,0.25)]">
+              <div className="absolute inset-0 bg-gradient-to-br from-[color:rgba(77,140,30,0.12)] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative z-10">
-                <div className="mb-4 inline-flex p-3 rounded-xl bg-white text-emerald-600 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-colors border border-zinc-100">
+                <div className="mb-4 inline-flex p-3 rounded-xl bg-white text-primary shadow-sm group-hover:bg-primary group-hover:text-primary-foreground transition-colors border border-zinc-100">
                   <Users className="h-6 w-6" />
                 </div>
                 <p className="text-4xl font-bold text-zinc-900 mb-2 font-display">5K+</p>
@@ -67,10 +67,10 @@ export function AboutMission() {
             </div>
 
             {/* Stat 2 */}
-            <div className="group relative overflow-hidden rounded-2xl bg-zinc-50 p-8 border border-zinc-200 hover:border-emerald-500/30 transition-all hover:bg-white hover:shadow-xl hover:shadow-emerald-900/5 sm:translate-y-8">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="group relative overflow-hidden rounded-2xl bg-zinc-50 p-8 border border-zinc-200 hover:border-[color:rgba(77,140,30,0.24)] transition-all hover:bg-white hover:shadow-xl hover:shadow-[0_24px_70px_-55px_rgba(77,140,30,0.25)] sm:translate-y-8">
+              <div className="absolute inset-0 bg-gradient-to-br from-[color:rgba(77,140,30,0.12)] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative z-10">
-                <div className="mb-4 inline-flex p-3 rounded-xl bg-white text-emerald-600 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-colors border border-zinc-100">
+                <div className="mb-4 inline-flex p-3 rounded-xl bg-white text-primary shadow-sm group-hover:bg-primary group-hover:text-primary-foreground transition-colors border border-zinc-100">
                   <Users className="h-6 w-6" />
                 </div>
                 <p className="text-4xl font-bold text-zinc-900 mb-2 font-display">10+</p>
@@ -82,10 +82,10 @@ export function AboutMission() {
             </div>
 
             {/* Stat 3 */}
-            <div className="group relative overflow-hidden rounded-2xl bg-zinc-50 p-8 border border-zinc-200 hover:border-emerald-500/30 transition-all hover:bg-white hover:shadow-xl hover:shadow-emerald-900/5">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="group relative overflow-hidden rounded-2xl bg-zinc-50 p-8 border border-zinc-200 hover:border-[color:rgba(77,140,30,0.24)] transition-all hover:bg-white hover:shadow-xl hover:shadow-[0_24px_70px_-55px_rgba(77,140,30,0.25)]">
+              <div className="absolute inset-0 bg-gradient-to-br from-[color:rgba(77,140,30,0.12)] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative z-10">
-                <div className="mb-4 inline-flex p-3 rounded-xl bg-white text-emerald-600 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-colors border border-zinc-100">
+                <div className="mb-4 inline-flex p-3 rounded-xl bg-white text-primary shadow-sm group-hover:bg-primary group-hover:text-primary-foreground transition-colors border border-zinc-100">
                   <Map className="h-6 w-6" />
                 </div>
                 <p className="text-4xl font-bold text-zinc-900 mb-2 font-display">5+</p>
@@ -97,10 +97,10 @@ export function AboutMission() {
             </div>
 
             {/* Stat 4 */}
-            <div className="group relative overflow-hidden rounded-2xl bg-zinc-50 p-8 border border-zinc-200 hover:border-emerald-500/30 transition-all hover:bg-white hover:shadow-xl hover:shadow-emerald-900/5 sm:translate-y-8">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="group relative overflow-hidden rounded-2xl bg-zinc-50 p-8 border border-zinc-200 hover:border-[color:rgba(77,140,30,0.24)] transition-all hover:bg-white hover:shadow-xl hover:shadow-[0_24px_70px_-55px_rgba(77,140,30,0.25)] sm:translate-y-8">
+              <div className="absolute inset-0 bg-gradient-to-br from-[color:rgba(77,140,30,0.12)] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative z-10">
-                <div className="mb-4 inline-flex p-3 rounded-xl bg-white text-emerald-600 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-colors border border-zinc-100">
+                <div className="mb-4 inline-flex p-3 rounded-xl bg-white text-primary shadow-sm group-hover:bg-primary group-hover:text-primary-foreground transition-colors border border-zinc-100">
                   <Wallet className="h-6 w-6" />
                 </div>
                 <p className="text-4xl font-bold text-zinc-900 mb-2 font-display">$24M</p>
