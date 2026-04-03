@@ -1,6 +1,5 @@
 "use client";
 
-import { use, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useGetNoticesQuery } from "@/features/admin/notice/noticeApiSlice";
 import { Button } from "@/components/ui/button";
@@ -9,11 +8,12 @@ import Link from "next/link";
 
 export default function NoticeDetailPage({ params }) {
   const router = useRouter();
-  // Unwrap promise for Next.js 15+ dynamic params compatibility if needed.
-  const resolvedParams = use(params);
-  const id = resolvedParams.id;
+  const id = params?.id;
 
-  const { data: noticesData, isLoading } = useGetNoticesQuery({ page: 1, limit: 100 });
+  const { data: noticesData, isLoading } = useGetNoticesQuery({
+    page: 1,
+    limit: 100,
+  });
   const allNotices = noticesData?.items || [];
   const notice = allNotices.find((n) => n.id === parseInt(id));
 
@@ -26,13 +26,21 @@ export default function NoticeDetailPage({ params }) {
     );
   }
 
-  // If not found or not public
-  if (!notice || !notice.isPublic) {
+  // If not found
+  if (!notice) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 py-20">
-        <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">Notice not found</h2>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">The notice you are looking for does not exist or is private.</p>
-        <Button onClick={() => router.back()} variant="outline" className="rounded-full">
+        <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+          Notice not found
+        </h2>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          The notice you are looking for does not exist.
+        </p>
+        <Button
+          onClick={() => router.back()}
+          variant="outline"
+          className="rounded-full"
+        >
           Go back
         </Button>
       </div>
@@ -74,9 +82,9 @@ export default function NoticeDetailPage({ params }) {
         </div>
 
         <div className="p-6 sm:p-8">
-          <div 
-            className="prose prose-zinc max-w-none text-sm leading-relaxed text-zinc-700 dark:prose-invert dark:text-zinc-200" 
-            dangerouslySetInnerHTML={{ __html: notice.description }} 
+          <div
+            className="prose prose-zinc max-w-none text-sm leading-relaxed text-zinc-700 dark:prose-invert dark:text-zinc-200"
+            dangerouslySetInnerHTML={{ __html: notice.description }}
           />
 
           {notice.fileUrl && (
@@ -87,11 +95,15 @@ export default function NoticeDetailPage({ params }) {
                     <FileText className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Attached Document</h3>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">Click to view or download the attached file below.</p>
+                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                      Attached Document
+                    </h3>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                      Click to view or download the attached file below.
+                    </p>
                   </div>
                 </div>
-                
+
                 <a
                   href={notice.fileUrl}
                   target="_blank"
