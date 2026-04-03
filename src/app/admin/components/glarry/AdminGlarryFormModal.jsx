@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
@@ -17,29 +17,23 @@ export function AdminGlarryFormModal({
   projects,
   isProjectsLoading,
 }) {
-  const [previewUrl, setPreviewUrl] = useState(null);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
 
+  const photoFile = formValues?.photo ?? null;
+
+  const objectUrl = useMemo(() => {
+    if (!photoFile) return null;
+    return URL.createObjectURL(photoFile);
+  }, [photoFile]);
+
   useEffect(() => {
-    if (!formValues?.photo && !formValues?.photoUrl) {
-      setPreviewUrl(null);
-      return;
-    }
+    return () => {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [objectUrl]);
 
-    if (formValues.photo) {
-      const objectUrl = URL.createObjectURL(formValues.photo);
-      setPreviewUrl(objectUrl);
-
-      return () => {
-        URL.revokeObjectURL(objectUrl);
-      };
-    }
-
-    if (formValues.photoUrl) {
-      setPreviewUrl(formValues.photoUrl);
-    }
-  }, [formValues?.photo, formValues?.photoUrl]);
+  const previewUrl = objectUrl || formValues?.photoUrl || null;
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -58,19 +52,20 @@ export function AdminGlarryFormModal({
 
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       onChange("photo", e.dataTransfer.files[0]);
+      onChange("photoUrl", "");
     }
   };
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       onChange("photo", e.target.files[0]);
+      onChange("photoUrl", "");
     }
   };
 
   const clearImage = () => {
     onChange("photo", null);
     onChange("photoUrl", "");
-    setPreviewUrl(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -89,16 +84,17 @@ export function AdminGlarryFormModal({
       description={null}
       size="lg" // Make it slightly larger for better layout
       footer={null} // We'll render a custom footer
-      className="p-0 overflow-hidden bg-zinc-50/50 backdrop-blur-xl border-zinc-200/50"
+      className="p-0 overflow-hidden bg-zinc-50/50 backdrop-blur-xl border-zinc-200/50 dark:bg-zinc-900/80 dark:border-zinc-700"
+      bodyClassName="p-0"
     >
       <div className="flex flex-col h-full max-h-[90vh]">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-100 bg-white/80 backdrop-blur-md">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-100 bg-white/80 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/80">
           <div>
-            <h2 className="text-xl font-bold text-zinc-900 tracking-tight">
+            <h2 className="text-xl font-bold text-zinc-900 tracking-tight dark:text-zinc-100">
               {editingGlarry ? "Edit Glarry Image" : "New Glarry Image"}
             </h2>
-            <p className="text-sm text-zinc-500 mt-0.5">
+            <p className="text-sm text-zinc-500 mt-0.5 dark:text-zinc-400">
               {editingGlarry ? "Update existing gallery item details" : "Add a new photo to your project gallery"}
             </p>
           </div>
@@ -106,7 +102,7 @@ export function AdminGlarryFormModal({
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="rounded-full h-8 w-8 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100"
+            className="rounded-full h-8 w-8 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:text-zinc-200 dark:hover:bg-zinc-800"
           >
             <X className="h-4 w-4" />
           </Button>
@@ -117,7 +113,7 @@ export function AdminGlarryFormModal({
 
             {/* Project Selection */}
             <div className="space-y-3">
-              <label className="text-xs font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-2 dark:text-zinc-400">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
                 Select Project
               </label>
@@ -126,7 +122,7 @@ export function AdminGlarryFormModal({
                   id="projectId"
                   value={formValues.projectId}
                   onChange={(e) => onChange("projectId", e.target.value)}
-                  className="w-full appearance-none rounded-2xl border border-zinc-200 bg-white px-4 py-3.5 text-sm font-medium text-zinc-900 shadow-sm transition-all hover:border-emerald-300 focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 disabled:bg-zinc-50 disabled:text-zinc-400"
+                  className="w-full appearance-none rounded-2xl border border-zinc-200 bg-white px-4 py-3.5 text-sm font-medium text-zinc-900 shadow-sm transition-all hover:border-emerald-300 focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 disabled:bg-zinc-50 disabled:text-zinc-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:disabled:bg-zinc-900 dark:disabled:text-zinc-600"
                   disabled={isProjectsLoading || isBusy}
                   required
                 >
@@ -137,14 +133,14 @@ export function AdminGlarryFormModal({
                     </option>
                   ))}
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-zinc-400 group-hover:text-emerald-500 transition-colors">
+                <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-zinc-400 group-hover:text-emerald-500 transition-colors dark:text-zinc-500">
                   <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </div>
               </div>
               {isProjectsLoading && (
-                <p className="text-xs text-zinc-400 animate-pulse flex items-center gap-1.5">
+                <p className="text-xs text-zinc-400 animate-pulse flex items-center gap-1.5 dark:text-zinc-500">
                   <Loader2 className="h-3 w-3 animate-spin" />
                   Loading available projects...
                 </p>
@@ -154,7 +150,7 @@ export function AdminGlarryFormModal({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Image Upload Area */}
               <div className="space-y-3">
-                <label className="text-xs font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-2">
+                <label className="text-xs font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-2 dark:text-zinc-400">
                   <span className="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
                   Upload Image
                 </label>
@@ -163,8 +159,8 @@ export function AdminGlarryFormModal({
                   className={cn(
                     "relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 transition-all duration-300 group cursor-pointer",
                     dragActive
-                      ? "border-emerald-500 bg-emerald-50/50 scale-[1.02]"
-                      : "border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50"
+                      ? "border-emerald-500 bg-emerald-50/50 scale-[1.02] dark:bg-emerald-500/10"
+                      : "border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-zinc-600 dark:hover:bg-zinc-900/80"
                   )}
                   onDragEnter={handleDrag}
                   onDragLeave={handleDrag}
@@ -181,49 +177,53 @@ export function AdminGlarryFormModal({
                     className="hidden"
                   />
 
-                  <div className="mb-3 rounded-full bg-zinc-100 p-3 text-zinc-400 transition-colors group-hover:bg-emerald-100 group-hover:text-emerald-600">
+                  <div className="mb-3 rounded-full bg-zinc-100 p-3 text-zinc-400 transition-colors group-hover:bg-emerald-100 group-hover:text-emerald-600 dark:bg-zinc-800 dark:text-zinc-500 dark:group-hover:bg-emerald-500/15 dark:group-hover:text-emerald-200">
                     <Upload className="h-6 w-6" />
                   </div>
-                  <p className="mb-1 text-sm font-medium text-zinc-900">
+                  <p className="mb-1 text-sm font-medium text-zinc-900 dark:text-zinc-100">
                     Click to upload
                   </p>
-                  <p className="text-xs text-zinc-500 text-center px-4">
+                  <p className="text-xs text-zinc-500 text-center px-4 dark:text-zinc-400">
                     SVG, PNG, JPG or GIF (max 5MB)
                   </p>
                 </div>
 
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-zinc-200" />
+                    <span className="w-full border-t border-zinc-200 dark:border-zinc-800" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-zinc-50 px-2 text-zinc-400 font-medium">Or via URL</span>
+                    <span className="bg-zinc-50 px-2 text-zinc-400 font-medium dark:bg-zinc-900 dark:text-zinc-500">Or via URL</span>
                   </div>
                 </div>
 
                 <div className="relative group">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <LinkIcon className="h-4 w-4 text-zinc-400 group-focus-within:text-emerald-500 transition-colors" />
+                    <LinkIcon className="h-4 w-4 text-zinc-400 group-focus-within:text-emerald-500 transition-colors dark:text-zinc-500" />
                   </div>
                   <Input
                     id="photoUrl"
                     type="url"
                     value={formValues.photoUrl}
-                    onChange={(e) => onChange("photoUrl", e.target.value)}
+                    onChange={(e) => {
+                      onChange("photoUrl", e.target.value);
+                      onChange("photo", null);
+                      if (fileInputRef.current) fileInputRef.current.value = "";
+                    }}
                     placeholder="https://example.com/image.jpg"
-                    className="h-11 rounded-xl bg-white pl-10 border-zinc-200 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all"
+                    className="h-11 rounded-xl bg-white pl-10 border-zinc-200 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:bg-zinc-900"
                   />
                 </div>
               </div>
 
               {/* Preview Area */}
               <div className="space-y-3">
-                <label className="text-xs font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-2">
+                <label className="text-xs font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-2 dark:text-zinc-400">
                   <span className="h-1.5 w-1.5 rounded-full bg-purple-500"></span>
                   Preview
                 </label>
 
-                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm flex items-center justify-center group">
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm flex items-center justify-center group dark:border-zinc-800 dark:bg-zinc-900">
                   {previewUrl ? (
                     <>
                       <img
@@ -243,17 +243,17 @@ export function AdminGlarryFormModal({
                     </>
                   ) : (
                     <div className="flex flex-col items-center justify-center p-6 text-center">
-                      <div className="mb-3 rounded-full bg-zinc-50 p-4">
-                        <ImageIcon className="h-8 w-8 text-zinc-300" />
+                      <div className="mb-3 rounded-full bg-zinc-50 p-4 dark:bg-zinc-800">
+                        <ImageIcon className="h-8 w-8 text-zinc-300 dark:text-zinc-500" />
                       </div>
-                      <p className="text-sm font-medium text-zinc-400">No image selected</p>
-                      <p className="text-xs text-zinc-300 mt-1">Upload an image to see preview</p>
+                      <p className="text-sm font-medium text-zinc-400 dark:text-zinc-400">No image selected</p>
+                      <p className="text-xs text-zinc-300 mt-1 dark:text-zinc-500">Upload an image to see preview</p>
                     </div>
                   )}
                 </div>
 
                 {previewUrl && (
-                  <div className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-700 border border-emerald-100">
+                  <div className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-700 border border-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/20">
                     <Check className="h-3.5 w-3.5" />
                     Image ready for upload
                   </div>
@@ -264,12 +264,12 @@ export function AdminGlarryFormModal({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between gap-4 border-t border-zinc-100 bg-white p-6">
+        <div className="flex items-center justify-between gap-4 border-t border-zinc-100 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
           <Button
             type="button"
             variant="ghost"
             onClick={onClose}
-            className="rounded-full px-6 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"
+            className="rounded-full px-6 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
           >
             Cancel
           </Button>
@@ -277,7 +277,7 @@ export function AdminGlarryFormModal({
             type="submit"
             disabled={isBusy}
             form="admin-glarry-form"
-            className="min-w-[140px] rounded-full bg-zinc-900 px-6 py-2.5 font-semibold text-white shadow-lg shadow-zinc-900/20 hover:bg-zinc-800 hover:shadow-xl hover:shadow-zinc-900/30 active:scale-95 transition-all disabled:opacity-70 disabled:active:scale-100"
+            className="min-w-[140px] rounded-full px-6 py-2.5 font-semibold text-white transition-all disabled:opacity-70 disabled:active:scale-100 shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] hover:brightness-[1.05] active:scale-95 bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]"
           >
             {isBusy ? (
               <span className="flex items-center gap-2">

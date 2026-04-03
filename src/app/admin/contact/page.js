@@ -77,19 +77,24 @@ export default function AdminContactsPage() {
 
 
   return (
-    <div className="space-y-6">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight text-zinc-900">
-            Contact messages
-          </h1>
-          <p className="text-sm text-zinc-500">
-            View and manage messages submitted from the public contact form.
-          </p>
+    <div className="space-y-8 p-2">
+      <header className="flex flex-col gap-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[color:rgba(124,194,46,0.14)] text-[color:rgb(77,140,30)] ring-1 ring-[color:rgba(77,140,30,0.18)] dark:bg-[color:rgba(124,194,46,0.14)] dark:text-[color:rgb(124,194,46)] dark:ring-[color:rgba(124,194,46,0.22)]">
+            <Mail className="h-6 w-6" />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              Contact Messages
+            </h1>
+            <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+              View and manage messages submitted from the public contact form.
+            </p>
+          </div>
         </div>
       </header>
 
-      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm">
+      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <div className="overflow-x-auto">
           <DataTable
             columns={[
@@ -97,7 +102,7 @@ export default function AdminContactsPage() {
                 key: "sl",
                 header: "#",
                 tdClassName:
-                  "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16",
+                  "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16 dark:text-zinc-500",
                 cell: (contact) =>
                   contacts.findIndex((c) => c.id === contact.id) + 1,
               },
@@ -107,15 +112,15 @@ export default function AdminContactsPage() {
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (contact) => (
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-200">
                       {(contact.firstName || contact.email || "?").charAt(0).toUpperCase()}
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-sm font-semibold text-zinc-900">
+                      <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                         {`${contact.firstName || ""} ${contact.lastName || ""}`.trim() || "-"}
                       </span>
                       {contact.email && (
-                        <span className="text-xs text-zinc-500">{contact.email}</span>
+                        <span className="text-xs text-zinc-500 dark:text-zinc-400">{contact.email}</span>
                       )}
                     </div>
                   </div>
@@ -125,9 +130,9 @@ export default function AdminContactsPage() {
                 key: "phone",
                 header: "PHONE",
                 tdClassName:
-                  "whitespace-nowrap px-6 py-4 text-sm text-zinc-700",
+                  "whitespace-nowrap px-6 py-4 text-sm text-zinc-700 dark:text-zinc-200",
                 cell: (contact) => contact.phone || (
-                  <span className="text-zinc-400 italic text-xs">—</span>
+                  <span className="text-zinc-400 italic text-xs dark:text-zinc-500">—</span>
                 ),
               },
               {
@@ -135,11 +140,11 @@ export default function AdminContactsPage() {
                 header: "COUNTRY",
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (contact) => contact.country ? (
-                  <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-700 ring-1 ring-inset ring-zinc-500/10">
+                  <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-700 ring-1 ring-inset ring-zinc-500/10 dark:bg-zinc-800 dark:text-zinc-200 dark:ring-zinc-700">
                     {contact.country}
                   </span>
                 ) : (
-                  <span className="text-zinc-400 italic text-xs">—</span>
+                  <span className="text-zinc-400 italic text-xs dark:text-zinc-500">—</span>
                 ),
               },
               {
@@ -147,7 +152,7 @@ export default function AdminContactsPage() {
                 header: "INVESTOR TYPE",
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (contact) => (
-                  <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
+                  <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20">
                     {contact.investorType || "-"}
                   </span>
                 ),
@@ -156,7 +161,7 @@ export default function AdminContactsPage() {
                 key: "subject",
                 header: "SUBJECT",
                 tdClassName:
-                  "px-6 py-4 text-sm text-zinc-500 max-w-xs truncate",
+                  "px-6 py-4 text-sm text-zinc-500 max-w-xs truncate dark:text-zinc-300",
                 cell: (contact) => contact.subject || "-",
               },
               {
@@ -164,7 +169,7 @@ export default function AdminContactsPage() {
                 header: "RECEIVED AT",
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (contact) => (
-                  <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10">
+                  <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700">
                     {formatDateUTC(contact.createdAt, { year: "numeric", month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" })}
                   </span>
                 ),
@@ -175,13 +180,14 @@ export default function AdminContactsPage() {
             emptyMessage="No contact messages found."
             loadingLabel="Loading contact messages..."
             getRowKey={(contact) => contact.id}
+            minWidth="min-w-full"
             renderActions={(contact) => (
               <div className="flex items-center justify-end gap-2">
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => router.push(`/admin/contact/${contact.id}`)}
-                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600"
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-[color:rgba(124,194,46,0.12)] hover:text-[color:rgb(77,140,30)] dark:text-zinc-500 dark:hover:bg-[color:rgba(124,194,46,0.12)] dark:hover:text-[color:rgb(124,194,46)]"
                 >
                   <Eye className="h-4 w-4" />
                 </Button>
@@ -189,7 +195,7 @@ export default function AdminContactsPage() {
                   variant="ghost"
                   size="icon"
                   onClick={() => confirmDelete(contact)}
-                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600 dark:text-zinc-500 dark:hover:bg-red-500/10 dark:hover:text-red-300"
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>

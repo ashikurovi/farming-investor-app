@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Edit2, Trash2, Plus } from "lucide-react";
+import { Edit2, Trash2, Plus, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
 import { DataTable } from "@/components/ui/data-table";
@@ -202,38 +202,43 @@ export default function AdminBannerPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight text-zinc-900">
-            Banners
-          </h1>
-          <p className="text-sm text-zinc-500">
-            Manage homepage banners, their order and images.
-          </p>
+    <div className="space-y-8 p-2">
+      <header className="flex flex-col gap-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[color:rgba(124,194,46,0.14)] text-[color:rgb(77,140,30)] ring-1 ring-[color:rgba(77,140,30,0.18)] dark:bg-[color:rgba(124,194,46,0.14)] dark:text-[color:rgb(124,194,46)] dark:ring-[color:rgba(124,194,46,0.22)]">
+            <ImageIcon className="h-6 w-6" />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              Banners Management
+            </h1>
+            <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+              Manage homepage banners, their order and images.
+            </p>
+          </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <AdminSearchBar
             value={searchInput}
             onChange={handleSearchChange}
             placeholder="Search banners..."
+            className="w-full sm:w-64"
           />
           {!isReadOnly && (
             <Button
               type="button"
-              size="sm"
               onClick={openCreateModal}
-              className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-md hover:bg-emerald-500"
+              className="inline-flex h-10 items-center gap-2 rounded-xl px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:brightness-[1.05] active:scale-95 bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]"
             >
-              <Plus className="h-3.5 w-3.5" />
-              <span>Add banner</span>
+              <Plus className="h-4 w-4" />
+              <span>Add Banner</span>
             </Button>
           )}
         </div>
       </header>
 
-      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm">
+      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <div className="overflow-x-auto">
           <DataTable
             columns={[
@@ -241,7 +246,7 @@ export default function AdminBannerPage() {
                 key: "sl",
                 header: "#",
                 tdClassName:
-                  "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16",
+                  "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16 dark:text-zinc-500",
                 cell: (banner) =>
                   items.findIndex((b) => b.id === banner.id) + 1,
               },
@@ -249,14 +254,14 @@ export default function AdminBannerPage() {
                 key: "title",
                 header: "TITLE",
                 tdClassName:
-                  "whitespace-nowrap px-6 py-4 text-sm font-semibold text-zinc-900",
+                  "whitespace-nowrap px-6 py-4 text-sm font-semibold text-zinc-900 dark:text-zinc-100",
                 cell: (banner) => banner.title || "-",
               },
               {
                 key: "shortDescription",
                 header: "DESCRIPTION",
                 tdClassName:
-                  "px-6 py-4 text-sm text-zinc-500 max-w-xs truncate",
+                  "px-6 py-4 text-sm text-zinc-500 max-w-xs truncate dark:text-zinc-300",
                 cell: (banner) => banner.shortDescription || "-",
               },
               {
@@ -265,11 +270,11 @@ export default function AdminBannerPage() {
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (banner) =>
                   banner.order != null ? (
-                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-bold text-zinc-700 ring-1 ring-inset ring-zinc-500/10">
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-bold text-zinc-700 ring-1 ring-inset ring-zinc-500/10 dark:bg-zinc-800 dark:text-zinc-200 dark:ring-zinc-700">
                       #{banner.order}
                     </span>
                   ) : (
-                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic">
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic dark:bg-zinc-800 dark:text-zinc-500 dark:ring-zinc-700">
                       —
                     </span>
                   ),
@@ -283,10 +288,10 @@ export default function AdminBannerPage() {
                     <img
                       src={banner.photoUrl}
                       alt="Banner"
-                      className="h-16 w-32 rounded-lg object-cover border border-zinc-200"
+                      className="h-16 w-32 rounded-lg object-cover border border-zinc-200 dark:border-zinc-700"
                     />
                   ) : (
-                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic">
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic dark:bg-zinc-800 dark:text-zinc-500 dark:ring-zinc-700">
                       No image
                     </span>
                   ),
@@ -297,6 +302,7 @@ export default function AdminBannerPage() {
             emptyMessage="No banners found."
             loadingLabel="Loading banners..."
             getRowKey={(banner) => banner.id}
+            minWidth="min-w-full"
             renderActions={(banner) => (
               <div className="flex items-center justify-end gap-2">
                 {!isReadOnly && (
@@ -305,7 +311,7 @@ export default function AdminBannerPage() {
                       variant="ghost"
                       size="icon"
                       onClick={() => openEditModal(banner)}
-                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-amber-300"
                     >
                       <Edit2 className="h-4 w-4" />
                     </Button>
@@ -313,7 +319,7 @@ export default function AdminBannerPage() {
                       variant="ghost"
                       size="icon"
                       onClick={() => confirmDelete(banner)}
-                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600 dark:text-zinc-500 dark:hover:bg-red-500/10 dark:hover:text-red-300"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -324,7 +330,7 @@ export default function AdminBannerPage() {
           />
         </div>
 
-        <div className="border-t border-zinc-100 bg-zinc-50/50 px-6 py-4">
+        <div className="border-t border-zinc-100 bg-zinc-50/50 px-6 py-4 dark:border-zinc-800 dark:bg-zinc-800/40">
           <Pagination
             page={meta.page}
             pageCount={meta.pageCount}

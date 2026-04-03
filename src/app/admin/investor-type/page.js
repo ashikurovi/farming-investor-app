@@ -195,16 +195,16 @@ export default function AdminInvestorTypePage() {
 
   return (
     <div className="space-y-8 p-4 md:p-5 max-w-[1600px] mx-auto -mt-6">
-      <header className="flex flex-col gap-6 rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+      <header className="flex flex-col gap-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[color:rgba(124,194,46,0.14)] text-[color:rgb(77,140,30)] ring-1 ring-[color:rgba(77,140,30,0.18)] dark:bg-[color:rgba(124,194,46,0.14)] dark:text-[color:rgb(124,194,46)] dark:ring-[color:rgba(124,194,46,0.22)]">
             <PieChart className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-zinc-900">
+            <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
               Investor Types
             </h1>
-            <p className="text-sm font-medium text-zinc-500">
+            <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
               Manage investor categories and share percentages.
             </p>
           </div>
@@ -221,7 +221,7 @@ export default function AdminInvestorTypePage() {
             <Button
               type="button"
               onClick={openCreateModal}
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:bg-zinc-800 hover:shadow-xl hover:shadow-zinc-900/30 active:scale-95"
+              className="inline-flex h-10 items-center gap-2 rounded-xl px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:brightness-[1.05] active:scale-95 bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]"
             >
               <Plus className="h-4 w-4" />
               <span>Add Type</span>
@@ -230,14 +230,14 @@ export default function AdminInvestorTypePage() {
         </div>
       </header>
 
-      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm">
+      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <div className="overflow-x-auto">
           <DataTable
             columns={[
               {
                 key: "sl",
                 header: "#",
-                tdClassName: "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16",
+                tdClassName: "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16 dark:text-zinc-500",
                 cell: (item) => items.findIndex((i) => i.id === item.id) + 1,
               },
               {
@@ -246,10 +246,10 @@ export default function AdminInvestorTypePage() {
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (item) => (
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-200">
                       <PieChart className="h-4 w-4" />
                     </div>
-                    <span className="text-sm font-semibold text-zinc-900">{item.type}</span>
+                    <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{item.type}</span>
                   </div>
                 ),
               },
@@ -258,7 +258,7 @@ export default function AdminInvestorTypePage() {
                 header: "SHARE %",
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (item) => (
-                  <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
+                  <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20">
                     <Percent className="h-3 w-3" />
                     {item.percentage}% Share
                   </span>
@@ -269,15 +269,16 @@ export default function AdminInvestorTypePage() {
             isLoading={isBusy}
             emptyMessage={
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-50">
-                  <PieChart className="h-6 w-6 text-zinc-400" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-50 dark:bg-zinc-800">
+                  <PieChart className="h-6 w-6 text-zinc-400 dark:text-zinc-500" />
                 </div>
-                <h3 className="mt-2 text-sm font-semibold text-zinc-900">No investor types found</h3>
-                <p className="mt-1 text-sm text-zinc-500">Get started by creating a new investor type.</p>
+                <h3 className="mt-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100">No investor types found</h3>
+                <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Get started by creating a new investor type.</p>
               </div>
             }
             loadingLabel="Loading investor types..."
             getRowKey={(item) => item.id}
+            minWidth="min-w-full"
             renderActions={(item) => (
               <div className="flex items-center justify-end gap-2">
                 {!isReadOnly && (
@@ -286,7 +287,7 @@ export default function AdminInvestorTypePage() {
                       variant="ghost"
                       size="icon"
                       onClick={() => openEditModal(item)}
-                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-amber-300"
                     >
                       <Edit2 className="h-4 w-4" />
                     </Button>
@@ -294,7 +295,7 @@ export default function AdminInvestorTypePage() {
                       variant="ghost"
                       size="icon"
                       onClick={() => confirmDelete(item)}
-                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600 dark:text-zinc-500 dark:hover:bg-red-500/10 dark:hover:text-red-300"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -305,7 +306,7 @@ export default function AdminInvestorTypePage() {
           />
         </div>
 
-        <div className="border-t border-zinc-100 bg-zinc-50/50 px-6 py-4">
+        <div className="border-t border-zinc-100 bg-zinc-50/50 px-6 py-4 dark:border-zinc-800 dark:bg-zinc-800/40">
           <Pagination
             page={meta.page}
             pageCount={meta.pageCount}
