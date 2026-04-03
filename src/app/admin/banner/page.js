@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Edit2, Trash2, Plus, Image as ImageIcon } from "lucide-react";
+import { Edit2, Trash2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
 import { DataTable } from "@/components/ui/data-table";
@@ -228,11 +228,12 @@ export default function AdminBannerPage() {
           {!isReadOnly && (
             <Button
               type="button"
+              size="sm"
               onClick={openCreateModal}
-              className="inline-flex h-10 items-center gap-2 rounded-xl px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:brightness-[1.05] active:scale-95 bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]"
+              className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-md hover:bg-emerald-500"
             >
-              <Plus className="h-4 w-4" />
-              <span>Add Banner</span>
+              <Plus className="h-3.5 w-3.5" />
+              <span>Add banner</span>
             </Button>
           )}
         </div>
@@ -311,7 +312,7 @@ export default function AdminBannerPage() {
                       variant="ghost"
                       size="icon"
                       onClick={() => openEditModal(banner)}
-                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-amber-300"
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
                     >
                       <Edit2 className="h-4 w-4" />
                     </Button>
@@ -319,7 +320,7 @@ export default function AdminBannerPage() {
                       variant="ghost"
                       size="icon"
                       onClick={() => confirmDelete(banner)}
-                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600 dark:text-zinc-500 dark:hover:bg-red-500/10 dark:hover:text-red-300"
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
