@@ -100,7 +100,7 @@ function PartnerDashboard({ userId }) {
   const { data: payouts, isLoading: isPayoutsLoading } =
     useGetPartnerPayoutsQuery(userId);
   const [printingInvoice, setPrintingInvoice] = useState(null);
-
+  // jsdeefjkwenf
   const handlePrint = (payout) => {
     setPrintingInvoice(payout);
     setTimeout(() => {
