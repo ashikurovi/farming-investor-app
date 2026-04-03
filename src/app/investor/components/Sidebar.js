@@ -195,7 +195,7 @@ export default function Sidebar() {
       </aside>
 
       <nav className="fixed inset-x-0 bottom-0 z-50 lg:hidden border-t border-zinc-200/70 bg-white/85 backdrop-blur-xl">
-        <div className="mx-auto grid max-w-lg grid-cols-5 px-2 pt-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)]">
+        <div className="mx-auto grid max-w-xl grid-cols-6 px-1.5 pt-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)]">
           {sidebarNavigation.map((item) => {
             const isActive =
               pathname === item.href ||
@@ -207,21 +207,21 @@ export default function Sidebar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="flex flex-col items-center justify-center gap-1.5 py-1.5"
+                className="flex flex-col items-center justify-center gap-1 py-1.5"
               >
                 <span
                   className={[
-                    "flex h-11 w-11 items-center justify-center rounded-2xl transition-all",
+                    "flex h-9 w-9 items-center justify-center rounded-xl transition-all",
                     isActive
                       ? "bg-primary text-primary-foreground shadow-[0_16px_40px_-26px_rgba(77,140,30,0.65)] ring-1 ring-[color:rgba(77,140,30,0.25)]"
                       : "bg-zinc-100 text-zinc-600 ring-1 ring-zinc-200",
                   ].join(" ")}
                 >
-                  {Icon ? <Icon className="h-5 w-5" /> : null}
+                  {Icon ? <Icon className="h-4 w-4" /> : null}
                 </span>
                 <span
                   className={[
-                    "text-[10px] font-semibold leading-none",
+                    "max-w-[54px] truncate text-[9px] font-semibold leading-none",
                     isActive ? "text-primary" : "text-zinc-500",
                   ].join(" ")}
                 >
@@ -235,13 +235,13 @@ export default function Sidebar() {
             type="button"
             disabled={isLoggingOut}
             onClick={handleLogout}
-            className="flex flex-col items-center justify-center gap-1.5 py-1.5 disabled:opacity-60"
+            className="flex flex-col items-center justify-center gap-1 py-1.5 disabled:opacity-60"
             aria-label="Logout"
           >
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-rose-50 text-rose-600 ring-1 ring-rose-200 transition-all active:scale-[0.98]">
-              <LogOut className="h-5 w-5" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-rose-50 text-rose-600 ring-1 ring-rose-200 transition-all active:scale-[0.98]">
+              <LogOut className="h-4 w-4" />
             </span>
-            <span className="text-[10px] font-semibold leading-none text-rose-600">
+            <span className="max-w-[54px] truncate text-[9px] font-semibold leading-none text-rose-600">
               Logout
             </span>
           </button>

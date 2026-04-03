@@ -4,26 +4,22 @@ import { useEffect, useState } from "react";
 import {
   Menu,
   X,
-  Bell,
-  Search,
   Settings,
   ChevronDown,
   Moon,
   Sun,
-  TrendingUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { sidebarNavigation } from "./sidebarNavigation";
 import { useSelector } from "react-redux";
 import { useMeQuery } from "@/features/auth/authApiSlice";
+import { useTheme } from "@/lib/ThemeContext";
 
 export default function TopNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const [currentTime, setCurrentTime] = useState(() => new Date());
+  const { dark, toggleTheme } = useTheme();
   const token = useSelector((s) => s.auth?.token);
   const user = useSelector((s) => s.auth?.user);
   useMeQuery(undefined, { skip: !!user || !token });
@@ -57,31 +53,9 @@ export default function TopNavbar() {
     timeZone: "UTC",
   });
 
-  const notifications = [
-    {
-      id: 1,
-      title: "Portfolio synced",
-      desc: "Your positions are up to date",
-      time: "2m ago",
-      unread: true,
-      color: "bg-primary",
-      icon: TrendingUp,
-    },
-    {
-      id: 2,
-      title: "New project listed",
-      desc: "A fresh investment opportunity is live",
-      time: "1h ago",
-      unread: true,
-      color: "bg-primary",
-      icon: TrendingUp,
-    },
-  ];
-  const unreadCount = notifications.filter((n) => n.unread).length;
-
   return (
     <>
-      <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-zinc-200/60 bg-white/80 px-4 backdrop-blur-xl transition-all duration-300 lg:px-8">
+      <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-zinc-200/60 bg-white/80 px-4 backdrop-blur-xl transition-all duration-300 lg:px-8 dark:border-zinc-800/60 dark:bg-zinc-900/80">
         <div className="flex flex-1 items-center gap-4">
           <Button
             type="button"
@@ -102,45 +76,19 @@ export default function TopNavbar() {
               <div className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-primary">
                 Artman
               </div>
-              <div className="text-[12px] font-semibold tracking-tight text-zinc-900">
+              <div className="text-[12px] font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
                 Investor
-              </div>
-            </div>
-          </div>
-
-          <div className="hidden md:flex flex-1 max-w-md">
-            <div className="relative w-full group">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-primary transition-colors" />
-              <input
-                type="text"
-                placeholder="Search farms, investments, reports…"
-                className="w-full rounded-2xl border border-zinc-200/80 bg-zinc-50/50 py-2 pl-10 pr-12 text-sm text-zinc-700 placeholder-zinc-400 outline-none focus:border-[color:rgba(77,140,30,0.35)] focus:bg-white focus:ring-4 focus:ring-[color:rgba(77,140,30,0.12)] transition-all duration-300"
-              />
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1">
-                <kbd className="hidden sm:inline-flex items-center justify-center rounded-[6px] border border-zinc-200 bg-white px-2 py-0.5 text-[10px] font-medium text-zinc-400 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
-                  ⌘K
-                </kbd>
               </div>
             </div>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="hidden sm:flex items-center gap-2 rounded-full border border-[color:rgba(77,140,30,0.22)] bg-secondary px-3 py-1 text-[11px] font-medium text-primary backdrop-blur-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[color:var(--brand-to)] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            Live System
-          </div>
-
-          <div className="h-6 w-px bg-zinc-200/60 mx-2 hidden sm:block" />
-
           <div className="hidden xl:flex flex-col items-end mr-2">
             <span className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider">
               {formattedDate || "—"}
             </span>
-            <span className="text-xs font-semibold text-zinc-900 tabular-nums">
+            <span className="text-xs font-semibold text-zinc-900 tabular-nums dark:text-zinc-100">
               {formattedTime || "—"}
             </span>
           </div>
@@ -149,97 +97,23 @@ export default function TopNavbar() {
             type="button"
             size="icon"
             variant="ghost"
-            className="hidden"
-            onClick={() => setSearchOpen(!searchOpen)}
+            className="text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100/80 rounded-full h-9 w-9 transition-transform hover:scale-105 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800/80"
+            onClick={toggleTheme}
+            aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
           >
-            <Search className="h-4 w-4" />
-          </Button>
-
-          <Button
-            type="button"
-            size="icon"
-            variant="ghost"
-            className="text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100/80 rounded-full h-9 w-9 transition-transform hover:scale-105"
-            onClick={() => setDarkMode(!darkMode)}
-          >
-            {darkMode ? (
-              <Sun className="h-4 w-4" />
+            {dark ? (
+              <Sun className="h-4 w-4 text-amber-400" />
             ) : (
               <Moon className="h-4 w-4" />
             )}
           </Button>
 
-          <div className="relative">
-            <Button
-              type="button"
-              size="icon"
-              variant="ghost"
-              className="relative text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100/80 rounded-full h-9 w-9 transition-transform hover:scale-105"
-              onClick={() => {
-                setNotifOpen(!notifOpen);
-                setProfileOpen(false);
-              }}
-            >
-              <Bell className="h-4 w-4" />
-              {unreadCount > 0 && (
-                <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500 border-2 border-white"></span>
-                </span>
-              )}
-            </Button>
-
-            {notifOpen && (
-              <div className="absolute right-0 top-12 z-50 w-80 sm:w-96 rounded-2xl border border-zinc-100 bg-white/95 p-2 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-2xl ring-1 ring-zinc-900/5 animate-in fade-in zoom-in-95 duration-200">
-                <div className="flex items-center justify-between px-4 py-3">
-                  <span className="text-sm font-semibold text-zinc-900">
-                    Notifications
-                  </span>
-                  <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-[10px] font-medium text-zinc-600">
-                    {unreadCount} New
-                  </span>
-                </div>
-                <div className="max-h-[320px] overflow-y-auto space-y-1">
-                  {notifications.map((n) => (
-                    <div
-                      key={n.id}
-                      className={`group flex gap-4 px-4 py-3 hover:bg-zinc-50/80 rounded-xl cursor-pointer transition-all ${n.unread ? "bg-secondary" : ""}`}
-                    >
-                      <div
-                        className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full shadow-sm ring-1 ring-inset ring-black/5 ${n.color} text-white`}
-                      >
-                        <n.icon className="h-4 w-4" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2 mb-0.5">
-                          <p className="text-xs font-semibold text-zinc-900 truncate">
-                            {n.title}
-                          </p>
-                          <span className="text-[10px] text-zinc-400 whitespace-nowrap">
-                            {n.time}
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-zinc-500 leading-relaxed line-clamp-2">
-                          {n.desc}
-                        </p>
-                      </div>
-                      {n.unread && (
-                        <div className="self-center h-1.5 w-1.5 rounded-full bg-primary ring-2 ring-[color:rgba(77,140,30,0.16)]" />
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
           <div className="relative pl-1">
             <button
               type="button"
-              className="group flex items-center gap-2 rounded-full border border-zinc-200/60 bg-white pl-1 pr-3 py-1 hover:border-[color:rgba(77,140,30,0.28)] hover:ring-2 hover:ring-[color:rgba(77,140,30,0.10)] hover:bg-zinc-50 transition-all duration-300"
+              className="group flex items-center gap-2 rounded-full border border-zinc-200/60 bg-white pl-1 pr-3 py-1 hover:border-[color:rgba(77,140,30,0.28)] hover:ring-2 hover:ring-[color:rgba(77,140,30,0.10)] hover:bg-zinc-50 transition-all duration-300 dark:border-zinc-700/60 dark:bg-zinc-900 dark:hover:bg-zinc-800"
               onClick={() => {
                 setProfileOpen(!profileOpen);
-                setNotifOpen(false);
               }}
             >
               <div className="relative">
@@ -247,17 +121,17 @@ export default function TopNavbar() {
                   <img
                     src={photoUrl}
                     alt={displayName || "Investor"}
-                    className="h-8 w-8 rounded-full object-cover ring-2 ring-white"
+                    className="h-8 w-8 rounded-full object-cover ring-2 ring-white dark:ring-zinc-900"
                   />
                 ) : (
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[color:var(--brand-from)] to-[color:var(--brand-to)] text-[10px] font-bold text-primary-foreground shadow-sm ring-2 ring-white">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[color:var(--brand-from)] to-[color:var(--brand-to)] text-[10px] font-bold text-primary-foreground shadow-sm ring-2 ring-white dark:ring-zinc-900">
                     {initials}
                   </span>
                 )}
-                <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-primary"></span>
+                <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-primary dark:border-zinc-900"></span>
               </div>
               <div className="hidden sm:block text-left">
-                <p className="text-[11px] font-semibold text-zinc-900 leading-tight group-hover:text-primary transition-colors">
+                <p className="text-[11px] font-semibold text-zinc-900 leading-tight group-hover:text-primary transition-colors dark:text-zinc-100">
                   {displayName}
                 </p>
                 <p className="text-[9px] font-medium text-zinc-400 leading-tight uppercase tracking-wider">
@@ -270,8 +144,8 @@ export default function TopNavbar() {
             </button>
 
             {profileOpen && (
-              <div className="absolute right-0 top-12 z-50 w-64 rounded-2xl border border-zinc-100 bg-white/95 p-1.5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-2xl ring-1 ring-zinc-900/5 animate-in fade-in zoom-in-95 duration-200">
-                <div className="flex items-center gap-3 px-3 py-3 mb-1 bg-zinc-50/50 rounded-xl border border-zinc-100/50">
+              <div className="absolute right-0 top-12 z-50 w-64 rounded-2xl border border-zinc-100 bg-white/95 p-1.5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-2xl ring-1 ring-zinc-900/5 animate-in fade-in zoom-in-95 duration-200 dark:border-zinc-800 dark:bg-zinc-900/95 dark:ring-white/10">
+                <div className="flex items-center gap-3 px-3 py-3 mb-1 bg-zinc-50/50 rounded-xl border border-zinc-100/50 dark:bg-zinc-800/50 dark:border-zinc-800">
                   {photoUrl ? (
                     <img
                       src={photoUrl}
@@ -284,10 +158,10 @@ export default function TopNavbar() {
                     </div>
                   )}
                   <div>
-                    <p className="text-xs font-semibold text-zinc-900">
+                    <p className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
                       {displayName}
                     </p>
-                    <p className="text-[10px] text-zinc-500 font-medium">
+                    <p className="text-[10px] text-zinc-500 font-medium dark:text-zinc-400">
                       {user?.email || "-"}
                     </p>
                   </div>
@@ -297,7 +171,7 @@ export default function TopNavbar() {
                     (item) => (
                       <button
                         key={item.label}
-                        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors"
+                        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors dark:text-zinc-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
                       >
                         <item.icon className="h-3.5 w-3.5 text-zinc-400" />
                         {item.label}
@@ -311,25 +185,11 @@ export default function TopNavbar() {
         </div>
       </header>
 
-      {searchOpen && (
-        <div className="md:hidden border-b border-zinc-200 bg-white/95 backdrop-blur-xl px-4 py-3 z-30 sticky top-16 animate-in slide-in-from-top-2">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
-            <input
-              type="text"
-              autoFocus
-              placeholder="Search investments…"
-              className="w-full rounded-xl border border-zinc-200/80 bg-zinc-50/50 py-2.5 pl-10 pr-4 text-sm text-zinc-700 placeholder-zinc-400 outline-none focus:border-[color:rgba(77,140,30,0.35)] focus:bg-white focus:ring-4 focus:ring-[color:rgba(77,140,30,0.12)] transition-all duration-300"
-            />
-          </div>
-        </div>
-      )}
-
       <div
         className={`fixed inset-0 z-40 flex transform transition-opacity duration-300 lg:hidden ${mobileMenuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}
       >
         <div
-          className={`flex h-full w-48 flex-col border-r border-zinc-200 bg-white px-4 py-6 shadow-xl transform transition-transform duration-300 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
+          className={`flex h-full w-48 flex-col border-r border-zinc-200 bg-white px-4 py-6 shadow-xl transform transition-transform duration-300 dark:border-zinc-800 dark:bg-zinc-900 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -338,7 +198,7 @@ export default function TopNavbar() {
                 <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
                   Farming
                 </div>
-                <div className="text-sm font-semibold tracking-tight text-zinc-900">
+                <div className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
                   Investor
                 </div>
               </div>
@@ -349,7 +209,7 @@ export default function TopNavbar() {
               size="icon"
               variant="outline"
               aria-label="Close navigation"
-              className="border-zinc-200 bg-white text-zinc-600 shadow-sm hover:bg-zinc-50"
+              className="border-zinc-200 bg-white text-zinc-600 shadow-sm hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
               onClick={() => setMobileMenuOpen(false)}
             >
               <X className="h-4 w-4" />
@@ -361,7 +221,7 @@ export default function TopNavbar() {
               <a
                 key={item.name}
                 href={item.href}
-                className="flex items-center gap-3 rounded-md px-2 py-2 font-medium text-zinc-600 transition hover:bg-secondary hover:text-primary"
+                className="flex items-center gap-3 rounded-md px-2 py-2 font-medium text-zinc-600 transition hover:bg-secondary hover:text-primary dark:text-zinc-200"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {item.icon && (
