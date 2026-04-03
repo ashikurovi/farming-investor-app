@@ -7,20 +7,24 @@ import { MobileLoginBackground } from "@/components/auth/MobileLoginBackground";
 
 export const metadata = {
   title: "Login | Framing Investor App",
-  description: "Sign in to your Framing account to manage your farm investments.",
+  description:
+    "Sign in to your Framing account to manage your farm investments.",
 };
 
 export default function LoginPage() {
   return (
-    <div className="relative min-h-screen w-full flex lg:grid lg:grid-cols-2">
+    <div className="relative min-h-screen w-full flex lg:grid lg:grid-cols-2 bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100">
       {/* Mobile Background Image */}
       <MobileLoginBackground />
 
       {/* Left Column: Login Form Container */}
-      <div className="relative z-10 flex w-full flex-col items-center justify-center p-4 sm:p-6 lg:p-12">
+      <div className="relative z-10 flex w-full flex-col items-center justify-center bg-white/90 p-4 backdrop-blur-xl sm:p-6 lg:bg-transparent lg:p-12 dark:bg-zinc-900/90">
         {/* Back to Home (Mobile) */}
-         <div className="absolute top-6 left-6 lg:hidden">
-          <Link href="/" className="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white transition-colors bg-black/20 px-3 py-1.5 rounded-full backdrop-blur-md">
+        <div className="absolute top-6 left-6 lg:hidden">
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white transition-colors bg-black/20 px-3 py-1.5 rounded-full backdrop-blur-md"
+          >
             <ArrowLeft className="h-4 w-4" />
             Back
           </Link>
@@ -28,11 +32,16 @@ export default function LoginPage() {
 
         {/* Desktop Branding (Logo only) */}
         <div className="absolute top-8 left-8 hidden lg:block">
-           <Link href="/" className="flex items-center gap-2 text-lg font-medium hover:opacity-80 transition-opacity">
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-lg font-medium hover:opacity-80 transition-opacity"
+          >
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)]">
               <Sprout className="h-6 w-6" />
             </div>
-            <span className="font-display font-bold tracking-tight text-xl text-zinc-900">Framing</span>
+            <span className="font-display font-bold tracking-tight text-xl text-zinc-900 dark:text-zinc-100">
+              Framing
+            </span>
           </Link>
         </div>
 
@@ -40,7 +49,7 @@ export default function LoginPage() {
         <div className="absolute top-8 right-8 hidden lg:block">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-700 shadow-sm transition hover:border-emerald-200 hover:bg-zinc-50"
+            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-700 shadow-sm transition hover:border-emerald-200 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Home
@@ -48,28 +57,34 @@ export default function LoginPage() {
         </div>
 
         {/* Card */}
-        <div className="w-full max-w-[420px] bg-white p-8 sm:p-10 rounded-3xl shadow-2xl lg:shadow-none lg:bg-transparent lg:p-0">
+        <div className="w-full max-w-[420px] bg-white p-8 sm:p-10 rounded-3xl shadow-2xl lg:shadow-none lg:bg-transparent lg:p-0 dark:bg-zinc-900">
           <div className="flex flex-col space-y-2 text-center lg:text-left mb-8">
             <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-lg lg:hidden">
               <Sprout className="h-7 w-7" />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-display">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-display dark:text-zinc-100">
               Welcome back
             </h1>
-            <p className="text-zinc-500 text-sm sm:text-base">
+            <p className="text-zinc-500 text-sm sm:text-base dark:text-zinc-400">
               Enter your credentials to access your portfolio
             </p>
           </div>
 
           <LoginForm />
-          
-           <p className="mt-8 text-center text-xs text-zinc-400 lg:text-left">
+
+          <p className="mt-8 text-center text-xs text-zinc-400 lg:text-left dark:text-zinc-500">
             By clicking continue, you agree to our{" "}
-            <Link href="/terms" className="underline underline-offset-4 hover:text-zinc-900 transition-colors">
+            <Link
+              href="/terms"
+              className="underline underline-offset-4 hover:text-zinc-900 transition-colors dark:hover:text-zinc-100"
+            >
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link href="/privacy-policy" className="underline underline-offset-4 hover:text-zinc-900 transition-colors">
+            <Link
+              href="/privacy-policy"
+              className="underline underline-offset-4 hover:text-zinc-900 transition-colors dark:hover:text-zinc-100"
+            >
               Privacy Policy
             </Link>
             .

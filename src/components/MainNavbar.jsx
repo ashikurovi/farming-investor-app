@@ -183,7 +183,7 @@ export function MainNavbar() {
             <Link href="/" className="flex items-center gap-3 group">
               <div className="w-50 h-70  transition-transform group-hover:scale-105">
                 <Image
-                  src="/loogo9.png"
+                  src="/logo6.png"
                   alt="ARTMAN"
                   width={128}
                   height={128}
