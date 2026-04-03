@@ -222,22 +222,27 @@ const CSS = `
 
   /* Help card */
   .faq-help-card {
-    background: var(--dark);
+    background: var(--grad);
     border-radius: 24px;
     padding: 28px;
     position: relative; overflow: hidden;
+  }
+  .faq-help-card::marker { content: ""; }
+  .faq-help-card::after,
+  .faq-help-card::before {
+    opacity: 1;
   }
   .faq-help-card::before {
     content: '';
     position: absolute; top: -40px; right: -40px;
     width: 160px; height: 160px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(124,194,46,.2) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,255,255,.22) 0%, transparent 70%);
   }
   .faq-help-card::after {
     content: '';
     position: absolute; bottom: -30px; left: -30px;
     width: 120px; height: 120px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(77,140,30,.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0,0,0,.16) 0%, transparent 70%);
   }
 
   .faq-help-title {
@@ -246,7 +251,7 @@ const CSS = `
     margin: 0 0 8px; position: relative; z-index: 1;
   }
   .faq-help-sub {
-    font-size: 13px; color: rgba(255,255,255,.5);
+    font-size: 13px; color: rgba(255,255,255,.82);
     margin: 0 0 24px; line-height: 1.6; position: relative; z-index: 1;
   }
 
@@ -255,16 +260,16 @@ const CSS = `
   .faq-contact-btn {
     display: flex; align-items: center; gap: 14px;
     padding: 14px 16px;
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.1);
+    background: rgba(0,0,0,.14);
+    border: 1px solid rgba(255,255,255,.18);
     border-radius: 14px;
     cursor: pointer;
     transition: background .2s, border-color .2s, transform .2s;
     text-align: left; width: 100%;
   }
   .faq-contact-btn:hover {
-    background: rgba(255,255,255,.1);
-    border-color: rgba(255,255,255,.18);
+    background: rgba(0,0,0,.20);
+    border-color: rgba(255,255,255,.28);
     transform: translateX(3px);
   }
 
@@ -422,20 +427,6 @@ export default function HomeFaq() {
                     );
                   })}
                 </div>
-
-                {/* Stats strip */}
-                <div className="faq-stats">
-                  {[
-                    { val: "500+", label: "Active Investors" },
-                    { val: "৳2Cr+", label: "Total Invested" },
-                    { val: "98%", label: "Satisfaction Rate" },
-                  ].map(({ val, label }) => (
-                    <div className="faq-stat" key={label}>
-                      <span className="faq-stat-val">{val}</span>
-                      <span className="faq-stat-label">{label}</span>
-                    </div>
-                  ))}
-                </div>
               </div>
 
               {/* Sidebar */}
@@ -450,7 +441,7 @@ export default function HomeFaq() {
                     <button className="faq-contact-btn">
                       <div
                         className="faq-contact-icon"
-                        style={{ background: "rgba(124,194,46,.15)" }}
+                        style={{ background: "rgba(77,140,30,.16)" }}
                       >
                         <MessageCircle size={18} color="#7cc22e" />
                       </div>
@@ -469,14 +460,14 @@ export default function HomeFaq() {
                     <button className="faq-contact-btn">
                       <div
                         className="faq-contact-icon"
-                        style={{ background: "rgba(96,165,250,.15)" }}
+                        style={{ background: "rgba(77,140,30,.16)" }}
                       >
-                        <Mail size={18} color="#60A5FA" />
+                        <Mail size={18} color="#7cc22e" />
                       </div>
                       <div>
                         <div
                           className="faq-contact-label"
-                          style={{ color: "#60A5FA" }}
+                          style={{ color: "#7cc22e" }}
                         >
                           Email Support
                         </div>
@@ -485,30 +476,6 @@ export default function HomeFaq() {
                         </div>
                       </div>
                     </button>
-                  </div>
-                </div>
-
-                {/* Phone card */}
-                <div className="faq-phone-card">
-                  <div className="faq-phone-icon">
-                    <Phone size={20} color="#4d8c1e" />
-                  </div>
-                  <div>
-                    <div
-                      style={{
-                        fontWeight: 600,
-                        fontSize: 15,
-                        color: "var(--text-1)",
-                      }}
-                    >
-                      Call us directly
-                    </div>
-                    <div className="faq-phone-meta">
-                      Mon–Fri, 9:00 AM – 6:00 PM
-                    </div>
-                    <a href="tel:+8801234567890" className="faq-phone-num">
-                      +880 1234-567890
-                    </a>
                   </div>
                 </div>
               </aside>

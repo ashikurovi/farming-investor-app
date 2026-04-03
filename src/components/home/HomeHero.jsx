@@ -93,7 +93,7 @@ export default function HomeHero() {
                     <div className="mt-6 flex items-center gap-3">
                       <button
                         onClick={scrollToContent}
-                        className="inline-flex items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#4d8c1e,#7cc22e)] px-6 py-3 text-[12px] font-semibold text-white shadow-[0_16px_40px_-18px_rgba(77,140,30,0.85)] transition hover:brightness-[1.05] active:scale-[0.98]"
+                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-[linear-gradient(135deg,#4d8c1e,#7cc22e)] px-6 py-3 text-[12px] font-semibold text-white shadow-[0_16px_40px_-18px_rgba(77,140,30,0.85)] transition hover:brightness-[1.05] active:scale-[0.98]"
                       >
                         Learn More
                         <ArrowRight className="h-4 w-4" />
@@ -101,9 +101,7 @@ export default function HomeHero() {
                     </div>
                   </div>
 
-                  <div className="mt-10 grid grid-cols-3 gap-x-6 gap-y-6 text-white/90 sm:mt-12 sm:flex sm:flex-wrap sm:items-end sm:gap-10">
-
-                  </div>
+                  <div className="mt-10 grid grid-cols-3 gap-x-6 gap-y-6 text-white/90 sm:mt-12 sm:flex sm:flex-wrap sm:items-end sm:gap-10"></div>
 
                   <div className="mt-6 w-full rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-md shadow-[0_18px_60px_-40px_rgba(0,0,0,0.8)] lg:hidden">
                     <div className="flex items-center gap-4">

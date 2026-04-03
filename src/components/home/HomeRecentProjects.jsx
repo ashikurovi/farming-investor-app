@@ -69,13 +69,7 @@ export default function HomeRecentProjects() {
             </p>
           </div>
 
-          <Link
-            href="/landing/project"
-            className="hidden md:inline-flex items-center justify-center gap-2 px-6 py-3 text-xs font-bold uppercase tracking-widest text-zinc-900 bg-white border border-zinc-200 rounded-full hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-all duration-300 group"
-          >
-            View All Projects
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </Link>
+        
         </div>
 
         {/* Projects Grid */}

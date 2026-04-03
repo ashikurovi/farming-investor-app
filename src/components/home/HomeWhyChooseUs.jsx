@@ -1,120 +1,208 @@
 "use client";
 import Image from "next/image";
-import { ArrowRight, Play, CircleArrowRight } from "lucide-react";
+import { useState } from "react";
+import {
+  ArrowRight,
+  Play,
+  ShieldCheck,
+  Leaf,
+  BarChart3,
+  Globe2,
+  CircleArrowRight,
+  X,
+} from "lucide-react";
 
-const YOUTUBE_VIDEO_URL = "https://www.youtube.com/watch?v=ysz5S6PUM-U";
+const YOUTUBE_VIDEO_ID = "ysz5S6PUM-U";
+
+const FEATURES = [
+  {
+    icon: ShieldCheck,
+    title: "Certified Organic Standards",
+    desc: "All produce meets international organic certification — verified at every growth stage.",
+  },
+  {
+    icon: Leaf,
+    title: "Sustainable Farming Practices",
+    desc: "Regenerative soil methods that protect ecosystems while maximising yield.",
+  },
+  {
+    icon: BarChart3,
+    title: "Traceable Farm-To-Market Process",
+    desc: "Full supply-chain transparency from seed to shelf, backed by real-time data.",
+  },
+  {
+    icon: Globe2,
+    title: "Global Export Compliance",
+    desc: "Seamless cross-border logistics with documentation for 40+ markets worldwide.",
+  },
+];
 
 export default function HomeWhyChooseUs() {
+  const [videoOpen, setVideoOpen] = useState(false);
+
   return (
-    <section className="relative py-8 sm:py-14">
-      <div className="relative z-20 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-2xl bg-zinc-200 shadow-[0_40px_100px_-70px_rgba(0,0,0,0.65)] ring-1 ring-zinc-200 sm:rounded-[28px]">
-          <a
-            href={YOUTUBE_VIDEO_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative block w-full text-left"
-            aria-label="Open YouTube video"
+    <section className="relative bg-white py-16 sm:py-24 overflow-hidden">
+      {/* ── Subtle decorative blobs ── */}
+      <div className="pointer-events-none absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-[var(--brand-from,#4d8c1e)]/6 blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-32 -right-32 h-[400px] w-[400px] rounded-full bg-[var(--brand-to,#7cc22e)]/8 blur-[100px]" />
+
+      {/* ══════════════ VIDEO LIGHTBOX MODAL ══════════════ */}
+      {videoOpen && (
+        <div
+          className="fixed inset-0 z-[999] flex items-center justify-center bg-black/85 backdrop-blur-sm px-4"
+          onClick={() => setVideoOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-4xl"
+            onClick={(e) => e.stopPropagation()}
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10"/>
+            {/* Close button */}
+            <button
+              onClick={() => setVideoOpen(false)}
+              className="absolute -top-11 right-0 flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-sm font-semibold text-white/90 hover:bg-white/20 transition-colors"
+            >
+              <X className="h-4 w-4" />
+              Close
+            </button>
+
+            {/* 16:9 YouTube embed */}
+            <div
+              className="relative w-full overflow-hidden rounded-2xl shadow-2xl"
+              style={{ paddingBottom: "56.25%" }}
+            >
+              <iframe
+                className="absolute inset-0 h-full w-full"
+                src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&rel=0&modestbranding=1`}
+                title="Organic Farming Video"
+                allow="autoplay; encrypted-media; fullscreen"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        {/* ══════════════ VIDEO HERO CARD ══════════════ */}
+        <div className="relative overflow-hidden rounded-[28px] shadow-[0_32px_80px_-20px_rgba(77,140,30,0.22)] ring-1 ring-black/6">
+          <button
+            onClick={() => setVideoOpen(true)}
+            className="group relative block w-full text-left cursor-pointer"
+            aria-label="Watch our farming video"
+          >
+            {/* dark overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/25 to-black/5 z-10 transition-opacity duration-300 group-hover:from-black/70" />
+
             <Image
               src="/img_7-2048x1024.jpg"
               alt="Organic farming"
               width={1600}
               height={900}
               sizes="(min-width: 1024px) 960px, 100vw"
-              className="h-[240px] w-full object-cover sm:h-[360px] lg:h-[420px]"
+              className="h-[240px] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] sm:h-[380px] lg:h-[440px]"
+              priority
             />
-            <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center sm:px-6">
-              <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/30 shadow-[0_18px_60px_-30px_rgba(0,0,0,0.75)] backdrop-blur-md sm:h-[74px] sm:w-[74px]">
-                <div className="absolute -inset-6 rounded-full bg-white/10 blur-xl" />
-                <Play className="relative h-6 w-6 text-white sm:h-8 sm:w-8" />
+
+            {/* centred content */}
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 px-4 text-center sm:px-6">
+              {/* play button */}
+              <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white/20 ring-1 ring-white/40 backdrop-blur-md transition-all duration-300 group-hover:scale-110 group-hover:bg-white/30 sm:h-[76px] sm:w-[76px]">
+                <div className="absolute -inset-5 rounded-full bg-white/10 blur-xl" />
+                <Play className="relative h-6 w-6 fill-white text-white sm:h-8 sm:w-8" />
               </div>
-              <h3 className="mt-5 max-w-3xl home-title leading-tight text-white drop-shadow-sm">
-                Organic Farming Pricing Designed For Growing Businesses
+
+              <h3 className="max-w-2xl text-xl font-bold leading-snug text-white drop-shadow sm:text-3xl lg:text-4xl">
+                Organic Farming Pricing Designed&nbsp;For Growing Businesses
               </h3>
-              <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-4 py-2 text-[11px] font-semibold text-white shadow-[0_18px_48px_-30px_rgba(77,140,30,0.75)] sm:mt-6">
-                Book Now - It&apos;s Free!
+
+              {/* CTA pill */}
+              <div className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--brand-from,#4d8c1e),var(--brand-to,#7cc22e))] px-5 py-2.5 text-[12px] font-bold tracking-wide text-white shadow-[0_12px_36px_-12px_rgba(77,140,30,0.7)] transition-opacity group-hover:opacity-90">
+                Book Now — It&apos;s Free!
                 <ArrowRight className="h-4 w-4" />
               </div>
             </div>
-          </a>
+          </button>
         </div>
-      </div>
 
-      <div className="-mt-10 bg-gradient-to-b from-emerald-950 via-emerald-900 to-emerald-950 pb-12 pt-20 sm:-mt-20 sm:pb-16 sm:pt-28">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
-            <div className="lg:col-span-6">
-              <div className="text-[10px] font-bold uppercase tracking-widest text-emerald-200/80">
-                Why Choose Us
-              </div>
-              <h2 className="mt-4 home-title leading-tight text-white">
-                Why Global Partners Choose Botanix Organic Services
+        {/* ══════════════ WHY CHOOSE US ══════════════ */}
+        <div className="mt-20 sm:mt-28">
+          {/* section label */}
+          <div className="flex items-center gap-3">
+            <span className="h-px w-8 bg-[linear-gradient(90deg,var(--brand-from,#4d8c1e),var(--brand-to,#7cc22e))]" />
+            <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[var(--brand-from,#4d8c1e)]">
+              Why Choose Us
+            </span>
+          </div>
+
+          <div className="mt-5 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-start">
+            {/* LEFT — headline + image card */}
+            <div>
+              <h2 className="text-3xl font-extrabold leading-tight text-zinc-900 sm:text-4xl lg:text-[2.6rem]">
+                Why Global Partners Choose{" "}
+                <span className="bg-clip-text text-transparent bg-[linear-gradient(135deg,var(--brand-from,#4d8c1e),var(--brand-to,#7cc22e))]">
+                  Botanix Organic
+                </span>{" "}
+                Services
               </h2>
-              <div className="mt-5 h-1.5 w-16 rounded-full bg-[#7f9b3c]" />
-              <div className="home-subtitle max-w-xl text-emerald-100/80">
+
+              <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-zinc-500">
                 Semper pellentesque blandit tincidunt primis suspendisse feugiat
                 dictumst. Phasellus metus libero auctor luctus sollicitudin nam
                 maecenas.
-              </div>
-            </div>
+              </p>
 
-            <div className="lg:col-span-6">
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <div className="overflow-hidden rounded-3xl bg-white/5 ring-1 ring-white/10 backdrop-blur">
+              {/* image feature card */}
+              <div className="mt-8 overflow-hidden rounded-3xl ring-1 ring-zinc-100 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.12)]">
+                <div className="relative">
                   <Image
                     src="/img_4-2048x1024.jpg"
                     alt="Consistent premium quality"
                     width={900}
-                    height={600}
-                    sizes="(min-width: 1024px) 25vw, 100vw"
-                    className="h-44 w-full object-cover sm:h-48"
+                    height={500}
+                    sizes="(min-width: 1024px) 40vw, 100vw"
+                    className="h-52 w-full object-cover"
                   />
-                  <div className="p-5">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <div className="text-sm font-semibold text-white">
-                          Consistent Premium Quality
-                        </div>
-                        <div className="mt-2 text-[12px] leading-relaxed text-emerald-100/70">
-                          Proin parturient dictumst sodales arcu vulputate
-                          lacinia senectus
-                        </div>
-                      </div>
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#7f9b3c] text-white shadow-[0_16px_40px_-26px_rgba(127,155,60,0.75)]">
-                        <CircleArrowRight className="h-5 w-5" />
-                      </div>
-                    </div>
+                  <div className="absolute bottom-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-[linear-gradient(135deg,var(--brand-from,#4d8c1e),var(--brand-to,#7cc22e))] px-3 py-1 text-[11px] font-bold text-white shadow-lg">
+                    <Leaf className="h-3.5 w-3.5" />
+                    Premium Quality
                   </div>
                 </div>
-
-                <div className="space-y-3">
-                  {[
-                    "Certified Organic Standards",
-                    "Sustainable Farming Practices",
-                    "Traceable Farm-To-Market Process",
-                  ].map((title) => (
-                    <div
-                      key={title}
-                      className="flex items-center justify-between gap-4 rounded-2xl bg-white/5 px-5 py-4 ring-1 ring-white/10 backdrop-blur"
-                    >
-                      <div>
-                        <div className="text-sm font-semibold text-white">
-                          {title}
-                        </div>
-                        <div className="mt-1 text-[12px] leading-relaxed text-emerald-100/70">
-                          Proin parturient dictumst sodales arcu vulputate
-                          lacinia senectus
-                        </div>
-                      </div>
-                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#7f9b3c] text-white shadow-[0_16px_40px_-26px_rgba(127,155,60,0.75)] shrink-0">
-                        <ArrowRight className="h-4 w-4" />
-                      </div>
-                    </div>
-                  ))}
+                <div className="flex items-center justify-between gap-3 bg-white px-5 py-4">
+                  <div>
+                    <p className="text-sm font-bold text-zinc-800">
+                      Consistent Premium Quality
+                    </p>
+                    <p className="mt-1 text-[12px] leading-relaxed text-zinc-400">
+                      Proin parturient dictumst sodales arcu vulputate lacinia
+                      senectus
+                    </p>
+                  </div>
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--brand-from,#4d8c1e),var(--brand-to,#7cc22e))] text-white shadow-[0_8px_24px_-8px_rgba(77,140,30,0.5)]">
+                    <CircleArrowRight className="h-5 w-5" />
+                  </div>
                 </div>
               </div>
+            </div>
+
+            {/* RIGHT — feature list */}
+            <div className="flex flex-col gap-4">
+              {FEATURES.map(({ icon: Icon, title, desc }) => (
+                <div
+                  key={title}
+                  className="group flex items-start gap-4 rounded-2xl border border-zinc-100 bg-white px-5 py-5 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.07)] transition-all duration-300 hover:border-[var(--brand-to,#7cc22e)]/40 hover:shadow-[0_8px_32px_-8px_rgba(77,140,30,0.15)]"
+                >
+                  <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[linear-gradient(135deg,var(--brand-from,#4d8c1e),var(--brand-to,#7cc22e))] text-white shadow-[0_8px_20px_-8px_rgba(77,140,30,0.45)] transition-transform duration-300 group-hover:scale-110">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-bold text-zinc-800">{title}</p>
+                    <p className="mt-1 text-[12px] leading-relaxed text-zinc-400">
+                      {desc}
+                    </p>
+                  </div>
+                  <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-zinc-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[var(--brand-to,#7cc22e)]" />
+                </div>
+              ))}
             </div>
           </div>
         </div>

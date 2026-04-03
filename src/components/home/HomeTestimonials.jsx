@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 const testimonials = [
   {
@@ -43,20 +43,25 @@ export default function HomeTestimonials() {
   const total = testimonials.length;
 
   useEffect(() => {
-    const id = setInterval(() => setActive((p) => (p + 1) % total), 4000);
+    const id = setInterval(() => setActive((p) => (p + 1) % total), 4500);
     return () => clearInterval(id);
   }, [total]);
 
   const prev = () => setActive((p) => (p - 1 + total) % total);
   const next = () => setActive((p) => (p + 1) % total);
 
-  // Show 3 cards on desktop, 1 on mobile
   const visible = [0, 1, 2].map((offset) => (active + offset) % total);
 
   return (
-    <section className="bg-white home-section">
-      <div className="mx-auto max-w-6xl px-6 lg:px-8">
-        {/* Header */}
+    <section className="relative bg-[#f6f7f4] home-section overflow-hidden">
+
+      {/* Decorative blobs */}
+      <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[#7cc22e]/8 blur-[80px]" />
+      <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-[#4d8c1e]/6 blur-[80px]" />
+
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+
+        {/* ── Header ── */}
         <div className="mb-10 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <div className="home-tag w-fit">
@@ -64,42 +69,70 @@ export default function HomeTestimonials() {
               Testimonials
             </div>
             <h2 className="mt-4 home-title leading-tight">
-              What our users are saying
+              What our{" "}
+              <span
+                className="bg-clip-text text-transparent"
+                style={{
+                  backgroundImage: "linear-gradient(135deg,#4d8c1e,#7cc22e)",
+                }}
+              >
+                users
+              </span>{" "}
+              are saying
             </h2>
           </div>
+
           {/* Nav arrows */}
           <div className="flex gap-2">
             <button
               onClick={prev}
-              className="h-10 w-10 rounded-full border border-zinc-200 flex items-center justify-center text-zinc-500 hover:border-zinc-400 hover:text-zinc-900 transition-colors"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d4e4c0] bg-white text-[#4d8c1e] shadow-sm transition-all hover:border-[#7cc22e] hover:shadow-md"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
             <button
               onClick={next}
-              className="h-10 w-10 rounded-full border border-zinc-200 flex items-center justify-center text-zinc-500 hover:border-zinc-400 hover:text-zinc-900 transition-colors"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d4e4c0] bg-white text-[#4d8c1e] shadow-sm transition-all hover:border-[#7cc22e] hover:shadow-md"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
           </div>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* ── Cards ── */}
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
           {visible.map((idx, pos) => {
             const t = testimonials[idx];
             const isFirst = pos === 0;
+
             return (
               <div
                 key={`${idx}-${active}`}
                 className={[
-                  "rounded-2xl p-7 flex flex-col gap-5 transition-all duration-300",
+                  "relative flex flex-col gap-5 rounded-3xl p-7 transition-all duration-300",
                   isFirst
-                    ? "bg-emerald-600 text-white"
-                    : "bg-zinc-50 border border-zinc-100",
+                    ? "text-white shadow-2xl"
+                    : "bg-white border border-[#edf0e8] shadow-md hover:-translate-y-1 hover:shadow-xl hover:border-[#c8dea8]",
                   pos > 0 ? "hidden md:flex" : "flex",
                 ].join(" ")}
+                style={
+                  isFirst
+                    ? {
+                        background:
+                          "linear-gradient(135deg, #3d7018, #5fa820, #7cc22e)",
+                        boxShadow:
+                          "0 20px 60px -15px rgba(77,140,30,0.45)",
+                      }
+                    : {}
+                }
               >
+                {/* Large decorative quote icon */}
+                <Quote
+                  className={`absolute top-5 right-6 h-10 w-10 opacity-10 ${
+                    isFirst ? "text-white" : "text-[#4d8c1e]"
+                  }`}
+                />
+
                 {/* Stars */}
                 <div className="flex gap-1">
                   {[...Array(5)].map((_, i) => (
@@ -111,7 +144,7 @@ export default function HomeTestimonials() {
                             ? "fill-white text-white"
                             : "fill-amber-400 text-amber-400"
                           : isFirst
-                            ? "fill-emerald-400 text-emerald-400"
+                            ? "fill-white/30 text-white/30"
                             : "fill-zinc-200 text-zinc-200"
                       }`}
                     />
@@ -121,7 +154,7 @@ export default function HomeTestimonials() {
                 {/* Quote */}
                 <p
                   className={`text-sm leading-relaxed flex-1 ${
-                    isFirst ? "text-emerald-50" : "text-zinc-600"
+                    isFirst ? "text-white/90" : "text-zinc-600"
                   }`}
                 >
                   &ldquo;{t.quote}&rdquo;
@@ -130,29 +163,37 @@ export default function HomeTestimonials() {
                 {/* Author */}
                 <div
                   className={`flex items-center gap-3 pt-4 border-t ${
-                    isFirst ? "border-emerald-500" : "border-zinc-100"
+                    isFirst ? "border-white/20" : "border-[#edf0e8]"
                   }`}
                 >
                   <div
-                    className={`h-10 w-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${
+                    className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold ${
                       isFirst
-                        ? "bg-white text-emerald-700"
-                        : "bg-emerald-50 text-emerald-700"
+                        ? "bg-white/20 text-white ring-1 ring-white/30"
+                        : "text-white"
                     }`}
+                    style={
+                      !isFirst
+                        ? {
+                            background:
+                              "linear-gradient(135deg,#4d8c1e,#7cc22e)",
+                          }
+                        : {}
+                    }
                   >
                     {t.initials}
                   </div>
                   <div>
                     <p
-                      className={`text-sm font-semibold ${
-                        isFirst ? "text-white" : "text-zinc-900"
+                      className={`text-sm font-bold ${
+                        isFirst ? "text-white" : "text-[#1a1f14]"
                       }`}
                     >
                       {t.name}
                     </p>
                     <p
                       className={`text-xs mt-0.5 ${
-                        isFirst ? "text-emerald-200" : "text-zinc-400"
+                        isFirst ? "text-white/70" : "text-[#8a9185]"
                       }`}
                     >
                       {t.role}
@@ -164,15 +205,20 @@ export default function HomeTestimonials() {
           })}
         </div>
 
-        {/* Dots */}
+        {/* ── Dots ── */}
         <div className="mt-8 flex justify-center gap-2">
           {testimonials.map((_, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                i === active ? "w-6 bg-emerald-600" : "w-2 bg-zinc-200"
-              }`}
+              className="h-2 rounded-full transition-all duration-300"
+              style={{
+                width: i === active ? "24px" : "8px",
+                background:
+                  i === active
+                    ? "linear-gradient(90deg,#4d8c1e,#7cc22e)"
+                    : "#d4e0c8",
+              }}
             />
           ))}
         </div>
