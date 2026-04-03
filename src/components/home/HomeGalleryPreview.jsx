@@ -93,18 +93,7 @@ export default function HomeGalleryPreview() {
             </p>
           </div>
 
-          {/* Desktop Side Button */}
-          <div className="hidden lg:block">
-            <Link
-              href="/landing/gallery"
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-zinc-900 text-white rounded-full hover:bg-emerald-600 transition-all duration-300 shadow-xl shadow-zinc-900/20 hover:shadow-emerald-600/20"
-            >
-              <span className="text-xs font-bold uppercase tracking-widest">
-                View Full Gallery
-              </span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </div>
+         
         </div>
 
         {/* Gallery Grid */}

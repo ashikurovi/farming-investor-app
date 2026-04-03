@@ -2,7 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Calendar, Clock, ChevronDown, ChevronUp, Sprout, TrendingUp, Leaf } from "lucide-react";
+import {
+  ArrowRight,
+  Calendar,
+  Clock,
+  ChevronDown,
+  ChevronUp,
+  Sprout,
+  TrendingUp,
+} from "lucide-react";
 import { blogPosts } from "../../data/blog";
 
 const CSS = `
@@ -13,39 +21,43 @@ const CSS = `
     --g1: #4d8c1e;
     --g2: #7cc22e;
     --grad: linear-gradient(135deg, #4d8c1e, #7cc22e);
-    --glow: rgba(124,194,46,.15);
-    --bg: #f5f7f2;
+    --bg: #f6f7f4;
     --card: #ffffff;
-    --dark: #0f1a08;
     --text-1: #111a0a;
     --text-2: #4a5c3a;
     --text-3: #8fa07a;
-    --border: rgba(77,140,30,.14);
-    --border-md: rgba(77,140,30,.28);
+    --border: rgba(77,140,30,.13);
+    --border-md: rgba(77,140,30,.26);
   }
 
   .blog-root * { box-sizing: border-box; }
 
+  /* ─── Section ─── */
   .blog-section {
     background: var(--bg);
-    padding: 72px 0 84px;
+    padding: 72px 0 88px;
     position: relative;
     overflow: hidden;
   }
 
-  /* Subtle background decor */
-  .blog-section::before {
-    content: '';
-    position: absolute; inset: 0; pointer-events: none;
-    background:
-      radial-gradient(ellipse 60% 40% at 5% 10%, rgba(124,194,46,.07) 0%, transparent 70%),
-      radial-gradient(ellipse 50% 60% at 95% 85%, rgba(77,140,30,.06) 0%, transparent 70%);
-  }
+  /* Soft dot-grid background texture */
   .blog-section::after {
     content: '';
-    position: absolute; inset: 0; pointer-events: none;
+    position: absolute; inset: 0; pointer-events: none; z-index: 0;
     background-image: radial-gradient(circle, rgba(77,140,30,.055) 1px, transparent 1px);
-    background-size: 36px 36px;
+    background-size: 32px 32px;
+  }
+
+  /* Green glow blobs */
+  .blog-blob-tl {
+    position: absolute; top: -100px; left: -100px; z-index: 0; pointer-events: none;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,194,46,.10) 0%, transparent 70%);
+  }
+  .blog-blob-br {
+    position: absolute; bottom: -120px; right: -80px; z-index: 0; pointer-events: none;
+    width: 420px; height: 420px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(77,140,30,.08) 0%, transparent 70%);
   }
 
   .blog-inner {
@@ -56,7 +68,7 @@ const CSS = `
     z-index: 1;
   }
 
-  /* ── Header ── */
+  /* ─── Header ─── */
   .blog-header {
     display: flex;
     align-items: flex-end;
@@ -65,23 +77,23 @@ const CSS = `
     margin-bottom: 48px;
     flex-wrap: wrap;
   }
-
   .blog-header-left { max-width: 560px; }
 
   .blog-eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: 6px 14px 6px 10px;
-    background: rgba(255,255,255,.9);
-    border: 1px solid var(--border-md);
+    padding: 6px 16px 6px 8px;
+    background: rgba(255,255,255,.95);
+    border: 1.5px solid var(--border-md);
     border-radius: 999px;
-    margin-bottom: 20px;
-    backdrop-filter: blur(8px);
+    margin-bottom: 18px;
+    box-shadow: 0 2px 12px rgba(77,140,30,.08);
   }
   .blog-eyebrow-dot {
-    width: 22px; height: 22px; border-radius: 50%;
+    width: 24px; height: 24px; border-radius: 50%;
     background: var(--grad);
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(77,140,30,.3);
   }
   .blog-eyebrow span {
     font-size: 11px; font-weight: 700;
@@ -91,9 +103,9 @@ const CSS = `
 
   .blog-title {
     font-family: 'Playfair Display', serif;
-    font-size: 30px;
-    font-weight: 400; color: var(--text-1);
-    line-height: 1.15; margin: 0;
+    font-size: clamp(26px, 3vw, 36px);
+    font-weight: 600; color: var(--text-1);
+    line-height: 1.18; margin: 0;
   }
   .blog-title em {
     font-style: italic;
@@ -107,13 +119,13 @@ const CSS = `
     display: inline-flex; align-items: center; gap: 8px;
     font-size: 12px; font-weight: 700; letter-spacing: .12em;
     text-transform: uppercase; text-decoration: none;
-    color: var(--text-1);
-    padding: 12px 22px;
+    color: var(--g1);
+    padding: 12px 24px;
     border: 1.5px solid var(--border-md);
     border-radius: 999px;
-    background: rgba(255,255,255,.7);
-    backdrop-filter: blur(6px);
+    background: rgba(255,255,255,.85);
     transition: all .25s; white-space: nowrap;
+    box-shadow: 0 2px 12px rgba(77,140,30,.08);
   }
   .blog-view-all:hover {
     background: var(--grad);
@@ -122,123 +134,146 @@ const CSS = `
     box-shadow: 0 6px 24px rgba(77,140,30,.3);
     transform: translateY(-2px);
   }
-  .blog-view-all:hover svg { stroke: #fff; transform: translateX(3px); }
-  .blog-view-all svg { transition: all .2s; }
+  .blog-view-all svg { transition: transform .2s; }
+  .blog-view-all:hover svg { transform: translateX(4px); }
 
-  /* ── Article card ── */
-  .blog-list { display: flex; flex-direction: column; gap: 2px; }
+  /* ─── Article card ─── */
+  .blog-list { display: flex; flex-direction: column; gap: 20px; }
 
   .blog-article {
     background: var(--card);
     border: 1.5px solid var(--border);
-    border-radius: 24px;
+    border-radius: 28px;
     overflow: hidden;
-    margin-bottom: 18px;
-    transition: box-shadow .3s, border-color .3s;
     position: relative;
+    transition: box-shadow .3s, border-color .3s, transform .3s;
   }
+  /* Top accent line */
   .blog-article::before {
     content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
     background: var(--grad); opacity: 0;
     transition: opacity .3s;
-    border-radius: 24px 24px 0 0;
+    border-radius: 28px 28px 0 0;
+    z-index: 2;
   }
   .blog-article:hover {
-    box-shadow: 0 12px 48px rgba(77,140,30,.1);
-    border-color: var(--border-md);
+    box-shadow: 0 16px 56px rgba(77,140,30,.13);
+    border-color: rgba(77,140,30,.32);
+    transform: translateY(-3px);
   }
   .blog-article:hover::before { opacity: 1; }
 
   .blog-article-inner {
     display: grid;
-    grid-template-columns: 420px 1fr;
-    gap: 0;
-    min-height: 300px;
+    grid-template-columns: 400px 1fr;
   }
 
-  /* Image pane */
+  /* ─── Image pane ─── */
   .blog-img-pane {
     position: relative;
     overflow: hidden;
-    flex-shrink: 0;
+    min-height: 280px;
   }
   .blog-img-pane img {
-    width: 100%; height: 100%; object-fit: cover;
+    width: 100%; height: 100%;
+    object-fit: cover;
     transition: transform .7s cubic-bezier(.4,0,.2,1);
     display: block;
   }
-  .blog-article:hover .blog-img-pane img { transform: scale(1.05); }
+  .blog-article:hover .blog-img-pane img { transform: scale(1.06); }
 
-  /* Category badge */
-  .blog-cat-badge {
-    position: absolute; top: 16px; left: 16px; z-index: 2;
-    padding: 5px 12px;
-    font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-    background: rgba(255,255,255,.92);
-    backdrop-filter: blur(8px);
-    border-radius: 999px;
-    color: var(--g1);
-    border: 1px solid rgba(77,140,30,.2);
-    box-shadow: 0 2px 8px rgba(0,0,0,.08);
-  }
-
-  /* Read time badge */
-  .blog-read-badge {
-    position: absolute; bottom: 16px; right: 16px; z-index: 2;
-    display: flex; align-items: center; gap: 5px;
-    padding: 5px 11px;
-    font-size: 11px; font-weight: 500;
-    background: rgba(15,26,8,.75);
-    backdrop-filter: blur(8px);
-    border-radius: 999px;
-    color: rgba(255,255,255,.85);
-  }
-
-  /* Gradient overlay on image */
+  /* Vertical gradient on image right edge — blends into white card */
   .blog-img-pane::after {
     content: '';
     position: absolute; inset: 0;
-    background: linear-gradient(to right, transparent 60%, rgba(255,255,255,.08) 100%);
+    background: linear-gradient(to right, transparent 55%, rgba(255,255,255,.15) 100%);
     pointer-events: none;
   }
 
-  /* Content pane */
+  /* Category badge */
+  .blog-cat-badge {
+    position: absolute; top: 16px; left: 16px; z-index: 3;
+    padding: 5px 13px;
+    font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+    background: rgba(255,255,255,.95);
+    backdrop-filter: blur(10px);
+    border-radius: 999px;
+    color: var(--g1);
+    border: 1.5px solid rgba(77,140,30,.25);
+    box-shadow: 0 2px 10px rgba(0,0,0,.09);
+  }
+
+  /* Time badge */
+  .blog-read-badge {
+    position: absolute; bottom: 14px; right: 14px; z-index: 3;
+    display: flex; align-items: center; gap: 5px;
+    padding: 5px 12px;
+    font-size: 11px; font-weight: 600;
+    background: rgba(10,20,5,.72);
+    backdrop-filter: blur(10px);
+    border-radius: 999px;
+    color: rgba(255,255,255,.88);
+    border: 1px solid rgba(255,255,255,.1);
+  }
+
+  /* ─── Content pane ─── */
   .blog-content-pane {
-    padding: 32px 36px;
+    padding: 32px 40px 32px 36px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 0;
+    position: relative;
   }
 
-  /* Meta row */
+  /* Watermark number */
+  .blog-number {
+    position: absolute; top: 24px; right: 32px;
+    font-family: 'Playfair Display', serif;
+    font-size: 80px; font-weight: 700; line-height: 1;
+    color: rgba(77,140,30,.06);
+    pointer-events: none; user-select: none;
+  }
+
+  /* Meta */
   .blog-meta {
-    display: flex; align-items: center; gap: 16px;
-    font-size: 11px; font-weight: 600; letter-spacing: .1em;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    font-size: 11px; font-weight: 700; letter-spacing: .1em;
     text-transform: uppercase; color: var(--text-3);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
   .blog-meta-item { display: flex; align-items: center; gap: 5px; }
-  .blog-meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border-md); }
+  .blog-meta-sep {
+    width: 3px; height: 3px; border-radius: 50%;
+    background: rgba(77,140,30,.3); flex-shrink: 0;
+  }
+  .blog-meta-cat { color: var(--g1); }
 
   /* Post title */
   .blog-post-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(20px, 2.2vw, 28px);
+    font-size: clamp(18px, 2vw, 26px);
     font-weight: 600; color: var(--text-1);
-    line-height: 1.28; margin: 0 0 14px;
+    line-height: 1.3; margin: 0 0 12px;
     transition: color .2s;
     cursor: pointer; text-align: left;
     background: none; border: none; padding: 0;
-    font-family: 'Playfair Display', serif;
+    width: 100%;
   }
   .blog-post-title:hover { color: var(--g1); }
 
+  /* Divider under title */
+  .blog-divider {
+    width: 36px; height: 3px; border-radius: 99px;
+    background: var(--grad);
+    margin-bottom: 14px;
+    flex-shrink: 0;
+  }
+
   /* Excerpt */
   .blog-excerpt {
-    font-size: 15px; color: var(--text-2);
-    line-height: 1.72; margin: 0 0 24px;
+    font-size: 14.5px; color: var(--text-2);
+    line-height: 1.75; margin: 0 0 22px;
     font-weight: 400;
   }
 
@@ -250,105 +285,78 @@ const CSS = `
   }
   .blog-expanded.open { max-height: 400px; opacity: 1; }
   .blog-expanded-inner {
-    padding-top: 16px;
+    padding-top: 14px;
     border-top: 1px solid var(--border);
-    margin-bottom: 16px;
+    margin-bottom: 18px;
   }
   .blog-expanded-inner p {
-    font-size: 14px; color: var(--text-2); line-height: 1.75; margin: 0;
+    font-size: 14px; color: var(--text-2); line-height: 1.8; margin: 0;
   }
 
   /* Read more btn */
   .blog-read-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 11px; font-weight: 700; letter-spacing: .12em;
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 11px; font-weight: 800; letter-spacing: .13em;
     text-transform: uppercase; color: var(--g1);
     background: rgba(77,140,30,.07);
-    border: 1px solid var(--border-md);
+    border: 1.5px solid var(--border-md);
     border-radius: 999px;
-    padding: 8px 18px;
+    padding: 9px 20px;
     cursor: pointer; transition: all .22s;
     align-self: flex-start;
   }
   .blog-read-btn:hover {
     background: var(--grad);
     color: #fff; border-color: transparent;
-    box-shadow: 0 4px 16px rgba(77,140,30,.28);
+    box-shadow: 0 6px 20px rgba(77,140,30,.28);
+    transform: translateY(-1px);
   }
 
-  /* ── Number index ── */
-  .blog-number {
-    position: absolute; top: 28px; right: 32px;
-    font-family: 'Playfair Display', serif;
-    font-size: 72px; font-weight: 700; line-height: 1;
-    color: rgba(77,140,30,.06);
-    pointer-events: none; user-select: none;
-  }
-
-  /* ── View all footer ── */
+  /* ─── Footer CTA ─── */
   .blog-footer {
     display: flex; align-items: center; justify-content: center;
-    margin-top: 48px; gap: 16px;
+    margin-top: 52px; gap: 20px;
   }
   .blog-footer-line {
-    flex: 1; max-width: 200px; height: 1px;
+    flex: 1; max-width: 180px; height: 1px;
     background: linear-gradient(90deg, transparent, var(--border-md));
   }
-  .blog-footer-line.r { background: linear-gradient(90deg, var(--border-md), transparent); }
+  .blog-footer-line.r { background: linear-gradient(270deg, transparent, var(--border-md)); }
 
   .blog-footer-btn {
     display: inline-flex; align-items: center; gap: 10px;
-    font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    font-size: 12px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase;
     text-decoration: none; color: #fff;
-    padding: 14px 32px;
+    padding: 14px 36px;
     background: var(--grad);
     border-radius: 999px;
-    box-shadow: 0 6px 28px rgba(77,140,30,.32);
+    box-shadow: 0 8px 30px rgba(77,140,30,.32);
     transition: opacity .2s, transform .2s;
   }
-  .blog-footer-btn:hover { opacity: .88; transform: translateY(-2px); }
+  .blog-footer-btn:hover { opacity: .88; transform: translateY(-3px); }
 
-  /* ── Responsive ── */
+  /* ─── Responsive ─── */
   @media (max-width: 1024px) {
-    .blog-article-inner { grid-template-columns: 340px 1fr; }
+    .blog-article-inner { grid-template-columns: 320px 1fr; }
     .blog-content-pane { padding: 28px 28px; }
-    .blog-number { font-size: 56px; top: 20px; right: 22px; }
+    .blog-number { font-size: 64px; }
   }
-
   @media (max-width: 820px) {
-    .blog-section { padding: 56px 0 68px; }
-    .blog-header { margin-bottom: 40px; }
     .blog-view-all { display: none; }
-    .blog-article-inner {
-      grid-template-columns: 1fr;
-      grid-template-rows: 240px auto;
-    }
-    .blog-img-pane { height: 240px; }
-    .blog-img-pane::after { background: linear-gradient(to bottom, transparent 60%, rgba(255,255,255,.06) 100%); }
+    .blog-article-inner { grid-template-columns: 1fr; }
+    .blog-img-pane { height: 240px; min-height: unset; }
+    .blog-img-pane::after { background: linear-gradient(to bottom, transparent 55%, rgba(255,255,255,.12)); }
     .blog-content-pane { padding: 24px 24px 28px; }
     .blog-number { display: none; }
-    .blog-post-title { font-size: 20px; }
   }
-
-  @media (max-width: 640px) {
-    .blog-section { padding: 44px 0 56px; }
-    .blog-article { border-radius: 18px; margin-bottom: 14px; }
-    .blog-img-pane { height: 210px; }
-    .blog-content-pane { padding: 20px 20px 24px; }
-    .blog-excerpt { font-size: 14px; margin-bottom: 18px; }
-    .blog-meta { gap: 10px; font-size: 10px; }
-    .blog-header { margin-bottom: 36px; }
-    .blog-footer { margin-top: 36px; }
-  }
-
-  @media (max-width: 480px) {
-    .blog-inner { padding: 0 16px; }
-    .blog-article-inner { grid-template-rows: 190px auto; }
-    .blog-img-pane { height: 190px; }
-    .blog-title { font-size: 24px; }
-    .blog-post-title { font-size: 18px; }
+  @media (max-width: 540px) {
+    .blog-section { padding: 48px 0 60px; }
+    .blog-article { border-radius: 20px; }
+    .blog-img-pane { height: 200px; }
+    .blog-content-pane { padding: 20px 18px 24px; }
     .blog-excerpt { font-size: 13.5px; }
-    .blog-footer-line { max-width: 60px; }
+    .blog-footer { margin-top: 40px; }
+    .blog-footer-line { max-width: 50px; }
   }
 `;
 
@@ -359,8 +367,11 @@ export default function HomeBlogSection() {
     setExpandedPosts((prev) => ({ ...prev, [id]: !prev[id] }));
 
   const getExtendedExcerpt = (content) => {
-    const plain = content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-    return plain.substring(0, 350) + "...";
+    const plain = content
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    return plain.substring(0, 350) + "…";
   };
 
   return (
@@ -368,9 +379,12 @@ export default function HomeBlogSection() {
       <style>{CSS}</style>
       <div className="blog-root">
         <section className="blog-section">
-          <div className="blog-inner">
+          {/* blobs */}
+          <div className="blog-blob-tl" />
+          <div className="blog-blob-br" />
 
-            {/* Header */}
+          <div className="blog-inner">
+            {/* ── Header ── */}
             <div className="blog-header">
               <div className="blog-header-left">
                 <div className="blog-eyebrow">
@@ -383,24 +397,23 @@ export default function HomeBlogSection() {
                   News &amp; <em>Perspectives</em>
                 </h2>
               </div>
-              {/* <Link href="/landing/blog" className="blog-view-all">
+              <Link href="/landing/blog" className="blog-view-all">
                 Read All Articles
                 <ArrowRight size={14} />
-              </Link> */}
+              </Link>
             </div>
 
-            {/* Articles */}
+            {/* ── Articles ── */}
             <div className="blog-list">
               {blogPosts.map((post, idx) => {
                 const isOpen = expandedPosts[post.id];
                 return (
                   <article key={post.id} className="blog-article">
                     <div className="blog-article-inner">
-
                       {/* Image */}
                       <div className="blog-img-pane">
                         <span className="blog-cat-badge">{post.category}</span>
-                        <img src={post.image} alt={post.title} />
+                        <img src={post.image} alt={post.title} loading="lazy" />
                         <span className="blog-read-badge">
                           <Clock size={11} />
                           {post.time}
@@ -408,18 +421,18 @@ export default function HomeBlogSection() {
                       </div>
 
                       {/* Content */}
-                      <div className="blog-content-pane" style={{ position: "relative" }}>
+                      <div className="blog-content-pane">
                         <span className="blog-number">0{idx + 1}</span>
 
                         {/* Meta */}
                         <div className="blog-meta">
                           <span className="blog-meta-item">
-                            <Calendar size={12} />
+                            <Calendar size={11} />
                             {post.date}
                           </span>
-                          <span className="blog-meta-dot" />
-                          <span className="blog-meta-item" style={{ color: "var(--g1)" }}>
-                            <TrendingUp size={12} />
+                          <span className="blog-meta-sep" />
+                          <span className="blog-meta-item blog-meta-cat">
+                            <TrendingUp size={11} />
                             {post.category}
                           </span>
                         </div>
@@ -432,25 +445,34 @@ export default function HomeBlogSection() {
                           {post.title}
                         </button>
 
+                        {/* Green accent divider */}
+                        <div className="blog-divider" />
+
                         {/* Excerpt */}
                         <p className="blog-excerpt">{post.excerpt}</p>
 
-                        {/* Expanded */}
-                        <div className={`blog-expanded${isOpen ? " open" : ""}`}>
+                        {/* Expanded content */}
+                        <div
+                          className={`blog-expanded${isOpen ? " open" : ""}`}
+                        >
                           <div className="blog-expanded-inner">
                             <p>{getExtendedExcerpt(post.content)}</p>
                           </div>
                         </div>
 
-                        {/* Read more */}
+                        {/* Toggle btn */}
                         <button
                           className="blog-read-btn"
                           onClick={() => toggle(post.id)}
                         >
                           {isOpen ? (
-                            <><ChevronUp size={13} /> Read Less</>
+                            <>
+                              <ChevronUp size={13} /> Read Less
+                            </>
                           ) : (
-                            <><ChevronDown size={13} /> Read More</>
+                            <>
+                              <ChevronDown size={13} /> Read More
+                            </>
                           )}
                         </button>
                       </div>
@@ -460,8 +482,15 @@ export default function HomeBlogSection() {
               })}
             </div>
 
-           
-
+            {/* ── Footer CTA ── */}
+            <div className="blog-footer">
+              <div className="blog-footer-line" />
+              <Link href="/landing/blog" className="blog-footer-btn">
+                View All Articles
+                <ArrowRight size={15} />
+              </Link>
+              <div className="blog-footer-line r" />
+            </div>
           </div>
         </section>
       </div>

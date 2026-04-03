@@ -1,71 +1,69 @@
 export const blogPosts = [
   {
     id: 1,
-    title: "The Future of Sustainable Agriculture in 2026",
+    title: "Sustainable Farming in 2026: What’s Changing",
     excerpt:
-      "Discover how vertical farming and AI-driven crop management are revolutionizing food production for a growing global population. We explore the latest innovations driving efficiency and yield.",
+      "A quick look at the practical changes farmers are adopting—smarter planning, better inputs, and cleaner operations that boost yield without increasing risk.",
     content: `
-      <p>As we navigate through 2026, the agricultural landscape is undergoing a profound transformation. The intersection of technology and biology has given rise to sustainable practices that were once considered science fiction. Vertical farming, for instance, has moved beyond experimental prototypes to become a cornerstone of urban food security.</p>
-      
-      <h3>The Rise of AI in Crop Management</h3>
-      <p>Artificial Intelligence is no longer just a buzzword in agriculture; it's a critical tool for modern farmers. By analyzing vast amounts of data—from soil moisture levels to weather patterns—AI algorithms can predict crop yields with unprecedented accuracy. This allows for precise resource allocation, minimizing water usage and reducing the need for chemical fertilizers.</p>
-      
-      <h3>Vertical Farming: Growing Up, Not Out</h3>
-      <p>With arable land becoming increasingly scarce, vertical farming offers a viable solution. By stacking crops in controlled environments, we can produce significantly more food per square foot than traditional farming methods. This approach not only saves space but also reduces the carbon footprint associated with transportation, as farms can be located closer to urban centers.</p>
-      
-      <h3>Conclusion</h3>
-      <p>The future of agriculture is bright, but it requires a commitment to innovation and sustainability. By embracing these new technologies, we can ensure a food-secure future for generations to come.</p>
+      <p>Modern agriculture is moving toward predictable operations: better planning, tighter cost control, and more transparent reporting. The goal is simple—produce more consistently while protecting soil health and reducing waste.</p>
+
+      <h3>What you’ll see on well-run farms</h3>
+      <ul>
+        <li>Optimized schedules for inputs, irrigation, and harvest timing</li>
+        <li>Healthier soil through composting and smarter crop rotation</li>
+        <li>More frequent progress updates with photos and field metrics</li>
+      </ul>
+
+      <p>For investors, these changes mean clearer visibility, more stable outcomes, and better decision-making across seasons.</p>
     `,
-    image: "https://images.unsplash.com/photo-1625246333195-58197bd47d26?q=80&w=1000&auto=format&fit=crop",
+    image: "/img_7-2048x1024.jpg",
     date: "March 15, 2026",
     time: "09:30 AM",
-    author: "Sarah Jenkins",
-    category: "Industry Trends",
+    author: "Artman Team",
+    category: "Sustainability",
   },
   {
     id: 2,
-    title: "Understanding Farmland Investment Returns",
+    title: "How Farm Investments Generate Returns",
     excerpt:
-      "A comprehensive guide to analyzing cap rates, appreciation potential, and risk factors in agricultural real estate portfolios. Learn what makes farmland a stable asset class.",
+      "A simple breakdown of where returns come from—cost discipline, market timing, and profit sharing after harvest—without the complicated jargon.",
     content: `
-      <p>Farmland has long been considered a stable and lucrative asset class, often outperforming traditional stocks and bonds during periods of economic volatility. However, understanding the nuances of farmland investment requires a deep dive into key financial metrics.</p>
-      
-      <h3>Analyzing Cap Rates</h3>
-      <p>Capitalization rates, or cap rates, are a fundamental measure of a property's potential return. In the context of farmland, this involves calculating the annual net operating income divided by the current market value of the land. Historically, farmland has offered competitive cap rates, providing investors with a steady income stream.</p>
-      
-      <h3>Appreciation Potential</h3>
-      <p>Beyond immediate income, farmland offers significant appreciation potential. As the global population grows and the demand for food increases, the value of productive land is expected to rise. This long-term capital appreciation is a key driver for many institutional investors entering the space.</p>
-      
-      <h3>Risk Factors</h3>
-      <p>Like any investment, farmland is not without its risks. Climate change, fluctuating commodity prices, and regulatory changes can all impact returns. However, a diversified portfolio across different regions and crop types can help mitigate these risks.</p>
+      <p>Farm investment returns typically come from operational profit at the end of a crop cycle. That includes careful budgeting on inputs (seed, fertilizer, labor) and selling at the right market window.</p>
+
+      <h3>Key factors that impact profit</h3>
+      <ul>
+        <li>Input cost control and on-time execution</li>
+        <li>Yield performance vs. target expectations</li>
+        <li>Sale price at harvest and distribution efficiency</li>
+      </ul>
+
+      <p>On our platform, projects are tracked with clear cost and sell reporting so you can understand performance before and after harvest.</p>
     `,
-    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1000&auto=format&fit=crop",
+    image: "/img_4-2048x1024.jpg",
     date: "March 10, 2026",
     time: "02:15 PM",
-    author: "Michael Ross",
-    category: "Investment Strategy",
+    author: "Artman Team",
+    category: "Investing",
   },
   {
     id: 3,
-    title: "Technology's Role in Modern Harvesting",
+    title: "Smart Monitoring for Modern Farming",
     excerpt:
-      "From autonomous tractors to drone monitoring: How smart technology is increasing efficiency and reducing waste during harvest season. The digital transformation of the field is here.",
+      "From field photos to daily updates—monitoring tools help reduce surprises and keep operations accountable throughout the crop cycle.",
     content: `
-      <p>Harvest season is the culmination of months of hard work, and technology is playing an increasingly vital role in ensuring its success. The digital transformation of the field is streamlining operations, reducing waste, and maximizing profitability.</p>
-      
-      <h3>Autonomous Tractors and Machinery</h3>
-      <p>Gone are the days of manual labor-intensive harvesting. Today, autonomous tractors equipped with GPS and advanced sensors can navigate fields with centimeter-level precision. These machines operate 24/7, significantly speeding up the harvesting process and reducing labor costs.</p>
-      
-      <h3>Drone Monitoring</h3>
-      <p>Drones are providing farmers with a bird's-eye view of their crops, allowing for real-time monitoring of plant health and field conditions. Multispectral imaging can detect issues such as pest infestations or nutrient deficiencies before they become visible to the naked eye, enabling targeted interventions.</p>
-      
-      <h3>Data-Driven Decision Making</h3>
-      <p>The data collected by these technologies is invaluable. By analyzing harvest data, farmers can identify trends and make informed decisions for future planting seasons. This cycle of continuous improvement is essential for staying competitive in a rapidly evolving market.</p>
+      <p>Monitoring isn’t just cameras—it’s consistent reporting. When a project captures daily progress (cost, issues, photos, and actions taken), teams respond faster and outcomes become more predictable.</p>
+
+      <h3>What good monitoring looks like</h3>
+      <ul>
+        <li>Regular field updates with clear timelines</li>
+        <li>Photo evidence of milestones (planting, growth, harvest)</li>
+        <li>Transparent cost and sell reporting</li>
+      </ul>
     `,
-    image: "https://images.unsplash.com/photo-1530267981375-f0de93cdf5b8?q=80&w=1000&auto=format&fit=crop",
+    image: "/img_7-2048x1024.jpg",
     date: "March 05, 2026",
     time: "11:45 AM",
-    author: "Tech Team",
-    category: "AgriTech",
+    author: "Artman Team",
+    category: "Operations",
   },
 ];
