@@ -219,13 +219,11 @@ export function MainFooter() {
                     </span>
                   ),
                 },
-                { icon: Phone, content: <span>+880 1234 567 890</span> },
+                { icon: Phone, content: <span>01750977875</span> },
                 {
                   icon: Mail,
                   content: (
-                    <span className="break-all">
-                      hello@farming-investor.com
-                    </span>
+                    <span className="break-all">iamimtiaz132@gmail.com</span>
                   ),
                 },
               ].map(({ icon: Icon, content }, i) => (
