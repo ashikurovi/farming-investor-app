@@ -35,28 +35,16 @@ export function NoticeMarquee() {
 
         <div className="flex animate-[marquee_25s_linear_infinite] whitespace-nowrap group-hover:[animation-play-state:paused] hover:[animation-play-state:paused]">
           {[...notices, ...notices].map((notice, idx) => (
-            notice.isPublic ? (
-              <Link
-                key={`${notice.id}-${idx}`}
-                href={`/investor/notice/${notice.id}`}
-                className="mr-12 flex items-center gap-2 transition-opacity hover:opacity-70"
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
-                <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                  {notice.title}
-                </span>
-              </Link>
-            ) : (
-              <div
-                key={`${notice.id}-${idx}`}
-                className="mr-12 flex items-center gap-2"
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-primary opacity-60"></span>
-                <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
-                  {notice.title}
-                </span>
-              </div>
-            )
+            <Link
+              key={`${notice.id}-${idx}`}
+              href={`/investor/notice/${notice.id}`}
+              className="mr-12 flex items-center gap-2 cursor-pointer transition-opacity hover:opacity-70"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+              <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                {notice.title}
+              </span>
+            </Link>
           ))}
         </div>
       </div>

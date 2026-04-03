@@ -74,12 +74,11 @@ export function MainFooter() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 mb-14">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-4 space-y-6">
-            {/* Brand Section with Logo */}
             <div className="sm:col-span-2 lg:col-span-4 space-y-6">
-              <div className="flex flex-col items-start gap-4">
+              <div className="flex flex-col items-start gap-2">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-3 group">
-                  <div className="w-50 h-70  transition-transform group-hover:scale-105">
+                  <div className="h-12 w-32 transition-transform group-hover:scale-105">
                     <Image
                       src="/loogo9.png"
                       alt="ARTMAN"
@@ -127,40 +126,6 @@ export function MainFooter() {
                   </a>
                 ))}
               </div>
-            </div>
-
-            <p
-              className="text-sm leading-relaxed"
-              style={{ color: "rgba(255,255,255,0.78)", maxWidth: "300px" }}
-            >
-              Democratizing agricultural investment — connecting capital with
-              sustainable farming projects for a greener, wealthier future.
-            </p>
-
-            {/* Socials */}
-            <div className="flex items-center gap-2 flex-wrap">
-              {socialLinks.map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  className="h-9 w-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
-                  style={{
-                    background: "rgba(255,255,255,0.12)",
-                    border: "1px solid rgba(255,255,255,0.22)",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background =
-                      "rgba(255,255,255,0.28)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background =
-                      "rgba(255,255,255,0.12)")
-                  }
-                >
-                  <Icon className="w-4 h-4 text-white" />
-                </a>
-              ))}
             </div>
           </div>
 

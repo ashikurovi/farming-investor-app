@@ -24,6 +24,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useGetProjectsQuery } from "@/features/admin/projects/projectsApiSlice";
+import { NoticeMarquee } from "../components/NoticeMarquee";
 
 /* ─── helpers ─────────────────────────────────── */
 const PAGE_SIZE = 6;
@@ -93,7 +94,6 @@ const ProjectCard = ({ project }) => {
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-sm ring-1 ring-transparent transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-[color:rgba(77,140,30,0.22)] dark:border-zinc-800 dark:bg-zinc-900 dark:hover:ring-zinc-700">
-
       {/* ── Image ── */}
       <Link
         href={`/investor/projects/${project.id}`}
@@ -110,7 +110,9 @@ const ProjectCard = ({ project }) => {
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-900">
             <Layers className="h-10 w-10 text-zinc-300" />
-            <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500">No image</span>
+            <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500">
+              No image
+            </span>
           </div>
         )}
 
@@ -131,7 +133,6 @@ const ProjectCard = ({ project }) => {
 
       {/* ── Body ── */}
       <div className="flex flex-1 flex-col gap-4 p-5">
-
         {/* Title + location */}
         <div>
           <Link href={`/investor/projects/${project.id}`}>
@@ -201,8 +202,14 @@ const TablePagination = ({
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <p className="text-xs text-zinc-400 dark:text-zinc-500">
         Showing{" "}
-        <span className="font-semibold text-zinc-700 dark:text-zinc-200">{from}–{to}</span> of{" "}
-        <span className="font-semibold text-zinc-700 dark:text-zinc-200">{total}</span> projects
+        <span className="font-semibold text-zinc-700 dark:text-zinc-200">
+          {from}–{to}
+        </span>{" "}
+        of{" "}
+        <span className="font-semibold text-zinc-700 dark:text-zinc-200">
+          {total}
+        </span>{" "}
+        projects
       </p>
       <div className="flex items-center gap-2">
         <select
@@ -259,11 +266,11 @@ export default function InvestorProjectsPage() {
   const raw = Array.isArray(data) ? data : (data?.items ?? []);
   const filtered = search
     ? raw.filter((p) =>
-      [p?.name ?? "", p?.location ?? "", p?.description ?? ""]
-        .join(" ")
-        .toLowerCase()
-        .includes(search.toLowerCase()),
-    )
+        [p?.name ?? "", p?.location ?? "", p?.description ?? ""]
+          .join(" ")
+          .toLowerCase()
+          .includes(search.toLowerCase()),
+      )
     : raw;
 
   const total = filtered.length;
@@ -280,7 +287,7 @@ export default function InvestorProjectsPage() {
 
   return (
     <div className="space-y-6">
-
+      <NoticeMarquee />
       {/* ══════════════════════════════════════════
           PREMIUM HEADER CARD
       ══════════════════════════════════════════ */}
@@ -349,7 +356,9 @@ export default function InvestorProjectsPage() {
                 <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-400 dark:text-zinc-500">
                   {label}
                 </p>
-                <p className="text-sm font-bold text-zinc-800 dark:text-zinc-100">{value}</p>
+                <p className="text-sm font-bold text-zinc-800 dark:text-zinc-100">
+                  {value}
+                </p>
               </div>
             </div>
           ))}

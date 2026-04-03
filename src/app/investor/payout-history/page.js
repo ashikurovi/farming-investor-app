@@ -10,6 +10,7 @@ import { DataTable } from "@/components/ui/data-table";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { toast } from "sonner";
+import { NoticeMarquee } from "../components/NoticeMarquee";
 
 function InvoicePrintView({ payout, user, innerRef }) {
   if (!payout || !user) return <div ref={innerRef} className="absolute -left-[9999px]" />;
@@ -207,6 +208,7 @@ export default function InvestorPayoutHistoryPage() {
 
   return (
     <div className="space-y-8 bg-background text-foreground p-2">
+      <NoticeMarquee />
       <header className="flex flex-col gap-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-primary ring-1 ring-[color:rgba(77,140,30,0.18)]">
