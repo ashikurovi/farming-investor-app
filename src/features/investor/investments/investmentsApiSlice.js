@@ -89,11 +89,17 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         body: { amount },
       }),
       transformResponse: (response) => response?.data ?? response,
-      invalidatesTags: (result, error, { id }) => [
-        { type: "Investment", id },
-        { type: "Investment", id: "LIST" },
-        { type: "Investment", id: "STATS" },
-      ],
+      invalidatesTags: (result, error, arg) => {
+        const tags = [
+          { type: "Investment", id: arg.id },
+          { type: "Investment", id: "LIST" },
+          { type: "Investment", id: "STATS" },
+          { type: "User", id: "LIST" }
+        ];
+        if (result?.userId) tags.push({ type: "User", id: result.userId });
+        if (result?.investorId) tags.push({ type: "User", id: result.investorId });
+        return tags;
+      },
     }),
 
     createInvestment: builder.mutation({
@@ -103,7 +109,12 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         body: { userId, projectId, amount },
       }),
       transformResponse: (response) => response?.data ?? response,
-      invalidatesTags: [{ type: "Investment", id: "LIST" }, { type: "Investment", id: "STATS" }],
+      invalidatesTags: (result, error, arg) => {
+        const tags = [{ type: "Investment", id: "LIST" }, { type: "Investment", id: "STATS" }, { type: "User", id: "LIST" }];
+        if (arg?.userId) tags.push({ type: "User", id: arg.userId });
+        if (result?.userId) tags.push({ type: "User", id: result.userId });
+        return tags;
+      },
     }),
 
     deleteInvestment: builder.mutation({
@@ -112,11 +123,17 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
       transformResponse: (response) => response?.data ?? response,
-      invalidatesTags: (result, error, id) => [
-        { type: "Investment", id },
-        { type: "Investment", id: "LIST" },
-        { type: "Investment", id: "STATS" },
-      ],
+      invalidatesTags: (result, error, id) => {
+        const tags = [
+          { type: "Investment", id },
+          { type: "Investment", id: "LIST" },
+          { type: "Investment", id: "STATS" },
+          { type: "User", id: "LIST" }
+        ];
+        if (result?.userId) tags.push({ type: "User", id: result.userId });
+        if (result?.investorId) tags.push({ type: "User", id: result.investorId });
+        return tags;
+      },
     }),
 
     getInvestmentsAdmin: builder.query({
@@ -181,7 +198,19 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         };
       },
       transformResponse: (response) => response?.data ?? response,
-      invalidatesTags: [{ type: "Investment", id: "LIST" }, { type: "Investment", id: "STATS" }, { type: "Investment", id: "RECENT" }],
+      invalidatesTags: (result, error, arg) => {
+        const tags = [
+          { type: "Investment", id: "LIST" }, 
+          { type: "Investment", id: "STATS" }, 
+          { type: "Investment", id: "RECENT" },
+          { type: "User", id: "LIST" },
+          { type: "Project", id: "LIST" },
+          { type: "Project", id: "STATS" }
+        ];
+        if (arg?.investorId) tags.push({ type: "User", id: arg.investorId });
+        if (result?.investorId) tags.push({ type: "User", id: result.investorId });
+        return tags;
+      },
     }),
 
     updateInvestmentAdmin: builder.mutation({
@@ -209,12 +238,18 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         };
       },
       transformResponse: (response) => response?.data ?? response,
-      invalidatesTags: (result, error, arg) => [
-        { type: "Investment", id: arg.id },
-        { type: "Investment", id: "LIST" },
-        { type: "Investment", id: "STATS" },
-        { type: "Investment", id: "RECENT" },
-      ],
+      invalidatesTags: (result, error, arg) => {
+        const tags = [
+          { type: "Investment", id: arg.id },
+          { type: "Investment", id: "LIST" },
+          { type: "Investment", id: "STATS" },
+          { type: "Investment", id: "RECENT" },
+          { type: "User", id: "LIST" }
+        ];
+        if (result?.investorId) tags.push({ type: "User", id: result.investorId });
+        if (result?.userId) tags.push({ type: "User", id: result.userId });
+        return tags;
+      },
     }),
 
     deleteInvestmentAdmin: builder.mutation({
@@ -223,12 +258,18 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
       transformResponse: (response) => response?.data ?? response,
-      invalidatesTags: (result, error, id) => [
-        { type: "Investment", id },
-        { type: "Investment", id: "LIST" },
-        { type: "Investment", id: "STATS" },
-        { type: "Investment", id: "RECENT" },
-      ],
+      invalidatesTags: (result, error, id) => {
+        const tags = [
+          { type: "Investment", id },
+          { type: "Investment", id: "LIST" },
+          { type: "Investment", id: "STATS" },
+          { type: "Investment", id: "RECENT" },
+          { type: "User", id: "LIST" }
+        ];
+        if (result?.investorId) tags.push({ type: "User", id: result.investorId });
+        if (result?.userId) tags.push({ type: "User", id: result.userId });
+        return tags;
+      },
     }),
   }),
 });

@@ -480,7 +480,7 @@ export default function AdminInvestorPage() {
             onRowClick={handleRowClick}
             renderActions={(user) => (
               <div className="flex items-center justify-end gap-2">
-                <Button
+                {/* <Button
                   variant="ghost"
                   size="icon"
                   onClick={(e) => {
@@ -491,7 +491,7 @@ export default function AdminInvestorPage() {
                   title="View Details"
                 >
                   <Eye className="h-4 w-4" />
-                </Button>
+                </Button> */}
                 <Button
                   variant="ghost"
                   size="icon"
