@@ -106,6 +106,36 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         { type: "User", id: "LIST" },
       ],
     }),
+
+    payoutUser: builder.mutation({
+      query: (id) => ({
+        url: `/users/${id}/payout`,
+        method: "POST",
+      }),
+      transformResponse: (response) => response?.data ?? response,
+      invalidatesTags: (result, error, id) => [
+        { type: "User", id },
+        { type: "User", id: "LIST" },
+      ],
+    }),
+
+    getUserPayouts: builder.query({
+      query: (id) => ({
+        url: `/users/${id}/payouts`,
+        method: "GET",
+      }),
+      transformResponse: (response) => response?.data ?? response,
+      providesTags: (result, error, id) => [{ type: "InvestorPayout", id }],
+    }),
+
+    getAllPayouts: builder.query({
+      query: () => ({
+        url: `/users/payouts/all`,
+        method: "GET",
+      }),
+      transformResponse: (response) => response?.data ?? response,
+      providesTags: ["InvestorPayout", "User"],
+    }),
   }),
 });
 
@@ -118,4 +148,7 @@ export const {
   useDeleteUserMutation,
   useBanUserMutation,
   useUnbanUserMutation,
+  usePayoutUserMutation,
+  useGetUserPayoutsQuery,
+  useGetAllPayoutsQuery,
 } = usersApiSlice;

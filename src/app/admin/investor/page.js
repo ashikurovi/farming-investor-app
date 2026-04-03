@@ -11,6 +11,7 @@ import {
   ShieldBan,
   ShieldCheck,
   Users,
+  Banknote,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,10 +22,12 @@ import {
   useDeleteUserMutation,
   useBanUserMutation,
   useUnbanUserMutation,
+  usePayoutUserMutation,
 } from "@/features/admin/users/usersApiSlice";
 import { Pagination } from "@/components/ui/pagination";
 import { AdminSearchBar } from "@/app/admin/components/AdminSearchBar";
 import { AdminInvestorFormModal } from "@/app/admin/components/investor/AdminInvestorFormModal";
+import { AdminInvestorPayoutHistoryTable } from "@/app/admin/components/investor/AdminInvestorPayoutHistoryTable";
 import { DataTable } from "@/components/ui/data-table";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { toast } from "sonner";
@@ -40,6 +43,7 @@ export default function AdminInvestorPage() {
   const user = useSelector((state) => state.auth?.user);
   const isReadOnly = user?.role === "partner";
 
+  const [activeTab, setActiveTab] = useState("investors");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [search, setSearch] = useState("");
@@ -77,6 +81,7 @@ export default function AdminInvestorPage() {
   const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
   const [banUser] = useBanUserMutation();
   const [unbanUser] = useUnbanUserMutation();
+  const [payoutUser, { isLoading: isPayingOut }] = usePayoutUserMutation();
 
   const { data: investorTypesData, isLoading: isInvestorTypesLoading } =
     useGetInvestorTypesQuery(
@@ -269,6 +274,38 @@ export default function AdminInvestorPage() {
     [openConfirm, unbanUser, banUser, closeConfirm],
   );
 
+  const confirmPayout = useCallback(
+    (user) => {
+      openConfirm({
+        title: "Process Payout",
+        description: `Are you sure you want to process payout for ${user.name || user.email}? This will reset their total investment, total cost, and total profit to 0. An invoice will be generated.`,
+        confirmLabel: "Process Payout",
+        variant: "warning",
+        onConfirm: async () => {
+          try {
+            const result = await payoutUser(user.id).unwrap();
+            toast.success("Payout processed successfully", { description: `Reference: ${result.reference}` });
+            // Redirect to invoice page or trigger invoice print
+            // We can pass the payout data via routing or print directly
+            // Let's go to a dedicated invoice route for this reference
+            router.push(`/admin/investor/${user.id}/payout/${result.id}`);
+          } catch (error) {
+            const message =
+              error?.data?.message ||
+              (Array.isArray(error?.data?.message)
+                ? error.data.message[0]
+                : null) ||
+              "Failed to process payout.";
+            toast.error("Payout failed", { description: message });
+          } finally {
+            closeConfirm();
+          }
+        },
+      });
+    },
+    [openConfirm, payoutUser, closeConfirm, router],
+  );
+
   const handleSearchChange = (value) => {
     setSearchInput(value);
     setSearch(value.trim());
@@ -280,10 +317,35 @@ export default function AdminInvestorPage() {
   };
 
   const isBusy =
-    isLoading || isFetching || isCreating || isUpdating || isDeleting;
+    isLoading || isFetching || isCreating || isUpdating || isDeleting || isPayingOut;
 
   return (
     <div className="space-y-8 p-2">
+      <div className="mb-6 grid w-full max-w-md grid-cols-2 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800">
+        <button 
+          onClick={() => setActiveTab("investors")}
+          className={`rounded-lg py-1.5 text-sm font-semibold transition-all ${
+            activeTab === "investors" 
+              ? "bg-white text-emerald-700 shadow-sm dark:bg-zinc-900" 
+              : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400"
+          }`}
+        >
+          Investors List
+        </button>
+        <button 
+          onClick={() => setActiveTab("payouts")}
+          className={`rounded-lg py-1.5 text-sm font-semibold transition-all ${
+            activeTab === "payouts" 
+              ? "bg-white text-emerald-700 shadow-sm dark:bg-zinc-900" 
+              : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400"
+          }`}
+        >
+          Payout History
+        </button>
+      </div>
+
+      {activeTab === "investors" && (
+        <div className="space-y-8 mt-0 border-none outline-none">
       {/* Header Section */}
       <header className="flex flex-col gap-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex items-center gap-4">
@@ -506,6 +568,20 @@ export default function AdminInvestorPage() {
                 </Button>
                 {!isReadOnly && (
                   <>
+                    {(Number(user.totalProfit) > 0 || Number(user.balance) > 0 || Number(user.totalInvestment) > 0) && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          confirmPayout(user);
+                        }}
+                        className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-emerald-600"
+                        title="Process Payout"
+                      >
+                        <Banknote className="h-4 w-4" />
+                      </Button>
+                    )}
                     <Button
                       variant="ghost"
                       size="icon"
@@ -601,6 +677,13 @@ export default function AdminInvestorPage() {
         onConfirm={confirmState.onConfirm}
         onCancel={closeConfirm}
       />
+        </div>
+      )}
+      {activeTab === "payouts" && (
+        <div className="mt-0 border-none outline-none">
+          <AdminInvestorPayoutHistoryTable />
+        </div>
+      )}
     </div>
   );
 }
