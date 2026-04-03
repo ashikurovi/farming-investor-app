@@ -13,6 +13,7 @@ import {
   MapPin,
   Send,
 } from "lucide-react";
+import Image from "next/image";
 
 const YearText = dynamic(() => import("./YearText"), { ssr: false });
 
@@ -71,29 +72,60 @@ export function MainFooter() {
       {/* ── Main Grid ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 mb-14">
-
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-4 space-y-6">
-            <div className="flex items-center gap-3">
-              <div
-                className="h-11 w-11 rounded-2xl flex items-center justify-center"
-                style={{
-                  background: "rgba(255,255,255,0.2)",
-                  border: "1px solid rgba(255,255,255,0.35)",
-                }}
-              >
-                <Sprout className="h-6 w-6 text-white" strokeWidth={2.5} />
+            {/* Brand Section with Logo */}
+            <div className="sm:col-span-2 lg:col-span-4 space-y-6">
+              <div className="flex flex-col items-start gap-4">
+                {/* Logo */}
+                <Link href="/" className="flex items-center gap-3 group">
+                  <div className="w-50 h-70  transition-transform group-hover:scale-105">
+                    <Image
+                      src="/loogo9.png"
+                      alt="ARTMAN"
+                      width={128}
+                      height={128}
+                      className=""
+                      priority
+                    />
+                  </div>
+                </Link>
+
+                {/* Subtitle - Only this text below the logo */}
+                <div>
+                  <p
+                    className="text-[10px] uppercase tracking-[0.18em]"
+                    style={{ color: "rgba(255,255,255,0.5)" }}
+                  >
+                    Agricultural Investment Platform
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-2xl font-black tracking-tight leading-none">
-                  ARTMAN
-                </p>
-                <p
-                  className="text-[10px] uppercase tracking-[0.18em] mt-0.5"
-                  style={{ color: "rgba(255,255,255,0.5)" }}
-                >
-                  Agricultural Investment Platform
-                </p>
+
+              <p
+                className="text-sm leading-relaxed"
+                style={{ color: "rgba(255,255,255,0.78)", maxWidth: "300px" }}
+              >
+                Democratizing agricultural investment — connecting capital with
+                sustainable farming projects for a greener, wealthier future.
+              </p>
+
+              {/* Socials */}
+              <div className="flex items-center gap-2 flex-wrap">
+                {socialLinks.map(({ icon: Icon, href, label }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    aria-label={label}
+                    className="h-9 w-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
+                    style={{
+                      background: "rgba(255,255,255,0.12)",
+                      border: "1px solid rgba(255,255,255,0.22)",
+                    }}
+                  >
+                    <Icon className="w-4 h-4 text-white" />
+                  </a>
+                ))}
               </div>
             </div>
 
@@ -104,8 +136,6 @@ export function MainFooter() {
               Democratizing agricultural investment — connecting capital with
               sustainable farming projects for a greener, wealthier future.
             </p>
-
-
 
             {/* Socials */}
             <div className="flex items-center gap-2 flex-wrap">
@@ -120,10 +150,12 @@ export function MainFooter() {
                     border: "1px solid rgba(255,255,255,0.22)",
                   }}
                   onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "rgba(255,255,255,0.28)")
+                    (e.currentTarget.style.background =
+                      "rgba(255,255,255,0.28)")
                   }
                   onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "rgba(255,255,255,0.12)")
+                    (e.currentTarget.style.background =
+                      "rgba(255,255,255,0.12)")
                   }
                 >
                   <Icon className="w-4 h-4 text-white" />

@@ -35,15 +35,17 @@ function NavLink({ href, label }) {
   return (
     <Link
       href={href}
-      className={`relative group flex items-center gap-1.5 text-sm font-semibold tracking-wider py-1.5 px-5 transition-all duration-300 rounded-xl ${isActive
+      className={`relative group flex items-center gap-1.5 text-sm font-semibold tracking-wider py-1.5 px-5 transition-all duration-300 rounded-xl ${
+        isActive
           ? "text-white bg-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]"
           : "text-white/80 hover:text-white hover:bg-white/5"
-        }`}
+      }`}
     >
       {label}
       <span
-        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-[#7cc22e] to-[#4d8c1e] transition-all duration-300 ${isActive ? "w-6" : "w-0 group-hover:w-6"
-          }`}
+        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-[#7cc22e] to-[#4d8c1e] transition-all duration-300 ${
+          isActive ? "w-6" : "w-0 group-hover:w-6"
+        }`}
       />
     </Link>
   );
@@ -99,7 +101,11 @@ function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
             >
               <LayoutDashboard className="h-4 w-4 text-[#7cc22e]" />
               <span className="text-sm font-medium">
-                {role === "admin" ? "Admin Dashboard" : role === "partner" ? "Partner Dashboard" : "Investor Dashboard"}
+                {role === "admin"
+                  ? "Admin Dashboard"
+                  : role === "partner"
+                    ? "Partner Dashboard"
+                    : "Investor Dashboard"}
               </span>
               <ExternalLink className="h-3.5 w-3.5 ml-auto opacity-60" />
             </Link>
@@ -139,7 +145,11 @@ export function MainNavbar() {
   const isAuthenticated = Boolean(token);
   const role = user?.role;
   const dashboardHref =
-    (role === "admin" || role === "partner") ? "/admin" : role === "investor" ? "/investor" : "/";
+    role === "admin" || role === "partner"
+      ? "/admin"
+      : role === "investor"
+        ? "/investor"
+        : "/";
   const isLoginRoute = pathname.startsWith("/login");
 
   const handleLogout = async () => {
@@ -171,19 +181,16 @@ export function MainNavbar() {
           <div className="mx-auto max-w-7xl px-8 h-20 flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg transition-transform group-hover:scale-105">
+              <div className="w-50 h-70  transition-transform group-hover:scale-105">
                 <Image
-                  src="/favicon.ico"
+                  src="/loogo9.png"
                   alt="ARTMAN"
-                  width={38}
-                  height={38}
-                  className="object-contain brightness-0 invert"
+                  width={128}
+                  height={128}
+                  className=""
                   priority
                 />
               </div>
-              <span className="text-2xl font-bold tracking-tighter text-white drop-shadow-md">
-                ARTMAN
-              </span>
             </Link>
 
             {/* Navigation Links */}
@@ -241,16 +248,18 @@ export function MainNavbar() {
                 className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
               >
                 <div
-                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${isActive
+                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
+                    isActive
                       ? "bg-[#7cc22e]/10 ring-2 ring-[#7cc22e] ring-offset-1"
                       : ""
-                    }`}
+                  }`}
                 >
                   <Home
-                    className={`h-5 w-5 transition-colors ${isActive
+                    className={`h-5 w-5 transition-colors ${
+                      isActive
                         ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
-                      }`}
+                    }`}
                   />
                 </div>
                 <span className="sr-only">Home</span>
@@ -268,15 +277,17 @@ export function MainNavbar() {
               >
                 <div className="w-10 h-10 flex items-center justify-center">
                   <FolderGit2
-                    className={`h-5 w-5 transition-colors ${isActive
+                    className={`h-5 w-5 transition-colors ${
+                      isActive
                         ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
-                      }`}
+                    }`}
                   />
                 </div>
                 <span
-                  className={`text-[10px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                    }`}
+                  className={`text-[10px] font-semibold leading-none ${
+                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
+                  }`}
                 >
                   Project
                 </span>
@@ -293,16 +304,18 @@ export function MainNavbar() {
                 className="flex flex-col items-center gap-0.5 pb-1 -mt-3 min-w-[56px] group"
               >
                 <div
-                  className={`w-12 h-12 flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${isActive
+                  className={`w-12 h-12 flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${
+                    isActive
                       ? "bg-gradient-to-br from-[#4d8c1e] to-[#7cc22e]"
                       : "bg-gradient-to-br from-[#7cc22e] to-[#4d8c1e] group-hover:from-[#4d8c1e] group-hover:to-[#7cc22e]"
-                    }`}
+                  }`}
                 >
                   <User className="h-5 w-5 text-white" />
                 </div>
                 <span
-                  className={`text-[10px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                    }`}
+                  className={`text-[10px] font-semibold leading-none ${
+                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
+                  }`}
                 >
                   Contact
                 </span>
@@ -320,15 +333,17 @@ export function MainNavbar() {
               >
                 <div className="w-10 h-10 flex items-center justify-center">
                   <Images
-                    className={`h-5 w-5 transition-colors ${isActive
+                    className={`h-5 w-5 transition-colors ${
+                      isActive
                         ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
-                      }`}
+                    }`}
                   />
                 </div>
                 <span
-                  className={`text-[10px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                    }`}
+                  className={`text-[10px] font-semibold leading-none ${
+                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
+                  }`}
                 >
                   Gallery
                 </span>
@@ -343,15 +358,17 @@ export function MainNavbar() {
           >
             <div className="w-10 h-10 flex items-center justify-center">
               <Menu
-                className={`h-5 w-5 transition-colors ${mobileOpen
+                className={`h-5 w-5 transition-colors ${
+                  mobileOpen
                     ? "text-[#4d8c1e]"
                     : "text-zinc-400 group-hover:text-zinc-600"
-                  }`}
+                }`}
               />
             </div>
             <span
-              className={`text-[10px] font-semibold leading-none ${mobileOpen ? "text-[#4d8c1e]" : "text-zinc-400"
-                }`}
+              className={`text-[10px] font-semibold leading-none ${
+                mobileOpen ? "text-[#4d8c1e]" : "text-zinc-400"
+              }`}
             >
               More
             </span>
@@ -390,7 +407,12 @@ export function MainNavbar() {
                   >
                     <LayoutDashboard className="h-4 w-4 text-zinc-400" />
                     <span className="text-xs font-bold uppercase tracking-[0.15em]">
-                      {role === "admin" ? "Admin" : role === "partner" ? "Partner" : "Investor"} Dashboard
+                      {role === "admin"
+                        ? "Admin"
+                        : role === "partner"
+                          ? "Partner"
+                          : "Investor"}{" "}
+                      Dashboard
                     </span>
                   </Link>
                   <button

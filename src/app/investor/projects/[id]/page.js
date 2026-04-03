@@ -30,7 +30,7 @@ const fmt = (n) =>
 
 /* ─── SKELETON ────────────────────────────────── */
 const Skeleton = ({ className = "" }) => (
-  <div className={`animate-pulse rounded-xl bg-zinc-100 ${className}`} />
+  <div className={`animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800 ${className}`} />
 );
 
 /* ─── STAT CARD ───────────────────────────────── */
@@ -44,15 +44,15 @@ const StatCard = ({
   valueColor,
 }) => (
   <div
-    className={`relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm ring-1 ring-black/[0.03]`}
+    className={`relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm ring-1 ring-black/[0.03] dark:border-zinc-800 dark:bg-zinc-900 dark:ring-white/10`}
   >
     <div className={`absolute inset-x-0 top-0 h-[3px] ${gradient}`} />
     <div className="flex items-start justify-between gap-2">
-      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-400">
+      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
         {label}
       </p>
       <span
-        className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${iconBg} ring-1 ring-black/5`}
+        className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${iconBg} ring-1 ring-black/5 dark:ring-white/10`}
       >
         <Icon className={`h-4 w-4 ${iconColor}`} />
       </span>
@@ -62,14 +62,14 @@ const StatCard = ({
     >
       ৳{fmt(value)}
     </p>
-    <p className="mt-0.5 text-[10px] text-zinc-400">BDT</p>
+    <p className="mt-0.5 text-[10px] text-zinc-400 dark:text-zinc-500">BDT</p>
   </div>
 );
 
 /* ─── SKELETON STAT CARD ──────────────────────── */
 const SkeletonStatCard = () => (
-  <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
-    <div className="h-[3px] w-full animate-pulse rounded bg-zinc-100" />
+  <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="h-[3px] w-full animate-pulse rounded bg-zinc-100 dark:bg-zinc-800" />
     <div className="mt-4 space-y-2">
       <Skeleton className="h-3 w-20" />
       <Skeleton className="h-6 w-28" />
@@ -79,10 +79,10 @@ const SkeletonStatCard = () => (
 
 /* ─── SKELETON ROW ────────────────────────────── */
 const SkeletonRow = () => (
-  <tr className="border-b border-zinc-100">
+  <tr className="border-b border-zinc-100 dark:border-zinc-800">
     {[...Array(6)].map((_, i) => (
       <td key={i} className="px-4 py-3.5">
-        <div className="h-4 animate-pulse rounded-md bg-zinc-100" />
+        <div className="h-4 animate-pulse rounded-md bg-zinc-100 dark:bg-zinc-800" />
       </td>
     ))}
   </tr>
@@ -90,12 +90,12 @@ const SkeletonRow = () => (
 
 /* ─── DAILY REPORT TABLE ──────────────────────── */
 const DailyReportTable = ({ reports, isLoading }) => (
-  <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+  <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
     {/* Table header bar */}
-    <div className="flex items-center justify-between border-b border-zinc-100 px-5 py-4">
+    <div className="flex items-center justify-between border-b border-zinc-100 px-5 py-4 dark:border-zinc-800">
       <div>
-        <h2 className="text-sm font-bold text-zinc-900">Daily Reports</h2>
-        <p className="text-xs text-zinc-400">
+        <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">Daily Reports</h2>
+        <p className="text-xs text-zinc-400 dark:text-zinc-500">
           {reports.length} report{reports.length !== 1 ? "s" : ""} recorded
         </p>
       </div>
@@ -107,7 +107,7 @@ const DailyReportTable = ({ reports, isLoading }) => (
 
     {/* Responsive scroll wrapper */}
     <div className="w-full overflow-x-auto">
-      <table className="min-w-full table-fixed divide-y divide-zinc-100 text-sm">
+      <table className="min-w-full table-fixed divide-y divide-zinc-100 text-sm dark:divide-zinc-800">
         <colgroup>
           <col className="w-10" />
           <col className="w-32 min-w-[110px]" />
@@ -119,7 +119,7 @@ const DailyReportTable = ({ reports, isLoading }) => (
         </colgroup>
 
         <thead>
-          <tr className="bg-zinc-50/80">
+          <tr className="bg-zinc-50/80 dark:bg-zinc-800/50">
             {[
               "#",
               "Date",
@@ -132,7 +132,7 @@ const DailyReportTable = ({ reports, isLoading }) => (
               <th
                 key={h}
                 scope="col"
-                className="px-4 py-3 text-left text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400 first:pl-5"
+                className="px-4 py-3 text-left text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400 first:pl-5 dark:text-zinc-500"
               >
                 {h}
               </th>
@@ -140,21 +140,21 @@ const DailyReportTable = ({ reports, isLoading }) => (
           </tr>
         </thead>
 
-        <tbody className="divide-y divide-zinc-100 bg-white">
+        <tbody className="divide-y divide-zinc-100 bg-white dark:divide-zinc-800 dark:bg-zinc-900">
           {isLoading ? (
             [...Array(4)].map((_, i) => <SkeletonRow key={i} />)
           ) : reports.length === 0 ? (
             <tr>
               <td colSpan={7} className="py-16 text-center">
                 <div className="flex flex-col items-center gap-3">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-50 ring-1 ring-zinc-200">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-50 ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-700">
                     <FileText className="h-6 w-6 text-zinc-300" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-zinc-500">
+                    <p className="text-sm font-semibold text-zinc-500 dark:text-zinc-200">
                       No daily reports
                     </p>
-                    <p className="text-xs text-zinc-400">
+                    <p className="text-xs text-zinc-400 dark:text-zinc-500">
                       Reports will appear here once added.
                     </p>
                   </div>
@@ -174,7 +174,7 @@ const DailyReportTable = ({ reports, isLoading }) => (
 
                 {/* Date */}
                 <td className="px-4 py-3.5">
-                  <span className="inline-flex items-center gap-1.5 text-xs text-zinc-700">
+                  <span className="inline-flex items-center gap-1.5 text-xs text-zinc-700 dark:text-zinc-200">
                     <CalendarDays className="h-3 w-3 shrink-0 text-zinc-400" />
                     {r.date || "—"}
                   </span>
@@ -182,7 +182,7 @@ const DailyReportTable = ({ reports, isLoading }) => (
 
                 {/* Time */}
                 <td className="px-4 py-3.5">
-                  <span className="inline-flex items-center gap-1.5 text-xs text-zinc-700">
+                  <span className="inline-flex items-center gap-1.5 text-xs text-zinc-700 dark:text-zinc-200">
                     <Clock3 className="h-3 w-3 shrink-0 text-zinc-400" />
                     {r.time || "—"}
                   </span>
@@ -190,7 +190,7 @@ const DailyReportTable = ({ reports, isLoading }) => (
 
                 {/* Cost */}
                 <td className="px-4 py-3.5">
-                  <span className="font-semibold tabular-nums text-zinc-800">
+                  <span className="font-semibold tabular-nums text-zinc-800 dark:text-zinc-100">
                     ৳{fmt(r.dailyCost)}
                   </span>
                 </td>
@@ -204,7 +204,7 @@ const DailyReportTable = ({ reports, isLoading }) => (
 
                 {/* Reason */}
                 <td className="px-4 py-3.5">
-                  <span className="line-clamp-2 text-xs leading-relaxed text-zinc-500">
+                  <span className="line-clamp-2 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
                     {r.reason || "—"}
                   </span>
                 </td>
@@ -293,20 +293,20 @@ export default function ProjectDetailPage() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-background text-foreground">
       {/* ══════════════════════════════════════════
           PREMIUM HEADER CARD
       ══════════════════════════════════════════ */}
-      <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         {/* Gradient accent bar */}
         <div className="h-1 w-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
 
         <div className="flex flex-col gap-5 p-6 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
           <div className="flex min-w-0 items-start gap-4">
             {/* Project image thumbnail */}
-            <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-zinc-100 ring-1 ring-zinc-200 sm:h-24 sm:w-24">
+            <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-zinc-100 ring-1 ring-zinc-200 sm:h-24 sm:w-24 dark:bg-zinc-800 dark:ring-zinc-700">
               {busy ? (
-                <div className="h-full w-full animate-pulse bg-zinc-100" />
+                <div className="h-full w-full animate-pulse bg-zinc-100 dark:bg-zinc-800" />
               ) : imgUrl ? (
                 <Image
                   src={imgUrl}
@@ -325,7 +325,7 @@ export default function ProjectDetailPage() {
             {/* Title + meta */}
             <div className="flex min-w-0 flex-1 flex-col gap-2">
               {/* Breadcrumb */}
-              <nav className="flex items-center gap-1.5 text-[11px] text-zinc-400">
+              <nav className="flex items-center gap-1.5 text-[11px] text-zinc-400 dark:text-zinc-500">
                 <Link
                   href="/investor/projects"
                   className="transition-colors hover:text-primary"
@@ -333,7 +333,7 @@ export default function ProjectDetailPage() {
                   Projects
                 </Link>
                 <ChevronRight className="h-3 w-3" />
-                <span className="truncate font-medium text-zinc-600">
+                <span className="truncate font-medium text-zinc-600 dark:text-zinc-300">
                   {busy ? "Loading…" : (project?.name ?? "Project details")}
                 </span>
               </nav>
@@ -345,7 +345,7 @@ export default function ProjectDetailPage() {
                 </div>
               ) : (
                 <>
-                  <h1 className="text-xl font-bold tracking-tight text-zinc-900">
+                  <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
                     {project?.name ?? "Project details"}
                   </h1>
                   {project?.location && (
@@ -355,7 +355,7 @@ export default function ProjectDetailPage() {
                     </p>
                   )}
                   {project?.description && (
-                    <p className="line-clamp-2 text-xs leading-relaxed text-zinc-500">
+                    <p className="line-clamp-2 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
                       {project.description}
                     </p>
                   )}
@@ -368,7 +368,7 @@ export default function ProjectDetailPage() {
           <div className="shrink-0">
             <Link
               href="/investor/projects"
-              className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-xs font-semibold text-zinc-600 shadow-sm transition-colors hover:border-[color:rgba(77,140,30,0.24)] hover:bg-secondary hover:text-primary"
+              className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-xs font-semibold text-zinc-600 shadow-sm transition-colors hover:border-[color:rgba(77,140,30,0.24)] hover:bg-secondary hover:text-primary dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               Back

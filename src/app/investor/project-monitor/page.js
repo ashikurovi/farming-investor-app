@@ -44,7 +44,7 @@ const ProjectMonitorCard = ({ project, videoUrl }) => {
   };
 
   return (
-    <div className="group relative overflow-hidden rounded-3xl border border-zinc-200/80 bg-white/90 shadow-[0_18px_55px_-48px_rgba(0,0,0,0.45)] ring-1 ring-black/5 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_90px_-70px_rgba(0,0,0,0.55)] hover:ring-[color:rgba(77,140,30,0.22)]">
+    <div className="group relative overflow-hidden rounded-3xl border border-zinc-200/80 bg-white/90 shadow-[0_18px_55px_-48px_rgba(0,0,0,0.45)] ring-1 ring-black/5 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_90px_-70px_rgba(0,0,0,0.55)] hover:ring-[color:rgba(77,140,30,0.22)] dark:border-zinc-800 dark:bg-zinc-900/80 dark:ring-white/10 dark:hover:ring-zinc-700">
       {/* Status Bar */}
       <div className="absolute inset-x-0 top-0 h-1.5 bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
 
@@ -137,11 +137,11 @@ const ProjectMonitorCard = ({ project, videoUrl }) => {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <Sprout className="h-4 w-4 text-primary" />
-              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
+              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest dark:text-zinc-500">
                 Project Unit
               </span>
             </div>
-            <h4 className="text-base font-bold text-zinc-900 truncate">
+            <h4 className="text-base font-bold text-zinc-900 truncate dark:text-zinc-100">
               {project.name}
             </h4>
           </div>
@@ -150,16 +150,16 @@ const ProjectMonitorCard = ({ project, videoUrl }) => {
           </div>
         </div>
 
-        <div className="mt-5 grid grid-cols-2 gap-3 border-t border-zinc-100/80 pt-4">
+        <div className="mt-5 grid grid-cols-2 gap-3 border-t border-zinc-100/80 pt-4 dark:border-zinc-800">
           <div className="flex items-center gap-2">
-            <Activity className="h-3.5 w-3.5 text-zinc-400" />
-            <span className="text-[11px] font-medium text-zinc-500">
+            <Activity className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
               Real-time Feed
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <ShieldCheck className="h-3.5 w-3.5 text-zinc-400" />
-            <span className="text-[11px] font-medium text-zinc-500">
+            <ShieldCheck className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
               Encrypted
             </span>
           </div>
@@ -173,14 +173,14 @@ const ProjectMonitorCard = ({ project, videoUrl }) => {
    SKELETON LOADER
    ══════════════════════════════════════════════════ */
 const ProjectSkeleton = () => (
-  <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-    <div className="aspect-video animate-pulse bg-zinc-100" />
+  <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="aspect-video animate-pulse bg-zinc-100 dark:bg-zinc-800" />
     <div className="p-5 space-y-3">
-      <div className="h-3 w-20 animate-pulse rounded bg-zinc-100" />
-      <div className="h-5 w-3/4 animate-pulse rounded bg-zinc-100" />
-      <div className="grid grid-cols-2 gap-3 pt-4 border-t border-zinc-100">
-        <div className="h-3 animate-pulse rounded bg-zinc-100" />
-        <div className="h-3 animate-pulse rounded bg-zinc-100" />
+      <div className="h-3 w-20 animate-pulse rounded bg-zinc-100 dark:bg-zinc-800" />
+      <div className="h-5 w-3/4 animate-pulse rounded bg-zinc-100 dark:bg-zinc-800" />
+      <div className="grid grid-cols-2 gap-3 pt-4 border-t border-zinc-100 dark:border-zinc-800">
+        <div className="h-3 animate-pulse rounded bg-zinc-100 dark:bg-zinc-800" />
+        <div className="h-3 animate-pulse rounded bg-zinc-100 dark:bg-zinc-800" />
       </div>
     </div>
   </div>
@@ -207,7 +207,7 @@ export default function ProjectMonitorPage() {
   ];
 
   return (
-    <div className="relative  space-y-5 px-3  sm:px-2 lg:px-4">
+    <div className="relative space-y-5 bg-background text-foreground px-3 sm:px-2 lg:px-4 dark:bg-zinc-950 dark:text-zinc-100">
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute -right-28 -top-28 h-80 w-80 rounded-full bg-[color:rgba(77,140,30,0.20)] blur-3xl" />
         <div className="absolute -bottom-28 -left-28 h-80 w-80 rounded-full bg-[color:rgba(124,194,46,0.16)] blur-3xl" />
@@ -222,10 +222,10 @@ export default function ProjectMonitorPage() {
               <Video className="h-4 w-4" />
             </span>
             <span className="flex flex-col">
-              <span className="text-base font-semibold leading-5 text-zinc-900">
+              <span className="text-base font-semibold leading-5 text-zinc-900 dark:text-zinc-100">
                 Coming Soon
               </span>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400">
                 Project Monitor
               </span>
             </span>
@@ -239,7 +239,7 @@ export default function ProjectMonitorPage() {
               type="button"
               variant="outline"
               onClick={() => router.push("/investor")}
-              className="h-10 w-full rounded-xl border-zinc-200 bg-white text-xs font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
+              className="h-10 w-full rounded-xl border-zinc-200 bg-white text-xs font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
             >
               Back to Dashboard
             </Button>
@@ -254,18 +254,18 @@ export default function ProjectMonitorPage() {
         }
       >
         <div className="space-y-5">
-          <div className="overflow-hidden rounded-2xl border border-[color:rgba(77,140,30,0.18)] bg-gradient-to-br from-secondary via-white to-secondary">
+          <div className="overflow-hidden rounded-2xl border border-[color:rgba(77,140,30,0.18)] bg-gradient-to-br from-secondary via-white to-secondary dark:border-zinc-800 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900">
             <div className="h-1.5 w-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
             <div className="p-4 sm:p-5">
               <div className="flex items-start gap-3">
-                <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-primary shadow-sm ring-1 ring-[color:rgba(77,140,30,0.14)]">
+                <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-primary shadow-sm ring-1 ring-[color:rgba(77,140,30,0.14)] dark:bg-zinc-900 dark:ring-white/10">
                   <LayoutDashboard className="h-4 w-4" />
                 </span>
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-zinc-900">
+                  <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                     This feature is in progress
                   </p>
-                  <p className="mt-1 text-[13px] leading-relaxed text-zinc-600">
+                  <p className="mt-1 text-[13px] leading-relaxed text-zinc-600 dark:text-zinc-300">
                     We’re building secure, real-time monitoring for your
                     investment units. Until launch, this page shows demo streams
                     for preview.
@@ -305,16 +305,16 @@ export default function ProjectMonitorPage() {
             ].map(({ title, description, Icon }) => (
               <div
                 key={title}
-                className="flex items-start gap-3 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm"
+                className="flex items-start gap-3 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
               >
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-secondary text-primary ring-1 ring-[color:rgba(77,140,30,0.14)]">
                   <Icon className="h-4 w-4" />
                 </span>
                 <div className="min-w-0">
-                  <div className="text-sm font-semibold text-zinc-900">
+                  <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                     {title}
                   </div>
-                  <div className="mt-1 text-[12px] leading-relaxed text-zinc-500">
+                  <div className="mt-1 text-[12px] leading-relaxed text-zinc-500 dark:text-zinc-400">
                     {description}
                   </div>
                 </div>
@@ -322,7 +322,7 @@ export default function ProjectMonitorPage() {
             ))}
           </div>
 
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
             Want early access? Contact support and we’ll notify you when it’s
             live.
           </p>
@@ -332,7 +332,7 @@ export default function ProjectMonitorPage() {
       <NoticeMarquee />
 
       {/* Header Container */}
-      <div className="overflow-hidden rounded-3xl border border-zinc-200/80 bg-white/80 shadow-[0_22px_70px_-55px_rgba(0,0,0,0.45)] ring-1 ring-black/5 backdrop-blur">
+      <div className="overflow-hidden rounded-3xl border border-zinc-200/80 bg-white/80 shadow-[0_22px_70px_-55px_rgba(0,0,0,0.45)] ring-1 ring-black/5 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70 dark:ring-white/10">
         <div className="h-1.5 w-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
         <div className="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div className="flex items-center gap-3">
@@ -340,10 +340,10 @@ export default function ProjectMonitorPage() {
               <Activity className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <h1 className="text-lg font-bold tracking-tight text-zinc-900">
+              <h1 className="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
                 Project Monitor
               </h1>
-              <p className="mt-0.5 text-[12px] leading-relaxed text-zinc-500">
+              <p className="mt-0.5 text-[12px] leading-relaxed text-zinc-500 dark:text-zinc-400">
                 Live CCTV surveillance of your investment projects.
               </p>
             </div>
@@ -357,8 +357,8 @@ export default function ProjectMonitorPage() {
               </span>
               Live System
             </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-zinc-50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-700 ring-1 ring-zinc-200">
-              <Clock className="h-3.5 w-3.5 text-zinc-500" />
+            <div className="inline-flex items-center gap-2 rounded-full bg-zinc-50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-700 ring-1 ring-zinc-200 dark:bg-zinc-800/50 dark:text-zinc-200 dark:ring-zinc-700">
+              <Clock className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
               Real-time Access
             </div>
           </div>
@@ -370,11 +370,11 @@ export default function ProjectMonitorPage() {
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="h-3.5 w-[3px] rounded-full bg-primary" />
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-300">
               Active Cameras
             </h2>
           </div>
-          <span className="text-[11px] font-medium text-zinc-400">
+          <span className="text-[11px] font-medium text-zinc-400 dark:text-zinc-500">
             {isLoading ? "Fetching..." : `${projects.length} Units Available`}
           </span>
         </div>
@@ -391,16 +391,16 @@ export default function ProjectMonitorPage() {
         )}
 
         {!isLoading && projects.length === 0 && (
-          <div className="mb-6 rounded-2xl border border-[color:rgba(77,140,30,0.18)] bg-secondary p-6">
+          <div className="mb-6 rounded-2xl border border-[color:rgba(77,140,30,0.18)] bg-secondary p-6 dark:border-zinc-800 dark:bg-zinc-900">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-[color:rgba(77,140,30,0.18)]">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-[color:rgba(77,140,30,0.18)] dark:bg-zinc-950 dark:ring-white/10">
                 <Video className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-zinc-900">
+                <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
                   Demo Mode Active
                 </h3>
-                <p className="text-xs text-zinc-500">
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
                   You don&apos;t have any active projects yet. Showing demo
                   streams for preview.
                 </p>

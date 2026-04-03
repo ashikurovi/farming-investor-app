@@ -155,10 +155,10 @@ export default function InvestorPayoutHistoryPage() {
     {
       key: "date",
       header: "Date",
-      tdClassName: "whitespace-nowrap px-6 py-4 text-sm text-zinc-500",
+      tdClassName: "whitespace-nowrap px-6 py-4 text-sm text-zinc-500 dark:text-zinc-400",
       cell: (p) => (
         <div className="flex items-center gap-2">
-          <Calendar className="h-4 w-4 text-zinc-400" />
+          <Calendar className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
           <span>{format(new Date(p.createdAt), "MMM dd, yyyy")}</span>
         </div>
       ),
@@ -198,7 +198,7 @@ export default function InvestorPayoutHistoryPage() {
       header: "Total Transferred",
       tdClassName: "whitespace-nowrap px-6 py-4 text-right",
       cell: (p) => (
-        <span className="text-base font-bold text-zinc-900 bg-secondary text-primary px-2.5 py-1 rounded-md">
+        <span className="text-base font-bold text-zinc-900 bg-secondary text-primary px-2.5 py-1 rounded-md dark:text-zinc-100">
           ৳{Number(p.amount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
         </span>
       ),
@@ -206,7 +206,7 @@ export default function InvestorPayoutHistoryPage() {
   ];
 
   return (
-    <div className="space-y-8 p-2">
+    <div className="space-y-8 bg-background text-foreground p-2">
       <header className="flex flex-col gap-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-primary ring-1 ring-[color:rgba(77,140,30,0.18)]">

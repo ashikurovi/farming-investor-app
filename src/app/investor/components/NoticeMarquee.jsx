@@ -17,7 +17,7 @@ export function NoticeMarquee() {
   }
 
   return (
-    <div className="relative mb-6 flex overflow-hidden rounded-2xl border border-[color:rgba(77,140,30,0.22)] bg-secondary p-1 shadow-[0_0_18px_rgba(77,140,30,0.06)] backdrop-blur-sm sm:mb-8">
+    <div className="relative mb-6 flex overflow-hidden rounded-2xl border border-[color:rgba(77,140,30,0.22)] bg-secondary p-1 shadow-[0_0_18px_rgba(77,140,30,0.06)] backdrop-blur-sm sm:mb-8 dark:border-zinc-800 dark:shadow-none">
       {/* Decorative gradient glow */}
       <div className="absolute inset-0 z-0 bg-gradient-to-r from-[color:rgba(124,194,46,0.14)] via-[color:rgba(77,140,30,0.08)] to-[color:rgba(124,194,46,0.14)] blur-xl"></div>
 
@@ -42,7 +42,7 @@ export function NoticeMarquee() {
                 className="mr-12 flex items-center gap-2 transition-opacity hover:opacity-70"
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
-                <span className="text-sm font-medium text-zinc-900">
+                <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                   {notice.title}
                 </span>
               </Link>
@@ -52,7 +52,7 @@ export function NoticeMarquee() {
                 className="mr-12 flex items-center gap-2"
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-primary opacity-60"></span>
-                <span className="text-sm font-medium text-zinc-800">
+                <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
                   {notice.title}
                 </span>
               </div>

@@ -28,13 +28,13 @@ import { NoticeMarquee } from "./components/NoticeMarquee";
 
 const BRAND = {
   bar: "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]",
-  iconBg: "bg-[color:rgba(124,194,46,0.14)]",
-  iconRing: "ring-[color:rgba(124,194,46,0.22)]",
-  iconColor: "text-[color:rgb(77,140,30)]",
-  valueColor: "text-[color:rgb(77,140,30)]",
-  badgeBg: "bg-[color:rgba(124,194,46,0.12)]",
-  badgeText: "text-[color:rgb(77,140,30)]",
-  badgeRing: "ring-[color:rgba(124,194,46,0.22)]",
+  iconBg: "bg-secondary",
+  iconRing: "ring-[color:rgba(77,140,30,0.18)] dark:ring-[color:rgba(124,194,46,0.22)]",
+  iconColor: "text-primary",
+  valueColor: "text-primary",
+  badgeBg: "bg-secondary",
+  badgeText: "text-primary",
+  badgeRing: "ring-[color:rgba(77,140,30,0.18)] dark:ring-[color:rgba(124,194,46,0.22)]",
 };
 
 const fmt = (n) =>
@@ -61,12 +61,12 @@ const KPIStatCard = ({
   })();
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm ring-1 ring-transparent transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:ring-zinc-300/60">
+    <div className="group relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm ring-1 ring-transparent transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:ring-zinc-300/60 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:ring-zinc-700">
       <div className={`absolute inset-x-0 top-0 h-[3px] ${t.bar}`} />
 
       <div className="p-4 pt-5 lg:p-5 lg:pt-6">
         <div className="flex items-start justify-between gap-2">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500">
             {label}
           </p>
           <span className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${t.iconBg} ring-1 ${t.iconRing}`}>
@@ -76,8 +76,8 @@ const KPIStatCard = ({
 
         {isBusy ? (
           <div className="mt-3 space-y-2">
-            <div className="h-8 w-28 animate-pulse rounded-lg bg-zinc-100" />
-            <div className="h-3 w-20 animate-pulse rounded bg-zinc-100" />
+            <div className="h-8 w-28 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+            <div className="h-3 w-20 animate-pulse rounded bg-zinc-100 dark:bg-zinc-800" />
           </div>
         ) : (
           <>
@@ -90,7 +90,7 @@ const KPIStatCard = ({
                   {secondary.percentage && <TrendingUp className="h-2.5 w-2.5" />}
                   {secondaryText}
                 </span>
-                <span className="text-[10px] text-zinc-400">{secondary.label}</span>
+                <span className="text-[10px] text-zinc-400 dark:text-zinc-500">{secondary.label}</span>
               </div>
             )}
           </>
@@ -113,9 +113,9 @@ const Avatar = ({ user, size = "sm" }) => {
 
   return src ? (
     <img src={src} alt={user?.name || "Investor"}
-      className={`${dim} rounded-full object-cover ring-2 ring-white shadow-sm`} />
+      className={`${dim} rounded-full object-cover ring-2 ring-white shadow-sm dark:ring-zinc-900`} />
   ) : (
-    <div className={`${dim} inline-flex shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] font-bold text-white ring-2 ring-white shadow-sm`}>
+    <div className={`${dim} inline-flex shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] font-bold text-white ring-2 ring-white shadow-sm dark:ring-zinc-900`}>
       {initials}
     </div>
   );
@@ -125,7 +125,7 @@ const Avatar = ({ user, size = "sm" }) => {
    TYPE BADGE
 ══════════════════════════════════════════════════ */
 const TypeBadge = ({ label }) => (
-  <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold bg-[color:rgba(124,194,46,0.12)] text-[color:rgb(77,140,30)] ring-1 ring-[color:rgba(124,194,46,0.22)]">
+  <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold bg-secondary text-primary ring-1 ring-[color:rgba(77,140,30,0.18)] dark:ring-[color:rgba(124,194,46,0.22)]">
     {label}
   </span>
 );
@@ -134,10 +134,10 @@ const TypeBadge = ({ label }) => (
    SKELETON ROW
 ══════════════════════════════════════════════════ */
 const SkeletonRow = () => (
-  <tr className="border-b border-zinc-100">
+  <tr className="border-b border-zinc-100 dark:border-zinc-800">
     {[...Array(6)].map((_, i) => (
       <td key={i} className="px-4 py-4">
-        <div className="h-4 animate-pulse rounded-lg bg-zinc-100" />
+        <div className="h-4 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
       </td>
     ))}
   </tr>
@@ -165,7 +165,7 @@ const InvestorDetailModal = ({ investor, onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center p-4 sm:items-center">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl ring-1 ring-black/5">
+      <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl ring-1 ring-black/5 dark:border-zinc-800 dark:bg-zinc-900 dark:ring-white/10">
         <div className={`h-1 w-full ${BRAND.bar}`} />
         <div className="p-6">
           {/* Header */}
@@ -176,32 +176,32 @@ const InvestorDetailModal = ({ investor, onClose }) => {
                 <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-primary ring-2 ring-white" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-zinc-900">{investor.name || "Investor"}</h3>
-                <p className="text-xs text-zinc-400">{investor.email || "—"}</p>
+                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">{investor.name || "Investor"}</h3>
+                <p className="text-xs text-zinc-400 dark:text-zinc-500">{investor.email || "—"}</p>
                 {investor.investorType?.type && (
                   <div className="mt-1.5"><TypeBadge label={investor.investorType.type} /></div>
                 )}
               </div>
             </div>
             <button onClick={onClose}
-              className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-zinc-200 text-zinc-400 transition-colors hover:bg-zinc-50 hover:text-zinc-600">
+              className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-zinc-200 text-zinc-400 transition-colors hover:bg-zinc-50 hover:text-zinc-600 dark:border-zinc-700 dark:hover:bg-zinc-800">
               <X className="h-4 w-4" />
             </button>
           </div>
 
           {/* Fields */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-100 bg-zinc-50/60">
+          <div className="overflow-hidden rounded-2xl border border-zinc-100 bg-zinc-50/60 dark:border-zinc-800 dark:bg-zinc-800/40">
             {fields.map(({ label, value }, i) => (
               <div key={label}
-                className={`flex items-center justify-between gap-4 px-4 py-3 ${i % 2 === 0 ? "bg-white shadow-sm" : ""}`}>
-                <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-400">{label}</span>
-                <span className="text-right text-sm font-medium text-zinc-800">{value || "—"}</span>
+                className={`flex items-center justify-between gap-4 px-4 py-3 ${i % 2 === 0 ? "bg-white shadow-sm dark:bg-zinc-900" : ""}`}>
+                <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-400 dark:text-zinc-500">{label}</span>
+                <span className="text-right text-sm font-medium text-zinc-800 dark:text-zinc-100">{value || "—"}</span>
               </div>
             ))}
           </div>
 
           <button onClick={onClose}
-            className="mt-5 w-full rounded-xl border border-zinc-200 bg-white py-2.5 text-sm font-semibold text-zinc-700 shadow-sm transition-colors hover:bg-zinc-50">
+            className="mt-5 w-full rounded-xl border border-zinc-200 bg-white py-2.5 text-sm font-semibold text-zinc-700 shadow-sm transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800">
             Close
           </button>
         </div>
@@ -219,14 +219,14 @@ const TablePagination = ({
   const from = total === 0 ? 0 : (page - 1) * pageSize + 1;
   const to = Math.min(page * pageSize, total);
   return (
-    <div className="flex flex-col gap-3 border-t border-zinc-100 bg-zinc-50/50 px-5 py-3 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-[11px] text-zinc-400">
-        Showing <span className="font-semibold text-zinc-700">{from}–{to}</span> of{" "}
-        <span className="font-semibold text-zinc-700">{total}</span> {entity}
+    <div className="flex flex-col gap-3 border-t border-zinc-100 bg-zinc-50/50 px-5 py-3 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-800/30">
+      <p className="text-[11px] text-zinc-400 dark:text-zinc-500">
+        Showing <span className="font-semibold text-zinc-700 dark:text-zinc-200">{from}–{to}</span> of{" "}
+        <span className="font-semibold text-zinc-700 dark:text-zinc-200">{total}</span> {entity}
       </p>
       <div className="flex items-center gap-1.5">
         <select value={pageSize} onChange={(e) => onPageSizeChange(Number(e.target.value))}
-          className="h-8 rounded-lg border border-zinc-200 bg-white px-2 text-xs font-medium text-zinc-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.20)]">
+          className="h-8 rounded-lg border border-zinc-200 bg-white px-2 text-xs font-medium text-zinc-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.20)] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200">
           {[5, 10, 20, 50].map((s) => <option key={s} value={s}>{s} / page</option>)}
         </select>
         {[
@@ -237,7 +237,7 @@ const TablePagination = ({
         ].map(({ Icon, label, target }) => (
           <button key={label} onClick={() => onPageChange(target)}
             disabled={label === "First" || label === "Prev" ? page <= 1 : page >= pageCount}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-[color:rgba(77,140,30,0.24)] hover:bg-secondary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-[color:rgba(77,140,30,0.24)] hover:bg-secondary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
             aria-label={label}>
             <Icon className="h-3.5 w-3.5" />
           </button>
@@ -358,15 +358,15 @@ export default function InvestorDashboardPage() {
       <NoticeMarquee />
 
       {/* ── DASHBOARD HEADER ── */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <div className={`h-[3px] w-full ${BRAND.bar}`} />
         <div className="flex items-center gap-3 px-5 py-4">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary ring-1 ring-[color:rgba(77,140,30,0.14)]">
             <LayoutDashboard className="h-[18px] w-[18px] text-primary" />
           </div>
           <div>
-            <h1 className="text-sm font-bold text-zinc-900">Investor Dashboard</h1>
-            <p className="text-xs text-zinc-400">Overview of investments, projects & registered investors.</p>
+            <h1 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">Investor Dashboard</h1>
+            <p className="text-xs text-zinc-400 dark:text-zinc-500">Overview of investments, projects & registered investors.</p>
           </div>
         </div>
       </div>
@@ -375,7 +375,7 @@ export default function InvestorDashboardPage() {
       <section>
         <div className="mb-3 flex items-center gap-2">
           <div className="h-3.5 w-[3px] rounded-full bg-primary" />
-          <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">Key Metrics</h2>
+          <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-300">Key Metrics</h2>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 lg:gap-4">
           {kpiCards.map((card) => <KPIStatCard key={card.label} {...card} />)}

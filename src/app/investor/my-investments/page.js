@@ -70,13 +70,13 @@ const StatCard = ({ label, value, Icon, color = "zinc", currency = false, onClic
   return (
     <div
       onClick={onClick}
-      className={`relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm ring-1 ring-black/[0.03] transition-all hover:-translate-y-0.5 hover:shadow-md sm:p-5 ${onClick ? "cursor-pointer active:scale-95" : ""}`}
+      className={`relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm ring-1 ring-black/[0.03] transition-all hover:-translate-y-0.5 hover:shadow-md sm:p-5 dark:border-zinc-800 dark:bg-zinc-900 dark:ring-white/10 ${onClick ? "cursor-pointer active:scale-95" : ""}`}
     >
       <div
         className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${c.bar}`}
       />
       <div className="flex items-start justify-between gap-2">
-        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-400 leading-tight">
+        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-400 leading-tight dark:text-zinc-500">
           {label}
         </p>
         <span
@@ -106,7 +106,7 @@ const Avatar = ({ user, size = "md" }) => {
     .toUpperCase();
   return cleanUrl(user?.photoUrl) ? (
     <div
-      className={`${dim} relative shrink-0 overflow-hidden rounded-2xl ring-2 ring-white shadow`}
+      className={`${dim} relative shrink-0 overflow-hidden rounded-2xl ring-2 ring-white shadow dark:ring-zinc-900`}
     >
       <Image
         src={cleanUrl(user.photoUrl)}
@@ -119,7 +119,7 @@ const Avatar = ({ user, size = "md" }) => {
     </div>
   ) : (
     <div
-      className={`${dim} inline-flex shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[color:var(--brand-from)] to-[color:var(--brand-to)] font-bold text-primary-foreground ring-2 ring-white shadow`}
+      className={`${dim} inline-flex shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[color:var(--brand-from)] to-[color:var(--brand-to)] font-bold text-primary-foreground ring-2 ring-white shadow dark:ring-zinc-900`}
     >
       {initials}
     </div>
@@ -128,11 +128,11 @@ const Avatar = ({ user, size = "md" }) => {
 
 /* ─── SKELETON ────────────────────────────────── */
 const Sk = ({ className = "" }) => (
-  <div className={`animate-pulse rounded-lg bg-zinc-100 ${className}`} />
+  <div className={`animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800 ${className}`} />
 );
 
 const SkeletonRow = () => (
-  <tr className="border-b border-zinc-100">
+  <tr className="border-b border-zinc-100 dark:border-zinc-800">
     {[...Array(9)].map((_, i) => (
       <td key={i} className="px-3 py-3.5 sm:px-4">
         <Sk className={`h-4 ${i === 0 ? "w-6" : "w-full"}`} />
@@ -162,20 +162,20 @@ const TablePagination = ({
   const from = total === 0 ? 0 : (page - 1) * pageSize + 1;
   const to = Math.min(page * pageSize, total);
   return (
-    <div className="flex flex-col gap-2.5 border-t border-zinc-100 bg-zinc-50/60 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
-      <p className="text-[11px] text-zinc-400">
+    <div className="flex flex-col gap-2.5 border-t border-zinc-100 bg-zinc-50/60 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5 dark:border-zinc-800 dark:bg-zinc-800/30">
+      <p className="text-[11px] text-zinc-400 dark:text-zinc-500">
         Showing{" "}
-        <span className="font-semibold text-zinc-700">
+        <span className="font-semibold text-zinc-700 dark:text-zinc-200">
           {from}–{to}
         </span>{" "}
-        of <span className="font-semibold text-zinc-700">{total}</span>{" "}
+        of <span className="font-semibold text-zinc-700 dark:text-zinc-200">{total}</span>{" "}
         investments
       </p>
       <div className="flex items-center gap-1.5">
         <select
           value={pageSize}
           onChange={(e) => onPageSizeChange(Number(e.target.value))}
-          className="h-8 rounded-lg border border-zinc-200 bg-white px-2 text-xs font-medium text-zinc-700 focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.20)]"
+          className="h-8 rounded-lg border border-zinc-200 bg-white px-2 text-xs font-medium text-zinc-700 focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.20)] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200"
         >
           {[5, 10, 20, 50].map((s) => (
             <option key={s} value={s}>
@@ -197,7 +197,7 @@ const TablePagination = ({
                 ? page <= 1
                 : page >= pageCount
             }
-            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-[color:rgba(77,140,30,0.24)] hover:bg-secondary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-[color:rgba(77,140,30,0.24)] hover:bg-secondary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
             aria-label={label}
           >
             <Icon className="h-3.5 w-3.5" />
@@ -264,19 +264,19 @@ export default function MyInvestmentsPage() {
   ).length;
 
   return (
-    <main className="min-h-screen space-y-4  p-3 sm:space-y-6 sm:p-6">
+    <main className="min-h-screen space-y-4 bg-background text-foreground p-3 sm:space-y-6 sm:p-6">
       {/* ── PAGE HEADER ── */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <div className="h-[3px] w-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
         <div className="flex items-center gap-3 px-4 py-3.5 sm:px-5 sm:py-4">
           <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-secondary ring-1 ring-[color:rgba(77,140,30,0.14)] sm:h-9 sm:w-9">
             <Wallet className="h-4 w-4 text-primary" />
           </div>
           <div>
-            <h1 className="text-sm font-bold tracking-tight text-zinc-900 sm:text-base">
+            <h1 className="text-sm font-bold tracking-tight text-zinc-900 sm:text-base dark:text-zinc-100">
               My Investments
             </h1>
-            <p className="text-[11px] text-zinc-400 sm:text-xs">
+            <p className="text-[11px] text-zinc-400 sm:text-xs dark:text-zinc-500">
               Your profile overview and investment history.
             </p>
           </div>
@@ -380,46 +380,46 @@ export default function MyInvestmentsPage() {
 
       {/* ── INVESTMENTS TABLE ── */}
       <section>
-        <div className="w-full overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
+        <div className="w-full overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
           <div className="h-[3px] w-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
 
           {/* Toolbar */}
-          <div className="flex flex-col gap-2.5 border-b border-zinc-100 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
+          <div className="flex flex-col gap-2.5 border-b border-zinc-100 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4 dark:border-zinc-800">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => { setShowActive(true); setFilterDeed("all"); setPage(1); }}
-                className={`text-sm font-bold transition-colors ${showActive && filterDeed === "all" ? "text-primary underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
+                className={`text-sm font-bold transition-colors ${showActive && filterDeed === "all" ? "text-primary underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"}`}
               >
                 Active Investments
               </button>
               <button
                 onClick={() => { setShowActive(false); setFilterDeed("all"); setPage(1); }}
-                className={`text-sm font-bold transition-colors ${!showActive && filterDeed === "all" ? "text-primary underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
+                className={`text-sm font-bold transition-colors ${!showActive && filterDeed === "all" ? "text-primary underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"}`}
               >
                 Previous Investments
               </button>
               {pendingDeedsCount > 0 && (
                 <button
                   onClick={() => { setFilterDeed("pending"); setPage(1); }}
-                  className={`text-sm font-bold transition-colors ${filterDeed === "pending" ? "text-primary underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
+                  className={`text-sm font-bold transition-colors ${filterDeed === "pending" ? "text-primary underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"}`}
                 >
                   Pending Deeds ({pendingDeedsCount})
                 </button>
               )}
             </div>
             <div className="flex flex-col items-end">
-              <p className="text-[11px] text-zinc-400">
+              <p className="text-[11px] text-zinc-400 dark:text-zinc-500">
                 {filteredByStatus.length} records in this view
               </p>
             </div>
           </div>
 
-          <div className="flex flex-col gap-2.5 border-b border-zinc-100 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
+          <div className="flex flex-col gap-2.5 border-b border-zinc-100 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4 dark:border-zinc-800">
             <div>
-              <h2 className="text-sm font-bold text-zinc-900">
+              <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
                 {showActive ? "Current Active Investments" : "Past/Inactive Investments"}
               </h2>
-              <p className="text-[11px] text-zinc-400">
+              <p className="text-[11px] text-zinc-400 dark:text-zinc-500">
                 {filtered.length} total records
               </p>
             </div>
@@ -430,12 +430,12 @@ export default function MyInvestmentsPage() {
                 placeholder="Search…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="h-9 w-full rounded-xl border border-zinc-200 bg-zinc-50 pl-8 pr-8 text-sm text-zinc-800 placeholder-zinc-400 transition focus:border-[color:rgba(77,140,30,0.32)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.14)]"
+                className="h-9 w-full rounded-xl border border-zinc-200 bg-zinc-50 pl-8 pr-8 text-sm text-zinc-800 placeholder-zinc-400 transition focus:border-[color:rgba(77,140,30,0.32)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.14)] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:placeholder-zinc-500 dark:focus:bg-zinc-900"
               />
               {search && (
                 <button
                   onClick={() => setSearch("")}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
@@ -445,7 +445,7 @@ export default function MyInvestmentsPage() {
 
           {/* Table */}
           <div className="w-full overflow-x-auto">
-            <table className="min-w-full table-fixed divide-y divide-zinc-100 text-sm">
+            <table className="min-w-full table-fixed divide-y divide-zinc-100 text-sm dark:divide-zinc-800">
               <colgroup>
                 <col className="w-16" />
                 <col className="min-w-[160px]" />
@@ -459,7 +459,7 @@ export default function MyInvestmentsPage() {
               </colgroup>
 
               <thead>
-                <tr className="bg-zinc-50">
+                <tr className="bg-zinc-50 dark:bg-zinc-800/50">
                   {[
                     "#",
                     "AMOUNT (BDT)",
@@ -474,7 +474,7 @@ export default function MyInvestmentsPage() {
                     <th
                       key={h}
                       scope="col"
-                      className="px-6 py-4 text-left text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-400 sm:text-[11px]"
+                      className="px-6 py-4 text-left text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-400 sm:text-[11px] dark:text-zinc-500"
                     >
                       {h}
                     </th>
@@ -482,25 +482,25 @@ export default function MyInvestmentsPage() {
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-zinc-100 bg-white">
+              <tbody className="divide-y divide-zinc-100 bg-white dark:divide-zinc-800 dark:bg-zinc-900">
                 {isInvestmentsBusy ? (
                   [...Array(5)].map((_, i) => <SkeletonRow key={i} />)
                 ) : filtered.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-14 text-center sm:py-16">
                       <div className="flex flex-col items-center gap-2.5">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-50 ring-1 ring-zinc-200">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-50 ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-700">
                           <Wallet className="h-5 w-5 text-zinc-300" />
                         </div>
                         <div>
-                          <p className="text-sm font-semibold text-zinc-500">
+                          <p className="text-sm font-semibold text-zinc-500 dark:text-zinc-200">
                             {isInvError
                               ? "Failed to load"
                               : search
                                 ? "No results"
                                 : "No investments"}
                           </p>
-                          <p className="text-xs text-zinc-400">
+                          <p className="text-xs text-zinc-400 dark:text-zinc-500">
                             {isInvError
                               ? "Could not load investments."
                               : search
@@ -511,7 +511,7 @@ export default function MyInvestmentsPage() {
                         {search && (
                           <button
                             onClick={() => setSearch("")}
-                            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-600 hover:border-[color:rgba(77,140,30,0.32)] hover:text-primary"
+                            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-600 hover:border-[color:rgba(77,140,30,0.32)] hover:text-primary dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
                           >
                             <X className="h-3 w-3" /> Clear
                           </button>

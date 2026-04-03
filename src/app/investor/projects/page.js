@@ -36,22 +36,22 @@ const fmt = (n) =>
 
 /* ─── SKELETON CARD ───────────────────────────── */
 const SkeletonCard = () => (
-  <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
-    <div className="aspect-[4/3] w-full animate-pulse bg-zinc-100" />
+  <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="aspect-[4/3] w-full animate-pulse bg-zinc-100 dark:bg-zinc-800" />
     <div className="space-y-3 p-5">
-      <div className="h-5 w-2/3 animate-pulse rounded-lg bg-zinc-100" />
-      <div className="h-3 w-1/3 animate-pulse rounded-lg bg-zinc-100" />
-      <div className="h-3 w-full animate-pulse rounded-lg bg-zinc-100" />
-      <div className="h-3 w-5/6 animate-pulse rounded-lg bg-zinc-100" />
+      <div className="h-5 w-2/3 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+      <div className="h-3 w-1/3 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+      <div className="h-3 w-full animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+      <div className="h-3 w-5/6 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
       <div className="grid grid-cols-2 gap-3 pt-3">
         {[...Array(4)].map((_, i) => (
           <div key={i} className="space-y-1.5">
-            <div className="h-2 w-14 animate-pulse rounded bg-zinc-100" />
-            <div className="h-4 w-20 animate-pulse rounded bg-zinc-100" />
+            <div className="h-2 w-14 animate-pulse rounded bg-zinc-100 dark:bg-zinc-800" />
+            <div className="h-4 w-20 animate-pulse rounded bg-zinc-100 dark:bg-zinc-800" />
           </div>
         ))}
       </div>
-      <div className="h-11 w-full animate-pulse rounded-xl bg-zinc-100" />
+      <div className="h-11 w-full animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800" />
     </div>
   </div>
 );
@@ -69,7 +69,7 @@ const ProjectCard = ({ project }) => {
       icon: BadgeDollarSign,
       label: "Total Cost",
       value: project.totalCost,
-      valueClass: "text-zinc-800",
+      valueClass: "text-zinc-800 dark:text-zinc-100",
     },
     {
       icon: ShoppingCart,
@@ -92,12 +92,12 @@ const ProjectCard = ({ project }) => {
   ];
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-sm ring-1 ring-transparent transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-[color:rgba(77,140,30,0.22)]">
+    <article className="group flex flex-col overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-sm ring-1 ring-transparent transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-[color:rgba(77,140,30,0.22)] dark:border-zinc-800 dark:bg-zinc-900 dark:hover:ring-zinc-700">
 
       {/* ── Image ── */}
       <Link
         href={`/investor/projects/${project.id}`}
-        className="relative block aspect-[4/3] w-full overflow-hidden bg-zinc-100"
+        className="relative block aspect-[4/3] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800"
       >
         {imgUrl ? (
           <Image
@@ -108,9 +108,9 @@ const ProjectCard = ({ project }) => {
             className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
           />
         ) : (
-          <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-zinc-100 to-zinc-200">
+          <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-900">
             <Layers className="h-10 w-10 text-zinc-300" />
-            <span className="text-xs font-medium text-zinc-400">No image</span>
+            <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500">No image</span>
           </div>
         )}
 
@@ -135,7 +135,7 @@ const ProjectCard = ({ project }) => {
         {/* Title + location */}
         <div>
           <Link href={`/investor/projects/${project.id}`}>
-            <h2 className="line-clamp-1 text-[15px] font-bold text-zinc-900 transition-colors hover:text-primary">
+            <h2 className="line-clamp-1 text-[15px] font-bold text-zinc-900 transition-colors hover:text-primary dark:text-zinc-100">
               {project.name || "Untitled project"}
             </h2>
           </Link>
@@ -149,13 +149,13 @@ const ProjectCard = ({ project }) => {
 
         {/* Description */}
         {project.description && (
-          <p className="line-clamp-2 text-xs leading-relaxed text-zinc-500">
+          <p className="line-clamp-2 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
             {project.description}
           </p>
         )}
 
         {/* Divider */}
-        <div className="h-px bg-zinc-100" />
+        <div className="h-px bg-zinc-100 dark:bg-zinc-800" />
 
         {/* Stats 2×2 */}
         <div className="grid grid-cols-2 gap-x-5 gap-y-3.5">
@@ -199,16 +199,16 @@ const TablePagination = ({
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-xs text-zinc-400">
+      <p className="text-xs text-zinc-400 dark:text-zinc-500">
         Showing{" "}
-        <span className="font-semibold text-zinc-700">{from}–{to}</span> of{" "}
-        <span className="font-semibold text-zinc-700">{total}</span> projects
+        <span className="font-semibold text-zinc-700 dark:text-zinc-200">{from}–{to}</span> of{" "}
+        <span className="font-semibold text-zinc-700 dark:text-zinc-200">{total}</span> projects
       </p>
       <div className="flex items-center gap-2">
         <select
           value={pageSize}
           onChange={(e) => onPageSizeChange(Number(e.target.value))}
-          className="h-9 rounded-xl border border-zinc-200 bg-white px-2.5 text-xs font-medium text-zinc-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.20)]"
+          className="h-9 rounded-xl border border-zinc-200 bg-white px-2.5 text-xs font-medium text-zinc-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.20)] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200"
         >
           {[3, 6, 12, 24].map((s) => (
             <option key={s} value={s}>
@@ -230,7 +230,7 @@ const TablePagination = ({
                 ? page <= 1
                 : page >= pageCount
             }
-            className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-[color:rgba(77,140,30,0.24)] hover:bg-secondary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-[color:rgba(77,140,30,0.24)] hover:bg-secondary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
             aria-label={label}
           >
             <Icon className="h-3.5 w-3.5" />
@@ -284,7 +284,7 @@ export default function InvestorProjectsPage() {
       {/* ══════════════════════════════════════════
           PREMIUM HEADER CARD
       ══════════════════════════════════════════ */}
-      <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         {/* Gradient accent bar */}
         <div className="h-1 w-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
 
@@ -296,10 +296,10 @@ export default function InvestorProjectsPage() {
               <Sparkles className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <h1 className="text-lg font-bold tracking-tight text-zinc-900">
+              <h1 className="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
                 Available Projects
               </h1>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-400 dark:text-zinc-500">
                 Browse open farming projects and invest directly.
               </p>
             </div>
@@ -314,7 +314,7 @@ export default function InvestorProjectsPage() {
                 placeholder="Search projects…"
                 value={searchInput}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="h-9 w-full rounded-xl border border-zinc-200 bg-zinc-50 pl-9 pr-8 text-sm text-zinc-800 placeholder-zinc-400 transition focus:border-[color:rgba(77,140,30,0.32)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.14)]"
+                className="h-9 w-full rounded-xl border border-zinc-200 bg-zinc-50 pl-9 pr-8 text-sm text-zinc-800 placeholder-zinc-400 transition focus:border-[color:rgba(77,140,30,0.32)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.14)] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:placeholder-zinc-500 dark:focus:bg-zinc-900"
               />
               {searchInput && (
                 <button
@@ -332,7 +332,7 @@ export default function InvestorProjectsPage() {
         </div>
 
         {/* Mini stats strip */}
-        <div className="grid grid-cols-2 divide-x divide-zinc-100 border-t border-zinc-100 sm:grid-cols-4">
+        <div className="grid grid-cols-2 divide-x divide-zinc-100 border-t border-zinc-100 sm:grid-cols-4 dark:divide-zinc-800 dark:border-zinc-800">
           {[
             { Icon: FolderOpen, label: "Total Projects", value: total },
             { Icon: Activity, label: "Active", value: total },
@@ -344,12 +344,12 @@ export default function InvestorProjectsPage() {
             },
           ].map(({ Icon, label, value }) => (
             <div key={label} className="flex items-center gap-3 px-5 py-3">
-              <Icon className="h-4 w-4 shrink-0 text-zinc-400" />
+              <Icon className="h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-400">
+                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-400 dark:text-zinc-500">
                   {label}
                 </p>
-                <p className="text-sm font-bold text-zinc-800">{value}</p>
+                <p className="text-sm font-bold text-zinc-800 dark:text-zinc-100">{value}</p>
               </div>
             </div>
           ))}
@@ -372,15 +372,15 @@ export default function InvestorProjectsPage() {
           ))}
 
         {!isBusy && !projects.length && !isError && (
-          <div className="col-span-full flex flex-col items-center gap-4 rounded-3xl border border-dashed border-zinc-200 bg-white py-20 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-50 ring-1 ring-zinc-200">
+          <div className="col-span-full flex flex-col items-center gap-4 rounded-3xl border border-dashed border-zinc-200 bg-white py-20 text-center dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-50 ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-700">
               <Layers className="h-7 w-7 text-zinc-300" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-zinc-700">
+              <p className="text-sm font-semibold text-zinc-700 dark:text-zinc-200">
                 No projects available
               </p>
-              <p className="mt-1 text-xs text-zinc-400">
+              <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500">
                 {search
                   ? `No results for "${search}". Try a different keyword.`
                   : "Check back later for new investment opportunities."}
@@ -389,7 +389,7 @@ export default function InvestorProjectsPage() {
             {search && (
               <button
                 onClick={() => handleSearch("")}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-600 shadow-sm hover:border-[color:rgba(77,140,30,0.32)] hover:text-primary"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-600 shadow-sm hover:border-[color:rgba(77,140,30,0.32)] hover:text-primary dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
               >
                 <X className="h-3.5 w-3.5" />
                 Clear search
