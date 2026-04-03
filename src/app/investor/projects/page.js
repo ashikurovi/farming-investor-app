@@ -75,24 +75,24 @@ const ProjectCard = ({ project }) => {
       icon: ShoppingCart,
       label: "Total Sell",
       value: project.totalSell,
-      valueClass: "text-blue-700",
+      valueClass: "text-primary",
     },
     {
       icon: TrendingUp,
       label: "Profit",
       value: profit,
-      valueClass: "text-emerald-700",
+      valueClass: "text-primary",
     },
     {
       icon: Landmark,
       label: "Collected",
       value: project.totalInvestment,
-      valueClass: "text-violet-700",
+      valueClass: "text-primary",
     },
   ];
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-sm ring-1 ring-transparent transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-emerald-200">
+    <article className="group flex flex-col overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-sm ring-1 ring-transparent transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-[color:rgba(77,140,30,0.22)]">
 
       {/* ── Image ── */}
       <Link
@@ -118,8 +118,8 @@ const ProjectCard = ({ project }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
         {/* Active badge */}
-        <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-700 shadow-sm backdrop-blur-sm ring-1 ring-emerald-100">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+        <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary shadow-sm backdrop-blur-sm ring-1 ring-[color:rgba(77,140,30,0.14)]">
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
           Active
         </span>
 
@@ -135,12 +135,12 @@ const ProjectCard = ({ project }) => {
         {/* Title + location */}
         <div>
           <Link href={`/investor/projects/${project.id}`}>
-            <h2 className="line-clamp-1 text-[15px] font-bold text-zinc-900 transition-colors hover:text-emerald-700">
+            <h2 className="line-clamp-1 text-[15px] font-bold text-zinc-900 transition-colors hover:text-primary">
               {project.name || "Untitled project"}
             </h2>
           </Link>
           {project.location && (
-            <p className="mt-1.5 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-600">
+            <p className="mt-1.5 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
               <MapPin className="h-3 w-3 shrink-0" />
               {project.location}
             </p>
@@ -175,7 +175,7 @@ const ProjectCard = ({ project }) => {
         {/* CTA */}
         <Link
           href={`/investor/projects/${project.id}`}
-          className="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-emerald-700 active:scale-[0.98]"
+          className="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-bold text-primary-foreground shadow-sm transition-all hover:bg-[color:var(--brand-to)] active:scale-[0.98]"
         >
           View project
           <ArrowUpRight className="h-4 w-4" />
@@ -208,7 +208,7 @@ const TablePagination = ({
         <select
           value={pageSize}
           onChange={(e) => onPageSizeChange(Number(e.target.value))}
-          className="h-9 rounded-xl border border-zinc-200 bg-white px-2.5 text-xs font-medium text-zinc-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-300"
+          className="h-9 rounded-xl border border-zinc-200 bg-white px-2.5 text-xs font-medium text-zinc-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.20)]"
         >
           {[3, 6, 12, 24].map((s) => (
             <option key={s} value={s}>
@@ -230,7 +230,7 @@ const TablePagination = ({
                 ? page <= 1
                 : page >= pageCount
             }
-            className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-40"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-[color:rgba(77,140,30,0.24)] hover:bg-secondary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
             aria-label={label}
           >
             <Icon className="h-3.5 w-3.5" />
@@ -286,14 +286,14 @@ export default function InvestorProjectsPage() {
       ══════════════════════════════════════════ */}
       <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
         {/* Gradient accent bar */}
-        <div className="h-1 w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500" />
+        <div className="h-1 w-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
 
         {/* Main header row */}
         <div className="flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
           {/* Left */}
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 ring-1 ring-emerald-100">
-              <Sparkles className="h-5 w-5 text-emerald-600" />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-secondary ring-1 ring-[color:rgba(77,140,30,0.14)]">
+              <Sparkles className="h-5 w-5 text-primary" />
             </div>
             <div>
               <h1 className="text-lg font-bold tracking-tight text-zinc-900">
@@ -314,7 +314,7 @@ export default function InvestorProjectsPage() {
                 placeholder="Search projects…"
                 value={searchInput}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="h-9 w-full rounded-xl border border-zinc-200 bg-zinc-50 pl-9 pr-8 text-sm text-zinc-800 placeholder-zinc-400 transition focus:border-emerald-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-100"
+                className="h-9 w-full rounded-xl border border-zinc-200 bg-zinc-50 pl-9 pr-8 text-sm text-zinc-800 placeholder-zinc-400 transition focus:border-[color:rgba(77,140,30,0.32)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.14)]"
               />
               {searchInput && (
                 <button
@@ -325,7 +325,7 @@ export default function InvestorProjectsPage() {
                 </button>
               )}
             </div>
-            <button className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-500 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700">
+            <button className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-500 transition hover:border-[color:rgba(77,140,30,0.32)] hover:bg-secondary hover:text-primary">
               <SlidersHorizontal className="h-4 w-4" />
             </button>
           </div>
@@ -389,7 +389,7 @@ export default function InvestorProjectsPage() {
             {search && (
               <button
                 onClick={() => handleSearch("")}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-600 shadow-sm hover:border-emerald-300 hover:text-emerald-700"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-600 shadow-sm hover:border-[color:rgba(77,140,30,0.32)] hover:text-primary"
               >
                 <X className="h-3.5 w-3.5" />
                 Clear search

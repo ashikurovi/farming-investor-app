@@ -99,7 +99,7 @@ const DailyReportTable = ({ reports, isLoading }) => (
           {reports.length} report{reports.length !== 1 ? "s" : ""} recorded
         </p>
       </div>
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-[11px] font-semibold text-emerald-700 ring-1 ring-emerald-100">
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-[11px] font-semibold text-primary ring-1 ring-[color:rgba(77,140,30,0.14)]">
         <Activity className="h-3 w-3" />
         Live data
       </span>
@@ -165,7 +165,7 @@ const DailyReportTable = ({ reports, isLoading }) => (
             reports.map((r, idx) => (
               <tr
                 key={r.id}
-                className="group transition-colors hover:bg-emerald-50/40"
+                className="group transition-colors hover:bg-secondary"
               >
                 {/* SL */}
                 <td className="pl-5 pr-4 py-3.5 text-xs font-medium tabular-nums text-zinc-400">
@@ -197,7 +197,7 @@ const DailyReportTable = ({ reports, isLoading }) => (
 
                 {/* Sell */}
                 <td className="px-4 py-3.5">
-                  <span className="font-semibold tabular-nums text-blue-700">
+                  <span className="font-semibold tabular-nums text-primary">
                     ৳{fmt(r.dailySell)}
                   </span>
                 </td>
@@ -216,7 +216,7 @@ const DailyReportTable = ({ reports, isLoading }) => (
                       href={cleanUrl(r.photoUrl)}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 transition-colors hover:bg-emerald-100"
+                      className="inline-flex items-center gap-1 rounded-lg border border-[color:rgba(77,140,30,0.18)] bg-secondary px-2.5 py-1 text-[11px] font-semibold text-primary transition-colors hover:bg-[color:rgba(124,194,46,0.18)]"
                     >
                       View
                       <ExternalLink className="h-3 w-3" />
@@ -254,7 +254,8 @@ export default function ProjectDetailPage() {
       Icon: BadgeDollarSign,
       label: "Total Cost",
       value: project?.totalCost,
-      gradient: "bg-gradient-to-r from-zinc-400 to-zinc-500",
+      gradient:
+        "bg-gradient-to-r from-[color:var(--brand-from)] to-[color:var(--brand-to)]",
       iconBg: "bg-zinc-100",
       iconColor: "text-zinc-600",
       valueColor: "text-zinc-800",
@@ -263,28 +264,31 @@ export default function ProjectDetailPage() {
       Icon: ShoppingCart,
       label: "Total Sell",
       value: project?.totalSell,
-      gradient: "bg-gradient-to-r from-blue-400 to-indigo-400",
-      iconBg: "bg-blue-50",
-      iconColor: "text-blue-600",
-      valueColor: "text-blue-700",
+      gradient:
+        "bg-gradient-to-r from-[color:var(--brand-from)] to-[color:var(--brand-to)]",
+      iconBg: "bg-secondary",
+      iconColor: "text-primary",
+      valueColor: "text-primary",
     },
     {
       Icon: TrendingUp,
       label: "Total Profit",
       value: project?.totalProfit,
-      gradient: "bg-gradient-to-r from-emerald-400 to-teal-400",
-      iconBg: "bg-emerald-50",
-      iconColor: "text-emerald-600",
-      valueColor: "text-emerald-700",
+      gradient:
+        "bg-gradient-to-r from-[color:var(--brand-from)] to-[color:var(--brand-to)]",
+      iconBg: "bg-secondary",
+      iconColor: "text-primary",
+      valueColor: "text-primary",
     },
     {
       Icon: Landmark,
       label: "Investment Collected",
       value: project?.totalInvestment,
-      gradient: "bg-gradient-to-r from-violet-400 to-purple-400",
-      iconBg: "bg-violet-50",
-      iconColor: "text-violet-600",
-      valueColor: "text-violet-700",
+      gradient:
+        "bg-gradient-to-r from-[color:var(--brand-from)] to-[color:var(--brand-to)]",
+      iconBg: "bg-secondary",
+      iconColor: "text-primary",
+      valueColor: "text-primary",
     },
   ];
 
@@ -295,7 +299,7 @@ export default function ProjectDetailPage() {
       ══════════════════════════════════════════ */}
       <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
         {/* Gradient accent bar */}
-        <div className="h-1 w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500" />
+        <div className="h-1 w-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
 
         <div className="flex flex-col gap-5 p-6 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
           <div className="flex min-w-0 items-start gap-4">
@@ -312,8 +316,8 @@ export default function ProjectDetailPage() {
                   className="object-cover"
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-100">
-                  <Layers className="h-8 w-8 text-emerald-300" />
+                <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-secondary to-white">
+                  <Layers className="h-8 w-8 text-[color:rgba(77,140,30,0.25)]" />
                 </div>
               )}
             </div>
@@ -324,7 +328,7 @@ export default function ProjectDetailPage() {
               <nav className="flex items-center gap-1.5 text-[11px] text-zinc-400">
                 <Link
                   href="/investor/projects"
-                  className="transition-colors hover:text-emerald-600"
+                  className="transition-colors hover:text-primary"
                 >
                   Projects
                 </Link>
@@ -345,7 +349,7 @@ export default function ProjectDetailPage() {
                     {project?.name ?? "Project details"}
                   </h1>
                   {project?.location && (
-                    <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-600">
+                    <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-primary">
                       <MapPin className="h-3.5 w-3.5 shrink-0" />
                       {project.location}
                     </p>
@@ -364,7 +368,7 @@ export default function ProjectDetailPage() {
           <div className="shrink-0">
             <Link
               href="/investor/projects"
-              className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-xs font-semibold text-zinc-600 shadow-sm transition-colors hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700"
+              className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-xs font-semibold text-zinc-600 shadow-sm transition-colors hover:border-[color:rgba(77,140,30,0.24)] hover:bg-secondary hover:text-primary"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               Back

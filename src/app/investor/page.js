@@ -166,14 +166,14 @@ const InvestorDetailModal = ({ investor, onClose }) => {
     <div className="fixed inset-0 z-50 flex items-end justify-center p-4 sm:items-center">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
       <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl ring-1 ring-black/5">
-        <div className="h-1 w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500" />
+        <div className={`h-1 w-full ${BRAND.bar}`} />
         <div className="p-6">
           {/* Header */}
           <div className="mb-6 flex items-start justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="relative">
                 <Avatar user={investor} size="xl" />
-                <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-emerald-400 ring-2 ring-white" />
+                <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-primary ring-2 ring-white" />
               </div>
               <div>
                 <h3 className="text-base font-bold text-zinc-900">{investor.name || "Investor"}</h3>
@@ -226,7 +226,7 @@ const TablePagination = ({
       </p>
       <div className="flex items-center gap-1.5">
         <select value={pageSize} onChange={(e) => onPageSizeChange(Number(e.target.value))}
-          className="h-8 rounded-lg border border-zinc-200 bg-white px-2 text-xs font-medium text-zinc-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-300">
+          className="h-8 rounded-lg border border-zinc-200 bg-white px-2 text-xs font-medium text-zinc-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.20)]">
           {[5, 10, 20, 50].map((s) => <option key={s} value={s}>{s} / page</option>)}
         </select>
         {[
@@ -237,7 +237,7 @@ const TablePagination = ({
         ].map(({ Icon, label, target }) => (
           <button key={label} onClick={() => onPageChange(target)}
             disabled={label === "First" || label === "Prev" ? page <= 1 : page >= pageCount}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-40"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-[color:rgba(77,140,30,0.24)] hover:bg-secondary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
             aria-label={label}>
             <Icon className="h-3.5 w-3.5" />
           </button>
@@ -359,10 +359,10 @@ export default function InvestorDashboardPage() {
 
       {/* ── DASHBOARD HEADER ── */}
       <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-        <div className="h-[3px] w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500" />
+        <div className={`h-[3px] w-full ${BRAND.bar}`} />
         <div className="flex items-center gap-3 px-5 py-4">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 ring-1 ring-emerald-100">
-            <LayoutDashboard className="h-[18px] w-[18px] text-emerald-600" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary ring-1 ring-[color:rgba(77,140,30,0.14)]">
+            <LayoutDashboard className="h-[18px] w-[18px] text-primary" />
           </div>
           <div>
             <h1 className="text-sm font-bold text-zinc-900">Investor Dashboard</h1>
@@ -374,7 +374,7 @@ export default function InvestorDashboardPage() {
       {/* ── KPI GRID ── */}
       <section>
         <div className="mb-3 flex items-center gap-2">
-          <div className="h-3.5 w-[3px] rounded-full bg-emerald-500" />
+          <div className="h-3.5 w-[3px] rounded-full bg-primary" />
           <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">Key Metrics</h2>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 lg:gap-4">

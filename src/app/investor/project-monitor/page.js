@@ -44,9 +44,9 @@ const ProjectMonitorCard = ({ project, videoUrl }) => {
   };
 
   return (
-    <div className="group relative overflow-hidden rounded-3xl border border-zinc-200/80 bg-white/90 shadow-[0_18px_55px_-48px_rgba(0,0,0,0.45)] ring-1 ring-black/5 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_90px_-70px_rgba(0,0,0,0.55)] hover:ring-emerald-200/60">
+    <div className="group relative overflow-hidden rounded-3xl border border-zinc-200/80 bg-white/90 shadow-[0_18px_55px_-48px_rgba(0,0,0,0.45)] ring-1 ring-black/5 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_90px_-70px_rgba(0,0,0,0.55)] hover:ring-[color:rgba(77,140,30,0.22)]">
       {/* Status Bar */}
-      <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500" />
+      <div className="absolute inset-x-0 top-0 h-1.5 bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
 
       {/* CCTV View Container */}
       <div
@@ -103,7 +103,7 @@ const ProjectMonitorCard = ({ project, videoUrl }) => {
                   <Play className="h-3 w-3 text-white fill-white" />
                 </div>
               )}
-              <div className="text-[9px] bg-black/40 px-2 py-0.5 rounded backdrop-blur-sm border border-white/10 text-emerald-400">
+              <div className="text-[9px] bg-black/40 px-2 py-0.5 rounded backdrop-blur-sm border border-white/10 text-[color:var(--brand-to)]">
                 HD 1080P
               </div>
             </div>
@@ -122,8 +122,8 @@ const ProjectMonitorCard = ({ project, videoUrl }) => {
         {/* Center Connected Overlay */}
         {isPlaying && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none">
-            <div className="px-3 py-1 bg-emerald-500/20 backdrop-blur-md rounded-full border border-emerald-500/30">
-              <span className="text-[9px] text-emerald-400 font-bold uppercase tracking-widest">
+            <div className="px-3 py-1 bg-[color:rgba(77,140,30,0.22)] backdrop-blur-md rounded-full border border-[color:rgba(77,140,30,0.28)]">
+              <span className="text-[9px] text-[color:var(--brand-to)] font-bold uppercase tracking-widest">
                 Connected
               </span>
             </div>
@@ -136,7 +136,7 @@ const ProjectMonitorCard = ({ project, videoUrl }) => {
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <Sprout className="h-4 w-4 text-emerald-500" />
+              <Sprout className="h-4 w-4 text-primary" />
               <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
                 Project Unit
               </span>
@@ -145,8 +145,8 @@ const ProjectMonitorCard = ({ project, videoUrl }) => {
               {project.name}
             </h4>
           </div>
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 ring-1 ring-emerald-100">
-            <Camera className="h-5 w-5 text-emerald-600" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-secondary ring-1 ring-[color:rgba(77,140,30,0.14)]">
+            <Camera className="h-5 w-5 text-primary" />
           </div>
         </div>
 
@@ -209,16 +209,16 @@ export default function ProjectMonitorPage() {
   return (
     <div className="relative  space-y-5 px-3  sm:px-2 lg:px-4">
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute -right-28 -top-28 h-80 w-80 rounded-full bg-emerald-200/35 blur-3xl" />
-        <div className="absolute -bottom-28 -left-28 h-80 w-80 rounded-full bg-teal-200/25 blur-3xl" />
-        <div className="absolute inset-0 opacity-30 [background:radial-gradient(circle_at_1px_1px,rgba(16,185,129,0.18)_1px,transparent_1px)] [background-size:18px_18px]" />
+        <div className="absolute -right-28 -top-28 h-80 w-80 rounded-full bg-[color:rgba(77,140,30,0.20)] blur-3xl" />
+        <div className="absolute -bottom-28 -left-28 h-80 w-80 rounded-full bg-[color:rgba(124,194,46,0.16)] blur-3xl" />
+        <div className="absolute inset-0 opacity-30 [background:radial-gradient(circle_at_1px_1px,rgba(77,140,30,0.16)_1px,transparent_1px)] [background-size:18px_18px]" />
       </div>
       <Modal
         isOpen={isComingSoonOpen}
         onClose={() => setIsComingSoonOpen(false)}
         title={
           <span className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary text-primary ring-1 ring-[color:rgba(77,140,30,0.14)]">
               <Video className="h-4 w-4" />
             </span>
             <span className="flex flex-col">
@@ -246,7 +246,7 @@ export default function ProjectMonitorPage() {
             <Button
               type="button"
               onClick={() => setIsComingSoonOpen(false)}
-              className="h-10 w-full rounded-xl bg-emerald-600 px-6 text-xs font-semibold text-white hover:bg-emerald-500 sm:w-auto"
+              className="h-10 w-full rounded-xl bg-primary px-6 text-xs font-semibold text-primary-foreground hover:bg-[color:var(--brand-to)] sm:w-auto"
             >
               Continue Preview
             </Button>
@@ -254,11 +254,11 @@ export default function ProjectMonitorPage() {
         }
       >
         <div className="space-y-5">
-          <div className="overflow-hidden rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50 via-white to-teal-50">
-            <div className="h-1.5 w-full bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500" />
+          <div className="overflow-hidden rounded-2xl border border-[color:rgba(77,140,30,0.18)] bg-gradient-to-br from-secondary via-white to-secondary">
+            <div className="h-1.5 w-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
             <div className="p-4 sm:p-5">
               <div className="flex items-start gap-3">
-                <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm ring-1 ring-emerald-100">
+                <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-primary shadow-sm ring-1 ring-[color:rgba(77,140,30,0.14)]">
                   <LayoutDashboard className="h-4 w-4" />
                 </span>
                 <div className="min-w-0">
@@ -307,7 +307,7 @@ export default function ProjectMonitorPage() {
                 key={title}
                 className="flex items-start gap-3 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm"
               >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-secondary text-primary ring-1 ring-[color:rgba(77,140,30,0.14)]">
                   <Icon className="h-4 w-4" />
                 </span>
                 <div className="min-w-0">
@@ -333,11 +333,11 @@ export default function ProjectMonitorPage() {
 
       {/* Header Container */}
       <div className="overflow-hidden rounded-3xl border border-zinc-200/80 bg-white/80 shadow-[0_22px_70px_-55px_rgba(0,0,0,0.45)] ring-1 ring-black/5 backdrop-blur">
-        <div className="h-1.5 w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500" />
+        <div className="h-1.5 w-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
         <div className="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 ring-1 ring-emerald-100">
-              <Activity className="h-5 w-5 text-emerald-600" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-secondary ring-1 ring-[color:rgba(77,140,30,0.14)]">
+              <Activity className="h-5 w-5 text-primary" />
             </div>
             <div>
               <h1 className="text-lg font-bold tracking-tight text-zinc-900">
@@ -350,10 +350,10 @@ export default function ProjectMonitorPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-600/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-700 ring-1 ring-emerald-200">
+            <div className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary ring-1 ring-[color:rgba(77,140,30,0.18)]">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500/60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-600" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:rgba(124,194,46,0.60)]" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
               </span>
               Live System
             </div>
@@ -369,7 +369,7 @@ export default function ProjectMonitorPage() {
       <section>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="h-3.5 w-[3px] rounded-full bg-emerald-500" />
+            <div className="h-3.5 w-[3px] rounded-full bg-primary" />
             <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">
               Active Cameras
             </h2>
@@ -391,10 +391,10 @@ export default function ProjectMonitorPage() {
         )}
 
         {!isLoading && projects.length === 0 && (
-          <div className="mb-6 rounded-2xl border border-emerald-100 bg-emerald-50/50 p-6">
+          <div className="mb-6 rounded-2xl border border-[color:rgba(77,140,30,0.18)] bg-secondary p-6">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-emerald-200">
-                <Video className="h-5 w-5 text-emerald-600" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-[color:rgba(77,140,30,0.18)]">
+                <Video className="h-5 w-5 text-primary" />
               </div>
               <div>
                 <h3 className="text-sm font-bold text-zinc-900">
@@ -436,14 +436,14 @@ export default function ProjectMonitorPage() {
       </section>
 
       {/* Feature Highlight */}
-      <div className="relative mt-10 overflow-hidden rounded-3xl border border-zinc-900/10 bg-gradient-to-br from-zinc-950 via-zinc-900 to-emerald-950 p-7 text-white shadow-[0_28px_100px_-75px_rgba(0,0,0,0.85)] sm:p-9">
-        <div className="pointer-events-none absolute -right-32 -top-32 h-72 w-72 rounded-full bg-emerald-500/15 blur-[110px]" />
-        <div className="pointer-events-none absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-teal-400/10 blur-[120px]" />
+      <div className="relative mt-10 overflow-hidden rounded-3xl border border-zinc-900/10 bg-gradient-to-br from-zinc-950 via-zinc-900 to-[color:rgba(77,140,30,0.20)] p-7 text-white shadow-[0_28px_100px_-75px_rgba(0,0,0,0.85)] sm:p-9">
+        <div className="pointer-events-none absolute -right-32 -top-32 h-72 w-72 rounded-full bg-[color:rgba(124,194,46,0.12)] blur-[110px]" />
+        <div className="pointer-events-none absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-[color:rgba(77,140,30,0.10)] blur-[120px]" />
         <div className="relative">
           <div className="flex items-start justify-between gap-6">
             <div className="flex items-start gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/15 backdrop-blur">
-                <Video className="h-5 w-5 text-emerald-300" />
+                <Video className="h-5 w-5 text-[color:var(--brand-to)]" />
               </div>
               <div>
                 <h3 className="text-lg font-bold tracking-tight">
@@ -460,7 +460,7 @@ export default function ProjectMonitorPage() {
             <Button
               type="button"
               onClick={() => setIsComingSoonOpen(true)}
-              className="hidden h-10 rounded-xl bg-emerald-500/20 px-5 text-xs font-semibold text-emerald-100 ring-1 ring-emerald-400/20 hover:bg-emerald-500/30 sm:inline-flex"
+              className="hidden h-10 rounded-xl bg-[color:rgba(77,140,30,0.22)] px-5 text-xs font-semibold text-white ring-1 ring-[color:rgba(77,140,30,0.22)] hover:bg-[color:rgba(77,140,30,0.30)] sm:inline-flex"
             >
               View Roadmap
             </Button>
@@ -477,7 +477,7 @@ export default function ProjectMonitorPage() {
                 key={feat}
                 className="flex items-center gap-2 rounded-full bg-white/5 px-3 py-1.5 ring-1 ring-white/10"
               >
-                <div className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
+                <div className="h-1.5 w-1.5 rounded-full bg-[color:var(--brand-to)]" />
                 <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-200">
                   {feat}
                 </span>
@@ -488,7 +488,7 @@ export default function ProjectMonitorPage() {
           <Button
             type="button"
             onClick={() => setIsComingSoonOpen(true)}
-            className="mt-6 h-10 w-full rounded-xl bg-emerald-500/20 px-5 text-xs font-semibold text-emerald-100 ring-1 ring-emerald-400/20 hover:bg-emerald-500/30 sm:hidden"
+            className="mt-6 h-10 w-full rounded-xl bg-[color:rgba(77,140,30,0.22)] px-5 text-xs font-semibold text-white ring-1 ring-[color:rgba(77,140,30,0.22)] hover:bg-[color:rgba(77,140,30,0.30)] sm:hidden"
           >
             View Roadmap
           </Button>

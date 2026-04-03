@@ -36,32 +36,32 @@ const fmtBDT = (n) =>
 /* ─── STAT CARD ───────────────────────────────── */
 const STAT_COLORS = {
   emerald: {
-    bar: "from-emerald-400 to-teal-400",
-    iconBg: "bg-emerald-50",
-    iconRing: "ring-emerald-100",
-    iconColor: "text-emerald-600",
-    valueColor: "text-emerald-700",
+    bar: "from-[color:var(--brand-from)] to-[color:var(--brand-to)]",
+    iconBg: "bg-secondary",
+    iconRing: "ring-[color:rgba(77,140,30,0.14)]",
+    iconColor: "text-primary",
+    valueColor: "text-primary",
   },
   blue: {
-    bar: "from-blue-400 to-indigo-400",
-    iconBg: "bg-blue-50",
-    iconRing: "ring-blue-100",
-    iconColor: "text-blue-600",
-    valueColor: "text-blue-700",
+    bar: "from-[color:var(--brand-from)] to-[color:var(--brand-to)]",
+    iconBg: "bg-secondary",
+    iconRing: "ring-[color:rgba(77,140,30,0.14)]",
+    iconColor: "text-primary",
+    valueColor: "text-primary",
   },
   violet: {
-    bar: "from-violet-400 to-purple-400",
-    iconBg: "bg-violet-50",
-    iconRing: "ring-violet-100",
-    iconColor: "text-violet-600",
-    valueColor: "text-violet-700",
+    bar: "from-[color:var(--brand-from)] to-[color:var(--brand-to)]",
+    iconBg: "bg-secondary",
+    iconRing: "ring-[color:rgba(77,140,30,0.14)]",
+    iconColor: "text-primary",
+    valueColor: "text-primary",
   },
   zinc: {
-    bar: "from-zinc-400 to-zinc-500",
+    bar: "from-[color:var(--brand-from)] to-[color:var(--brand-to)]",
     iconBg: "bg-zinc-100",
     iconRing: "ring-zinc-200",
     iconColor: "text-zinc-600",
-    valueColor: "text-zinc-800",
+    valueColor: "text-primary",
   },
 };
 
@@ -119,7 +119,7 @@ const Avatar = ({ user, size = "md" }) => {
     </div>
   ) : (
     <div
-      className={`${dim} inline-flex shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 font-bold text-white ring-2 ring-white shadow`}
+      className={`${dim} inline-flex shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[color:var(--brand-from)] to-[color:var(--brand-to)] font-bold text-primary-foreground ring-2 ring-white shadow`}
     >
       {initials}
     </div>
@@ -143,8 +143,8 @@ const SkeletonRow = () => (
 
 /* ─── AMOUNT BADGE ────────────────────────────── */
 const AmountBadge = ({ amount }) => (
-  <span className="inline-flex items-center gap-0.5 font-bold text-emerald-700">
-    <span className="text-[11px] font-bold text-emerald-400">৳</span>
+  <span className="inline-flex items-center gap-0.5 font-bold text-primary">
+    <span className="text-[11px] font-bold text-[color:var(--brand-to)]">৳</span>
     {fmtBDT(amount)}
   </span>
 );
@@ -175,7 +175,7 @@ const TablePagination = ({
         <select
           value={pageSize}
           onChange={(e) => onPageSizeChange(Number(e.target.value))}
-          className="h-8 rounded-lg border border-zinc-200 bg-white px-2 text-xs font-medium text-zinc-700 focus:outline-none focus:ring-2 focus:ring-emerald-300"
+          className="h-8 rounded-lg border border-zinc-200 bg-white px-2 text-xs font-medium text-zinc-700 focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.20)]"
         >
           {[5, 10, 20, 50].map((s) => (
             <option key={s} value={s}>
@@ -197,7 +197,7 @@ const TablePagination = ({
                 ? page <= 1
                 : page >= pageCount
             }
-            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-40"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-500 shadow-sm transition-colors hover:border-[color:rgba(77,140,30,0.24)] hover:bg-secondary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
             aria-label={label}
           >
             <Icon className="h-3.5 w-3.5" />
@@ -264,13 +264,13 @@ export default function MyInvestmentsPage() {
   ).length;
 
   return (
-    <main className="min-h-screen space-y-4 bg-zinc-50/60 p-3 sm:space-y-6 sm:p-6">
+    <main className="min-h-screen space-y-4  p-3 sm:space-y-6 sm:p-6">
       {/* ── PAGE HEADER ── */}
       <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-        <div className="h-[3px] w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500" />
+        <div className="h-[3px] w-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
         <div className="flex items-center gap-3 px-4 py-3.5 sm:px-5 sm:py-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 ring-1 ring-emerald-100 sm:h-9 sm:w-9">
-            <Wallet className="h-4 w-4 text-emerald-600" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-secondary ring-1 ring-[color:rgba(77,140,30,0.14)] sm:h-9 sm:w-9">
+            <Wallet className="h-4 w-4 text-primary" />
           </div>
           <div>
             <h1 className="text-sm font-bold tracking-tight text-zinc-900 sm:text-base">
@@ -287,7 +287,7 @@ export default function MyInvestmentsPage() {
       <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-3">
         {/* Profile card — full width on mobile, spans on larger */}
         {/* <div className="relative col-span-2 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm ring-1 ring-black/[0.03] sm:p-5 lg:col-span-1">
-          <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-emerald-400 to-teal-400" />
+          <div className="absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
           <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 sm:mb-4 sm:text-[11px]">
             Profile
           </p>
@@ -381,27 +381,27 @@ export default function MyInvestmentsPage() {
       {/* ── INVESTMENTS TABLE ── */}
       <section>
         <div className="w-full overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
-          <div className="h-[3px] w-full bg-gradient-to-r from-teal-400 to-emerald-400" />
+          <div className="h-[3px] w-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]" />
 
           {/* Toolbar */}
           <div className="flex flex-col gap-2.5 border-b border-zinc-100 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => { setShowActive(true); setFilterDeed("all"); setPage(1); }}
-                className={`text-sm font-bold transition-colors ${showActive && filterDeed === "all" ? "text-emerald-600 underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
+                className={`text-sm font-bold transition-colors ${showActive && filterDeed === "all" ? "text-primary underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
               >
                 Active Investments
               </button>
               <button
                 onClick={() => { setShowActive(false); setFilterDeed("all"); setPage(1); }}
-                className={`text-sm font-bold transition-colors ${!showActive && filterDeed === "all" ? "text-emerald-600 underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
+                className={`text-sm font-bold transition-colors ${!showActive && filterDeed === "all" ? "text-primary underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
               >
                 Previous Investments
               </button>
               {pendingDeedsCount > 0 && (
                 <button
                   onClick={() => { setFilterDeed("pending"); setPage(1); }}
-                  className={`text-sm font-bold transition-colors ${filterDeed === "pending" ? "text-amber-600 underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
+                  className={`text-sm font-bold transition-colors ${filterDeed === "pending" ? "text-primary underline underline-offset-4" : "text-zinc-400 hover:text-zinc-600"}`}
                 >
                   Pending Deeds ({pendingDeedsCount})
                 </button>
@@ -430,7 +430,7 @@ export default function MyInvestmentsPage() {
                 placeholder="Search…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="h-9 w-full rounded-xl border border-zinc-200 bg-zinc-50 pl-8 pr-8 text-sm text-zinc-800 placeholder-zinc-400 transition focus:border-emerald-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-100"
+                className="h-9 w-full rounded-xl border border-zinc-200 bg-zinc-50 pl-8 pr-8 text-sm text-zinc-800 placeholder-zinc-400 transition focus:border-[color:rgba(77,140,30,0.32)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.14)]"
               />
               {search && (
                 <button
@@ -511,7 +511,7 @@ export default function MyInvestmentsPage() {
                         {search && (
                           <button
                             onClick={() => setSearch("")}
-                            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-600 hover:border-emerald-300 hover:text-emerald-700"
+                            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-600 hover:border-[color:rgba(77,140,30,0.32)] hover:text-primary"
                           >
                             <X className="h-3 w-3" /> Clear
                           </button>
@@ -523,7 +523,7 @@ export default function MyInvestmentsPage() {
                   filtered.map((row, idx) => (
                     <tr
                       key={row.id}
-                      className="group cursor-pointer transition-colors hover:bg-emerald-50/40"
+                      className="group cursor-pointer transition-colors hover:bg-secondary"
                       onClick={() => router.push(`/investor/my-investments/${row.id}`)}
                     >
                       {/* SL */}
@@ -569,7 +569,7 @@ export default function MyInvestmentsPage() {
                             <span
                               className={`inline-flex items-center rounded-md px-2 py-1 text-[10px] font-bold ring-1 ring-inset ${isExpired
                                 ? "bg-red-50 text-red-700 ring-red-600/10"
-                                : "bg-emerald-50 text-emerald-700 ring-emerald-600/10"
+                                : "bg-secondary text-primary ring-[color:rgba(77,140,30,0.14)]"
                                 }`}
                             >
                               {isExpired ? "Expired" : "Active"}
@@ -586,7 +586,7 @@ export default function MyInvestmentsPage() {
                             <span
                               className={`inline-flex items-center rounded-md px-2 py-1 text-[10px] font-bold ring-1 ring-inset ${hasDeed
                                 ? "bg-zinc-50 text-zinc-700 ring-zinc-600/10"
-                                : "bg-amber-50 text-amber-700 ring-amber-600/10"
+                                : "bg-secondary text-primary ring-[color:rgba(77,140,30,0.14)]"
                                 }`}
                             >
                               {hasDeed ? "Issued" : "Pending"}
@@ -611,7 +611,7 @@ export default function MyInvestmentsPage() {
                       <td className="px-6 py-4 text-right">
                         <Link
                           href={`/investor/my-investments/${row.id}`}
-                          className="inline-flex h-8 w-8 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-50 hover:text-blue-600"
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-50 hover:text-primary"
                           aria-label="View investment details"
                         >
                           <Eye className="h-4 w-4" />

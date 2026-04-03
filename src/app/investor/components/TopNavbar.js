@@ -64,7 +64,7 @@ export default function TopNavbar() {
       desc: "Your positions are up to date",
       time: "2m ago",
       unread: true,
-      color: "bg-emerald-500",
+      color: "bg-primary",
       icon: TrendingUp,
     },
     {
@@ -73,7 +73,7 @@ export default function TopNavbar() {
       desc: "A fresh investment opportunity is live",
       time: "1h ago",
       unread: true,
-      color: "bg-blue-500",
+      color: "bg-primary",
       icon: TrendingUp,
     },
   ];
@@ -95,11 +95,11 @@ export default function TopNavbar() {
           </Button>
 
           <div className="flex items-center gap-2 md:hidden">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-emerald-500 text-[11px] font-extrabold text-white shadow-lg shadow-emerald-300/30">
+            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-primary text-[11px] font-extrabold text-primary-foreground shadow-[0_16px_40px_-28px_rgba(77,140,30,0.55)]">
               FI
             </div>
             <div className="leading-tight">
-              <div className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-emerald-600">
+              <div className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-primary">
                 Artman
               </div>
               <div className="text-[12px] font-semibold tracking-tight text-zinc-900">
@@ -110,11 +110,11 @@ export default function TopNavbar() {
 
           <div className="hidden md:flex flex-1 max-w-md">
             <div className="relative w-full group">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-emerald-500 transition-colors" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-primary transition-colors" />
               <input
                 type="text"
                 placeholder="Search farms, investments, reports…"
-                className="w-full rounded-2xl border border-zinc-200/80 bg-zinc-50/50 py-2 pl-10 pr-12 text-sm text-zinc-700 placeholder-zinc-400 outline-none focus:border-emerald-500/30 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all duration-300"
+                className="w-full rounded-2xl border border-zinc-200/80 bg-zinc-50/50 py-2 pl-10 pr-12 text-sm text-zinc-700 placeholder-zinc-400 outline-none focus:border-[color:rgba(77,140,30,0.35)] focus:bg-white focus:ring-4 focus:ring-[color:rgba(77,140,30,0.12)] transition-all duration-300"
               />
               <div className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1">
                 <kbd className="hidden sm:inline-flex items-center justify-center rounded-[6px] border border-zinc-200 bg-white px-2 py-0.5 text-[10px] font-medium text-zinc-400 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
@@ -126,10 +126,10 @@ export default function TopNavbar() {
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="hidden sm:flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-3 py-1 text-[11px] font-medium text-emerald-700 backdrop-blur-sm">
+          <div className="hidden sm:flex items-center gap-2 rounded-full border border-[color:rgba(77,140,30,0.22)] bg-secondary px-3 py-1 text-[11px] font-medium text-primary backdrop-blur-sm">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[color:var(--brand-to)] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </span>
             Live System
           </div>
@@ -203,7 +203,7 @@ export default function TopNavbar() {
                   {notifications.map((n) => (
                     <div
                       key={n.id}
-                      className={`group flex gap-4 px-4 py-3 hover:bg-zinc-50/80 rounded-xl cursor-pointer transition-all ${n.unread ? "bg-blue-50/30" : ""}`}
+                      className={`group flex gap-4 px-4 py-3 hover:bg-zinc-50/80 rounded-xl cursor-pointer transition-all ${n.unread ? "bg-secondary" : ""}`}
                     >
                       <div
                         className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full shadow-sm ring-1 ring-inset ring-black/5 ${n.color} text-white`}
@@ -224,7 +224,7 @@ export default function TopNavbar() {
                         </p>
                       </div>
                       {n.unread && (
-                        <div className="self-center h-1.5 w-1.5 rounded-full bg-blue-500 ring-2 ring-blue-100" />
+                        <div className="self-center h-1.5 w-1.5 rounded-full bg-primary ring-2 ring-[color:rgba(77,140,30,0.16)]" />
                       )}
                     </div>
                   ))}
@@ -236,7 +236,7 @@ export default function TopNavbar() {
           <div className="relative pl-1">
             <button
               type="button"
-              className="group flex items-center gap-2 rounded-full border border-zinc-200/60 bg-white pl-1 pr-3 py-1 hover:border-emerald-200 hover:ring-2 hover:ring-emerald-500/10 hover:bg-zinc-50 transition-all duration-300"
+              className="group flex items-center gap-2 rounded-full border border-zinc-200/60 bg-white pl-1 pr-3 py-1 hover:border-[color:rgba(77,140,30,0.28)] hover:ring-2 hover:ring-[color:rgba(77,140,30,0.10)] hover:bg-zinc-50 transition-all duration-300"
               onClick={() => {
                 setProfileOpen(!profileOpen);
                 setNotifOpen(false);
@@ -250,14 +250,14 @@ export default function TopNavbar() {
                     className="h-8 w-8 rounded-full object-cover ring-2 ring-white"
                   />
                 ) : (
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[color:var(--brand-from)] to-[color:var(--brand-to)] text-[10px] font-bold text-primary-foreground shadow-sm ring-2 ring-white">
                     {initials}
                   </span>
                 )}
-                <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500"></span>
+                <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-primary"></span>
               </div>
               <div className="hidden sm:block text-left">
-                <p className="text-[11px] font-semibold text-zinc-900 leading-tight group-hover:text-emerald-700 transition-colors">
+                <p className="text-[11px] font-semibold text-zinc-900 leading-tight group-hover:text-primary transition-colors">
                   {displayName}
                 </p>
                 <p className="text-[9px] font-medium text-zinc-400 leading-tight uppercase tracking-wider">
@@ -279,7 +279,7 @@ export default function TopNavbar() {
                       className="h-10 w-10 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-xs shadow-sm">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[color:var(--brand-from)] to-[color:var(--brand-to)] flex items-center justify-center text-primary-foreground font-bold text-xs shadow-sm">
                       {initials}
                     </div>
                   )}
@@ -319,7 +319,7 @@ export default function TopNavbar() {
               type="text"
               autoFocus
               placeholder="Search investments…"
-              className="w-full rounded-xl border border-zinc-200/80 bg-zinc-50/50 py-2.5 pl-10 pr-4 text-sm text-zinc-700 placeholder-zinc-400 outline-none focus:border-emerald-500/30 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all duration-300"
+              className="w-full rounded-xl border border-zinc-200/80 bg-zinc-50/50 py-2.5 pl-10 pr-4 text-sm text-zinc-700 placeholder-zinc-400 outline-none focus:border-[color:rgba(77,140,30,0.35)] focus:bg-white focus:ring-4 focus:ring-[color:rgba(77,140,30,0.12)] transition-all duration-300"
             />
           </div>
         </div>
@@ -329,13 +329,13 @@ export default function TopNavbar() {
         className={`fixed inset-0 z-40 flex transform transition-opacity duration-300 lg:hidden ${mobileMenuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}
       >
         <div
-          className={`flex h-full w-52 flex-col border-r border-zinc-200 bg-white px-4 py-6 shadow-xl transform transition-transform duration-300 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
+          className={`flex h-full w-48 flex-col border-r border-zinc-200 bg-white px-4 py-6 shadow-xl transform transition-transform duration-300 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500 text-xs font-semibold text-white">FI</div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-xs font-semibold text-primary-foreground">FI</div>
               <div>
-                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-500">
+                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
                   Farming
                 </div>
                 <div className="text-sm font-semibold tracking-tight text-zinc-900">
@@ -361,11 +361,11 @@ export default function TopNavbar() {
               <a
                 key={item.name}
                 href={item.href}
-                className="flex items-center gap-3 rounded-md px-2 py-2 font-medium text-zinc-600 transition hover:bg-emerald-50 hover:text-emerald-700"
+                className="flex items-center gap-3 rounded-md px-2 py-2 font-medium text-zinc-600 transition hover:bg-secondary hover:text-primary"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {item.icon && (
-                  <span className="flex h-8 w-8 items-center justify-center rounded-md bg-emerald-50 text-emerald-700">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-md bg-secondary text-primary">
                     <item.icon className="h-4 w-4" />
                   </span>
                 )}

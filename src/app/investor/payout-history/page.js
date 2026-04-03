@@ -30,7 +30,7 @@ function InvoicePrintView({ payout, user, innerRef }) {
         </div>
         <div className="text-right">
           <h3 className="text-3xl font-bold tracking-tight text-zinc-900">INVOICE</h3>
-          <p className="mt-1 text-sm font-medium text-emerald-600">PAID OUT</p>
+          <p className="mt-1 text-sm font-medium text-primary">PAID OUT</p>
         </div>
       </div>
 
@@ -188,7 +188,7 @@ export default function InvestorPayoutHistoryPage() {
       header: "Cleared Profit",
       tdClassName: "whitespace-nowrap px-6 py-4",
       cell: (p) => (
-        <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+        <span className="text-primary font-medium">
           ৳{Number(p.totalProfit).toLocaleString("en-US")}
         </span>
       ),
@@ -198,7 +198,7 @@ export default function InvestorPayoutHistoryPage() {
       header: "Total Transferred",
       tdClassName: "whitespace-nowrap px-6 py-4 text-right",
       cell: (p) => (
-        <span className="text-base font-bold text-zinc-900 dark:text-zinc-100 bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md">
+        <span className="text-base font-bold text-zinc-900 bg-secondary text-primary px-2.5 py-1 rounded-md">
           ৳{Number(p.amount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
         </span>
       ),
@@ -209,7 +209,7 @@ export default function InvestorPayoutHistoryPage() {
     <div className="space-y-8 p-2">
       <header className="flex flex-col gap-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[color:rgba(16,185,129,0.1)] text-emerald-600 ring-1 ring-emerald-500/20">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-primary ring-1 ring-[color:rgba(77,140,30,0.18)]">
             <ReceiptIndianRupee className="h-6 w-6" />
           </div>
           <div>

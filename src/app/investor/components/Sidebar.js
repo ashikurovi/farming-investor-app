@@ -15,7 +15,7 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
 
-  const sidebarWidth = collapsed ? "w-20" : "w-64";
+  const sidebarWidth = collapsed ? "w-16" : "w-56";
 
   const handleLogout = async () => {
     try {
@@ -35,20 +35,20 @@ export default function Sidebar() {
   return (
     <>
       <aside
-        className={`hidden ${sidebarWidth} flex-shrink-0 flex-col border-r border-zinc-100 bg-white px-3 py-6 transition-all duration-300 ease-in-out lg:flex sticky top-0 h-screen overflow-hidden`}
+        className={`hidden ${sidebarWidth} flex-shrink-0 flex-col border-r border-zinc-100 bg-white px-2 py-5 transition-all duration-300 ease-in-out lg:flex sticky top-0 h-screen overflow-hidden`}
         style={{
           background: "linear-gradient(180deg, #ffffff 0%, #f9fafb 100%)",
         }}
       >
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-emerald-50/60 to-transparent" />
-        <div className="mb-6 flex items-center justify-between px-1">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-secondary to-transparent" />
+        <div className="mb-5 flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-emerald-500 text-xs font-semibold text-white shadow-lg shadow-emerald-300/30">
+            <div className="flex h-8 w-8 items-center justify-center rounded-2xl bg-primary text-[10px] font-semibold text-primary-foreground shadow-[0_16px_40px_-28px_rgba(77,140,30,0.55)]">
               FI
             </div>
             {!collapsed && (
               <div className="overflow-hidden">
-                <div className="text-[9px] font-extrabold uppercase tracking-[0.28em] text-emerald-500">
+                <div className="text-[9px] font-extrabold uppercase tracking-[0.28em] text-primary">
                   Artman
                 </div>
                 <div className="text-[13px] font-semibold tracking-tight text-zinc-800">
@@ -71,27 +71,27 @@ export default function Sidebar() {
                 key={item.name}
                 href={item.href}
                 className={[
-                  "group relative flex items-center gap-3 rounded-xl px-2.5 py-2 font-medium transition-all duration-200",
+                  "group relative flex items-center gap-2.5 rounded-xl px-2 py-1.5 font-medium transition-all duration-200",
                   collapsed ? "justify-center" : "",
                   isActive
-                    ? "bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-200/60"
-                    : "text-zinc-500 hover:bg-emerald-50/80 hover:text-emerald-700",
-                  "text-[13px]",
+                    ? "bg-gradient-to-r from-[color:var(--brand-from)] via-[color:var(--brand-to)] to-[color:var(--brand-to)] text-primary-foreground shadow-[0_16px_40px_-28px_rgba(77,140,30,0.55)]"
+                    : "text-zinc-500 hover:bg-secondary hover:text-primary",
+                  "text-[12px]",
                 ].join(" ")}
               >
                 {isActive && !collapsed && (
-                  <span className="absolute -left-4 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-emerald-400" />
+                  <span className="absolute -left-4 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-[color:var(--brand-to)]" />
                 )}
                 {item.icon && (
                   <span
                     className={[
-                      "relative flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200 shrink-0",
+                      "relative flex h-7 w-7 items-center justify-center rounded-lg transition-all duration-200 shrink-0",
                       isActive
-                        ? "bg-white/20 text-white"
-                        : "bg-zinc-100 text-zinc-500 group-hover:bg-emerald-100 group-hover:text-emerald-600",
+                        ? "bg-white/20 text-primary-foreground"
+                        : "bg-zinc-100 text-zinc-500 group-hover:bg-secondary group-hover:text-primary",
                     ].join(" ")}
                   >
-                    <item.icon className="h-5 w-5" />
+                    <item.icon className="h-4 w-4" />
                   </span>
                 )}
                 {!collapsed && (
@@ -105,18 +105,18 @@ export default function Sidebar() {
             <button
               type="button"
               aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-              className={`group flex w-full items-center gap-3 rounded-xl px-2.5 py-2 font-medium text-zinc-700 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-900 ${collapsed ? "justify-center" : ""}`}
+              className={`group flex w-full items-center gap-2.5 rounded-xl px-2 py-1.5 font-medium text-zinc-700 transition-all duration-200 hover:bg-secondary hover:text-zinc-900 ${collapsed ? "justify-center" : ""}`}
               onClick={() => setCollapsed((prev) => !prev)}
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-zinc-500 transition-colors shrink-0 group-hover:bg-emerald-100 group-hover:text-emerald-600">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-100 text-zinc-500 transition-colors shrink-0 group-hover:bg-secondary group-hover:text-primary">
                 {collapsed ? (
-                  <ChevronsRight className="h-5 w-5" />
+                  <ChevronsRight className="h-4 w-4" />
                 ) : (
-                  <ChevronsLeft className="h-5 w-5" />
+                  <ChevronsLeft className="h-4 w-4" />
                 )}
               </span>
               {!collapsed && (
-                <span className="text-[13px] font-semibold text-zinc-500 group-hover:text-emerald-700">
+                <span className="text-[12px] font-semibold text-zinc-500 group-hover:text-primary">
                   Collapse
                 </span>
               )}
@@ -128,14 +128,14 @@ export default function Sidebar() {
           <div className="h-px bg-gradient-to-r from-transparent via-zinc-200 to-transparent" />
           {!collapsed && (
             <div
-              className="rounded-2xl p-3.5"
+              className="rounded-2xl p-3"
               style={{
-                background: "linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)",
-                border: "1px solid #d1fae5",
+                background: "linear-gradient(135deg, var(--secondary) 0%, #ffffff 100%)",
+                border: "1px solid rgba(77,140,30,0.18)",
               }}
             >
               <div className="flex items-center gap-3 mb-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white text-emerald-600 shadow-sm ring-1 ring-emerald-100">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white text-primary shadow-sm ring-1 ring-[color:rgba(77,140,30,0.14)]">
                   <CircleHelp className="h-5 w-5" />
                 </div>
                 <div>
@@ -149,7 +149,7 @@ export default function Sidebar() {
               </div>
               <Link
                 href="/landing/contact"
-                className="inline-flex w-full items-center justify-center rounded-xl bg-white px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-emerald-700 ring-1 ring-emerald-200 transition-all hover:bg-emerald-600 hover:text-white hover:ring-emerald-600 shadow-sm"
+                className="inline-flex w-full items-center justify-center rounded-xl bg-white px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-primary ring-1 ring-[color:rgba(77,140,30,0.20)] transition-all hover:bg-primary hover:text-primary-foreground hover:ring-primary shadow-sm"
               >
                 Open support
               </Link>
@@ -184,7 +184,7 @@ export default function Sidebar() {
                   href="https://www.nexoviasoft.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:underline font-medium text-emerald-600 transition-colors"
+                  className="hover:underline font-medium text-primary transition-colors"
                 >
                   NexoviaSoft
                 </a>
@@ -213,7 +213,7 @@ export default function Sidebar() {
                   className={[
                     "flex h-11 w-11 items-center justify-center rounded-2xl transition-all",
                     isActive
-                      ? "bg-emerald-600 text-white shadow-[0_16px_40px_-26px_rgba(16,185,129,0.7)] ring-1 ring-emerald-500/30"
+                      ? "bg-primary text-primary-foreground shadow-[0_16px_40px_-26px_rgba(77,140,30,0.65)] ring-1 ring-[color:rgba(77,140,30,0.25)]"
                       : "bg-zinc-100 text-zinc-600 ring-1 ring-zinc-200",
                   ].join(" ")}
                 >
@@ -222,7 +222,7 @@ export default function Sidebar() {
                 <span
                   className={[
                     "text-[10px] font-semibold leading-none",
-                    isActive ? "text-emerald-700" : "text-zinc-500",
+                    isActive ? "text-primary" : "text-zinc-500",
                   ].join(" ")}
                 >
                   {item.name}
