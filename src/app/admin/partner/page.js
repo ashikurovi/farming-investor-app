@@ -350,7 +350,7 @@ function AdminPartnerDashboard() {
           />
         </div>
       </div>
-      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-3 mb-4 mt-8 no-print">
+      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 mb-4 mt-8 no-print">
         <StatCard
           title="Total Partner Fund"
           value={`৳${totalPool.toLocaleString()}`}
@@ -362,12 +362,6 @@ function AdminPartnerDashboard() {
           value={`৳${totalCurrentProfit.toLocaleString()}`}
           icon={<TrendingUp className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />}
           gradient="from-emerald-500/20 to-teal-500/20"
-        />
-        <StatCard
-          title="Total Profit Distributed"
-          value={`৳${totalDistributed.toLocaleString()}`}
-          icon={<Banknote className="h-6 w-6 text-purple-600 dark:text-purple-400" />}
-          gradient="from-purple-500/20 to-pink-500/20"
         />
       </div>
 
