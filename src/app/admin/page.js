@@ -21,9 +21,92 @@ import {
   CircleDollarSign,
   Banknote,
   PiggyBank,
-  Briefcase
+  Briefcase,
 } from "lucide-react";
 import { formatNumber, formatCurrencyBDT } from "@/lib/utils";
+
+const MODULE_THEMES = {
+  blue: {
+    bar: "from-blue-500 via-indigo-500 to-blue-600",
+    iconBg: "bg-gradient-to-br from-blue-500 to-indigo-600",
+    iconRing: "ring-[color:rgba(59,130,246,0.28)]",
+    blobA: "rgba(59,130,246,0.18)",
+    blobB: "rgba(99,102,241,0.12)",
+    value: "text-blue-600 dark:text-blue-400",
+  },
+  emerald: {
+    bar: "from-emerald-500 via-teal-500 to-emerald-600",
+    iconBg: "bg-gradient-to-br from-emerald-500 to-teal-600",
+    iconRing: "ring-[color:rgba(16,185,129,0.28)]",
+    blobA: "rgba(16,185,129,0.18)",
+    blobB: "rgba(20,184,166,0.12)",
+    value: "text-emerald-600 dark:text-emerald-400",
+  },
+  amber: {
+    bar: "from-amber-500 via-orange-500 to-amber-600",
+    iconBg: "bg-gradient-to-br from-amber-500 to-orange-600",
+    iconRing: "ring-[color:rgba(245,158,11,0.28)]",
+    blobA: "rgba(245,158,11,0.18)",
+    blobB: "rgba(249,115,22,0.12)",
+    value: "text-amber-600 dark:text-amber-400",
+  },
+  violet: {
+    bar: "from-violet-500 via-purple-500 to-violet-600",
+    iconBg: "bg-gradient-to-br from-violet-500 to-purple-600",
+    iconRing: "ring-[color:rgba(139,92,246,0.28)]",
+    blobA: "rgba(139,92,246,0.18)",
+    blobB: "rgba(168,85,247,0.12)",
+    value: "text-violet-600 dark:text-violet-400",
+  },
+  rose: {
+    bar: "from-rose-500 via-pink-500 to-rose-600",
+    iconBg: "bg-gradient-to-br from-rose-500 to-pink-600",
+    iconRing: "ring-[color:rgba(244,63,94,0.28)]",
+    blobA: "rgba(244,63,94,0.18)",
+    blobB: "rgba(236,72,153,0.12)",
+    value: "text-rose-600 dark:text-rose-400",
+  },
+  red: {
+    bar: "from-red-500 via-rose-500 to-red-600",
+    iconBg: "bg-gradient-to-br from-red-500 to-rose-600",
+    iconRing: "ring-[color:rgba(239,68,68,0.28)]",
+    blobA: "rgba(239,68,68,0.18)",
+    blobB: "rgba(244,63,94,0.12)",
+    value: "text-red-600 dark:text-red-400",
+  },
+  purple: {
+    bar: "from-purple-500 via-fuchsia-500 to-purple-600",
+    iconBg: "bg-gradient-to-br from-purple-500 to-fuchsia-600",
+    iconRing: "ring-[color:rgba(168,85,247,0.28)]",
+    blobA: "rgba(168,85,247,0.18)",
+    blobB: "rgba(217,70,239,0.12)",
+    value: "text-purple-600 dark:text-purple-400",
+  },
+  pink: {
+    bar: "from-pink-500 via-rose-500 to-pink-600",
+    iconBg: "bg-gradient-to-br from-pink-500 to-rose-600",
+    iconRing: "ring-[color:rgba(236,72,153,0.28)]",
+    blobA: "rgba(236,72,153,0.18)",
+    blobB: "rgba(244,63,94,0.12)",
+    value: "text-pink-600 dark:text-pink-400",
+  },
+  indigo: {
+    bar: "from-indigo-500 via-blue-500 to-indigo-600",
+    iconBg: "bg-gradient-to-br from-indigo-500 to-blue-600",
+    iconRing: "ring-[color:rgba(99,102,241,0.28)]",
+    blobA: "rgba(99,102,241,0.18)",
+    blobB: "rgba(59,130,246,0.12)",
+    value: "text-indigo-600 dark:text-indigo-400",
+  },
+  orange: {
+    bar: "from-orange-500 via-amber-500 to-orange-600",
+    iconBg: "bg-gradient-to-br from-orange-500 to-amber-600",
+    iconRing: "ring-[color:rgba(249,115,22,0.28)]",
+    blobA: "rgba(249,115,22,0.18)",
+    blobB: "rgba(245,158,11,0.12)",
+    value: "text-orange-600 dark:text-orange-400",
+  },
+};
 
 export default function AdminDashboardPage() {
   const { data: stats, isLoading: statsLoading } = useGetProjectsStatsQuery();
@@ -31,19 +114,24 @@ export default function AdminDashboardPage() {
     useGetRecentInvestmentsQuery({ limit: 5 });
 
   const statCards = [
-
     {
       label: "Investor capital",
-      value: statsLoading ? "—" : formatCurrencyBDT(stats?.investorTotalInvestment),
+      value: statsLoading
+        ? "—"
+        : formatCurrencyBDT(stats?.investorTotalInvestment),
       change: "",
       icon: PiggyBank,
+      tone: "emerald",
     },
 
     {
       label: "Partner capital",
-      value: statsLoading ? "—" : formatCurrencyBDT(stats?.partnerTotalInvestment),
+      value: statsLoading
+        ? "—"
+        : formatCurrencyBDT(stats?.partnerTotalInvestment),
       change: "",
       icon: Briefcase,
+      tone: "violet",
     },
 
     {
@@ -51,6 +139,7 @@ export default function AdminDashboardPage() {
       value: statsLoading ? "—" : formatNumber(stats?.totalProjects),
       change: "",
       icon: Sprout,
+      tone: "indigo",
     },
 
     {
@@ -58,6 +147,7 @@ export default function AdminDashboardPage() {
       value: statsLoading ? "—" : formatNumber(stats?.activeInvestors),
       change: "",
       icon: Users,
+      tone: "blue",
     },
 
     {
@@ -65,26 +155,29 @@ export default function AdminDashboardPage() {
       value: statsLoading ? "—" : formatCurrencyBDT(stats?.totalInvestment),
       change: "",
       icon: Wallet,
+      tone: "emerald",
     },
     {
       label: "Total sell",
       value: statsLoading ? "—" : formatCurrencyBDT(stats?.totalSell),
       change: "",
       icon: Banknote,
+      tone: "blue",
     },
     {
       label: "Total cost",
       value: statsLoading ? "—" : formatCurrencyBDT(stats?.totalCost),
       change: "",
       icon: CircleDollarSign,
+      tone: "amber",
     },
     {
       label: "Total profit",
       value: statsLoading ? "—" : formatCurrencyBDT(stats?.totalProfit),
       change: "",
       icon: Activity,
+      tone: "orange",
     },
-
 
     // {
     //   label: "Avg. yield (12m)",
@@ -97,75 +190,131 @@ export default function AdminDashboardPage() {
   ];
 
   const moduleCounters = [
-    { label: "Accounts", count: stats?.moduleCounts?.users ?? 0, icon: Users, color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-500/10", border: "border-blue-100 dark:border-blue-500/20" },
-    { label: "Investments", count: stats?.moduleCounts?.investments ?? 0, icon: TrendingUp, color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-500/10", border: "border-emerald-100 dark:border-emerald-500/20" },
-    { label: "Agreements", count: stats?.moduleCounts?.deeds ?? 0, icon: FileText, color: "text-amber-500", bg: "bg-amber-50 dark:bg-amber-500/10", border: "border-amber-100 dark:border-amber-500/20" },
+    {
+      label: "Accounts",
+      count: stats?.moduleCounts?.users ?? 0,
+      icon: Users,
+      tone: "blue",
+    },
+    {
+      label: "Investments",
+      count: stats?.moduleCounts?.investments ?? 0,
+      icon: TrendingUp,
+      tone: "emerald",
+    },
+    {
+      label: "Agreements",
+      count: stats?.moduleCounts?.deeds ?? 0,
+      icon: FileText,
+      tone: "amber",
+    },
     // { label: "Yield Reports", count: stats?.moduleCounts?.reports ?? 0, icon: Activity, color: "text-cyan-500", bg: "bg-cyan-50 dark:bg-cyan-500/10", border: "border-cyan-100 dark:border-cyan-500/20" },
-    { label: "Partner Payouts", count: stats?.moduleCounts?.partnerPayouts ?? 0, icon: CreditCard, color: "text-violet-500", bg: "bg-violet-50 dark:bg-violet-500/10", border: "border-violet-100 dark:border-violet-500/20" },
-    { label: "Inquiries", count: stats?.moduleCounts?.contacts ?? 0, icon: MessageSquare, color: "text-rose-500", bg: "bg-rose-50 dark:bg-rose-500/10", border: "border-rose-100 dark:border-rose-500/20" },
-    { label: "Notices", count: stats?.moduleCounts?.notices ?? 0, icon: Bell, color: "text-red-500", bg: "bg-red-50 dark:bg-red-500/10", border: "border-red-100 dark:border-red-500/20" },
-    { label: "Banners", count: stats?.moduleCounts?.banners ?? 0, icon: Monitor, color: "text-purple-500", bg: "bg-purple-50 dark:bg-purple-500/10", border: "border-purple-100 dark:border-purple-500/20" },
-    { label: "Gallery", count: stats?.moduleCounts?.glarry ?? 0, icon: Camera, color: "text-pink-500", bg: "bg-pink-50 dark:bg-pink-500/10", border: "border-pink-100 dark:border-pink-500/20" },
-    { label: "Investor Types", count: stats?.moduleCounts?.investorTypes ?? 0, icon: Shield, color: "text-indigo-500", bg: "bg-indigo-50 dark:bg-indigo-500/10", border: "border-indigo-100 dark:border-indigo-500/20" },
-    { label: "Tier Packages", count: stats?.moduleCounts?.investAmounts ?? 0, icon: Coins, color: "text-orange-500", bg: "bg-orange-50 dark:bg-orange-500/10", border: "border-orange-100 dark:border-orange-500/20" },
+    {
+      label: "Partner Payouts",
+      count: stats?.moduleCounts?.partnerPayouts ?? 0,
+      icon: CreditCard,
+      tone: "violet",
+    },
+    {
+      label: "Inquiries",
+      count: stats?.moduleCounts?.contacts ?? 0,
+      icon: MessageSquare,
+      tone: "rose",
+    },
+    {
+      label: "Notices",
+      count: stats?.moduleCounts?.notices ?? 0,
+      icon: Bell,
+      tone: "red",
+    },
+    {
+      label: "Banners",
+      count: stats?.moduleCounts?.banners ?? 0,
+      icon: Monitor,
+      tone: "purple",
+    },
+    {
+      label: "Gallery",
+      count: stats?.moduleCounts?.glarry ?? 0,
+      icon: Camera,
+      tone: "pink",
+    },
+    {
+      label: "Investor Types",
+      count: stats?.moduleCounts?.investorTypes ?? 0,
+      icon: Shield,
+      tone: "indigo",
+    },
+    {
+      label: "Tier Packages",
+      count: stats?.moduleCounts?.investAmounts ?? 0,
+      icon: Coins,
+      tone: "orange",
+    },
   ];
 
   return (
     <div className="space-y-8 animate-[fadeIn_0.5s_ease-out]">
       <div className="mb-2">
         <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-          <CircleDollarSign className="w-5 h-5 text-emerald-500" /> Financial & Sales Overview
+          <CircleDollarSign className="w-5 h-5 text-emerald-500" /> Financial &
+          Sales Overview
         </h2>
       </div>
       <section className="grid gap-6 grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {statCards.map((card, index) => (
           <div
             key={card.label}
-            className="group relative overflow-hidden rounded-3xl border border-zinc-100 bg-white p-6 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.1)] dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-[0_2px_10px_-4px_rgba(0,0,0,0.3)] dark:hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.4)]"
+            className="group relative overflow-hidden rounded-3xl border border-zinc-100 bg-white p-5 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.1)] dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-[0_2px_10px_-4px_rgba(0,0,0,0.3)] dark:hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.4)]"
             style={{
               animationDelay: `${index * 100}ms`,
             }}
           >
-            {/* Dynamic background gradient blob */}
-            <div
-              className="absolute -right-10 -top-10 h-40 w-40 rounded-full blur-3xl transition-all duration-700 group-hover:scale-150"
-              style={{ background: "rgba(124,194,46,0.18)" }}
-            />
+            {(() => {
+              const t = MODULE_THEMES[card.tone] ?? MODULE_THEMES.emerald;
+              return (
+                <>
+                  <div
+                    className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${t.bar}`}
+                  />
+                  <div
+                    className="absolute -right-10 -top-10 h-36 w-36 rounded-full blur-3xl transition-all duration-700 group-hover:scale-150"
+                    style={{ background: t.blobA }}
+                  />
+                  <div
+                    className="absolute -left-10 -bottom-10 h-28 w-28 rounded-full blur-3xl transition-all duration-700 group-hover:scale-150"
+                    style={{ background: t.blobB }}
+                  />
 
-            {/* Bottom left blob for balance */}
-            <div
-              className="absolute -left-10 -bottom-10 h-32 w-32 rounded-full blur-3xl transition-all duration-700 group-hover:scale-150"
-              style={{ background: "rgba(77,140,30,0.14)" }}
-            />
+                  <div className="relative z-10 flex flex-col justify-between h-full">
+                    <div className="flex items-center justify-between mb-5">
+                      <div
+                        className={`relative flex h-11 w-11 items-center justify-center rounded-2xl text-white ring-1 ${t.iconRing} transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-lg ${t.iconBg}`}
+                      >
+                        <card.icon className="h-5 w-5 transition-transform duration-500 group-hover:-rotate-12" />
+                      </div>
+                      {card.change ? (
+                        <span className="flex items-center gap-1 text-xs font-bold text-zinc-600 bg-zinc-50/80 backdrop-blur-sm px-2.5 py-1 rounded-full border border-zinc-100 shadow-sm dark:text-zinc-300 dark:bg-zinc-800/40 dark:border-zinc-700">
+                          <TrendingUp className="h-3 w-3" />
+                          {card.change}
+                        </span>
+                      ) : null}
+                    </div>
 
-            <div className="relative flex flex-col h-full justify-between z-10">
-              <div className="flex items-center justify-between mb-6">
-                <div
-                  className="relative rounded-2xl p-3 text-white ring-1 ring-[color:rgba(124,194,46,0.25)] transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-lg"
-                  style={{
-                    background:
-                      "linear-gradient(135deg,var(--brand-from),var(--brand-to))",
-                  }}
-                >
-                  <card.icon className="h-6 w-6 transition-transform duration-500 group-hover:-rotate-12" />
-                </div>
-                {card.change && (
-                  <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50/80 backdrop-blur-sm px-2.5 py-1 rounded-full border border-emerald-100 shadow-sm dark:text-emerald-400 dark:bg-emerald-900/30 dark:border-emerald-800">
-                    <TrendingUp className="h-3 w-3" />
-                    {card.change}
-                  </span>
-                )}
-              </div>
-
-              <div className="flex flex-col lg:items-end lg:text-right space-y-1">
-                <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
-                  {card.label}
-                </p>
-                <h3 className="text-2xl font-black tracking-tight text-zinc-900 transition-transform duration-300 origin-left group-hover:scale-105 lg:text-3xl lg:origin-right dark:text-zinc-100">
-                  {card.value}
-                </h3>
-              </div>
-            </div>
+                    <div className="flex flex-col lg:items-end lg:text-right space-y-1">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400 dark:text-zinc-500">
+                        {card.label}
+                      </p>
+                      <h3
+                        className={`text-2xl font-black tracking-tight transition-transform duration-300 origin-left group-hover:scale-105 lg:text-3xl lg:origin-right ${t.value}`}
+                      >
+                        {card.value}
+                      </h3>
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
           </div>
         ))}
       </section>
@@ -192,31 +341,50 @@ export default function AdminDashboardPage() {
           {moduleCounters.map((item, i) => (
             <div
               key={item.label}
-              className={`group flex items-center gap-4 rounded-2xl border ${item.border} p-4 transition-all duration-300 hover:scale-[1.02] hover:shadow-md bg-white dark:bg-zinc-800/20`}
+              className="group relative overflow-hidden rounded-2xl border border-zinc-100 bg-white px-4 py-3 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
               style={{ animationDelay: `${50 * i}ms` }}
             >
-              <div
-                className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl transition-transform duration-300 group-hover:-rotate-6 ${item.bg} ${item.color}`}
-              >
-                <item.icon className="h-5 w-5" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-2xl font-black text-zinc-900 dark:text-zinc-100">
-                  {statsLoading ? "—" : formatNumber(item.count)}
-                </span>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 line-clamp-1">
-                  {item.label}
-                </span>
-              </div>
+              {(() => {
+                const t = MODULE_THEMES[item.tone] ?? MODULE_THEMES.blue;
+                return (
+                  <>
+                    <div
+                      className="absolute inset-y-0 left-0 w-1.5"
+                      style={{
+                        background: `linear-gradient(180deg, ${t.blobA}, ${t.blobB})`,
+                      }}
+                    />
+
+                    <div className="relative z-10 flex items-center gap-3">
+                      <div
+                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ring-1 ${t.iconRing}`}
+                        style={{ background: t.blobA }}
+                      >
+                        <item.icon className={`h-5 w-5 ${t.value}`} />
+                      </div>
+                      <div className="min-w-0">
+                        <div
+                          className={`text-lg font-black leading-none ${t.value}`}
+                        >
+                          {statsLoading ? "—" : formatNumber(item.count)}
+                        </div>
+                        <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 truncate">
+                          {item.label}
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
           ))}
         </div>
-      </section >
+      </section>
 
       {/* Bottom Panels */}
-      < section className="grid gap-6 lg:grid-cols-[minmax(0,2fr),minmax(0,1.4fr)]" >
+      <section className="grid gap-6 lg:grid-cols-[minmax(0,2fr),minmax(0,1.4fr)]">
         {/* Activity Panel */}
-        < div className="group rounded-3xl border border-zinc-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-emerald-100/50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-emerald-800/50" >
+        <div className="group rounded-3xl border border-zinc-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-emerald-100/50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-emerald-800/50">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <div className="rounded-2xl bg-[color:rgba(124,194,46,0.18)] p-2.5 text-[color:rgb(77,140,30)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 dark:bg-[color:rgba(124,194,46,0.18)] dark:text-[color:rgb(124,194,46)]">
@@ -242,7 +410,14 @@ export default function AdminDashboardPage() {
                 Weekly Investments
               </div>
               <div className="text-xs font-bold text-[color:rgb(77,140,30)] dark:text-[color:rgb(124,194,46)]">
-                {recentLoading ? "—" : formatCurrencyBDT((recent ?? []).reduce((s, r) => s + Number(r.amount || 0), 0))}
+                {recentLoading
+                  ? "—"
+                  : formatCurrencyBDT(
+                      (recent ?? []).reduce(
+                        (s, r) => s + Number(r.amount || 0),
+                        0,
+                      ),
+                    )}
               </div>
             </div>
             <div className="h-64 w-full px-2 pb-2">
@@ -262,21 +437,47 @@ export default function AdminDashboardPage() {
                   const innerH = H - P * 2;
                   const len = values.length;
                   const points = values.map((v, idx) => {
-                    const x = len === 1 ? P + innerW / 2 : P + (idx / (len - 1)) * innerW;
+                    const x =
+                      len === 1
+                        ? P + innerW / 2
+                        : P + (idx / (len - 1)) * innerW;
                     const y = P + innerH - (v / max) * innerH;
                     return [x, y];
                   });
-                  const path = points.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x},${y}`).join(" ");
-                  const area = `M${P},${P + innerH} ` + points.map(([x, y]) => `L${x},${y}`).join(" ") + ` L${P + innerW},${P + innerH} Z`;
+                  const path = points
+                    .map(([x, y], i) => `${i === 0 ? "M" : "L"}${x},${y}`)
+                    .join(" ");
+                  const area =
+                    `M${P},${P + innerH} ` +
+                    points.map(([x, y]) => `L${x},${y}`).join(" ") +
+                    ` L${P + innerW},${P + innerH} Z`;
                   return (
-                    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="h-full w-full">
+                    <svg
+                      viewBox={`0 0 ${W} ${H}`}
+                      preserveAspectRatio="none"
+                      className="h-full w-full"
+                    >
                       <defs>
                         <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#7cc22e" stopOpacity="0.22" />
-                          <stop offset="100%" stopColor="#4d8c1e" stopOpacity="0.03" />
+                          <stop
+                            offset="0%"
+                            stopColor="#7cc22e"
+                            stopOpacity="0.22"
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="#4d8c1e"
+                            stopOpacity="0.03"
+                          />
                         </linearGradient>
                       </defs>
-                      <rect x="0" y="0" width={W} height={H} fill="transparent" />
+                      <rect
+                        x="0"
+                        y="0"
+                        width={W}
+                        height={H}
+                        fill="transparent"
+                      />
                       {[0.25, 0.5, 0.75].map((g, i) => (
                         <line
                           key={i}
@@ -290,7 +491,12 @@ export default function AdminDashboardPage() {
                         />
                       ))}
                       <path d={area} fill="url(#grad)" />
-                      <path d={path} fill="none" stroke="#4d8c1e" strokeWidth="2" />
+                      <path
+                        d={path}
+                        fill="none"
+                        stroke="#4d8c1e"
+                        strokeWidth="2"
+                      />
                       {points.map(([x, y], i) => (
                         <circle key={i} cx={x} cy={y} r="2.5" fill="#7cc22e" />
                       ))}
@@ -300,10 +506,10 @@ export default function AdminDashboardPage() {
               )}
             </div>
           </div>
-        </div >
+        </div>
 
         {/* Recent Investments Panel */}
-        < div className="group rounded-3xl border border-zinc-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-blue-100/50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-800/50" >
+        <div className="group rounded-3xl border border-zinc-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-blue-100/50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-800/50">
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="rounded-2xl bg-blue-50 p-2.5 text-blue-600 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 dark:bg-blue-900/30 dark:text-blue-400">
@@ -384,8 +590,8 @@ export default function AdminDashboardPage() {
               })
             )}
           </div>
-        </div >
-      </section >
-    </div >
+        </div>
+      </section>
+    </div>
   );
 }

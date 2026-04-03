@@ -132,7 +132,7 @@ export function AdminInvestorTypeFormModal({
               <Info className="mt-0.5 h-3 w-3 shrink-0" />
               <span>
                 Enter a value between 0 and 100. This percentage represents the
-                investor's share in the project distribution.
+                investor&apos;s share in the project distribution.
               </span>
             </p>
           </div>

@@ -16,17 +16,15 @@ import {
 import { cn } from "@/lib/utils";
 
 export default function PrivacyPolicy() {
-  const [lastUpdated, setLastUpdated] = useState("");
-  useEffect(() => {
+  const [lastUpdated] = useState(() => {
     const d = new Date();
-    const s = d.toLocaleDateString("en-US", {
+    return d.toLocaleDateString("en-US", {
       month: "long",
       day: "numeric",
       year: "numeric",
       timeZone: "UTC",
     });
-    setLastUpdated(s);
-  }, []);
+  });
   const [activeSection, setActiveSection] = useState("introduction");
 
   // Handle scroll spy
@@ -167,12 +165,13 @@ export default function PrivacyPolicy() {
                       <span className="font-semibold text-zinc-900">
                         Farming Investor
                       </span>{" "}
-                      ("we," "our," or "us"), we respect your privacy and are
-                      committed to protecting your personal data. This privacy
-                      policy will inform you as to how we look after your
-                      personal data when you visit our website (regardless of
-                      where you visit it from) and tell you about your privacy
-                      rights and how the law protects you.
+                      (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;), we
+                      respect your privacy and are committed to protecting your
+                      personal data. This privacy policy will inform you as to
+                      how we look after your personal data when you visit our
+                      website (regardless of where you visit it from) and tell
+                      you about your privacy rights and how the law protects
+                      you.
                     </p>
                   </div>
                 </div>

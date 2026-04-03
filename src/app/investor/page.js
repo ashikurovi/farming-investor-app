@@ -26,46 +26,15 @@ import {
 import { useGetUsersQuery } from "@/features/admin/users/usersApiSlice";
 import { NoticeMarquee } from "./components/NoticeMarquee";
 
-/* ══════════════════════════════════════════════════
-   THEME TOKENS
-══════════════════════════════════════════════════ */
-const THEMES = {
-  emerald: {
-    bar: "from-emerald-400 to-teal-400",
-    iconBg: "bg-emerald-50", iconRing: "ring-emerald-100",
-    iconColor: "text-emerald-600", valueColor: "text-emerald-700",
-    badgeBg: "bg-emerald-50", badgeText: "text-emerald-600", badgeRing: "ring-emerald-200",
-  },
-  teal: {
-    bar: "from-teal-400 to-cyan-400",
-    iconBg: "bg-teal-50", iconRing: "ring-teal-100",
-    iconColor: "text-teal-600", valueColor: "text-teal-700",
-    badgeBg: "bg-teal-50", badgeText: "text-teal-600", badgeRing: "ring-teal-200",
-  },
-  blue: {
-    bar: "from-blue-400 to-indigo-400",
-    iconBg: "bg-blue-50", iconRing: "ring-blue-100",
-    iconColor: "text-blue-600", valueColor: "text-blue-700",
-    badgeBg: "bg-blue-50", badgeText: "text-blue-600", badgeRing: "ring-blue-200",
-  },
-  violet: {
-    bar: "from-violet-400 to-purple-400",
-    iconBg: "bg-violet-50", iconRing: "ring-violet-100",
-    iconColor: "text-violet-600", valueColor: "text-violet-700",
-    badgeBg: "bg-violet-50", badgeText: "text-violet-600", badgeRing: "ring-violet-200",
-  },
-  amber: {
-    bar: "from-amber-400 to-orange-400",
-    iconBg: "bg-amber-50", iconRing: "ring-amber-100",
-    iconColor: "text-amber-600", valueColor: "text-amber-700",
-    badgeBg: "bg-amber-50", badgeText: "text-amber-600", badgeRing: "ring-amber-200",
-  },
-  zinc: {
-    bar: "from-zinc-400 to-zinc-500",
-    iconBg: "bg-zinc-100", iconRing: "ring-zinc-200",
-    iconColor: "text-zinc-600", valueColor: "text-zinc-800",
-    badgeBg: "bg-zinc-100", badgeText: "text-zinc-600", badgeRing: "ring-zinc-300",
-  },
+const BRAND = {
+  bar: "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]",
+  iconBg: "bg-[color:rgba(124,194,46,0.14)]",
+  iconRing: "ring-[color:rgba(124,194,46,0.22)]",
+  iconColor: "text-[color:rgb(77,140,30)]",
+  valueColor: "text-[color:rgb(77,140,30)]",
+  badgeBg: "bg-[color:rgba(124,194,46,0.12)]",
+  badgeText: "text-[color:rgb(77,140,30)]",
+  badgeRing: "ring-[color:rgba(124,194,46,0.22)]",
 };
 
 const fmt = (n) =>
@@ -76,9 +45,9 @@ const fmt = (n) =>
 ══════════════════════════════════════════════════ */
 const KPIStatCard = ({
   label, value, loading, Icon,
-  theme = "emerald", secondary, currency = false,
+  secondary, currency = false,
 }) => {
-  const t = THEMES[theme] ?? THEMES.emerald;
+  const t = BRAND;
   const isBusy = Boolean(loading) || value == null;
   const displayValue = isBusy ? null : `${currency ? "৳" : ""}${fmt(value)}`;
 
@@ -93,7 +62,7 @@ const KPIStatCard = ({
 
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm ring-1 ring-transparent transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:ring-zinc-300/60">
-      <div className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${t.bar}`} />
+      <div className={`absolute inset-x-0 top-0 h-[3px] ${t.bar}`} />
 
       <div className="p-4 pt-5 lg:p-5 lg:pt-6">
         <div className="flex items-start justify-between gap-2">
@@ -146,7 +115,7 @@ const Avatar = ({ user, size = "sm" }) => {
     <img src={src} alt={user?.name || "Investor"}
       className={`${dim} rounded-full object-cover ring-2 ring-white shadow-sm`} />
   ) : (
-    <div className={`${dim} inline-flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 font-bold text-white ring-2 ring-white shadow-sm`}>
+    <div className={`${dim} inline-flex shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] font-bold text-white ring-2 ring-white shadow-sm`}>
       {initials}
     </div>
   );
@@ -156,7 +125,7 @@ const Avatar = ({ user, size = "sm" }) => {
    TYPE BADGE
 ══════════════════════════════════════════════════ */
 const TypeBadge = ({ label }) => (
-  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 ring-1 ring-emerald-200">
+  <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold bg-[color:rgba(124,194,46,0.12)] text-[color:rgb(77,140,30)] ring-1 ring-[color:rgba(124,194,46,0.22)]">
     {label}
   </span>
 );

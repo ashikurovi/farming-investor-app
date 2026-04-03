@@ -1012,7 +1012,7 @@ function AddInvestmentModal({ partnerId, onClose, onSuccess }) {
           Increase Investment
         </h3>
         <p className="text-sm text-gray-500 dark:text-zinc-400 mb-6">
-          Add additional funds to this partner's profile. Profit metrics will
+          Add additional funds to this partner&apos;s profile. Profit metrics will
           instantly adapt.
         </p>
 

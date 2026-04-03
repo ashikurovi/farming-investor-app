@@ -87,7 +87,7 @@ export function AdminInvestorRecentInvestments({ investments = [] }) {
               No investments found
             </p>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              This investor hasn't invested in any projects yet.
+              This investor hasn&apos;t invested in any projects yet.
             </p>
           </div>
         )}

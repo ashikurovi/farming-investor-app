@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
   ShieldBan,
@@ -32,13 +32,9 @@ import { AdminInvestorRecentInvestments } from "@/app/admin/components/investor/
 import { formatCurrencyBDT } from "@/lib/utils";
 
 export default function AdminInvestorDetailPage() {
-  const [mounted, setMounted] = useState(false);
   const params = useParams();
   const router = useRouter();
   const id = params?.id;
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const {
     data: user,
@@ -99,7 +95,7 @@ export default function AdminInvestorDetailPage() {
     },
   ];
 
-  if (!mounted || isBusy) {
+  if (isBusy) {
     return (
       <div className="flex h-[calc(100vh-200px)] items-center justify-center">
         <div className="flex flex-col items-center gap-4">
@@ -122,8 +118,8 @@ export default function AdminInvestorDetailPage() {
           Investor Not Found
         </h3>
         <p className="max-w-xs text-sm text-gray-500">
-          We couldn't retrieve the investor details. They might have been
-          deleted or don't exist.
+          We couldn&apos;t retrieve the investor details. They might have been
+          deleted or don&apos;t exist.
         </p>
         <Button onClick={() => router.back()} variant="outline">
           Go Back

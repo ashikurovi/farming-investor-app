@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
@@ -24,26 +24,19 @@ export function AdminInvestorFormModal({
   investorTypes = [],
   isInvestorTypesLoading = false,
 }) {
-  const [previewUrl, setPreviewUrl] = useState(null);
+  const photo = formValues?.photo;
+  const previewUrl = useMemo(() => {
+    if (!photo) return null;
+    if (typeof photo === "string") return photo;
+    return URL.createObjectURL(photo);
+  }, [photo]);
 
   useEffect(() => {
-    if (!formValues?.photo) {
-      setPreviewUrl(null);
-      return;
-    }
-
-    if (typeof formValues.photo === "string") {
-      setPreviewUrl(formValues.photo);
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(formValues.photo);
-    setPreviewUrl(objectUrl);
-
+    if (!photo || typeof photo === "string" || !previewUrl) return;
     return () => {
-      URL.revokeObjectURL(objectUrl);
+      URL.revokeObjectURL(previewUrl);
     };
-  }, [formValues?.photo]);
+  }, [photo, previewUrl]);
 
   if (!isOpen) return null;
 

@@ -237,7 +237,7 @@ export default function InvestorPayoutHistoryPage() {
                 No payouts found
               </h3>
               <p className="mt-1 text-sm text-zinc-500">
-                You haven't received any payouts yet.
+                You haven&apos;t received any payouts yet.
               </p>
             </div>
           }
