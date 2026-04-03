@@ -5,8 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { ArrowRight, Lock, Mail, Eye, EyeOff } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useLoginMutation } from "@/features/auth/authApiSlice";
 import { toast } from "sonner";
 
@@ -70,6 +68,10 @@ export function LoginForm() {
           color: #6b7280;
         }
 
+        .dark .lf-label {
+          color: #a1a1aa;
+        }
+
         .lf-field {
           position: relative;
           display: flex;
@@ -89,6 +91,10 @@ export function LoginForm() {
           z-index: 1;
         }
 
+        .dark .lf-field-icon {
+          color: #71717a;
+        }
+
         .lf-input {
           width: 100%;
           height: 48px;
@@ -105,9 +111,19 @@ export function LoginForm() {
           -webkit-appearance: none;
         }
 
+        .dark .lf-input {
+          color: #e4e4e7;
+          background: rgba(24,24,27,0.6);
+          border: 1px solid rgba(63,63,70,0.9);
+        }
+
         .lf-input::placeholder {
           color: #c4c4be;
           font-size: 0.82rem;
+        }
+
+        .dark .lf-input::placeholder {
+          color: #71717a;
         }
 
         .lf-input:focus {
@@ -116,12 +132,22 @@ export function LoginForm() {
           box-shadow: 0 0 0 3px rgba(77, 140, 30, 0.14);
         }
 
+        .dark .lf-input:focus {
+          background: rgba(9,9,11,0.85);
+          border-color: rgba(124,194,46,0.7);
+          box-shadow: 0 0 0 3px rgba(124, 194, 46, 0.16);
+        }
+
         .lf-input-pr {
           padding-right: 44px;
         }
 
         .lf-field:focus-within .lf-field-icon {
           color: #4d8c1e;
+        }
+
+        .dark .lf-field:focus-within .lf-field-icon {
+          color: #7cc22e;
         }
 
         .lf-toggle-pw {
@@ -141,14 +167,26 @@ export function LoginForm() {
           z-index: 1;
         }
 
+        .dark .lf-toggle-pw {
+          color: #a1a1aa;
+        }
+
         .lf-toggle-pw:hover {
           color: #4d8c1e;
+        }
+
+        .dark .lf-toggle-pw:hover {
+          color: #7cc22e;
         }
 
         .lf-divider {
           height: 1px;
           background: linear-gradient(to right, transparent, #e5e5e3, transparent);
           margin: 2px 0;
+        }
+
+        .dark .lf-divider {
+          background: linear-gradient(to right, transparent, rgba(63,63,70,0.9), transparent);
         }
 
         .lf-forgot {
@@ -159,6 +197,10 @@ export function LoginForm() {
           color: #4d8c1e;
           text-decoration: none;
           transition: opacity 0.2s ease;
+        }
+
+        .dark .lf-forgot {
+          color: #7cc22e;
         }
 
         .lf-forgot:hover {
@@ -177,6 +219,12 @@ export function LoginForm() {
           color: #b91c1c;
           font-family: 'DM Sans', sans-serif;
           line-height: 1.5;
+        }
+
+        .dark .lf-error {
+          background: rgba(127,29,29,0.18);
+          border: 1px solid rgba(239,68,68,0.26);
+          color: #fecaca;
         }
 
         .lf-submit {
