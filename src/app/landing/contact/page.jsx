@@ -15,8 +15,8 @@ const Contactpage = () => {
       <ContactHero />
       <div id="contact-form" className="relative max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-32">
         {/* Decorative Background Elements */}
-        <div className="absolute top-40 left-0 w-72 h-72 bg-emerald-300/10 rounded-full blur-3xl pointer-events-none -z-10" />
-        <div className="absolute bottom-20 right-0 w-96 h-96 bg-teal-300/10 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute top-40 left-0 w-72 h-72 bg-[color:rgba(77,140,30,0.14)] rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute bottom-20 right-0 w-96 h-96 bg-[color:rgba(124,194,46,0.12)] rounded-full blur-3xl pointer-events-none -z-10" />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Contact Info - Static Component */}

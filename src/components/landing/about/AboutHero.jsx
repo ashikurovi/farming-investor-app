@@ -16,7 +16,7 @@ export function AboutHero() {
           quality={90}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-900/20 via-zinc-950/40 to-zinc-950/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[color:rgba(77,140,30,0.22)] via-zinc-950/40 to-zinc-950/80" />
       </div>
 
       {/* Content */}
@@ -24,28 +24,35 @@ export function AboutHero() {
         <div className="mx-auto max-w-5xl px-6 lg:px-8">
           
           {/* Badge */}
-          <div className="mb-8 inline-flex animate-fade-in-up opacity-0 [animation-delay:200ms] items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-4 py-1.5 text-sm font-medium text-emerald-300 backdrop-blur-md shadow-[0_0_15px_-3px_rgba(16,185,129,0.15)] hover:bg-emerald-500/10 transition-colors">
-            <Users className="h-4 w-4 text-emerald-400" />
+          <div className="mb-8 inline-flex animate-fade-in-up opacity-0 [animation-delay:200ms] items-center gap-2 rounded-full border border-[color:rgba(77,140,30,0.22)] bg-[color:rgba(77,140,30,0.12)] px-4 py-1.5 text-sm font-medium text-[color:rgba(124,194,46,0.95)] backdrop-blur-md shadow-[0_0_18px_-6px_rgba(124,194,46,0.22)] hover:bg-[color:rgba(77,140,30,0.16)] transition-colors">
+            <Users className="h-4 w-4 text-[color:rgba(124,194,46,0.95)]" />
             <span className="tracking-wide">Who We Are</span>
           </div>
 
           {/* Title */}
           <h1 className="mb-6 animate-fade-in-up opacity-0 [animation-delay:400ms] text-5xl font-bold tracking-tight text-white sm:text-4xl lg:text-6xl font-display">
-            Redefining <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Agricultural Investment</span>
+            Redefining{" "}
+            <span className="text-transparent bg-clip-text bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))]">
+              Agricultural Investment
+            </span>
           </h1>
 
           {/* Description */}
           <p className="mx-auto mb-10 max-w-2xl animate-fade-in-up opacity-0 [animation-delay:600ms] text-lg leading-relaxed text-zinc-300/90 sm:text-md font-light">
             We are building the operating system for modern farm investing. 
             Connecting long-term capital with resilient, real-world farm projects 
-            in a <span className="text-emerald-200 font-medium">transparent ecosystem</span>.
+            in a{" "}
+            <span className="text-[color:rgba(124,194,46,0.95)] font-medium">
+              transparent ecosystem
+            </span>
+            .
           </p>
 
           {/* CTA */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up opacity-0 [animation-delay:800ms]">
             <Link
               href="#mission"
-              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-emerald-600 px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-emerald-500 hover:shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)]"
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-2xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-6 py-3 text-[13px] font-semibold text-primary-foreground transition-all hover:shadow-[0_0_24px_-6px_rgba(124,194,46,0.35)] sm:px-7 sm:py-3 sm:text-sm"
             >
               <span className="relative z-10">Our Mission</span>
               <MoveRight className="h-4 w-4 transition-transform group-hover:translate-x-1 relative z-10" />
@@ -54,7 +61,7 @@ export function AboutHero() {
             
             <Link 
               href="#stakeholders"
-              className="group inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-medium text-zinc-300 transition-colors hover:text-white hover:bg-white/5"
+              className="group inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-[13px] font-medium text-zinc-300 transition-colors hover:text-white hover:bg-white/5 sm:px-7 sm:py-3 sm:text-sm"
             >
               Meet Stakeholders
             </Link>

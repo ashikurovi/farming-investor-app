@@ -37,14 +37,14 @@ export function AboutStakeholders() {
           <div>
             <div className="space-y-6 mb-10">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit">
-                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span className="w-2 h-2 rounded-full bg-primary"></span>
                 <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
                   Stakeholders
                 </span>
               </div>
               <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
                 Built for <span className="font-serif italic">everyone</span> in the{" "}
-                <span className="font-serif italic text-emerald-700">value chain</span>.
+                <span className="font-serif italic text-primary">value chain</span>.
               </h2>
               <p className="text-zinc-500 text-xs md:text-lg leading-relaxed max-w-xl">
                 Framing is built for everyone in the value chain, not just one side of the table.
@@ -56,18 +56,18 @@ export function AboutStakeholders() {
               {stakeholders.map((item, index) => (
                 <div 
                   key={item.title}
-                  className="group relative overflow-hidden rounded-2xl bg-white p-6 border border-zinc-200 hover:border-emerald-500/30 transition-all hover:bg-white hover:shadow-xl hover:shadow-emerald-900/5 hover:-translate-y-1"
+                  className="group relative overflow-hidden rounded-2xl bg-white p-6 border border-zinc-200 hover:border-[color:rgba(77,140,30,0.24)] transition-all hover:bg-white hover:shadow-xl hover:shadow-[0_24px_70px_-55px_rgba(77,140,30,0.25)] hover:-translate-y-1"
                 >
                   <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <item.icon className="h-24 w-24 text-emerald-500 rotate-12" />
+                    <item.icon className="h-24 w-24 text-primary rotate-12" />
                   </div>
                   
                   <div className="relative z-10">
-                    <div className="mb-4 inline-flex p-2 rounded-lg bg-zinc-50 text-emerald-600 group-hover:text-white group-hover:bg-emerald-600 transition-colors border border-zinc-100">
+                    <div className="mb-4 inline-flex p-2 rounded-lg bg-zinc-50 text-primary group-hover:text-primary-foreground group-hover:bg-primary transition-colors border border-zinc-100">
                       <item.icon className="h-5 w-5" />
                     </div>
                     
-                    <h3 className="text-xl font-bold text-zinc-900 mb-1 font-display group-hover:text-emerald-700 transition-colors">
+                    <h3 className="text-xl font-bold text-zinc-900 mb-1 font-display group-hover:text-primary transition-colors">
                       {item.title}
                     </h3>
                     <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-3 group-hover:text-zinc-500">
@@ -84,11 +84,11 @@ export function AboutStakeholders() {
 
           {/* Why We Build This Sidebar */}
           <div className="relative lg:sticky lg:top-24">
-            <div className="absolute -inset-4 bg-gradient-to-b from-emerald-500/10 via-zinc-200/50 to-transparent blur-xl opacity-50" />
+            <div className="absolute -inset-4 bg-gradient-to-b from-[color:rgba(77,140,30,0.14)] via-zinc-200/50 to-transparent blur-xl opacity-50" />
             
             <div className="relative rounded-3xl bg-white/80 p-8 border border-zinc-200 shadow-xl shadow-zinc-200/50 backdrop-blur-xl ring-1 ring-black/5">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 rounded-full bg-emerald-500/10 text-emerald-600">
+                <div className="p-2 rounded-full bg-secondary text-primary ring-1 ring-[color:rgba(77,140,30,0.18)]">
                   <HeartHandshake className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-bold text-zinc-900 font-display">

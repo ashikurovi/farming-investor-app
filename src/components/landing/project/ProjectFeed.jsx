@@ -51,7 +51,7 @@ export function ProjectFeed() {
         <div className="mb-14 flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div className="space-y-4 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span className="w-2 h-2 rounded-full bg-primary"></span>
               <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
                 Projects
               </span>
@@ -59,7 +59,7 @@ export function ProjectFeed() {
 
             <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
               Explore <span className="font-serif italic">real</span>{" "}
-              <span className="font-serif italic text-emerald-700">
+              <span className="font-serif italic text-primary">
                 farming investments
               </span>
               .
@@ -72,7 +72,7 @@ export function ProjectFeed() {
           </div>
 
           <div className="hidden md:flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs font-bold uppercase tracking-widest text-zinc-600 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span className="w-2 h-2 rounded-full bg-primary"></span>
             {projects.length} items
           </div>
         </div>

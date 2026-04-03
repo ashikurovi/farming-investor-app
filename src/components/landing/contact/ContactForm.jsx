@@ -47,8 +47,8 @@ export function ContactForm() {
   return (
     <div className="relative bg-white/80 backdrop-blur-md p-8 md:p-12 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl shadow-zinc-200/40 ring-1 ring-zinc-200/50 overflow-hidden group/form">
       {/* Decorative gradients */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-400/10 rounded-full blur-[60px] -z-10 pointer-events-none transition-transform duration-700 group-hover/form:scale-110" />
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-400/10 rounded-full blur-[60px] -z-10 pointer-events-none transition-transform duration-700 group-hover/form:scale-110" />
+      <div className="absolute top-0 right-0 w-64 h-64 bg-[color:rgba(124,194,46,0.14)] rounded-full blur-[60px] -z-10 pointer-events-none transition-transform duration-700 group-hover/form:scale-110" />
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-[color:rgba(77,140,30,0.12)] rounded-full blur-[60px] -z-10 pointer-events-none transition-transform duration-700 group-hover/form:scale-110" />
       <div className="mb-10 relative">
         <h3 className="text-3xl font-bold text-zinc-900 tracking-tight">
           Send us a message
@@ -73,7 +73,7 @@ export function ContactForm() {
               name="firstName"
               placeholder="John"
               required
-              className="h-14 bg-zinc-50/50 border-zinc-200/80 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-300 rounded-2xl text-base px-4"
+              className="h-14 bg-zinc-50/50 border-zinc-200/80 focus:bg-white focus:border-[color:rgba(77,140,30,0.40)] focus:ring-4 focus:ring-[color:rgba(77,140,30,0.12)] transition-all duration-300 rounded-2xl text-base px-4"
             />
           </div>
 
@@ -90,7 +90,7 @@ export function ContactForm() {
               name="lastName"
               placeholder="Doe"
               required
-              className="h-14 bg-zinc-50/50 border-zinc-200/80 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-300 rounded-2xl text-base px-4"
+              className="h-14 bg-zinc-50/50 border-zinc-200/80 focus:bg-white focus:border-[color:rgba(77,140,30,0.40)] focus:ring-4 focus:ring-[color:rgba(77,140,30,0.12)] transition-all duration-300 rounded-2xl text-base px-4"
             />
           </div>
         </div>
@@ -110,7 +110,7 @@ export function ContactForm() {
               type="email"
               placeholder="john@example.com"
               required
-              className="h-14 bg-zinc-50/50 border-zinc-200/80 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-300 rounded-2xl text-base px-4"
+              className="h-14 bg-zinc-50/50 border-zinc-200/80 focus:bg-white focus:border-[color:rgba(77,140,30,0.40)] focus:ring-4 focus:ring-[color:rgba(77,140,30,0.12)] transition-all duration-300 rounded-2xl text-base px-4"
             />
           </div>
 
@@ -127,7 +127,7 @@ export function ContactForm() {
               name="phone"
               type="tel"
               placeholder="+1 (555) 000-0000"
-              className="h-14 bg-zinc-50/50 border-zinc-200/80 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-300 rounded-2xl text-base px-4"
+              className="h-14 bg-zinc-50/50 border-zinc-200/80 focus:bg-white focus:border-[color:rgba(77,140,30,0.40)] focus:ring-4 focus:ring-[color:rgba(77,140,30,0.12)] transition-all duration-300 rounded-2xl text-base px-4"
             />
           </div>
         </div>
@@ -145,7 +145,7 @@ export function ContactForm() {
               id="country"
               name="country"
               placeholder="United States"
-              className="h-12 bg-zinc-50/50 border-zinc-200 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500/10 transition-all rounded-xl"
+              className="h-12 bg-zinc-50/50 border-zinc-200 focus:bg-white focus:border-[color:rgba(77,140,30,0.40)] focus:ring-[color:rgba(77,140,30,0.12)] transition-all rounded-xl"
             />
           </div>
 
@@ -160,7 +160,7 @@ export function ContactForm() {
             <select
               id="investorType"
               name="investorType"
-              className="flex h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3 py-2 text-sm transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 appearance-none cursor-pointer"
+              className="flex h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3 py-2 text-sm transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.16)] focus:border-[color:rgba(77,140,30,0.40)] appearance-none cursor-pointer"
             >
               <option value="">Select Type...</option>
               <option>Investor</option>
@@ -181,7 +181,7 @@ export function ContactForm() {
           <select
             id="investmentRange"
             name="investmentRange"
-            className="flex h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3 py-2 text-sm transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 appearance-none cursor-pointer"
+            className="flex h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3 py-2 text-sm transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.16)] focus:border-[color:rgba(77,140,30,0.40)] appearance-none cursor-pointer"
           >
             <option value="">Select Range...</option>
             <option>Less than $10,000</option>
@@ -203,7 +203,7 @@ export function ContactForm() {
           <select
             id="subject"
             name="subject"
-            className="flex h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3 py-2 text-sm transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 appearance-none cursor-pointer"
+            className="flex h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3 py-2 text-sm transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.16)] focus:border-[color:rgba(77,140,30,0.40)] appearance-none cursor-pointer"
           >
             <option>General Inquiry</option>
             <option>Investment Opportunities</option>
@@ -226,14 +226,14 @@ export function ContactForm() {
             placeholder="Tell us how we can help..."
             rows={5}
             required
-            className="flex w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-4 py-3 text-sm ring-offset-white placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 disabled:cursor-not-allowed disabled:opacity-50 transition-all resize-none"
+            className="flex w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-4 py-3 text-sm ring-offset-white placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.16)] focus:border-[color:rgba(77,140,30,0.40)] disabled:cursor-not-allowed disabled:opacity-50 transition-all resize-none"
           ></textarea>
         </div>
 
         {/* Submit Button */}
         <Button
           disabled={isSubmitting}
-          className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-14 rounded-2xl transition-all duration-300 shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_-5px_rgba(16,185,129,0.6)] group disabled:opacity-70 disabled:cursor-not-allowed mt-4 overflow-hidden relative"
+          className="w-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-primary-foreground font-bold h-14 rounded-2xl transition-all duration-300 shadow-[0_0_24px_-6px_rgba(124,194,46,0.35)] hover:shadow-[0_0_28px_-6px_rgba(124,194,46,0.45)] group disabled:opacity-70 disabled:cursor-not-allowed mt-4 overflow-hidden relative"
         >
           <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer" />
           {isSubmitting ? (
