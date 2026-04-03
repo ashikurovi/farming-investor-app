@@ -53,7 +53,7 @@ export function AppShell({ children }) {
     const role = user?.role;
     if (!role) return;
 
-    if (isAdminRoute && role !== "admin") {
+    if (isAdminRoute && !["admin", "partner"].includes(role)) {
       toast.error("Access denied", {
         description: "You do not have permission to access the admin dashboard.",
       });

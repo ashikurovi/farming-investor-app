@@ -157,7 +157,7 @@ export default function Sidebar() {
         {!collapsed && (
           <div className="overflow-hidden">
             <div className="text-[9px] font-extrabold uppercase tracking-[0.28em] text-[color:rgb(77,140,30)] dark:text-[color:rgb(124,194,46)]">
-              Farming Intel
+              Artman
             </div>
             <div className="text-[13px] font-semibold tracking-tight text-zinc-800 dark:text-zinc-200">
               Admin Panel
@@ -333,7 +333,7 @@ export default function Sidebar() {
 
         {!collapsed && (
           <p className="text-center text-[10px] text-zinc-400 dark:text-zinc-600 tracking-wide">
-            © {yearText || "—"} Farming Intel
+            © {yearText || "—"} Artman
           </p>
         )}
       </div>

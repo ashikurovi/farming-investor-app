@@ -269,7 +269,7 @@ export default function TopNavbar() {
               </div>
               <div>
                 <div className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
-                  Farming Intel
+                  Artman
                 </div>
                 <div className="text-base font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
                   Admin

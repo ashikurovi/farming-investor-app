@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 import {
   Eye,
   Trash2,
@@ -41,6 +42,8 @@ const PAGE_SIZE = 10;
 
 export default function AdminInvestmentsPage() {
   const router = useRouter();
+  const user = useSelector((state) => state.auth?.user);
+  const isReadOnly = user?.role === "partner";
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
@@ -107,8 +110,13 @@ export default function AdminInvestmentsPage() {
       ]
         .join(" ")
         .toLowerCase();
-      return haystack.includes(search.toLowerCase());
+      if (!haystack.includes(search.toLowerCase())) return false;
     }
+
+    // Exclude partner investments
+    const user = usersById.get(inv.investorId);
+    if (user?.role === "partner") return false;
+
     return true;
   });
   const total = filteredInvestments.length;
@@ -211,14 +219,16 @@ export default function AdminInvestmentsPage() {
               className="w-full sm:w-64"
             />
 
-            <Button
-              type="button"
-              onClick={() => router.push("/admin/investment/new")}
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-5 text-sm font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] transition-all hover:brightness-[1.05] active:scale-95"
-            >
-              <Plus className="h-4 w-4" />
-              <span>Add Investment</span>
-            </Button>
+            {!isReadOnly && (
+              <Button
+                type="button"
+                onClick={() => router.push("/admin/investment/new")}
+                className="inline-flex h-10 items-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:bg-zinc-800 hover:shadow-xl hover:shadow-zinc-900/30 active:scale-95"
+              >
+                <Plus className="h-4 w-4" />
+                <span>Add Investment</span>
+              </Button>
+            )}
           </div>
         </div>
 
@@ -234,11 +244,10 @@ export default function AdminInvestmentsPage() {
                 setFilterStatus(status.id);
                 setPage(1);
               }}
-              className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
-                filterStatus === status.id
-                  ? "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-[0_14px_40px_-26px_rgba(77,140,30,0.75)] ring-1 ring-white/10"
-                  : "border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-              }`}
+              className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${filterStatus === status.id
+                ? "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-[0_14px_40px_-26px_rgba(77,140,30,0.75)] ring-1 ring-white/10"
+                : "border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                }`}
             >
               {status.label}
             </button>
@@ -493,11 +502,10 @@ export default function AdminInvestmentsPage() {
                   const isExpired = end && !isNaN(end) && end < now;
                   return (
                     <span
-                      className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${
-                        isExpired
-                          ? "bg-red-50 text-red-700 ring-red-600/10 dark:bg-red-500/10 dark:text-red-300 dark:ring-red-500/20"
-                          : "bg-emerald-50 text-emerald-700 ring-emerald-600/10 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20"
-                      }`}
+                      className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${isExpired
+                        ? "bg-red-50 text-red-700 ring-red-600/10 dark:bg-red-500/10 dark:text-red-300 dark:ring-red-500/20"
+                        : "bg-emerald-50 text-emerald-700 ring-emerald-600/10 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20"
+                        }`}
                     >
                       {isExpired ? "Expired" : "Active"}
                     </span>
@@ -512,11 +520,10 @@ export default function AdminInvestmentsPage() {
                   const hasDeed = deedsByInvestmentId.has(investment.id);
                   return (
                     <span
-                      className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${
-                        hasDeed
-                          ? "bg-zinc-50 text-zinc-700 ring-zinc-600/10 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700"
-                          : "bg-amber-50 text-amber-700 ring-amber-600/10 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-500/20"
-                      }`}
+                      className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${hasDeed
+                        ? "bg-zinc-50 text-zinc-700 ring-zinc-600/10 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700"
+                        : "bg-amber-50 text-amber-700 ring-amber-600/10 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-500/20"
+                        }`}
                     >
                       {hasDeed ? "Issued" : "Deed Pending"}
                     </span>
@@ -556,32 +563,37 @@ export default function AdminInvestmentsPage() {
                 >
                   <Eye className="h-4 w-4" />
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    router.push(`/admin/investment/${investment.id}/edit`);
-                  }}
-                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-blue-300"
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    confirmDelete(investment);
-                  }}
-                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600 dark:text-zinc-500 dark:hover:bg-red-500/10 dark:hover:text-red-300"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            )}
+                {!isReadOnly && (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/admin/investment/${investment.id}/edit`);
+                      }}
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600"
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        confirmDelete(investment);
+                      }}
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </>
+                )}
+              </div >
+            )
+            }
           />
-        </div>
+        </div >
 
         <div className="border-t border-zinc-100 bg-zinc-50/50 px-6 py-4 dark:border-zinc-800 dark:bg-zinc-800/40">
           <Pagination
@@ -600,7 +612,7 @@ export default function AdminInvestmentsPage() {
             }}
           />
         </div>
-      </section>
+      </section >
 
       <ConfirmDialog
         isOpen={confirmState.isOpen}
@@ -613,6 +625,6 @@ export default function AdminInvestmentsPage() {
         isConfirming={isDeleting}
         variant="danger"
       />
-    </div>
+    </div >
   );
 }

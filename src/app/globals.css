@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-only, .print-only * {
+    visibility: visible;
+  }
+  .print-only {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    display: block !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

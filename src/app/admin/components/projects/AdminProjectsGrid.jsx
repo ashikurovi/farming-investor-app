@@ -75,20 +75,24 @@ export function AdminProjectsGrid({
 
                   {/* Quick Actions Overlay */}
                   <div className="absolute bottom-3 right-3 flex gap-2 opacity-0 transition-all duration-300 translate-y-2 group-hover:translate-y-0 group-hover:opacity-100">
-                    <button
-                      onClick={() => onEdit?.(project)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-zinc-700 shadow-sm backdrop-blur-sm hover:bg-emerald-500 hover:text-white transition-colors dark:bg-zinc-900/80 dark:text-zinc-200 dark:hover:bg-[color:rgb(77,140,30)]"
-                      title="Edit Project"
-                    >
-                      <Edit2 className="h-3.5 w-3.5" />
-                    </button>
-                    <button
-                      onClick={() => onDelete?.(project)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-red-600 shadow-sm backdrop-blur-sm hover:bg-red-500 hover:text-white transition-colors dark:bg-zinc-900/80 dark:text-red-300 dark:hover:bg-red-500"
-                      title="Delete Project"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
+                    {onEdit && (
+                      <button
+                        onClick={() => onEdit(project)}
+                        className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-zinc-700 shadow-sm backdrop-blur-sm hover:bg-emerald-500 hover:text-white transition-colors dark:bg-zinc-900/80 dark:text-zinc-200 dark:hover:bg-[color:rgb(77,140,30)]"
+                        title="Edit Project"
+                      >
+                        <Edit2 className="h-3.5 w-3.5" />
+                      </button>
+                    )}
+                    {onDelete && (
+                      <button
+                        onClick={() => onDelete(project)}
+                        className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-red-600 shadow-sm backdrop-blur-sm hover:bg-red-500 hover:text-white transition-colors dark:bg-zinc-900/80 dark:text-red-300 dark:hover:bg-red-500"
+                        title="Delete Project"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -139,13 +143,15 @@ export function AdminProjectsGrid({
 
                   {/* Footer Actions */}
                   <div className="mt-auto flex items-center gap-2 border-t border-zinc-100 pt-4 dark:border-zinc-800">
-                    <button
-                      onClick={() => onAddDailyReport?.(project)}
-                      className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-3 py-2 text-xs font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] transition-all hover:brightness-[1.05]"
-                    >
-                      <FilePlus className="h-3.5 w-3.5" />
-                      <span>Daily Report</span>
-                    </button>
+                    {onAddDailyReport && (
+                      <button
+                        onClick={() => onAddDailyReport(project)}
+                        className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-3 py-2 text-xs font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] transition-all hover:brightness-[1.05]"
+                      >
+                        <FilePlus className="h-3.5 w-3.5" />
+                        <span>Daily Report</span>
+                      </button>
+                    )}
                     <button
                       onClick={() => onView?.(project)}
                       className="flex items-center justify-center rounded-lg border border-zinc-200 p-2 text-zinc-500 transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-[color:rgba(124,194,46,0.45)] dark:hover:bg-[color:rgba(124,194,46,0.12)] dark:hover:text-[color:rgb(124,194,46)]"

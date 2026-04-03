@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Edit2, Trash2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
@@ -19,6 +20,9 @@ import { toast } from "sonner";
 const PAGE_SIZE = 10;
 
 export default function AdminBannerPage() {
+  const user = useSelector((state) => state.auth?.user);
+  const isReadOnly = user?.role === "partner";
+
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [search, setSearch] = useState("");
@@ -215,15 +219,17 @@ export default function AdminBannerPage() {
             onChange={handleSearchChange}
             placeholder="Search banners..."
           />
-          <Button
-            type="button"
-            size="sm"
-            onClick={openCreateModal}
-            className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-md hover:bg-emerald-500"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            <span>Add banner</span>
-          </Button>
+          {!isReadOnly && (
+            <Button
+              type="button"
+              size="sm"
+              onClick={openCreateModal}
+              className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-md hover:bg-emerald-500"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>Add banner</span>
+            </Button>
+          )}
         </div>
       </header>
 
@@ -293,22 +299,26 @@ export default function AdminBannerPage() {
             getRowKey={(banner) => banner.id}
             renderActions={(banner) => (
               <div className="flex items-center justify-end gap-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => openEditModal(banner)}
-                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
-                >
-                  <Edit2 className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => confirmDelete(banner)}
-                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                {!isReadOnly && (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => openEditModal(banner)}
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
+                    >
+                      <Edit2 className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => confirmDelete(banner)}
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </>
+                )}
               </div>
             )}
           />

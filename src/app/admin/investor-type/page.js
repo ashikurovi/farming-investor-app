@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Edit2, Trash2, Plus, PieChart, Percent } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
@@ -18,6 +19,9 @@ import { toast } from "sonner";
 const PAGE_SIZE = 12;
 
 export default function AdminInvestorTypePage() {
+  const user = useSelector((state) => state.auth?.user);
+  const isReadOnly = user?.role === "partner";
+
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [search, setSearch] = useState("");
@@ -213,14 +217,16 @@ export default function AdminInvestorTypePage() {
             placeholder="Search types..."
             className="w-full sm:w-64"
           />
-          <Button
-            type="button"
-            onClick={openCreateModal}
-            className="inline-flex h-10 items-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:bg-zinc-800 hover:shadow-xl hover:shadow-zinc-900/30 active:scale-95"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Add Type</span>
-          </Button>
+          {!isReadOnly && (
+            <Button
+              type="button"
+              onClick={openCreateModal}
+              className="inline-flex h-10 items-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:bg-zinc-800 hover:shadow-xl hover:shadow-zinc-900/30 active:scale-95"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Type</span>
+            </Button>
+          )}
         </div>
       </header>
 
@@ -274,22 +280,26 @@ export default function AdminInvestorTypePage() {
             getRowKey={(item) => item.id}
             renderActions={(item) => (
               <div className="flex items-center justify-end gap-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => openEditModal(item)}
-                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
-                >
-                  <Edit2 className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => confirmDelete(item)}
-                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                {!isReadOnly && (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => openEditModal(item)}
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
+                    >
+                      <Edit2 className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => confirmDelete(item)}
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </>
+                )}
               </div>
             )}
           />
