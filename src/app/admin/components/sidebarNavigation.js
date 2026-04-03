@@ -24,8 +24,9 @@ export const sidebarNavigation = [
     title: "Management",
     icon: ClipboardList,
     items: [
-      { name: "Investors", href: "/admin/investor", icon: Users },
       { name: "Partners", href: "/admin/partner", icon: Briefcase },
+      { name: "Investors", href: "/admin/investor", icon: Users },
+
       {
         name: "Investments",
         href: "/admin/investment",

@@ -65,7 +65,11 @@ export default function AdminInvestmentsPage() {
       maximumFractionDigits: 0,
     });
 
-  const { data, isLoading, isFetching } = useGetInvestmentsAdminQuery();
+  const { data, isLoading, isFetching } = useGetInvestmentsAdminQuery(undefined, {
+    pollingInterval: 5000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
 
   const [deleteInvestment, { isLoading: isDeleting }] =
     useDeleteInvestmentAdminMutation();
@@ -74,6 +78,10 @@ export default function AdminInvestmentsPage() {
     page: 1,
     limit: 100,
     search: "",
+  }, {
+    pollingInterval: 5000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
   });
 
   const usersById = new Map((usersData?.items ?? []).map((u) => [u.id, u]));
@@ -81,6 +89,10 @@ export default function AdminInvestmentsPage() {
   const { data: deedsData } = useGetDeedsQuery({
     page: 1,
     limit: 1000,
+  }, {
+    pollingInterval: 5000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
   });
   const deedsByInvestmentId = new Map(
     (deedsData?.data ?? deedsData?.items ?? []).map((d) => [d.investmentId, d]),
@@ -169,7 +181,7 @@ export default function AdminInvestmentsPage() {
     setPage(1);
   };
 
-  const isBusy = isLoading || isFetching || isDeleting;
+  const isBusy = isLoading || isUsersLoading || isDeleting;
 
   const closeConfirm = () =>
     setConfirmState((prev) => ({ ...prev, isOpen: false, onConfirm: null }));

@@ -14,7 +14,12 @@ export const dailyReportApiSlice = apiSlice.injectEndpoints({
       transformResponse: (response) => response?.data ?? response,
       invalidatesTags: (result, error, { projectId }) => [
         { type: "DailyReport", id: "LIST" },
-        ...(projectId ? [{ type: "Project", id: projectId }] : []),
+        { type: "Project", id: "LIST" },
+        { type: "Project", id: "STATS" },
+        ...(projectId ? [
+          { type: "Project", id: Number(projectId) },
+          { type: "Project", id: String(projectId) }
+        ] : []),
       ],
     }),
     getDailyReports: builder.query({

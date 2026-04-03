@@ -24,6 +24,7 @@ import {
   useDeleteInvestmentAdminMutation,
 } from "@/features/investor/investments/investmentsApiSlice";
 import { useGetUserQuery } from "@/features/admin/users/usersApiSlice";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import {
   useGetDeedsQuery,
   useCreateDeedMutation,
@@ -42,9 +43,35 @@ export default function AdminInvestmentDetailPage() {
     isError,
   } = useGetInvestmentAdminQuery(id, {
     skip: !id,
+    pollingInterval: 5000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
   });
 
-  const isBusy = isLoading || isFetching;
+  const [confirmState, setConfirmState] = useState({
+    isOpen: false,
+    title: "",
+    description: "",
+    confirmLabel: "",
+    cancelLabel: "Cancel",
+    onConfirm: null,
+  });
+
+  const closeConfirm = () =>
+    setConfirmState((prev) => ({ ...prev, isOpen: false, onConfirm: null }));
+
+  const openConfirm = (options) =>
+    setConfirmState({
+      isOpen: true,
+      title: "",
+      description: "",
+      confirmLabel: "Confirm",
+      cancelLabel: "Cancel",
+      onConfirm: null,
+      ...options,
+    });
+
+  const isBusy = isLoading;
 
   const [deleteInvestment, { isLoading: isDeleting }] =
     useDeleteInvestmentAdminMutation();
@@ -58,10 +85,17 @@ export default function AdminInvestmentDetailPage() {
   const investorId = investment?.investorId;
   const { data: user, isLoading: isUserLoading } = useGetUserQuery(investorId, {
     skip: !investorId,
+    pollingInterval: 5000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
   });
 
   const { data: deedsData, isLoading: isDeedsLoading } = useGetDeedsQuery({
     limit: 1000,
+  }, {
+    pollingInterval: 5000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
   });
   const deed = useMemo(() => {
     const items = deedsData?.data ?? deedsData?.items ?? deedsData ?? [];
@@ -112,24 +146,29 @@ export default function AdminInvestmentDetailPage() {
     }
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (!investment) return;
-    const confirmed = window.confirm(
-      `Delete ${formatNumber(investment.amount)} BDT investment for investor #${investment.investorId}? This action cannot be undone.`,
-    );
-    if (!confirmed) return;
-
-    try {
-      await deleteInvestment(investment.id).unwrap();
-      toast.success("Investment deleted successfully");
-      router.push("/admin/investment");
-    } catch (error) {
-      const message =
-        error?.data?.message ||
-        (Array.isArray(error?.data?.message) ? error.data.message[0] : null) ||
-        "Failed to delete investment.";
-      toast.error("Delete failed", { description: message });
-    }
+    openConfirm({
+      title: "Delete investment",
+      description: `Delete ${formatNumber(investment.amount)} BDT investment for investor #${investment.investorId}? This action cannot be undone.`,
+      confirmLabel: "Delete",
+      variant: "danger",
+      onConfirm: async () => {
+        try {
+          await deleteInvestment(investment.id).unwrap();
+          toast.success("Investment deleted successfully");
+          router.push("/admin/investment");
+        } catch (error) {
+          const message =
+            error?.data?.message ||
+            (Array.isArray(error?.data?.message) ? error.data.message[0] : null) ||
+            "Failed to delete investment.";
+          toast.error("Delete failed", { description: message });
+        } finally {
+          closeConfirm();
+        }
+      },
+    });
   };
 
   if (isBusy) {
@@ -597,6 +636,15 @@ export default function AdminInvestmentDetailPage() {
           </section>
         </div>
       </div>
+      <ConfirmDialog
+        isOpen={confirmState.isOpen}
+        title={confirmState.title}
+        description={confirmState.description}
+        confirmLabel={confirmState.confirmLabel}
+        cancelLabel={confirmState.cancelLabel}
+        onConfirm={confirmState.onConfirm}
+        onCancel={closeConfirm}
+      />
     </div>
   );
 }
