@@ -13,7 +13,7 @@ export default function InvestorLayout({ children }) {
         <Sidebar />
         <div className="flex flex-1 flex-col overflow-hidden">
           <TopNavbar />
-          <main className="flex-1 overflow-y-auto px-6 py-6 lg:px-10 lg:py-8">
+          <main className="flex-1 overflow-y-auto px-6 py-6 pb-[calc(env(safe-area-inset-bottom)+6rem)] lg:px-10 lg:py-8 lg:pb-8">
             {children}
           </main>
         </div>

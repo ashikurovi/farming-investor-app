@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useLogoutMutation } from "@/features/auth/authApiSlice";
 import { sidebarNavigation } from "./sidebarNavigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useTheme } from "@/lib/ThemeContext";
 
 export default function Sidebar() {
@@ -44,18 +45,29 @@ export default function Sidebar() {
             : "linear-gradient(180deg, #ffffff 0%, #f9fafb 100%)",
         }}
       >
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-secondary to-transparent" />
-        <div className="mb-5 flex items-center justify-between px-1">
+        <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-28 bg-gradient-to-b from-secondary/80 to-transparent dark:from-zinc-950/40" />
+        <div className="relative z-10 mb-6 flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-2xl bg-primary text-[10px] font-semibold text-primary-foreground shadow-[0_16px_40px_-28px_rgba(77,140,30,0.55)]">
-              FI
+            <div
+              className={`relative ${collapsed ? "h-8 w-8" : "h-10 w-10"} overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 dark:bg-zinc-900 dark:ring-white/10`}
+            >
+              <Image
+                src="/logo6.png"
+                alt="Logo"
+                fill
+                sizes={collapsed ? "32px" : "40px"}
+                className={
+                  collapsed ? "object-contain p-1" : "object-contain p-1.5"
+                }
+                priority
+              />
             </div>
             {!collapsed && (
               <div className="overflow-hidden">
-                <div className="text-[9px] font-extrabold uppercase tracking-[0.28em] text-primary">
+                <div className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-primary">
                   Artman
                 </div>
-                <div className="text-[13px] font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
+                <div className="text-[14px] font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
                   Investor
                 </div>
               </div>
@@ -228,7 +240,9 @@ export default function Sidebar() {
                 <span
                   className={[
                     "max-w-[54px] truncate text-[9px] font-semibold leading-none",
-                    isActive ? "text-primary" : "text-zinc-500 dark:text-zinc-400",
+                    isActive
+                      ? "text-primary"
+                      : "text-zinc-500 dark:text-zinc-400",
                   ].join(" ")}
                 >
                   {item.name}
