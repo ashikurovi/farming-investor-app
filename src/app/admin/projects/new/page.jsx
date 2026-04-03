@@ -2,13 +2,20 @@
 
 import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, MapPin, Upload, Type, FileText, Image as ImageIcon, Save, Plus } from "lucide-react";
+import {
+  ArrowLeft,
+  MapPin,
+  Upload,
+  Type,
+  FileText,
+  Image as ImageIcon,
+  Save,
+  Plus,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import {
-  useCreateProjectMutation,
-} from "@/features/admin/projects/projectsApiSlice";
+import { useCreateProjectMutation } from "@/features/admin/projects/projectsApiSlice";
 
 export default function AdminProjectCreatePage() {
   const router = useRouter();
@@ -88,16 +95,16 @@ export default function AdminProjectCreatePage() {
             variant="outline"
             size="icon"
             onClick={() => router.push("/admin/projects")}
-            className="mt-1 h-10 w-10 shrink-0 rounded-xl border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 transition-colors"
+            className="mt-1 h-10 w-10 shrink-0 rounded-xl border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 transition-colors dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
 
           <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
               Add Project
             </h1>
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
               Create a new project with basic details and visual assets.
             </p>
           </div>
@@ -105,7 +112,7 @@ export default function AdminProjectCreatePage() {
       </header>
 
       {/* Main Content */}
-      <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+      <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-900">
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             {/* Left Column: Project Info */}
@@ -126,7 +133,7 @@ export default function AdminProjectCreatePage() {
                       onChange={(e) => handleChange("name", e.target.value)}
                       placeholder="e.g. Sustainable Tomato Farming"
                       required
-                      className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal"
+                      className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                     />
                   </div>
                 </div>
@@ -145,7 +152,7 @@ export default function AdminProjectCreatePage() {
                       value={formValues.location}
                       onChange={(e) => handleChange("location", e.target.value)}
                       placeholder="e.g. Gazipur, Dhaka"
-                      className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal"
+                      className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                     />
                   </div>
                 </div>
@@ -165,7 +172,7 @@ export default function AdminProjectCreatePage() {
                   value={formValues.description}
                   onChange={(e) => handleChange("description", e.target.value)}
                   placeholder="Describe the project, its objectives, financial goals, and expected outcomes..."
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 p-4 text-sm leading-relaxed text-zinc-900 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10 transition-all resize-none placeholder:text-zinc-400"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 p-4 text-sm leading-relaxed text-zinc-900 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10 transition-all resize-none placeholder:text-zinc-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                 />
               </div>
             </div>
@@ -181,7 +188,7 @@ export default function AdminProjectCreatePage() {
                   Cover Image
                 </label>
 
-                <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 transition-colors hover:border-emerald-500/50 hover:bg-emerald-50/30">
+                <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 transition-colors hover:border-emerald-500/50 hover:bg-emerald-50/30 dark:border-zinc-700 dark:bg-zinc-900">
                   <input
                     id="photo"
                     type="file"
@@ -198,24 +205,28 @@ export default function AdminProjectCreatePage() {
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
-                        <div className="rounded-full bg-white/90 px-4 py-2 text-xs font-semibold text-zinc-900 shadow-lg backdrop-blur-sm">
+                        <div className="rounded-full bg-white/90 px-4 py-2 text-xs font-semibold text-zinc-900 shadow-lg backdrop-blur-sm dark:bg-zinc-900 dark:text-zinc-100">
                           Change Image
                         </div>
                       </div>
                     </div>
                   ) : (
                     <div className="flex aspect-[4/3] flex-col items-center justify-center gap-3 p-6 text-center">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-zinc-200">
-                        <Upload className="h-5 w-5 text-zinc-400" />
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-700">
+                        <Upload className="h-5 w-5 text-zinc-400 dark:text-zinc-500" />
                       </div>
                       <div className="space-y-1">
-                        <p className="text-sm font-medium text-zinc-700">Click to upload</p>
-                        <p className="text-xs text-zinc-500">SVG, PNG, JPG or GIF</p>
+                        <p className="text-sm font-medium text-zinc-700 dark:text-zinc-200">
+                          Click to upload
+                        </p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                          SVG, PNG, JPG or GIF
+                        </p>
                       </div>
                     </div>
                   )}
                 </div>
-                <p className="text-[10px] text-zinc-500">
+                <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
                   Recommended size: 1200x800px. Max file size: 5MB.
                 </p>
               </div>
@@ -223,19 +234,19 @@ export default function AdminProjectCreatePage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-4 border-t border-zinc-100 pt-6">
+          <div className="flex items-center justify-end gap-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
             <Button
               type="button"
               variant="outline"
               onClick={() => router.push("/admin/projects")}
-              className="h-11 rounded-xl border-zinc-200 px-6 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900"
+              className="h-11 rounded-xl border-zinc-200 px-6 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={isCreating}
-              className="h-11 rounded-xl bg-emerald-600 px-8 text-sm font-semibold text-white shadow-md shadow-emerald-200 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-200/50 disabled:opacity-70 disabled:shadow-none transition-all"
+              className="h-11 rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-8 text-sm font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] hover:brightness-[1.05] disabled:opacity-70 disabled:shadow-none transition-all"
             >
               {isCreating ? (
                 <div className="flex items-center gap-2">

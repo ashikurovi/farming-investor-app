@@ -65,7 +65,7 @@ export default function AdminDeedDetailPage({ params }) {
             <div className="flex items-center gap-1.5">
               <User className="h-4 w-4" />
               <span>
-                Investor: {deed.investor?.name || deed.investorId || "N/A"}
+                Investor: {deed.investment?.investor?.name || deed.investor?.name || deed.investorId || "N/A"}
               </span>
             </div>
 

@@ -65,10 +65,10 @@ export default function Sidebar() {
         key={item.name}
         href={item.href}
         className={[
-          "group relative flex items-center gap-3 rounded-xl px-2.5 py-2 font-medium transition-all duration-200",
+          "group relative flex items-center gap-3 rounded-xl px-2.5 py-1.5 font-semibold transition-all duration-200",
           collapsed ? "justify-center" : "",
           isActive
-            ? "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-lg shadow-emerald-200/60"
+            ? "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-[0_16px_40px_-28px_rgba(77,140,30,0.65)] ring-1 ring-white/10"
             : "text-zinc-500 hover:bg-[color:rgba(124,194,46,0.12)] hover:text-[color:rgb(77,140,30)] dark:text-zinc-400 dark:hover:bg-[color:rgba(124,194,46,0.14)] dark:hover:text-[color:rgb(124,194,46)]",
           isNested && !collapsed ? "text-xs" : "text-[13px]",
         ].join(" ")}
@@ -157,7 +157,7 @@ export default function Sidebar() {
         {!collapsed && (
           <div className="overflow-hidden">
             <div className="text-[9px] font-extrabold uppercase tracking-[0.28em] text-[color:rgb(77,140,30)] dark:text-[color:rgb(124,194,46)]">
-              Farming Intel
+              Artman
             </div>
             <div className="text-[13px] font-semibold tracking-tight text-zinc-800 dark:text-zinc-200">
               Admin Panel
@@ -184,19 +184,46 @@ export default function Sidebar() {
               );
             }
 
-            const isExpanded = expandedGroups.includes(item.title);
+            const groupHasActive = item.items.some((subItem) => {
+              const href = subItem.href;
+              if (typeof href !== "string") return false;
+              return (
+                pathname === href ||
+                (href !== "/admin" &&
+                  typeof pathname === "string" &&
+                  pathname.startsWith(href))
+              );
+            });
+
+            const isExpanded =
+              groupHasActive || expandedGroups.includes(item.title);
             return (
               <div key={`group-${idx}`} className="space-y-0.5">
                 <button
-                  onClick={() => toggleGroup(item.title)}
-                  className="group flex w-full items-center gap-3 rounded-xl px-2.5 py-2 font-semibold text-zinc-600 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-900 dark:text-zinc-400 dark:hover:bg-emerald-900/20 dark:hover:text-emerald-300"
+                  onClick={() => {
+                    if (groupHasActive) return;
+                    toggleGroup(item.title);
+                  }}
+                  className={[
+                    "group flex w-full items-center gap-3 rounded-xl px-2.5 py-1.5 font-semibold transition-all duration-200",
+                    groupHasActive
+                      ? "bg-[color:rgba(124,194,46,0.12)] text-[color:rgb(77,140,30)] ring-1 ring-[color:rgba(77,140,30,0.18)]"
+                      : "text-zinc-600 hover:bg-[color:rgba(124,194,46,0.10)] hover:text-[color:rgb(77,140,30)] dark:text-zinc-400 dark:hover:bg-[color:rgba(124,194,46,0.14)] dark:hover:text-[color:rgb(124,194,46)]",
+                  ].join(" ")}
                 >
                   {item.icon && (
-                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-zinc-500 transition-colors group-hover:bg-emerald-100 group-hover:text-emerald-600 dark:bg-zinc-800 dark:text-zinc-400 dark:group-hover:bg-emerald-900/40 dark:group-hover:text-emerald-400">
+                    <span
+                      className={[
+                        "flex h-8 w-8 items-center justify-center rounded-lg transition-colors",
+                        groupHasActive
+                          ? "bg-white text-[color:rgb(77,140,30)] ring-1 ring-[color:rgba(77,140,30,0.18)]"
+                          : "bg-zinc-100 text-zinc-500 group-hover:bg-[color:rgba(124,194,46,0.18)] group-hover:text-[color:rgb(77,140,30)] dark:bg-zinc-800 dark:text-zinc-400 dark:group-hover:bg-[color:rgba(124,194,46,0.18)] dark:group-hover:text-[color:rgb(124,194,46)]",
+                      ].join(" ")}
+                    >
                       <item.icon className="h-5 w-5" />
                     </span>
                   )}
-                  <span className="text-[12px] uppercase tracking-[0.12em] text-zinc-900 group-hover:text-emerald-700 font-bold dark:text-zinc-200 dark:group-hover:text-emerald-400">
+                  <span className="text-[12px] uppercase tracking-[0.12em] text-zinc-900 font-bold dark:text-zinc-200">
                     {item.title}
                   </span>
                   <span className="ml-auto text-zinc-300 group-hover:text-zinc-500 transition-transform duration-200 dark:text-zinc-600 dark:group-hover:text-zinc-400">
@@ -306,7 +333,7 @@ export default function Sidebar() {
 
         {!collapsed && (
           <p className="text-center text-[10px] text-zinc-400 dark:text-zinc-600 tracking-wide">
-            © {yearText || "—"} Farming Intel
+            © {yearText || "—"} Artman
           </p>
         )}
       </div>

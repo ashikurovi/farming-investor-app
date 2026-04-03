@@ -122,16 +122,16 @@ export default function AdminInvestmentCreatePage() {
             variant="outline"
             size="icon"
             onClick={() => router.push("/admin/investment")}
-            className="mt-1 h-10 w-10 shrink-0 rounded-xl border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 transition-colors"
+            className="mt-1 h-10 w-10 shrink-0 rounded-xl border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 transition-colors dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
 
           <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
               New Investment
             </h1>
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
               Record a new investment transaction from an investor.
             </p>
           </div>
@@ -139,7 +139,7 @@ export default function AdminInvestmentCreatePage() {
       </header>
 
       {/* Main Content */}
-      <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+      <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-900">
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             {/* Left Column: Investment Details */}
@@ -157,7 +157,7 @@ export default function AdminInvestmentCreatePage() {
                     id="investorId"
                     value={formValues.investorId}
                     onChange={(e) => handleChange("investorId", e.target.value)}
-                    className="h-11 w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-4 text-sm font-medium text-zinc-900 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10 transition-all appearance-none"
+                    className="h-11 w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-4 text-sm font-medium text-zinc-900 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10 transition-all appearance-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                     disabled={isUsersLoading || isCreating}
                     required
                   >
@@ -196,7 +196,7 @@ export default function AdminInvestmentCreatePage() {
                     onChange={(e) => handleChange("amount", e.target.value)}
                     placeholder="e.g. 50000"
                     required
-                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal"
+                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal dark:border-zinc-700 dark:bg-zinc-900"
                   />
                 </div>
 
@@ -213,7 +213,7 @@ export default function AdminInvestmentCreatePage() {
                     value={formValues.reference}
                     onChange={(e) => handleChange("reference", e.target.value)}
                     placeholder="Check No, Transaction ID, etc."
-                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal"
+                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:font-normal dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                   />
                 </div>
               </div>
@@ -233,7 +233,7 @@ export default function AdminInvestmentCreatePage() {
                     value={formValues.date}
                     onChange={(e) => handleChange("date", e.target.value)}
                     required
-                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all"
+                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                   />
                 </div>
 
@@ -251,7 +251,7 @@ export default function AdminInvestmentCreatePage() {
                     value={formValues.time}
                     onChange={(e) => handleChange("time", e.target.value)}
                     required
-                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all"
+                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                   />
                 </div>
               </div>
@@ -270,7 +270,7 @@ export default function AdminInvestmentCreatePage() {
                     type="date"
                     value={formValues.startDate}
                     onChange={(e) => handleChange("startDate", e.target.value)}
-                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all"
+                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                   />
                 </div>
 
@@ -287,7 +287,7 @@ export default function AdminInvestmentCreatePage() {
                     type="date"
                     value={formValues.endDate}
                     onChange={(e) => handleChange("endDate", e.target.value)}
-                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all"
+                    className="h-11 rounded-xl border-zinc-200 bg-zinc-50/50 pl-4 text-sm font-medium focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                   />
                 </div>
               </div>
@@ -304,7 +304,7 @@ export default function AdminInvestmentCreatePage() {
                   Payment Proof / Photo
                 </label>
                 
-                <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 transition-colors hover:border-emerald-500/50 hover:bg-emerald-50/30">
+                <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 transition-colors hover:border-emerald-500/50 hover:bg-emerald-50/30 dark:border-zinc-700 dark:bg-zinc-900">
                   <input
                     id="photo"
                     type="file"
@@ -327,13 +327,13 @@ export default function AdminInvestmentCreatePage() {
                       </div>
                     </div>
                   ) : (
-                    <div className="flex aspect-[4/3] flex-col items-center justify-center gap-3 p-6 text-center">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-zinc-200">
-                        <Upload className="h-5 w-5 text-zinc-400" />
+                      <div className="flex aspect-[4/3] flex-col items-center justify-center gap-3 p-6 text-center">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-700">
+                        <Upload className="h-5 w-5 text-zinc-400 dark:text-zinc-500" />
                       </div>
                       <div className="space-y-1">
-                        <p className="text-sm font-medium text-zinc-700">Click to upload</p>
-                        <p className="text-xs text-zinc-500">SVG, PNG, JPG or GIF</p>
+                        <p className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Click to upload</p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400">SVG, PNG, JPG or GIF</p>
                       </div>
                     </div>
                   )}
@@ -344,19 +344,19 @@ export default function AdminInvestmentCreatePage() {
 
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-4 border-t border-zinc-100 pt-6">
+          <div className="flex items-center justify-end gap-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
             <Button
               type="button"
               variant="outline"
               onClick={() => router.push("/admin/investment")}
-              className="h-11 rounded-xl border-zinc-200 px-6 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900"
+              className="h-11 rounded-xl border-zinc-200 px-6 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={isCreating}
-              className="h-11 rounded-xl bg-emerald-600 px-8 text-sm font-semibold text-white shadow-md shadow-emerald-200 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-200/50 disabled:opacity-70 disabled:shadow-none transition-all"
+              className="h-11 rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-8 text-sm font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] hover:brightness-[1.05] disabled:opacity-70 disabled:shadow-none transition-all"
             >
               {isCreating ? (
                 <div className="flex items-center gap-2">

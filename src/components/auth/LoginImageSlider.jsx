@@ -152,7 +152,7 @@ export function LoginImageSlider() {
                       fontStyle: "italic",
                     }}
                   >
-                    "{slide.quote}"
+                    {`"${slide.quote}"`}
                   </p>
 
                   {/* Author */}

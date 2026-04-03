@@ -49,7 +49,7 @@ export default function Sidebar() {
             {!collapsed && (
               <div className="overflow-hidden">
                 <div className="text-[9px] font-extrabold uppercase tracking-[0.28em] text-emerald-500">
-                  Farming Intel
+                  Artman
                 </div>
                 <div className="text-[13px] font-semibold tracking-tight text-zinc-800">
                   Investor
@@ -175,7 +175,7 @@ export default function Sidebar() {
           </button>
           {!collapsed && (
             <div className="text-center text-[11px] text-zinc-500">
-              © {yearText || "—"} Farming Intel
+              © {yearText || "—"} Artman
             </div>
           )}
         </div>

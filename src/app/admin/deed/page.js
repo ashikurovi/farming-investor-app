@@ -245,11 +245,22 @@ export default function AdminDeedPage() {
                 header: "INVESTMENT",
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (deed) => (
-                  <div className="flex flex-col">
-                    <span className="text-sm font-semibold text-zinc-900">Inv #{deed.investmentId || "-"}</span>
-                    <span className="text-xs text-zinc-500">{deed.investment?.investor?.name || deed.investment?.investor?.email || "-"}</span>
-                  </div>
+                  <span className="text-sm font-semibold text-zinc-900">Inv #{deed.investmentId || "-"}</span>
                 ),
+              },
+              {
+                key: "investor",
+                header: "INVESTOR",
+                tdClassName: "whitespace-nowrap px-6 py-4",
+                cell: (deed) => {
+                  const investor = deed.investment?.investor;
+                  return (
+                    <div className="flex flex-col">
+                      <span className="text-sm font-semibold text-zinc-900">{investor?.name || "-"}</span>
+                      {investor?.email && <span className="text-xs text-zinc-500">{investor.email}</span>}
+                    </div>
+                  );
+                },
               },
               {
                 key: "issueDate",

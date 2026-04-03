@@ -100,7 +100,7 @@ export default function TopNavbar() {
             </div>
             <div className="leading-tight">
               <div className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-emerald-600">
-                Farming Intel
+                Artman
               </div>
               <div className="text-[12px] font-semibold tracking-tight text-zinc-900">
                 Investor

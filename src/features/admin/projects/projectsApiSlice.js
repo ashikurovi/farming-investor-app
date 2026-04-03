@@ -17,6 +17,13 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         };
       },
       transformResponse: (response) => response?.data ?? response,
+      providesTags: (result) =>
+        result?.items
+          ? [
+              ...result.items.map((project) => ({ type: "Project", id: project.id })),
+              { type: "Project", id: "LIST" },
+            ]
+          : [{ type: "Project", id: "LIST" }],
     }),
 
     getProjectsStats: builder.query({
@@ -25,6 +32,7 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => response?.data ?? response,
+      providesTags: [{ type: "Project", id: "STATS" }],
     }),
 
     getProjectStats: builder.query({
@@ -33,6 +41,7 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => response?.data ?? response,
+      providesTags: (result, error, id) => [{ type: "Project", id }, { type: "Project", id: "STATS" }],
     }),
 
     getProject: builder.query({
@@ -84,6 +93,7 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         body: payload,
       }),
       transformResponse: (response) => response?.data ?? response,
+      invalidatesTags: [{ type: "Project", id: "LIST" }, { type: "Project", id: "STATS" }],
     }),
 
     updateProject: builder.mutation({
@@ -93,6 +103,11 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         body: payload,
       }),
       transformResponse: (response) => response?.data ?? response,
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Project", id },
+        { type: "Project", id: "LIST" },
+        { type: "Project", id: "STATS" },
+      ],
     }),
 
     deleteProject: builder.mutation({
@@ -100,7 +115,11 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         url: `/projects/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: undefined,
+      invalidatesTags: (result, error, id) => [
+        { type: "Project", id },
+        { type: "Project", id: "LIST" },
+        { type: "Project", id: "STATS" },
+      ],
     }),
   }),
 });

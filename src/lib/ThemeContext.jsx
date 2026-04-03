@@ -8,26 +8,18 @@ const ThemeContext = createContext({
 });
 
 export function ThemeProvider({ children }) {
-  const [dark, setDark] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    // On mount, read saved preference or fall back to system preference
-    const saved = localStorage.getItem("admin-theme");
-    if (saved === "dark") {
-      setDark(true);
-    } else if (saved === "light") {
-      setDark(false);
-    } else {
-      // No saved preference — use system preference
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setDark(prefersDark);
+  const [dark, setDark] = useState(() => {
+    try {
+      const saved = localStorage.getItem("admin-theme");
+      if (saved === "dark") return true;
+      if (saved === "light") return false;
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    } catch {
+      return false;
     }
-    setMounted(true);
-  }, []);
+  });
 
   useEffect(() => {
-    if (!mounted) return;
     const root = document.documentElement;
     if (dark) {
       root.classList.add("dark");
@@ -36,7 +28,7 @@ export function ThemeProvider({ children }) {
       root.classList.remove("dark");
       localStorage.setItem("admin-theme", "light");
     }
-  }, [dark, mounted]);
+  }, [dark]);
 
   const toggleTheme = () => setDark((prev) => !prev);
 

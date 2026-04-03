@@ -76,6 +76,29 @@ export const authApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+    updateMe: builder.mutation({
+      query: (payload) => ({
+        url: "/users/me",
+        method: "PATCH",
+        body: payload,
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled, getState }) {
+        try {
+          const { data } = await queryFulfilled;
+          const state = getState();
+          const existingToken = state?.auth?.token ?? null;
+
+          dispatch(
+            setCredentials({
+              token: existingToken,
+              user: data?.data ?? data ?? null,
+            })
+          );
+        } catch (err) {
+          console.error("Update me failed", err);
+        }
+      },
+    }),
     forgotPassword: builder.mutation({
       query: (body) => ({
         url: "/users/forgot-password",
@@ -97,6 +120,7 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useMeQuery,
+  useUpdateMeMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
 } = authApiSlice;

@@ -284,9 +284,9 @@ export default function MyInvestmentsPage() {
       </div>
 
       {/* ── PROFILE + STATS ── */}
-      <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+      <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-3">
         {/* Profile card — full width on mobile, spans on larger */}
-        <div className="relative col-span-2 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm ring-1 ring-black/[0.03] sm:p-5 lg:col-span-1">
+        {/* <div className="relative col-span-2 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm ring-1 ring-black/[0.03] sm:p-5 lg:col-span-1">
           <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-emerald-400 to-teal-400" />
           <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 sm:mb-4 sm:text-[11px]">
             Profile
@@ -329,7 +329,7 @@ export default function MyInvestmentsPage() {
               <p className="text-xs">No user data.</p>
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* 4 stat cards — always 2 cols */}
         <StatCard
@@ -359,6 +359,12 @@ export default function MyInvestmentsPage() {
           Icon={BadgeDollarSign}
           color="zinc"
           currency
+        />
+        <StatCard
+          label="Investments Count"
+          value={meta?.total ?? 0}
+          Icon={Hash}
+          color="blue"
         />
         <StatCard
           label="Pending Deeds"

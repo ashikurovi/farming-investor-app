@@ -285,16 +285,16 @@ export default function AdminInvestorPage() {
   return (
     <div className="space-y-8 p-2">
       {/* Header Section */}
-      <header className="flex flex-col gap-6 rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+      <header className="flex flex-col gap-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[color:rgba(124,194,46,0.14)] text-[color:rgb(77,140,30)] ring-1 ring-[color:rgba(77,140,30,0.18)] dark:bg-[color:rgba(124,194,46,0.14)] dark:text-[color:rgb(124,194,46)] dark:ring-[color:rgba(124,194,46,0.22)]">
             <Users className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-zinc-900">
+            <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
               Investors Management
             </h1>
-            <p className="text-sm font-medium text-zinc-500">
+            <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
               Manage your investor profiles and track investments.
             </p>
           </div>
@@ -320,7 +320,7 @@ export default function AdminInvestorPage() {
         </div>
       </header>
 
-      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm">
+      <section className="w-full rounded-3xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <div className="overflow-x-auto">
           <DataTable
             columns={[
@@ -338,7 +338,7 @@ export default function AdminInvestorPage() {
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (user) => (
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[color:rgba(124,194,46,0.18)] text-xs font-bold text-[color:rgb(77,140,30)] dark:bg-[color:rgba(124,194,46,0.14)] dark:text-[color:rgb(124,194,46)]">
                       {user.photo ? (
                         <img
                           src={
@@ -354,11 +354,13 @@ export default function AdminInvestorPage() {
                       )}
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-sm font-semibold text-zinc-900">
+                      <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                         {user.name || "Unknown"}
                       </span>
                       {user.email && (
-                        <span className="text-xs text-zinc-500">{user.email}</span>
+                        <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                          {user.email}
+                        </span>
                       )}
                     </div>
                   </div>
@@ -372,15 +374,15 @@ export default function AdminInvestorPage() {
                   <div className="flex flex-col gap-1">
                     {user.investorType ? (
                       <>
-                        <span className="text-sm font-medium text-zinc-700">
+                        <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">
                           {user.investorType.type}
                         </span>
-                        <span className="inline-flex w-fit items-center rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
+                        <span className="inline-flex w-fit items-center rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20">
                           {user.investorType.percentage}% Share
                         </span>
                       </>
                     ) : (
-                      <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic">
+                      <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 ring-1 ring-inset ring-zinc-500/10 italic dark:bg-zinc-800 dark:text-zinc-500 dark:ring-zinc-700">
                         No Type
                       </span>
                     )}
@@ -393,10 +395,10 @@ export default function AdminInvestorPage() {
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (user) => (
                   <div className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-50 text-zinc-500">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-50 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
                       <span className="text-xs font-bold">৳</span>
                     </div>
-                    <span className="text-sm font-bold text-zinc-900">
+                    <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
                       {Number(user.totalInvestment ?? 0).toLocaleString("en-US", {
                         minimumFractionDigits: 2,
                       })}
@@ -409,7 +411,7 @@ export default function AdminInvestorPage() {
                 header: "PROFIT",
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (user) => (
-                  <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
+                  <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20">
                     ৳{Number(user.totalProfit ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
                   </span>
                 ),
@@ -419,7 +421,7 @@ export default function AdminInvestorPage() {
                 header: "BALANCE",
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (user) => (
-                  <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-bold text-blue-700 ring-1 ring-inset ring-blue-600/10">
+                  <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-bold text-blue-700 ring-1 ring-inset ring-blue-600/10 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-500/20">
                     ৳{Number(user.balance ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
                   </span>
                 ),
@@ -429,7 +431,7 @@ export default function AdminInvestorPage() {
                 header: "TOTAL COST",
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (user) => (
-                  <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10">
+                  <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700">
                     ৳{Number(user.totalCost ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
                   </span>
                 ),
@@ -441,8 +443,8 @@ export default function AdminInvestorPage() {
                 cell: (user) => (
                   <span
                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${user.isBanned
-                        ? "bg-red-50 text-red-700 ring-red-600/10"
-                        : "bg-emerald-50 text-emerald-700 ring-emerald-600/10"
+                      ? "bg-red-50 text-red-700 ring-red-600/10 dark:bg-red-500/10 dark:text-red-300 dark:ring-red-500/20"
+                      : "bg-emerald-50 text-emerald-700 ring-emerald-600/10 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20"
                       }`}
                   >
                     {user.isBanned ? "Banned" : "Active"}
@@ -454,10 +456,10 @@ export default function AdminInvestorPage() {
             isLoading={isBusy}
             emptyMessage={
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-50">
-                  <Users className="h-6 w-6 text-zinc-400" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-50 dark:bg-zinc-800">
+                  <Users className="h-6 w-6 text-zinc-400 dark:text-zinc-500" />
                 </div>
-                <h3 className="mt-2 text-sm font-semibold text-zinc-900">
+                <h3 className="mt-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                   No investors found
                 </h3>
                 <p className="mt-1 text-sm text-zinc-500">
@@ -478,6 +480,18 @@ export default function AdminInvestorPage() {
             onRowClick={handleRowClick}
             renderActions={(user) => (
               <div className="flex items-center justify-end gap-2">
+                {/* <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(`/admin/investor/${user.id}`);
+                  }}
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-blue-300"
+                  title="View Details"
+                >
+                  <Eye className="h-4 w-4" />
+                </Button> */}
                 <Button
                   variant="ghost"
                   size="icon"
@@ -490,6 +504,7 @@ export default function AdminInvestorPage() {
                 >
                   <Eye className="h-4 w-4" />
                 </Button>
+<<<<<<< HEAD
                 <Button
                   variant="ghost"
                   size="icon"
@@ -502,6 +517,8 @@ export default function AdminInvestorPage() {
                 >
                   <Eye className="h-4 w-4" />
                 </Button>
+=======
+>>>>>>> devarko
                 {!isReadOnly && (
                   <>
                     <Button
@@ -524,8 +541,13 @@ export default function AdminInvestorPage() {
                         confirmToggleBan(user);
                       }}
                       className={`h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 ${user.isBanned
+<<<<<<< HEAD
                           ? "hover:text-emerald-600"
                           : "hover:text-purple-600"
+=======
+                        ? "hover:text-emerald-600"
+                        : "hover:text-purple-600"
+>>>>>>> devarko
                         }`}
                       title={user.isBanned ? "Unban User" : "Ban User"}
                     >
@@ -554,7 +576,7 @@ export default function AdminInvestorPage() {
           />
         </div>
 
-        <div className="border-t border-zinc-100 bg-zinc-50/50 px-6 py-4">
+        <div className="border-t border-zinc-100 bg-zinc-50/50 px-6 py-4 dark:border-zinc-800 dark:bg-zinc-800/40">
           <Pagination
             page={meta.page}
             pageCount={meta.pageCount}

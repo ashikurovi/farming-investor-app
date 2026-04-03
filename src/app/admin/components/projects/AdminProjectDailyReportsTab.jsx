@@ -36,7 +36,14 @@ export function AdminProjectDailyReportsTab({ project, isBusy, isError }) {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
-    setValues({ title: "", description: "" });
+    setValues({
+      dailyCost: "",
+      dailySell: "",
+      reason: "",
+      photoFile: null,
+      date: initialDate,
+      time: initialTime,
+    });
   };
   const onChange = (key, value) => setValues((prev) => ({ ...prev, [key]: value }));
   const onSubmit = async (e) => {
@@ -73,30 +80,30 @@ export function AdminProjectDailyReportsTab({ project, isBusy, isError }) {
   };
 
   return (
-    <section className="rounded-3xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6">
+    <section className="rounded-3xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 text-zinc-500">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-300">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-zinc-900">Daily Reports</h3>
-            <p className="text-xs text-zinc-500">Track daily progress and expenses</p>
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Daily Reports</h3>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">Track daily progress and expenses</p>
           </div>
         </div>
         <Button
           type="button"
           onClick={openModal}
-          className="w-full rounded-xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-800 sm:w-auto"
+          className="w-full rounded-xl px-4 py-2 text-xs font-semibold text-white sm:w-auto bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] hover:brightness-[1.05]"
         >
           Add New Report
         </Button>
       </div>
       {isBusy && (
-        <div className="flex h-24 items-center justify-center text-xs text-zinc-500">Loading daily reports...</div>
+        <div className="flex h-24 items-center justify-center text-xs text-zinc-500 dark:text-zinc-400">Loading daily reports...</div>
       )}
       {!isBusy && isError && (
-        <div className="flex h-24 items-center justify-center text-xs text-red-600">Failed to load project.</div>
+        <div className="flex h-24 items-center justify-center text-xs text-red-600 dark:text-red-400">Failed to load project.</div>
       )}
       {!isBusy && !isError && project && (
         <>
@@ -106,7 +113,7 @@ export function AdminProjectDailyReportsTab({ project, isBusy, isError }) {
                 {
                   key: "sl",
                   header: "#",
-                  tdClassName: "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16",
+                  tdClassName: "whitespace-nowrap px-6 py-4 text-xs font-bold text-zinc-400 w-16 dark:text-zinc-500",
                   cell: (row) =>
                     project.dailyReports.findIndex((r) => r.id === row.id) + 1,
                 },
@@ -115,7 +122,7 @@ export function AdminProjectDailyReportsTab({ project, isBusy, isError }) {
                   header: "DAILY COST",
                   tdClassName: "whitespace-nowrap px-6 py-4",
                   cell: (row) => (
-                    <span className="inline-flex items-center rounded-md bg-orange-50 px-2 py-1 text-xs font-bold text-orange-700 ring-1 ring-inset ring-orange-600/10">
+                    <span className="inline-flex items-center rounded-md bg-orange-50 px-2 py-1 text-xs font-bold text-orange-700 ring-1 ring-inset ring-orange-600/10 dark:bg-orange-500/10 dark:text-orange-300 dark:ring-orange-500/20">
                       ৳{Number(row.dailyCost ?? 0).toLocaleString("en-US")}
                     </span>
                   ),
@@ -125,7 +132,7 @@ export function AdminProjectDailyReportsTab({ project, isBusy, isError }) {
                   header: "DAILY SELL",
                   tdClassName: "whitespace-nowrap px-6 py-4",
                   cell: (row) => (
-                    <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
+                    <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20">
                       ৳{Number(row.dailySell ?? 0).toLocaleString("en-US")}
                     </span>
                   ),
@@ -133,7 +140,7 @@ export function AdminProjectDailyReportsTab({ project, isBusy, isError }) {
                 {
                   key: "reason",
                   header: "REASON",
-                  tdClassName: "px-6 py-4 text-sm text-zinc-500 min-w-[200px]",
+                  tdClassName: "px-6 py-4 text-sm text-zinc-500 min-w-[200px] dark:text-zinc-300",
                   cell: (row) => row.reason ?? "-",
                 },
                 {
@@ -141,7 +148,7 @@ export function AdminProjectDailyReportsTab({ project, isBusy, isError }) {
                   header: "DATE",
                   tdClassName: "whitespace-nowrap px-6 py-4",
                   cell: (row) => row.date ? (
-                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10">
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700">
                       {row.date}
                     </span>
                   ) : "-",
@@ -151,7 +158,7 @@ export function AdminProjectDailyReportsTab({ project, isBusy, isError }) {
                   header: "TIME",
                   tdClassName: "whitespace-nowrap px-6 py-4",
                   cell: (row) => row.time ? (
-                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10">
+                    <span className="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-500/10 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700">
                       {row.time}
                     </span>
                   ) : "-",
@@ -173,7 +180,7 @@ export function AdminProjectDailyReportsTab({ project, isBusy, isError }) {
                         window.open(row.photoUrl, "_blank", "noopener,noreferrer");
                       }
                     }}
-                    className="h-8 rounded-full text-xs text-zinc-400 hover:bg-zinc-50 hover:text-blue-600 disabled:opacity-40"
+                    className="h-8 rounded-full text-xs text-zinc-400 hover:bg-zinc-50 hover:text-blue-600 disabled:opacity-40 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
                   >
                     View Image
                   </Button>
@@ -181,7 +188,7 @@ export function AdminProjectDailyReportsTab({ project, isBusy, isError }) {
               )}
             />
           ) : (
-            <p className="text-xs text-zinc-500">No daily reports yet for this project.</p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">No daily reports yet for this project.</p>
           )}
           <AdminDailyReportFormModal
             isOpen={isModalOpen}

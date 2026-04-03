@@ -24,15 +24,15 @@ export function AdminInvestorHeader({ user, onBack }) {
           variant="ghost"
           size="icon"
           onClick={onBack}
-          className="h-10 w-10 rounded-xl bg-white text-zinc-500 shadow-sm transition-all hover:bg-zinc-50 hover:text-zinc-900 hover:shadow-md"
+          className="h-10 w-10 rounded-xl bg-white text-zinc-500 shadow-sm transition-all hover:bg-zinc-50 hover:text-zinc-900 hover:shadow-md dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
             Investor Profile
           </h1>
-          <p className="text-sm font-medium text-zinc-500">
+          <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
             Manage investor information and portfolio
           </p>
         </div>

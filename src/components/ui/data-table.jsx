@@ -14,7 +14,7 @@ export function DataTable({
   const totalColumns = columns.length + (hasActions ? 1 : 0);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-300 bg-white shadow-xs">
+    <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
       <div className="overflow-x-auto">
         <table
           className={`${minWidth} border-separate border-spacing-0 text-sm`}
@@ -27,7 +27,7 @@ export function DataTable({
                   className={`${
                     column.thClassName ??
                     [
-                      "bg-zinc-50/90 px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 backdrop-blur",
+                      "bg-zinc-50/90 px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 backdrop-blur dark:bg-zinc-800/70 dark:text-zinc-300",
                       index === 0 ? "rounded-tl-2xl" : "",
                       index === columns.length - 1 && !hasActions
                         ? "rounded-tr-2xl"
@@ -42,7 +42,7 @@ export function DataTable({
               ))}
 
               {hasActions && (
-                <th className="bg-zinc-50/90 px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 backdrop-blur rounded-tr-2xl">
+                <th className="bg-zinc-50/90 px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 backdrop-blur rounded-tr-2xl dark:bg-zinc-800/70 dark:text-zinc-300">
                   Actions
                 </th>
               )}
@@ -55,7 +55,7 @@ export function DataTable({
                 {[0, 1, 2].map((rowIndex) => (
                   <tr
                     key={`skeleton-${rowIndex}`}
-                    className="border-b border-zinc-100 last:border-b-0"
+                    className="border-b border-zinc-100 last:border-b-0 dark:border-zinc-800"
                   >
                     {columns.map((column, colIndex) => (
                       <td
@@ -71,7 +71,7 @@ export function DataTable({
                             .join(" ")
                         } ${column.className || ""}`}
                       >
-                        <div className="h-3 w-[70%] animate-pulse rounded-full bg-zinc-200/70" />
+                        <div className="h-3 w-[70%] animate-pulse rounded-full bg-zinc-200/70 dark:bg-zinc-700/60" />
                       </td>
                     ))}
 
@@ -88,7 +88,7 @@ export function DataTable({
                           {[0, 1, 2].map((i) => (
                             <span
                               key={i}
-                              className="h-7 w-7 animate-pulse rounded-full bg-zinc-200/70"
+                              className="h-7 w-7 animate-pulse rounded-full bg-zinc-200/70 dark:bg-zinc-700/60"
                             />
                           ))}
                         </div>
@@ -100,7 +100,7 @@ export function DataTable({
                 <tr>
                   <td
                     colSpan={totalColumns}
-                    className="px-4 pb-4 pt-1 text-left text-xs text-zinc-400"
+                    className="px-4 pb-4 pt-1 text-left text-xs text-zinc-400 dark:text-zinc-500"
                   >
                     {loadingLabel}
                   </td>
@@ -112,7 +112,7 @@ export function DataTable({
               <tr>
                 <td
                   colSpan={totalColumns}
-                  className="px-4 py-10 text-center text-sm text-zinc-500"
+                  className="px-4 py-10 text-center text-sm text-zinc-500 dark:text-zinc-400"
                 >
                   {emptyMessage}
                 </td>
@@ -127,7 +127,7 @@ export function DataTable({
                   <tr
                     key={key}
                     onClick={(e) => onRowClick && onRowClick(row, e)}
-                    className={`group border-b border-zinc-100 last:border-b-0 transition-colors hover:bg-zinc-50/80 ${
+                    className={`group border-b border-zinc-100 last:border-b-0 transition-colors hover:bg-zinc-50/80 dark:border-zinc-800 dark:hover:bg-zinc-800/40 ${
                       onRowClick ? "cursor-pointer" : ""
                     } ${getRowClassName ? getRowClassName(row) : ""}`}
                   >
@@ -137,7 +137,7 @@ export function DataTable({
                         className={`${
                           column.tdClassName ??
                           [
-                            "whitespace-nowrap px-4 py-3 text-sm text-zinc-700",
+                            "whitespace-nowrap px-4 py-3 text-sm text-zinc-700 dark:text-zinc-200",
                             rowIndex === data.length - 1
                               ? colIndex === 0
                                 ? "rounded-bl-2xl"

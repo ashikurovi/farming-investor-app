@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useGetPartnersQuery, useGetPartnerByIdQuery, useAddPartnerMutation, useAddInvestmentMutation, useWithdrawPartnerProfitMutation, useGetPartnerPayoutsQuery, useGetAllPartnerPayoutsQuery } from "@/features/partner/partnerApiSlice";
+import { useGetInvestmentsAdminQuery } from "@/features/investor/investments/investmentsApiSlice";
+import { AdminSearchBar } from "@/app/admin/components/AdminSearchBar";
 import { toast } from "sonner";
 import { Loader2, Plus, Users, Landmark, Banknote, Shield, Briefcase, Activity, TrendingUp, RefreshCw, Download, FileText, History } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -190,7 +192,7 @@ function InvoiceTemplate({ payout }) {
     <div className="bg-white p-8 font-sans text-gray-900 w-full max-w-3xl mx-auto border border-gray-200">
       <div className="flex justify-between items-center border-b pb-6 mb-6">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-gray-900">Farming Intel</h1>
+          <h1 className="text-3xl font-black tracking-tight text-gray-900">Artman</h1>
           <p className="text-sm text-gray-500 font-medium">Partner Payout Invoice</p>
         </div>
         <div className="text-right">
@@ -229,7 +231,7 @@ function InvoiceTemplate({ payout }) {
 
       <div className="border-t pt-6 text-center text-sm text-gray-500">
         <p>This is an automatically generated receipt for partner profit withdrawals.</p>
-        <p>Thank you for being a valued partner of Farming Intel.</p>
+        <p>Thank you for being a valued partner of Artman.</p>
       </div>
     </div>
   );
@@ -238,18 +240,29 @@ function InvoiceTemplate({ payout }) {
 function AdminPartnerDashboard() {
   const { data: partners, isLoading, refetch } = useGetPartnersQuery();
   const { data: globalPayouts, isLoading: isPayoutsLoading } = useGetAllPartnerPayoutsQuery();
+  const { data: allInvestments, isLoading: isInvestmentsLoading } = useGetInvestmentsAdminQuery();
 
   const [activePartnerId, setActivePartnerId] = useState(null);
   const [payoutPartnerId, setPayoutPartnerId] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [activeTab, setActiveTab] = useState("directory");
   const [printingInvoice, setPrintingInvoice] = useState(null);
+  const [printingInvestment, setPrintingInvestment] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handlePrint = (payout) => {
     setPrintingInvoice(payout);
     setTimeout(() => {
       window.print();
       setTimeout(() => setPrintingInvoice(null), 500);
+    }, 100);
+  };
+
+  const handlePrintInvestment = (investment, partnerName) => {
+    setPrintingInvestment({ ...investment, partnerName });
+    setTimeout(() => {
+      window.print();
+      setTimeout(() => setPrintingInvestment(null), 500);
     }, 100);
   };
 
@@ -262,6 +275,35 @@ function AdminPartnerDashboard() {
   }
 
   const totalPool = partners?.reduce((acc, curr) => acc + Number(curr.totalInvestment), 0) || 0;
+  const totalCurrentProfit = partners?.reduce((acc, curr) => acc + Number(curr.totalProfit), 0) || 0;
+  const totalDistributed = globalPayouts?.reduce((acc, curr) => acc + Number(curr.amount), 0) || 0;
+
+  const partnersMap = new Map((partners || []).map(p => [p.id, p]));
+
+  const lowerSearch = searchQuery.toLowerCase();
+
+  const filteredPartners = (partners || []).filter(p =>
+    !lowerSearch ||
+    p.name?.toLowerCase().includes(lowerSearch) ||
+    p.email?.toLowerCase().includes(lowerSearch) ||
+    p.phone?.includes(lowerSearch)
+  );
+
+  const filteredPayouts = (globalPayouts || []).filter(p => {
+    if (!lowerSearch) return true;
+    return p.reference?.toLowerCase().includes(lowerSearch) ||
+      p.partner?.name?.toLowerCase().includes(lowerSearch) ||
+      p.partner?.email?.toLowerCase().includes(lowerSearch);
+  });
+
+  const allPartnerInv = (Array.isArray(allInvestments) ? allInvestments : []).filter(inv => partnersMap.has(inv.investorId));
+  const filteredInvestments = allPartnerInv.filter(inv => {
+    if (!lowerSearch) return true;
+    const p = partnersMap.get(inv.investorId);
+    return inv.reference?.toLowerCase().includes(lowerSearch) ||
+      p?.name?.toLowerCase().includes(lowerSearch) ||
+      p?.email?.toLowerCase().includes(lowerSearch);
+  });
 
   return (
     <motion.div
@@ -269,25 +311,64 @@ function AdminPartnerDashboard() {
       animate={{ opacity: 1, y: 0 }}
       className="space-y-8"
     >
-      <div className="flex bg-white shadow-sm ring-1 ring-gray-900/5 rounded-2xl p-1 w-fit dark:bg-gray-900 dark:ring-white/10 no-print">
-        <button
-          onClick={() => setActiveTab("directory")}
-          className={`flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-xl transition-all ${activeTab === "directory"
-            ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400 shadow-sm"
-            : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-            }`}
-        >
-          <Users className="h-4 w-4" /> Partner Directory
-        </button>
-        <button
-          onClick={() => setActiveTab("payouts")}
-          className={`flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-xl transition-all ${activeTab === "payouts"
-            ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400 shadow-sm"
-            : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-            }`}
-        >
-          <History className="h-4 w-4" /> Global Payouts
-        </button>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 no-print">
+        <div className="flex bg-white shadow-sm ring-1 ring-gray-900/5 rounded-2xl p-1 w-fit dark:bg-gray-900 dark:ring-white/10">
+          <button
+            onClick={() => setActiveTab("directory")}
+            className={`flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-xl transition-all ${activeTab === "directory"
+              ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400 shadow-sm"
+              : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              }`}
+          >
+            <Users className="h-4 w-4" /> Partner Directory
+          </button>
+          <button
+            onClick={() => setActiveTab("payouts")}
+            className={`flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-xl transition-all ${activeTab === "payouts"
+              ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400 shadow-sm"
+              : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              }`}
+          >
+            <History className="h-4 w-4" /> Global Payouts
+          </button>
+          <button
+            onClick={() => setActiveTab("investments")}
+            className={`flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-xl transition-all ${activeTab === "investments"
+              ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400 shadow-sm"
+              : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              }`}
+          >
+            <Landmark className="h-4 w-4" /> Partner Investments
+          </button>
+        </div>
+        <div className="w-full sm:w-64">
+          <AdminSearchBar
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Search partners, emails..."
+            className="w-full"
+          />
+        </div>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-3 mb-4 mt-8 no-print">
+        <StatCard
+          title="Total Partner Fund"
+          value={`৳${totalPool.toLocaleString()}`}
+          icon={<Landmark className="h-6 w-6 text-blue-600 dark:text-blue-400" />}
+          gradient="from-blue-500/20 to-cyan-500/20"
+        />
+        <StatCard
+          title="Available Profit Balance"
+          value={`৳${totalCurrentProfit.toLocaleString()}`}
+          icon={<TrendingUp className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />}
+          gradient="from-emerald-500/20 to-teal-500/20"
+        />
+        <StatCard
+          title="Total Profit Distributed"
+          value={`৳${totalDistributed.toLocaleString()}`}
+          icon={<Banknote className="h-6 w-6 text-purple-600 dark:text-purple-400" />}
+          gradient="from-purple-500/20 to-pink-500/20"
+        />
       </div>
 
       {activeTab === "directory" ? (
@@ -319,7 +400,7 @@ function AdminPartnerDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-                {partners?.map((p) => {
+                {filteredPartners?.map((p) => {
                   const share = totalPool > 0 ? ((Number(p.totalInvestment) / totalPool) * 100).toFixed(2) : 0;
                   return (
                     <tr key={p.id} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/20 transition-colors">
@@ -357,7 +438,7 @@ function AdminPartnerDashboard() {
                     </tr>
                   );
                 })}
-                {!partners?.length && (
+                {!filteredPartners?.length && (
                   <tr>
                     <td colSpan="5" className="px-4 py-8 text-center text-gray-500">
                       No partners found.
@@ -368,7 +449,7 @@ function AdminPartnerDashboard() {
             </table>
           </div>
         </motion.div>
-      ) : (
+      ) : activeTab === "payouts" ? (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -395,8 +476,8 @@ function AdminPartnerDashboard() {
                   <tr>
                     <td colSpan="5" className="px-6 py-8 text-center"><Loader2 className="h-5 w-5 animate-spin mx-auto text-indigo-500" /></td>
                   </tr>
-                ) : globalPayouts?.length > 0 ? (
-                  globalPayouts.map((payout) => (
+                ) : filteredPayouts?.length > 0 ? (
+                  filteredPayouts.map((payout) => (
                     <tr key={payout.id} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/20 transition-colors">
                       <td className="px-4 py-4">{new Date(payout.createdAt).toLocaleDateString()}</td>
                       <td className="px-4 py-4">
@@ -426,11 +507,78 @@ function AdminPartnerDashboard() {
             </table>
           </div>
         </motion.div>
-      )}
+      ) : activeTab === "investments" ? (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5 dark:bg-gray-900 dark:ring-white/10 no-print"
+        >
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <Landmark className="h-5 w-5 text-indigo-500" /> Partner Investments
+            </h2>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm text-gray-600 dark:text-gray-400">
+              <thead className="bg-gray-50 text-gray-900 dark:bg-gray-800/50 dark:text-white">
+                <tr>
+                  <th className="px-4 py-3 font-medium">Date</th>
+                  <th className="px-4 py-3 font-medium">Ref ID</th>
+                  <th className="px-4 py-3 font-medium">Partner</th>
+                  <th className="px-4 py-3 font-medium text-right">Amount</th>
+                  <th className="px-4 py-3 font-medium text-center">Receipt</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+                {isInvestmentsLoading ? (
+                  <tr>
+                    <td colSpan="5" className="px-6 py-8 text-center"><Loader2 className="h-5 w-5 animate-spin mx-auto text-indigo-500" /></td>
+                  </tr>
+                ) : filteredInvestments?.length > 0 ? (
+                  filteredInvestments.map((inv) => {
+                    const partner = partnersMap.get(inv.investorId);
+                    return (
+                      <tr key={inv.id} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/20 transition-colors">
+                        <td className="px-4 py-4">{new Date(inv.startDate || inv.createdAt || inv.date).toLocaleDateString()}</td>
+                        <td className="px-4 py-4 font-mono text-xs">{inv.reference || `INV-${inv.id || "NA"}`}</td>
+                        <td className="px-4 py-4">
+                          <div className="font-medium text-gray-900 dark:text-white">{partner?.name || "Unknown"}</div>
+                          <div className="text-xs text-gray-500">{partner?.email}</div>
+                        </td>
+                        <td className="px-4 py-4 text-right font-medium text-blue-600 dark:text-blue-400">
+                          ৳{Number(inv.amount).toLocaleString()}
+                        </td>
+                        <td className="px-4 py-4 text-center">
+                          <button
+                            onClick={() => handlePrintInvestment(inv, partner?.name)}
+                            className="inline-flex items-center gap-1 rounded bg-indigo-50 px-2 py-1.5 text-xs font-semibold text-indigo-600 hover:bg-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-400 dark:hover:bg-indigo-500/20 transition-colors"
+                          >
+                            <FileText className="h-3 w-3" /> Get Receipt
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="px-6 py-8 text-center text-gray-500">No partner investments found.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </motion.div>
+      ) : null}
 
       {printingInvoice && (
         <div className="print-only hidden">
           <InvoiceTemplate payout={printingInvoice} />
+        </div>
+      )}
+
+      {printingInvestment && (
+        <div className="print-only hidden">
+          <InvestmentReceiptTemplate investment={printingInvestment} />
         </div>
       )}
 
@@ -457,6 +605,55 @@ function AdminPartnerDashboard() {
         )}
       </AnimatePresence>
     </motion.div>
+  );
+}
+
+function InvestmentReceiptTemplate({ investment }) {
+  return (
+    <div className="bg-white p-8 font-sans text-gray-900 w-full max-w-3xl mx-auto border border-gray-200">
+      <div className="flex justify-between items-center border-b pb-6 mb-6">
+        <div>
+          <h1 className="text-3xl font-black tracking-tight text-gray-900">Artman</h1>
+          <p className="text-sm text-gray-500 font-medium">Partner Investment Receipt</p>
+        </div>
+        <div className="text-right">
+          <p className="font-bold text-gray-800">Ref: #{investment.reference || `INV-${investment.id || "NA"}`}</p>
+          <p className="text-sm text-gray-500">Date: {new Date(investment.startDate || investment.createdAt || investment.date).toLocaleDateString()}</p>
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Investor:</h3>
+        <p className="text-lg font-bold">{investment.partnerName}</p>
+      </div>
+
+      <table className="w-full text-left mb-8 border-collapse">
+        <thead>
+          <tr className="border-b-2 border-gray-900">
+            <th className="py-2 text-sm font-bold uppercase tracking-wider text-gray-600">Description</th>
+            <th className="py-2 text-sm font-bold uppercase tracking-wider text-gray-600 text-right">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="border-b border-gray-200">
+            <td className="py-4 text-gray-800 font-medium">Partner Capital Investment</td>
+            <td className="py-4 text-right text-gray-800 font-bold">৳{Number(investment.amount).toLocaleString()}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div className="flex justify-end mb-12">
+        <div className="text-right">
+          <p className="text-sm text-gray-500 mb-1">Total Investment Amount</p>
+          <p className="text-3xl font-black text-gray-900">৳{Number(investment.amount).toLocaleString()}</p>
+        </div>
+      </div>
+
+      <div className="border-t pt-6 text-center text-sm text-gray-500">
+        <p>This is an automatically generated receipt for partner capital investments.</p>
+        <p>Thank you for being a valued partner of Artman.</p>
+      </div>
+    </div>
   );
 }
 
@@ -515,7 +712,8 @@ function AddInvestmentModal({ partnerId, onClose, onSuccess }) {
     if (!amount || Number(amount) <= 0) return toast.error("Enter a valid investment amount");
 
     try {
-      await addInvest({ id: partnerId, data: { amount: Number(amount) } }).unwrap();
+      const reference = `INV-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      await addInvest({ id: partnerId, data: { amount: Number(amount), reference } }).unwrap();
       toast.success("Investment added successfully!");
       onSuccess();
       onClose();
