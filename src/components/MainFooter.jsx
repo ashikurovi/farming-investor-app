@@ -287,18 +287,23 @@ export function MainFooter() {
             </div>
 
             <div
-              className="flex items-center gap-2 text-xs px-4 py-1.5 rounded-full"
+              className="flex items-center gap-1 text-xs px-4 py-1.5 rounded-full"
               style={{
                 background: "rgba(255,255,255,0.12)",
                 border: "1px solid rgba(255,255,255,0.2)",
-                color: "#d4f5a0",
+                color: "rgba(255,255,255,0.8)",
               }}
             >
-              <span
-                className="h-1.5 w-1.5 rounded-full animate-pulse inline-block"
-                style={{ background: "#d4f5a0" }}
-              />
-              Platform Status: Operational
+              Developed by
+              <a
+                href="https://www.nexoviasoft.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline font-medium transition-colors ml-1"
+                style={{ color: "#d4f5a0" }}
+              >
+                NexoviaSoft
+              </a>
             </div>
           </div>
         </div>

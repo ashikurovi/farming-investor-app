@@ -332,9 +332,22 @@ export default function Sidebar() {
         </button>
 
         {!collapsed && (
-          <p className="text-center text-[10px] text-zinc-400 dark:text-zinc-600 tracking-wide">
-            © {yearText || "—"} Artman
-          </p>
+          <div className="text-center pb-2">
+            <p className="text-[10px] text-zinc-400 dark:text-zinc-500 tracking-wide mb-1">
+              © {yearText || "—"} Artman
+            </p>
+            <p className="text-[9px] text-zinc-400 dark:text-zinc-500">
+              Developed by{" "}
+              <a
+                href="https://www.nexoviasoft.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline font-medium text-emerald-600 dark:text-emerald-500 transition-colors"
+              >
+                NexoviaSoft
+              </a>
+            </p>
+          </div>
         )}
       </div>
     </aside>
