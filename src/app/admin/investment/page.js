@@ -119,7 +119,7 @@ export default function AdminInvestmentsPage() {
 
     return true;
   });
-  
+
   // Group investments by investor
   const groupedInvestmentsMap = new Map();
   filteredInvestments.forEach((inv) => {

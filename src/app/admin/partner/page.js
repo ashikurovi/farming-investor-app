@@ -384,21 +384,18 @@ function AdminPartnerDashboard() {
 
   const lowerSearch = searchQuery.toLowerCase();
 
-  const filteredPartners = (partners || []).filter(
-    (p) =>
-      !lowerSearch ||
-      p.name?.toLowerCase().includes(lowerSearch) ||
-      p.email?.toLowerCase().includes(lowerSearch) ||
-      p.phone?.includes(lowerSearch),
+  const filteredPartners = (partners || []).filter(p =>
+    !lowerSearch ||
+    p.name?.toLowerCase().includes(lowerSearch) ||
+    p.email?.toLowerCase().includes(lowerSearch) ||
+    p.phone?.includes(lowerSearch)
   );
 
   const filteredPayouts = (globalPayouts || []).filter((p) => {
     if (!lowerSearch) return true;
-    return (
-      p.reference?.toLowerCase().includes(lowerSearch) ||
+    return p.reference?.toLowerCase().includes(lowerSearch) ||
       p.partner?.name?.toLowerCase().includes(lowerSearch) ||
-      p.partner?.email?.toLowerCase().includes(lowerSearch)
-    );
+      p.partner?.email?.toLowerCase().includes(lowerSearch);
   });
 
   const allPartnerInv = (
@@ -407,11 +404,9 @@ function AdminPartnerDashboard() {
   const filteredInvestments = allPartnerInv.filter((inv) => {
     if (!lowerSearch) return true;
     const p = partnersMap.get(inv.investorId);
-    return (
-      inv.reference?.toLowerCase().includes(lowerSearch) ||
+    return inv.reference?.toLowerCase().includes(lowerSearch) ||
       p?.name?.toLowerCase().includes(lowerSearch) ||
-      p?.email?.toLowerCase().includes(lowerSearch)
-    );
+      p?.email?.toLowerCase().includes(lowerSearch);
   });
 
   return (
@@ -424,31 +419,28 @@ function AdminPartnerDashboard() {
         <div className="flex bg-white shadow-sm ring-1 ring-zinc-900/5 rounded-2xl p-1 w-fit dark:bg-zinc-900 dark:ring-white/10">
           <button
             onClick={() => setActiveTab("directory")}
-            className={`flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-xl transition-all ${
-              activeTab === "directory"
+            className={`flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-xl transition-all ${activeTab === "directory"
                 ? "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-sm"
                 : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-            }`}
+              }`}
           >
             <Users className="h-4 w-4" /> Partner Directory
           </button>
           <button
             onClick={() => setActiveTab("payouts")}
-            className={`flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-xl transition-all ${
-              activeTab === "payouts"
+            className={`flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-xl transition-all ${activeTab === "payouts"
                 ? "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-sm"
                 : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-            }`}
+              }`}
           >
             <History className="h-4 w-4" /> Global Payouts
           </button>
           <button
             onClick={() => setActiveTab("investments")}
-            className={`flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-xl transition-all ${
-              activeTab === "investments"
+            className={`flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-xl transition-all ${activeTab === "investments"
                 ? "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-sm"
                 : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-            }`}
+              }`}
           >
             <Landmark className="h-4 w-4" /> Partner Investments
           </button>
@@ -462,7 +454,7 @@ function AdminPartnerDashboard() {
           />
         </div>
       </div>
-      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-3 mb-4 mt-8 no-print">
+      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 mb-4 mt-8 no-print">
         <StatCard
           title="Total Partner Fund"
           value={`৳${totalPool.toLocaleString()}`}
@@ -478,14 +470,6 @@ function AdminPartnerDashboard() {
             <TrendingUp className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
           }
           gradient="from-emerald-500/20 to-teal-500/20"
-        />
-        <StatCard
-          title="Total Profit Distributed"
-          value={`৳${totalDistributed.toLocaleString()}`}
-          icon={
-            <Banknote className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-          }
-          gradient="from-purple-500/20 to-pink-500/20"
         />
       </div>
 
@@ -529,8 +513,8 @@ function AdminPartnerDashboard() {
                   const share =
                     totalPool > 0
                       ? ((Number(p.totalInvestment) / totalPool) * 100).toFixed(
-                          2,
-                        )
+                        2,
+                      )
                       : 0;
                   return (
                     <tr

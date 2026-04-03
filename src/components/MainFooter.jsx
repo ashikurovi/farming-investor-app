@@ -68,58 +68,6 @@ export function MainFooter() {
         }}
       />
 
-      {/* ── Newsletter Bar ── */}
-      <div
-        className="relative border-b"
-        style={{ borderColor: "rgba(255,255,255,0.15)" }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div
-              className="h-9 w-9 rounded-full flex items-center justify-center shrink-0"
-              style={{
-                background: "rgba(255,255,255,0.18)",
-                border: "1px solid rgba(255,255,255,0.3)",
-              }}
-            >
-              <Send className="w-4 h-4 text-white" />
-            </div>
-            <div>
-              <p
-                className="text-sm font-semibold tracking-wide"
-                style={{ color: "#e8facc" }}
-              >
-                Stay ahead of the harvest
-              </p>
-              <p
-                className="text-xs"
-                style={{ color: "rgba(255,255,255,0.6)" }}
-              >
-                Weekly insights on agri-investment opportunities
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 sm:w-52 text-sm px-4 py-2 rounded-full outline-none placeholder-white/50"
-              style={{
-                background: "rgba(255,255,255,0.12)",
-                border: "1px solid rgba(255,255,255,0.25)",
-                color: "white",
-              }}
-            />
-            <button
-              className="px-5 py-2 rounded-full text-sm font-bold shrink-0 transition-all duration-200 hover:scale-105 active:scale-95"
-              style={{ background: "white", color: "#3a6b14" }}
-            >
-              Subscribe
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* ── Main Grid ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 mb-14">
@@ -138,8 +86,7 @@ export function MainFooter() {
               </div>
               <div>
                 <p className="text-2xl font-black tracking-tight leading-none">
-                  Farming
-                  <span style={{ color: "#d4f5a0" }}>Investor</span>
+                  ARTMAN
                 </p>
                 <p
                   className="text-[10px] uppercase tracking-[0.18em] mt-0.5"
@@ -158,36 +105,7 @@ export function MainFooter() {
               sustainable farming projects for a greener, wealthier future.
             </p>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { value: "৳48Cr+", label: "Invested" },
-                { value: "120+", label: "Projects" },
-                { value: "4,200+", label: "Investors" },
-              ].map(({ value, label }) => (
-                <div
-                  key={label}
-                  className="rounded-xl p-3 text-center"
-                  style={{
-                    background: "rgba(255,255,255,0.1)",
-                    border: "1px solid rgba(255,255,255,0.18)",
-                  }}
-                >
-                  <p
-                    className="text-base font-black"
-                    style={{ color: "#d4f5a0" }}
-                  >
-                    {value}
-                  </p>
-                  <p
-                    className="text-[10px] mt-0.5"
-                    style={{ color: "rgba(255,255,255,0.6)" }}
-                  >
-                    {label}
-                  </p>
-                </div>
-              ))}
-            </div>
+
 
             {/* Socials */}
             <div className="flex items-center gap-2 flex-wrap">
