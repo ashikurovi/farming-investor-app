@@ -63,10 +63,10 @@ export default function AdminNoticePage() {
     data?.meta ??
     (Array.isArray(items)
       ? {
-          page,
-          pageCount: 1,
-          total: items.length,
-        }
+        page,
+        pageCount: 1,
+        total: items.length,
+      }
       : { page: 1, pageCount: 1, total: 0 });
 
   const handleSearchChange = (value) => {
@@ -99,7 +99,7 @@ export default function AdminNoticePage() {
     setFormValues({
       title: notice.title ?? "",
       description: notice.description ?? "",
-      isPublic: notice.isPublic ?? true,
+      isPublic: true,
       file: null,
       fileUrl: notice.fileUrl ?? "",
     });
@@ -273,11 +273,10 @@ export default function AdminNoticePage() {
                 tdClassName: "whitespace-nowrap px-6 py-4",
                 cell: (notice) => (
                   <span
-                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${
-                      notice.isPublic
+                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${notice.isPublic
                         ? "bg-emerald-50 text-emerald-700 ring-emerald-600/10 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20"
                         : "bg-red-50 text-red-700 ring-red-600/10 dark:bg-red-500/10 dark:text-red-300 dark:ring-red-500/20"
-                    }`}
+                      }`}
                   >
                     {notice.isPublic ? "Public" : "Private"}
                   </span>
