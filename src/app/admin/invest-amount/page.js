@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   ReceiptIndianRupee,
   Save,
@@ -17,6 +18,9 @@ import { Toaster } from "sonner";
 
 
 export default function InvestAmountPage() {
+  const user = useSelector((state) => state.auth?.user);
+  const isReadOnly = user?.role === "partner";
+
   const { data: investData, isLoading, isError } = useGetInvestAmountQuery();
   const [updateInvestAmount, { isLoading: isUpdating }] = useUpdateInvestAmountMutation();
 
@@ -86,9 +90,10 @@ export default function InvestAmountPage() {
                   step="any"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="block w-full rounded-2xl border border-zinc-100 bg-zinc-50/50 py-4 pl-10 pr-4 text-lg font-black tabular-nums text-zinc-900 shadow-inner outline-none transition-all focus:border-emerald-300 focus:bg-white focus:ring-4 focus:ring-emerald-100"
+                  className={`block w-full rounded-2xl border border-zinc-100 bg-zinc-50/50 py-4 pl-10 pr-4 text-lg font-black tabular-nums text-zinc-900 shadow-inner outline-none transition-all ${isReadOnly ? "cursor-not-allowed opacity-70" : "focus:border-emerald-300 focus:bg-white focus:ring-4 focus:ring-emerald-100"}`}
                   placeholder="0.00"
                   required
+                  disabled={isReadOnly}
                 />
               </div>
               <p className="flex items-center gap-1.5 text-[10px] font-medium text-zinc-400">
@@ -112,20 +117,22 @@ export default function InvestAmountPage() {
               </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={isUpdating}
-              className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-emerald-500 py-4 text-sm font-black uppercase tracking-widest text-white shadow-xl shadow-emerald-100 transition-all hover:bg-emerald-600 hover:shadow-emerald-200 active:scale-[0.98] disabled:opacity-50"
-            >
-              {isUpdating ? (
-                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
-              ) : (
-                <>
-                  <Save className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
-                  Save Changes
-                </>
-              )}
-            </button>
+            {!isReadOnly && (
+              <button
+                type="submit"
+                disabled={isUpdating}
+                className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-emerald-500 py-4 text-sm font-black uppercase tracking-widest text-white shadow-xl shadow-emerald-100 transition-all hover:bg-emerald-600 hover:shadow-emerald-200 active:scale-[0.98] disabled:opacity-50"
+              >
+                {isUpdating ? (
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                ) : (
+                  <>
+                    <Save className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
+                    Save Changes
+                  </>
+                )}
+              </button>
+            )}
           </div>
         </form>
       </div>

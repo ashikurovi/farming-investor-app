@@ -99,7 +99,7 @@ function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
             >
               <LayoutDashboard className="h-4 w-4 text-[#7cc22e]" />
               <span className="text-sm font-medium">
-                {role === "admin" ? "Admin Dashboard" : "Investor Dashboard"}
+                {role === "admin" ? "Admin Dashboard" : role === "partner" ? "Partner Dashboard" : "Investor Dashboard"}
               </span>
               <ExternalLink className="h-3.5 w-3.5 ml-auto opacity-60" />
             </Link>
@@ -139,7 +139,7 @@ export function MainNavbar() {
   const isAuthenticated = Boolean(token);
   const role = user?.role;
   const dashboardHref =
-    role === "admin" ? "/admin" : role === "investor" ? "/investor" : "/";
+    (role === "admin" || role === "partner") ? "/admin" : role === "investor" ? "/investor" : "/";
   const isLoginRoute = pathname.startsWith("/login");
 
   const handleLogout = async () => {
@@ -390,7 +390,7 @@ export function MainNavbar() {
                   >
                     <LayoutDashboard className="h-4 w-4 text-zinc-400" />
                     <span className="text-xs font-bold uppercase tracking-[0.15em]">
-                      {role === "admin" ? "Admin" : "Investor"} Dashboard
+                      {role === "admin" ? "Admin" : role === "partner" ? "Partner" : "Investor"} Dashboard
                     </span>
                   </Link>
                   <button

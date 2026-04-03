@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 import {
   Plus,
   Pencil,
@@ -36,6 +37,9 @@ const PAGE_SIZE = 10;
 
 export default function AdminInvestorPage() {
   const router = useRouter();
+  const user = useSelector((state) => state.auth?.user);
+  const isReadOnly = user?.role === "partner";
+
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [search, setSearch] = useState("");
@@ -303,14 +307,16 @@ export default function AdminInvestorPage() {
             placeholder="Search investors..."
             className="w-full sm:w-64"
           />
-          <Button
-            type="button"
-            onClick={openCreateModal}
-            className="inline-flex h-10 items-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:bg-zinc-800 hover:shadow-xl hover:shadow-zinc-900/30 active:scale-95"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Add Investor</span>
-          </Button>
+          {!isReadOnly && (
+            <Button
+              type="button"
+              onClick={openCreateModal}
+              className="inline-flex h-10 items-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:bg-zinc-800 hover:shadow-xl hover:shadow-zinc-900/30 active:scale-95"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Investor</span>
+            </Button>
+          )}
         </div>
       </header>
 
@@ -455,14 +461,16 @@ export default function AdminInvestorPage() {
                   No investors found
                 </h3>
                 <p className="mt-1 text-sm text-zinc-500">
-                  Get started by creating a new investor profile.
+                  {isReadOnly ? "No active profiles visible." : "Get started by creating a new investor profile."}
                 </p>
-                <div className="mt-6">
-                  <Button size="sm" onClick={openCreateModal} variant="outline">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add Investor
-                  </Button>
-                </div>
+                {!isReadOnly && (
+                  <div className="mt-6">
+                    <Button size="sm" onClick={openCreateModal} variant="outline">
+                      <Plus className="mr-2 h-4 w-4" />
+                      Add Investor
+                    </Button>
+                  </div>
+                )}
               </div>
             }
             loadingLabel="Loading investors..."
@@ -487,44 +495,60 @@ export default function AdminInvestorPage() {
                   size="icon"
                   onClick={(e) => {
                     e.stopPropagation();
-                    openEditModal(user);
+                    router.push(`/admin/investor/${user.id}`);
                   }}
-                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
-                  title="Edit Profile"
+                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600"
+                  title="View Details"
                 >
-                  <Pencil className="h-4 w-4" />
+                  <Eye className="h-4 w-4" />
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    confirmToggleBan(user);
-                  }}
-                  className={`h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 ${user.isBanned
-                      ? "hover:text-emerald-600"
-                      : "hover:text-purple-600"
-                    }`}
-                  title={user.isBanned ? "Unban User" : "Ban User"}
-                >
-                  {user.isBanned ? (
-                    <ShieldCheck className="h-4 w-4" />
-                  ) : (
-                    <ShieldBan className="h-4 w-4" />
-                  )}
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    confirmDelete(user);
-                  }}
-                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
-                  title="Delete User"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                {!isReadOnly && (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openEditModal(user);
+                      }}
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-amber-600"
+                      title="Edit Profile"
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        confirmToggleBan(user);
+                      }}
+                      className={`h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 ${user.isBanned
+                          ? "hover:text-emerald-600"
+                          : "hover:text-purple-600"
+                        }`}
+                      title={user.isBanned ? "Unban User" : "Ban User"}
+                    >
+                      {user.isBanned ? (
+                        <ShieldCheck className="h-4 w-4" />
+                      ) : (
+                        <ShieldBan className="h-4 w-4" />
+                      )}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        confirmDelete(user);
+                      }}
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
+                      title="Delete User"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </>
+                )}
               </div>
             )}
           />

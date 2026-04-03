@@ -35,7 +35,7 @@ export function LoginForm() {
             : "Welcome back to your dashboard.",
       });
 
-      if (roleFromResult === "admin") {
+      if (roleFromResult === "admin" || roleFromResult === "partner") {
         router.push("/admin");
       } else if (roleFromResult === "investor") {
         router.push("/investor");

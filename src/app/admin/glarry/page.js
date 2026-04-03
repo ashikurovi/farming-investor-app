@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 import { Eye, Trash2, Plus, Edit2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
@@ -22,6 +23,8 @@ const PAGE_SIZE = 10;
 
 export default function AdminGlarryPage() {
   const router = useRouter();
+  const user = useSelector((state) => state.auth?.user);
+  const isReadOnly = user?.role === "partner";
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
@@ -215,15 +218,17 @@ export default function AdminGlarryPage() {
             onChange={handleSearchChange}
             placeholder="Search by project..."
           />
-          <Button
-            type="button"
-            size="sm"
-            onClick={openCreateModal}
-            className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-md hover:bg-emerald-500"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            <span>Add glarry</span>
-          </Button>
+          {!isReadOnly && (
+            <Button
+              type="button"
+              size="sm"
+              onClick={openCreateModal}
+              className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-md hover:bg-emerald-500"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>Add glarry</span>
+            </Button>
+          )}
         </div>
       </header>
 
@@ -283,20 +288,24 @@ export default function AdminGlarryPage() {
                     <Eye className="h-3.5 w-3.5" />
                   </button>
                 )}
-                <button
-                  type="button"
-                  onClick={() => openEditModal(item)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
-                >
-                  <Edit2 className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => confirmDelete(item)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-white text-red-600 hover:bg-red-50"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
+                {!isReadOnly && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => openEditModal(item)}
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+                    >
+                      <Edit2 className="h-3.5 w-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => confirmDelete(item)}
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-white text-red-600 hover:bg-red-50"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </>
+                )}
               </div>
             )}
           />

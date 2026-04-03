@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 import {
   Eye,
   Trash2,
@@ -41,6 +42,8 @@ const PAGE_SIZE = 10;
 
 export default function AdminInvestmentsPage() {
   const router = useRouter();
+  const user = useSelector((state) => state.auth?.user);
+  const isReadOnly = user?.role === "partner";
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
@@ -211,14 +214,16 @@ export default function AdminInvestmentsPage() {
               className="w-full sm:w-64"
             />
 
-            <Button
-              type="button"
-              onClick={() => router.push("/admin/investment/new")}
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:bg-zinc-800 hover:shadow-xl hover:shadow-zinc-900/30 active:scale-95"
-            >
-              <Plus className="h-4 w-4" />
-              <span>Add Investment</span>
-            </Button>
+            {!isReadOnly && (
+              <Button
+                type="button"
+                onClick={() => router.push("/admin/investment/new")}
+                className="inline-flex h-10 items-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:bg-zinc-800 hover:shadow-xl hover:shadow-zinc-900/30 active:scale-95"
+              >
+                <Plus className="h-4 w-4" />
+                <span>Add Investment</span>
+              </Button>
+            )}
           </div>
         </div>
 
@@ -543,28 +548,32 @@ export default function AdminInvestmentsPage() {
                 >
                   <Eye className="h-4 w-4" />
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    router.push(`/admin/investment/${investment.id}/edit`);
-                  }}
-                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600"
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    confirmDelete(investment);
-                  }}
-                  className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                {!isReadOnly && (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/admin/investment/${investment.id}/edit`);
+                      }}
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-zinc-50 hover:text-blue-600"
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        confirmDelete(investment);
+                      }}
+                      className="h-8 w-8 rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </>
+                )}
               </div>
             )}
           />
