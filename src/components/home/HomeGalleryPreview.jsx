@@ -55,8 +55,8 @@ export default function HomeGalleryPreview() {
   // Show loading skeleton or empty state if needed
   if (isLoading) {
     return (
-      <section className="">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <section className="home-section">
+        <div className="home-container">
           <div className="animate-pulse space-y-8">
             <div className="h-32 bg-zinc-100 rounded-xl w-full max-w-2xl"></div>
             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
@@ -71,27 +71,23 @@ export default function HomeGalleryPreview() {
   }
 
   return (
-    <section className="">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="home-section">
+      <div className="home-container">
         {/* Header Section */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-10">
           <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
-                Field Gallery
-              </span>
+            <div className="home-tag w-fit">
+              <span className="home-tag-dot" />
+              Field Gallery
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
-              Life on the <span className="font-serif italic">farm</span> in our{" "}
-              <span className="font-serif italic text-emerald-700">
-                gallery
-              </span>
+            <h2 className="home-title leading-tight">
+              Life on the <span className="italic">farm</span> in our{" "}
+              <span className="italic text-primary">gallery</span>
               .
             </h2>
 
-            <p className="text-zinc-500 text-xs md:text-lg leading-relaxed">
+            <p className="home-subtitle">
               Transparent visual reporting from our active project sites across
               the country.
             </p>

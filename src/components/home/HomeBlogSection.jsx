@@ -28,7 +28,7 @@ const CSS = `
 
   .blog-section {
     background: var(--bg);
-    padding: 96px 0 112px;
+    padding: 72px 0 84px;
     position: relative;
     overflow: hidden;
   }
@@ -62,7 +62,7 @@ const CSS = `
     align-items: flex-end;
     justify-content: space-between;
     gap: 24px;
-    margin-bottom: 72px;
+    margin-bottom: 48px;
     flex-wrap: wrap;
   }
 
@@ -91,7 +91,7 @@ const CSS = `
 
   .blog-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(30px, 3.8vw, 50px);
+    font-size: 30px;
     font-weight: 400; color: var(--text-1);
     line-height: 1.15; margin: 0;
   }
@@ -316,8 +316,8 @@ const CSS = `
   }
 
   @media (max-width: 820px) {
-    .blog-section { padding: 64px 0 80px; }
-    .blog-header { margin-bottom: 48px; }
+    .blog-section { padding: 56px 0 68px; }
+    .blog-header { margin-bottom: 40px; }
     .blog-view-all { display: none; }
     .blog-article-inner {
       grid-template-columns: 1fr;
@@ -331,7 +331,7 @@ const CSS = `
   }
 
   @media (max-width: 640px) {
-    .blog-section { padding: 48px 0 64px; }
+    .blog-section { padding: 44px 0 56px; }
     .blog-article { border-radius: 18px; margin-bottom: 14px; }
     .blog-img-pane { height: 210px; }
     .blog-content-pane { padding: 20px 20px 24px; }
@@ -345,7 +345,7 @@ const CSS = `
     .blog-inner { padding: 0 16px; }
     .blog-article-inner { grid-template-rows: 190px auto; }
     .blog-img-pane { height: 190px; }
-    .blog-title { font-size: 26px; }
+    .blog-title { font-size: 24px; }
     .blog-post-title { font-size: 18px; }
     .blog-excerpt { font-size: 13.5px; }
     .blog-footer-line { max-width: 60px; }

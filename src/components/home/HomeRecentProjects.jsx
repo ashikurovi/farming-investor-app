@@ -40,34 +40,30 @@ export default function HomeRecentProjects() {
 
   if (isLoading) {
     return (
-      <section className="py-24 bg-zinc-50 flex justify-center">
+      <section className="home-section bg-zinc-50 flex justify-center">
         <Loader size="lg" />
       </section>
     );
   }
 
   return (
-    <section className="">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 bg-[#f6f7f4]">
+    <section className="home-section bg-[#f6f7f4]">
+      <div className="home-container">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10">
           <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-zinc-200 w-fit">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
-                Opportunities
-              </span>
+            <div className="home-tag w-fit">
+              <span className="home-tag-dot" />
+              Opportunities
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-light tracking-tight text-zinc-900 leading-tight">
-              Latest <span className="font-serif italic">investment</span>{" "}
-              <span className="font-serif italic text-emerald-700">
-                opportunities
-              </span>
+            <h2 className="home-title leading-tight">
+              Latest <span className="italic">investment</span>{" "}
+              <span className="italic text-primary">opportunities</span>
               .
             </h2>
 
-            <p className="text-zinc-500 text-xs md:text-lg leading-relaxed max-w-xl">
+            <p className="home-subtitle max-w-xl">
               Curated agricultural assets offering stable yields and long-term
               capital appreciation.
             </p>

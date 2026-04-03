@@ -54,15 +54,16 @@ export default function HomeTestimonials() {
   const visible = [0, 1, 2].map((offset) => (active + offset) % total);
 
   return (
-    <section className="bg-white py-20 lg:py-28">
+    <section className="bg-white home-section">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-14 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
+        <div className="mb-10 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="mb-3 text-sm font-semibold text-emerald-600 uppercase tracking-widest">
+            <div className="home-tag w-fit">
+              <span className="home-tag-dot" />
               Testimonials
-            </p>
-            <h2 className="text-3xl font-bold text-zinc-900 md:text-4xl leading-tight">
+            </div>
+            <h2 className="mt-4 home-title leading-tight">
               What our users are saying
             </h2>
           </div>

@@ -6,9 +6,12 @@
   body * {
     visibility: hidden;
   }
-  .print-only, .print-only * {
+
+  .print-only,
+  .print-only * {
     visibility: visible;
   }
+
   .print-only {
     position: absolute;
     left: 0;
@@ -16,8 +19,39 @@
     width: 100%;
     display: block !important;
   }
+
   .no-print {
     display: none !important;
+  }
+}
+
+@layer components {
+  .home-section {
+    @apply py-10 sm:py-12 lg:py-14;
+  }
+
+  .home-container {
+    @apply mx-auto max-w-7xl px-5 sm:px-6 lg:px-8;
+  }
+
+  .home-section-header {
+    @apply mb-8 sm:mb-10;
+  }
+
+  .home-tag {
+    @apply inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300;
+  }
+
+  .home-tag-dot {
+    @apply h-2 w-2 rounded-full bg-primary;
+  }
+
+  .home-title {
+    @apply text-2xl font-bold tracking-tight text-zinc-900 md:text-3xl dark:text-zinc-100;
+  }
+
+  .home-subtitle {
+    @apply mt-2 text-sm leading-relaxed text-zinc-500 md:text-base dark:text-zinc-400;
   }
 }
 
