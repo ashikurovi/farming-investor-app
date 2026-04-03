@@ -47,13 +47,13 @@ export function Pagination({
   };
 
   return (
-    <div className="flex flex-col gap-3 border-t border-zinc-100 px-4 py-3 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col gap-3 border-t border-zinc-100 px-4 py-3 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:text-zinc-400">
       <div className="flex items-center gap-3">
-        <span className="text-[11px] text-zinc-500">Rows per page</span>
+        <span className="text-[11px] text-zinc-500 dark:text-zinc-400">Rows per page</span>
         <select
           value={pageSize}
           onChange={handlePageSizeChange}
-          className="h-8 rounded-md border border-zinc-200 bg-white px-2 text-[11px] text-zinc-800 shadow-sm focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className="h-8 rounded-md border border-zinc-200 bg-white px-2 text-[11px] text-zinc-800 shadow-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
         >
           {pageSizeOptions.map((option) => (
             <option key={option} value={option}>
@@ -61,7 +61,7 @@ export function Pagination({
             </option>
           ))}
         </select>
-        <span className="text-[11px] text-zinc-500">
+        <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
           {from}-{to} of {safeTotal} rows
         </span>
       </div>
@@ -73,7 +73,7 @@ export function Pagination({
           size="icon"
           disabled={isFirstPage}
           onClick={handleFirst}
-          className="h-8 w-8 text-zinc-400 hover:text-emerald-600 disabled:opacity-40"
+          className="h-8 w-8 text-zinc-400 hover:text-emerald-600 disabled:opacity-40 dark:text-zinc-500 dark:hover:text-emerald-300"
         >
           <ChevronsLeft className="h-4 w-4" />
         </Button>
@@ -83,19 +83,19 @@ export function Pagination({
           size="icon"
           disabled={isFirstPage}
           onClick={handlePrevious}
-          className="h-8 w-8 text-zinc-400 hover:text-emerald-600 disabled:opacity-40"
+          className="h-8 w-8 text-zinc-400 hover:text-emerald-600 disabled:opacity-40 dark:text-zinc-500 dark:hover:text-emerald-300"
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
 
-        <div className="flex items-center gap-1 text-[11px] text-zinc-600">
+        <div className="flex items-center gap-1 text-[11px] text-zinc-600 dark:text-zinc-300">
           <input
             type="number"
             value={page}
             readOnly
-            className="h-8 w-10 rounded-md border border-zinc-200 bg-white text-center text-[11px] text-zinc-900 shadow-sm"
+            className="h-8 w-10 rounded-md border border-zinc-200 bg-white text-center text-[11px] text-zinc-900 shadow-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
           />
-          <span className="text-zinc-500">of {safePageCount}</span>
+          <span className="text-zinc-500 dark:text-zinc-400">of {safePageCount}</span>
         </div>
 
         <Button
@@ -104,7 +104,7 @@ export function Pagination({
           size="icon"
           disabled={isLastPage}
           onClick={handleNext}
-          className="h-8 w-8 text-zinc-400 hover:text-emerald-600 disabled:opacity-40"
+          className="h-8 w-8 text-zinc-400 hover:text-emerald-600 disabled:opacity-40 dark:text-zinc-500 dark:hover:text-emerald-300"
         >
           <ChevronRight className="h-4 w-4" />
         </Button>
@@ -114,7 +114,7 @@ export function Pagination({
           size="icon"
           disabled={isLastPage}
           onClick={handleLast}
-          className="h-8 w-8 text-zinc-400 hover:text-emerald-600 disabled:opacity-40"
+          className="h-8 w-8 text-zinc-400 hover:text-emerald-600 disabled:opacity-40 dark:text-zinc-500 dark:hover:text-emerald-300"
         >
           <ChevronsRight className="h-4 w-4" />
         </Button>
