@@ -27,7 +27,7 @@ const NAV_LINKS = [
   { href: "/landing/about", label: "About", icon: LayoutDashboard },
 ];
 
-/* ── Desktop Nav Link with premium gradient underline ── */
+/* ── Desktop Nav Link — NO background, only underline indicator ── */
 function NavLink({ href, label }) {
   const pathname = usePathname();
   const isActive = href === "/" ? pathname === href : pathname.startsWith(href);
@@ -36,12 +36,11 @@ function NavLink({ href, label }) {
     <Link
       href={href}
       className={`relative group flex items-center gap-1.5 text-sm font-semibold tracking-wider py-1.5 px-5 transition-all duration-300 rounded-xl ${
-        isActive
-          ? "text-white bg-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]"
-          : "text-white/80 hover:text-white hover:bg-white/5"
+        isActive ? "text-white" : "text-white/80 hover:text-white"
       }`}
     >
       {label}
+      {/* Green underline indicator only — no background */}
       <span
         className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-[#7cc22e] to-[#4d8c1e] transition-all duration-300 ${
           isActive ? "w-6" : "w-0 group-hover:w-6"
@@ -175,13 +174,13 @@ export function MainNavbar() {
 
   return (
     <>
-      {/* ==================== DESKTOP NAVBAR (Premium with Green Gradient) ==================== */}
+      {/* ==================== DESKTOP NAVBAR ==================== */}
       <div className="hidden md:block fixed top-0 inset-x-0 z-50">
         <header style={navbarGradient} className="shadow-xl shadow-black/20">
           <div className="mx-auto max-w-7xl px-8 h-20 flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-50 h-70  transition-transform group-hover:scale-105">
+              <div className="w-50 h-70 transition-transform group-hover:scale-105">
                 <Image
                   src="/logo6.png"
                   alt="ARTMAN"
@@ -204,12 +203,14 @@ export function MainNavbar() {
             <div className="flex items-center gap-4">
               {isAuthenticated ? (
                 <>
+                  {/* Dashboard button — no background, text only with underline on hover */}
                   <Link
                     href={dashboardHref}
-                    className="flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 hover:border-white/50 text-white text-sm font-semibold tracking-wider transition-all duration-300 shadow-md"
+                    className="relative group flex items-center gap-2 px-4 py-2.5 text-white text-sm font-semibold tracking-wider transition-all duration-300"
                   >
                     <LayoutDashboard className="h-4 w-4" />
                     Dashboard
+                    <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] w-0 group-hover:w-6 rounded-full bg-gradient-to-r from-[#7cc22e] to-[#4d8c1e] transition-all duration-300" />
                   </Link>
 
                   <UserDropdown
@@ -221,9 +222,10 @@ export function MainNavbar() {
                   />
                 </>
               ) : (
+                /* Log in button — light bg + border */
                 <Link
                   href="/login"
-                  className="px-8 py-3 rounded-2xl bg-white/20 backdrop-blur-sm hover:bg-white/30 border border-white/30 hover:border-white/50 text-white font-semibold tracking-wider text-sm transition-all duration-300 shadow-md"
+                  className="inline-flex items-center justify-center rounded-2xl px-6 py-2.5 text-white font-semibold tracking-wider text-sm transition-all duration-300 border border-white/35 bg-white/10 hover:bg-white/15 hover:border-white/50 backdrop-blur-sm"
                 >
                   Log in
                 </Link>
@@ -236,7 +238,7 @@ export function MainNavbar() {
       {/* Desktop Spacer */}
       <div className="hidden md:block h-20" />
 
-      {/* ==================== MOBILE BOTTOM NAV (Premium Updated) ==================== */}
+      {/* ==================== MOBILE BOTTOM NAV (unchanged) ==================== */}
       <nav className="fixed bottom-0 inset-x-0 z-50 md:hidden bg-white border-t border-zinc-200 shadow-[0_-4px_20px_rgba(0,0,0,0.07)]">
         <div className="flex items-center justify-around px-1 h-[62px]">
           {/* Home */}
@@ -247,13 +249,7 @@ export function MainNavbar() {
                 href="/"
                 className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
               >
-                <div
-                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
-                    isActive
-                      ? "bg-[#7cc22e]/10 ring-2 ring-[#7cc22e] ring-offset-1"
-                      : ""
-                  }`}
-                >
+                <div className="w-10 h-10 flex items-center justify-center">
                   <Home
                     className={`h-5 w-5 transition-colors ${
                       isActive
@@ -262,7 +258,13 @@ export function MainNavbar() {
                     }`}
                   />
                 </div>
-                <span className="sr-only">Home</span>
+                <span
+                  className={`text-[10px] font-semibold leading-none ${
+                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
+                  }`}
+                >
+                  Home
+                </span>
               </Link>
             );
           })()}
@@ -351,22 +353,28 @@ export function MainNavbar() {
             );
           })()}
 
-          {/* More */}
+          {/* More — Premium */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
           >
-            <div className="w-10 h-10 flex items-center justify-center">
+            <div
+              className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 ${
+                mobileOpen
+                  ? "bg-gradient-to-br from-[#4d8c1e] to-[#7cc22e] shadow-md shadow-[#7cc22e]/30"
+                  : "bg-zinc-100 group-hover:bg-zinc-200"
+              }`}
+            >
               <Menu
-                className={`h-5 w-5 transition-colors ${
+                className={`h-5 w-5 transition-colors duration-300 ${
                   mobileOpen
-                    ? "text-[#4d8c1e]"
-                    : "text-zinc-400 group-hover:text-zinc-600"
+                    ? "text-white"
+                    : "text-zinc-500 group-hover:text-zinc-700"
                 }`}
               />
             </div>
             <span
-              className={`text-[10px] font-semibold leading-none ${
+              className={`text-[10px] font-semibold leading-none transition-colors duration-300 ${
                 mobileOpen ? "text-[#4d8c1e]" : "text-zinc-400"
               }`}
             >
