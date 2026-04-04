@@ -1,8 +1,8 @@
 export default function manifest() {
   return {
-    name: 'Artman Investor',
-    short_name: 'Artman',
-    description: 'Artman Investor App',
+    name: 'Artman Agro',
+    short_name: 'Artman Agro',
+    description: 'Artman Agro App',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
