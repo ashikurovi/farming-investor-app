@@ -16,6 +16,7 @@ import {
   useGetProjectsQuery,
   useDeleteProjectMutation,
   useGetProjectsStatsQuery,
+  useUpdateProjectMutation,
 } from "@/features/admin/projects/projectsApiSlice";
 import { useCreateDailyReportMutation } from "@/features/admin/dailyReport/dailyReportApiSlice";
 import { toast } from "sonner";
@@ -31,6 +32,7 @@ export default function AdminProjectsPage() {
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
   const [dailyModalOpen, setDailyModalOpen] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [dailyValues, setDailyValues] = useState({
@@ -75,17 +77,40 @@ export default function AdminProjectsPage() {
   const [deleteProject, { isLoading: isDeleting }] = useDeleteProjectMutation();
   const [createDailyReport, { isLoading: isPostingDaily }] =
     useCreateDailyReportMutation();
+  const [updateProject, { isLoading: isUpdating }] = useUpdateProjectMutation();
 
   const projects = Array.isArray(data) ? data : (data?.items ?? []);
+
+  const filteredProjects = projects.filter((p) => {
+    const s = (p.status || "Active").toLowerCase();
+
+    let matchesStatus = true;
+    if (filterStatus === "active") {
+      matchesStatus = s !== "deactivated" && s !== "deactive";
+    } else if (filterStatus === "deactivated") {
+      matchesStatus = s === "deactivated" || s === "deactive";
+    }
+
+    let matchesSearch = true;
+    if (searchInput) {
+      const q = searchInput.toLowerCase();
+      matchesSearch = (p.name && p.name.toLowerCase().includes(q)) ||
+        (p.location && p.location.toLowerCase().includes(q));
+    }
+
+    return matchesStatus && matchesSearch;
+  });
+
   const meta = data?.meta ?? {
     page: 1,
-    pageCount: Math.max(1, Math.ceil((projects.length || 1) / pageSize)),
-    total: projects.length || 0,
+    pageCount: Math.max(1, Math.ceil(filteredProjects.length / pageSize)),
+    total: filteredProjects.length,
   };
+
   const serverPaginated = Boolean(data?.meta);
   const visibleProjects = serverPaginated
-    ? projects
-    : projects.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+    ? filteredProjects
+    : filteredProjects.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
 
   const handleSearchChange = (value) => {
     setSearchInput(value);
@@ -93,7 +118,7 @@ export default function AdminProjectsPage() {
     setPage(1);
   };
 
-  const isBusy = isLoading || isFetching || isDeleting;
+  const isBusy = isLoading || isFetching || isDeleting || isUpdating;
 
   const closeConfirm = () =>
     setConfirmState((prev) => ({ ...prev, isOpen: false, onConfirm: null }));
@@ -132,6 +157,34 @@ export default function AdminProjectsPage() {
       },
     });
   };
+
+  const toggleProjectStatus = (project) => {
+    const isCurrentlyActive = project.status !== "Deactivated" && project.status !== "Deactive";
+    const newStatus = isCurrentlyActive ? "Deactivated" : "Active";
+
+    openConfirm({
+      title: `${isCurrentlyActive ? "Deactivate" : "Activate"} project`,
+      description: `Are you sure you want to ${isCurrentlyActive ? "deactivate" : "activate"} project "${project.name}"? ${isCurrentlyActive ? "No daily reports..." : ""}`,
+      confirmLabel: isCurrentlyActive ? "Deactivate" : "Activate",
+      onConfirm: async () => {
+        try {
+          await updateProject({ id: project.id, payload: { status: newStatus } }).unwrap();
+          toast.success(`Project ${isCurrentlyActive ? "deactivated" : "activated"} successfully`);
+        } catch (error) {
+          const message =
+            error?.data?.message ||
+            (Array.isArray(error?.data?.message)
+              ? error.data.message[0]
+              : null) ||
+            "Failed to update project status.";
+          toast.error("Status update failed", { description: message });
+        } finally {
+          closeConfirm();
+        }
+      },
+    });
+  };
+
 
   const openDailyReportModal = (project) => {
     setSelectedProjectId(project.id);
@@ -226,27 +279,13 @@ export default function AdminProjectsPage() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="flex items-center">
           <AdminSearchBar
             value={searchInput}
             onChange={handleSearchChange}
             placeholder="Search projects..."
             className="w-full sm:w-64"
           />
-          <div className="flex gap-2">
-            <AdminProjectsPrintButton stats={projectStats} />
-
-            {!isReadOnly && (
-              <Button
-                type="button"
-                onClick={() => router.push("/admin/projects/new")}
-                className="inline-flex h-10 items-center gap-2 rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-5 text-sm font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] transition-all hover:brightness-[1.05] active:scale-95"
-              >
-                <Plus className="h-4 w-4" />
-                <span>New Project</span>
-              </Button>
-            )}
-          </div>
         </div>
       </header>
 
@@ -255,9 +294,51 @@ export default function AdminProjectsPage() {
 
       {/* Grid Section */}
       <div className="space-y-4">
+        {/* Action Bar */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between py-2">
+          <div className="flex flex-wrap items-center gap-2">
+            {[
+              { id: "all", label: "All Projects" },
+              { id: "active", label: "Active" },
+              { id: "deactivated", label: "Deactivated" },
+            ].map((status) => (
+              <button
+                key={status.id}
+                onClick={() => {
+                  setFilterStatus(status.id);
+                  setPage(1);
+                }}
+                className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${filterStatus === status.id
+                  ? "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-[0_14px_40px_-26px_rgba(77,140,30,0.75)] ring-1 ring-white/10"
+                  : "border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  }`}
+              >
+                {status.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center justify-end">
+            <div className="flex gap-2">
+              <AdminProjectsPrintButton stats={projectStats} />
+
+              {!isReadOnly && (
+                <Button
+                  type="button"
+                  onClick={() => router.push("/admin/projects/new")}
+                  className="inline-flex h-10 items-center gap-2 rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-5 text-sm font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] transition-all hover:brightness-[1.05] active:scale-95"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>New Project</span>
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-            Active Projects
+          <h2 className="text-lg font-semibold capitalize text-zinc-900 dark:text-zinc-100">
+            {filterStatus === "all" ? "All" : filterStatus} Projects
           </h2>
           <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
             Showing {visibleProjects.length} of {meta.total} projects
@@ -271,6 +352,7 @@ export default function AdminProjectsPage() {
           onEdit={!isReadOnly ? ((p) => router.push(`/admin/projects/${p.id}/edit`)) : undefined}
           onDelete={!isReadOnly ? confirmDelete : undefined}
           onAddDailyReport={!isReadOnly ? openDailyReportModal : undefined}
+          onToggleStatus={!isReadOnly ? toggleProjectStatus : undefined}
         />
       </div>
 
@@ -314,7 +396,7 @@ export default function AdminProjectsPage() {
         cancelLabel={confirmState.cancelLabel}
         onConfirm={confirmState.onConfirm}
         onClose={closeConfirm}
-        isConfirming={isDeleting}
+        isConfirming={isDeleting || isUpdating}
       />
     </div>
   );

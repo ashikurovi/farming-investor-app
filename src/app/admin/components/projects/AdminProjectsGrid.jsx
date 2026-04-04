@@ -1,4 +1,4 @@
-import { FilePlus, Eye, Edit2, Trash2, MapPin, TrendingUp, Calendar } from "lucide-react";
+import { FilePlus, Eye, Edit2, Trash2, MapPin, TrendingUp, Calendar, Power } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrencyBDT } from "@/lib/utils";
@@ -10,6 +10,7 @@ export function AdminProjectsGrid({
   onEdit,
   onDelete,
   onAddDailyReport,
+  onToggleStatus,
 }) {
   const formatCurrency = (val) => formatCurrencyBDT(val, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
@@ -37,6 +38,7 @@ export function AdminProjectsGrid({
             const profit = Number(project.totalProfit || 0);
             const profitPercentage = investment > 0 ? ((profit / investment) * 100).toFixed(1) : "0.0";
             const isProfitPositive = profit >= 0;
+            const isActive = project.status !== "Deactivated" && project.status !== "Deactive";
 
             return (
               <div
@@ -75,6 +77,19 @@ export function AdminProjectsGrid({
 
                   {/* Quick Actions Overlay */}
                   <div className="absolute bottom-3 right-3 flex gap-2 opacity-0 transition-all duration-300 translate-y-2 group-hover:translate-y-0 group-hover:opacity-100">
+                    {onToggleStatus && (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); onToggleStatus(project); }}
+                        className={`flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur-sm transition-colors dark:bg-zinc-900/80 ${
+                          isActive
+                            ? "text-rose-600 hover:bg-rose-500 hover:text-white dark:text-rose-300 dark:hover:bg-rose-500"
+                            : "text-emerald-600 hover:bg-emerald-500 hover:text-white dark:text-[color:rgb(124,194,46)] dark:hover:bg-[color:rgb(77,140,30)]"
+                        }`}
+                        title={isActive ? "Deactivate Project" : "Activate Project"}
+                      >
+                        <Power className="h-3.5 w-3.5" />
+                      </button>
+                    )}
                     {onEdit && (
                       <button
                         onClick={() => onEdit(project)}
@@ -143,7 +158,7 @@ export function AdminProjectsGrid({
 
                   {/* Footer Actions */}
                   <div className="mt-auto flex items-center gap-2 border-t border-zinc-100 pt-4 dark:border-zinc-800">
-                    {onAddDailyReport && (
+                    {onAddDailyReport && isActive && (
                       <button
                         onClick={() => onAddDailyReport(project)}
                         className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-3 py-2 text-xs font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] transition-all hover:brightness-[1.05]"
