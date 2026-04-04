@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import { Plus, LayoutGrid } from "lucide-react";
+import { Plus, LayoutGrid, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
 import { AdminSearchBar } from "@/app/admin/components/AdminSearchBar";
@@ -11,6 +11,7 @@ import { AdminProjectConfirmDialog } from "@/app/admin/components/projects/Admin
 import { AdminDailyReportFormModal } from "@/app/admin/components/projects/AdminDailyReportFormModal";
 import { AdminProjectsStats } from "@/app/admin/components/projects/AdminProjectsStats";
 import { AdminProjectsGrid } from "@/app/admin/components/projects/AdminProjectsGrid";
+import { AdminProjectsPrintButton } from "@/app/admin/components/projects/AdminProjectsPrintButton";
 import {
   useGetProjectsQuery,
   useDeleteProjectMutation,
@@ -232,16 +233,20 @@ export default function AdminProjectsPage() {
             placeholder="Search projects..."
             className="w-full sm:w-64"
           />
-          {!isReadOnly && (
-            <Button
-              type="button"
-              onClick={() => router.push("/admin/projects/new")}
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-5 text-sm font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] transition-all hover:brightness-[1.05] active:scale-95"
-            >
-              <Plus className="h-4 w-4" />
-              <span>New Project</span>
-            </Button>
-          )}
+          <div className="flex gap-2">
+			<AdminProjectsPrintButton stats={projectStats} />
+
+			{!isReadOnly && (
+			  <Button
+				type="button"
+				onClick={() => router.push("/admin/projects/new")}
+				className="inline-flex h-10 items-center gap-2 rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-5 text-sm font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] transition-all hover:brightness-[1.05] active:scale-95"
+			  >
+				<Plus className="h-4 w-4" />
+				<span>New Project</span>
+			  </Button>
+			)}
+		  </div>
         </div>
       </header>
 

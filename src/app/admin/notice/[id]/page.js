@@ -1,3 +1,5 @@
+"use client";
+
 import { use } from "react";
 import { useRouter } from "next/navigation";
 import { useGetNoticesQuery } from "@/features/admin/notice/noticeApiSlice";
