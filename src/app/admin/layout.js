@@ -1,3 +1,4 @@
+import { DevToolsProtector } from "@/components/DevToolsProtector";
 import AdminChrome from "./AdminChrome";
 import { ThemeProvider } from "@/lib/ThemeContext";
 
@@ -8,6 +9,7 @@ export const metadata = {
 export default function AdminLayout({ children }) {
   return (
     <ThemeProvider>
+      {/* <DevToolsProtector /> */}
       <AdminChrome>{children}</AdminChrome>
     </ThemeProvider>
   );

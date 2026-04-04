@@ -12,6 +12,7 @@ const baiJamjuree = Bai_Jamjuree({
 });
 
 import { PWAProvider } from "@/components/PWAProvider";
+import { DevToolsProtector } from "@/components/DevToolsProtector";
 
 export const viewport = {
   themeColor: "#4d8c1e",
@@ -84,10 +85,12 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning={true}
       >
         <PWAProvider />
+        <DevToolsProtector />
         <ReduxProvider>
           <ToasterProvider />
           <AppShell>{children}</AppShell>
           <WhatsAppButton />
+
         </ReduxProvider>
       </body>
     </html>
