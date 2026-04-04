@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   Play,
@@ -12,7 +12,7 @@ import {
   X,
 } from "lucide-react";
 
-const YOUTUBE_VIDEO_ID = "ysz5S6PUM-U";
+const VIDEO_SRC = "/farmvideo.mov";
 
 const FEATURES = [
   {
@@ -39,9 +39,18 @@ const FEATURES = [
 
 export default function HomeWhyChooseUs() {
   const [videoOpen, setVideoOpen] = useState(false);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (!videoOpen) return;
+    const t = setTimeout(() => {
+      videoRef.current?.play?.();
+    }, 0);
+    return () => clearTimeout(t);
+  }, [videoOpen]);
 
   return (
-    <section className="relative bg-white py-16 sm:py-24 overflow-hidden">
+    <section className="relative py-12 sm:py-16 overflow-hidden">
       {/* ── Subtle decorative blobs ── */}
       <div className="pointer-events-none absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-[var(--brand-from,#4d8c1e)]/6 blur-[120px]" />
       <div className="pointer-events-none absolute -bottom-32 -right-32 h-[400px] w-[400px] rounded-full bg-[var(--brand-to,#7cc22e)]/8 blur-[100px]" />
@@ -65,17 +74,18 @@ export default function HomeWhyChooseUs() {
               Close
             </button>
 
-            {/* 16:9 YouTube embed */}
+            {/* 16:9 video */}
             <div
               className="relative w-full overflow-hidden rounded-2xl shadow-2xl"
               style={{ paddingBottom: "56.25%" }}
             >
-              <iframe
+              <video
+                ref={videoRef}
                 className="absolute inset-0 h-full w-full"
-                src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&rel=0&modestbranding=1`}
-                title="Organic Farming Video"
-                allow="autoplay; encrypted-media; fullscreen"
-                allowFullScreen
+                src={VIDEO_SRC}
+                controls
+                autoPlay
+                playsInline
               />
             </div>
           </div>
@@ -94,12 +104,12 @@ export default function HomeWhyChooseUs() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/25 to-black/5 z-10 transition-opacity duration-300 group-hover:from-black/70" />
 
             <Image
-              src="/img_7-2048x1024.jpg"
-              alt="Organic farming"
+              src="/insestop1.png"
+              alt="Greenhouse farming"
               width={1600}
               height={900}
               sizes="(min-width: 1024px) 960px, 100vw"
-              className="h-[240px] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] sm:h-[380px] lg:h-[440px]"
+              className="h-[210px] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] sm:h-[320px] lg:h-[380px]"
               priority
             />
 
@@ -125,7 +135,7 @@ export default function HomeWhyChooseUs() {
         </div>
 
         {/* ══════════════ WHY CHOOSE US ══════════════ */}
-        <div className="mt-20 sm:mt-28">
+        <div className="mt-10 sm:mt-14">
           {/* section label */}
           <div className="flex items-center gap-3">
             <span className="h-px w-8 bg-[linear-gradient(90deg,var(--brand-from,#4d8c1e),var(--brand-to,#7cc22e))]" />
@@ -134,10 +144,10 @@ export default function HomeWhyChooseUs() {
             </span>
           </div>
 
-          <div className="mt-5 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-start">
+          <div className="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start">
             {/* LEFT — headline + image card */}
             <div>
-              <h2 className="text-3xl font-extrabold leading-tight text-zinc-900 sm:text-4xl lg:text-[2.6rem]">
+              <h2 className="mt-4 home-title leading-tight">
                 Why Global Partners Choose{" "}
                 <span className="bg-clip-text text-transparent bg-[linear-gradient(135deg,var(--brand-from,#4d8c1e),var(--brand-to,#7cc22e))]">
                   Botanix Organic
@@ -155,8 +165,8 @@ export default function HomeWhyChooseUs() {
               <div className="mt-8 overflow-hidden rounded-3xl ring-1 ring-zinc-100 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.12)]">
                 <div className="relative">
                   <Image
-                    src="/img_4-2048x1024.jpg"
-                    alt="Consistent premium quality"
+                    src="/farm.png"
+                    alt="Farm operations"
                     width={900}
                     height={500}
                     sizes="(min-width: 1024px) 40vw, 100vw"

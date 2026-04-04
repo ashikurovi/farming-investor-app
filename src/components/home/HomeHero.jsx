@@ -61,7 +61,7 @@ export default function HomeHero() {
           loop
           autoplay={{ delay: 5500, disableOnInteraction: false }}
           pagination={{ clickable: true }}
-          className="h-[640px] w-full sm:h-[640px] lg:h-[660px]"
+          className="h-[520px] w-full sm:h-[640px] lg:h-[660px]"
         >
           {slides.map((slide, index) => (
             <SwiperSlide key={index}>

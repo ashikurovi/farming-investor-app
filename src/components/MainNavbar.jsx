@@ -9,7 +9,8 @@ import {
   Home,
   FolderGit2,
   Images,
-  Menu,
+  Phone,
+  ShieldCheck,
   User,
   LayoutDashboard,
   LogOut,
@@ -136,7 +137,6 @@ function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
 export function MainNavbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   const token = useSelector((state) => state.auth?.token);
   const user = useSelector((state) => state.auth?.user);
@@ -161,12 +161,6 @@ export function MainNavbar() {
       toast.error("Logout failed");
     }
   };
-
-  useEffect(() => {
-    if (!mobileOpen) return undefined;
-    const id = window.setTimeout(() => setMobileOpen(false), 0);
-    return () => window.clearTimeout(id);
-  }, [pathname, mobileOpen]);
 
   // Gradient background style
   const navbarGradient = {
@@ -242,18 +236,18 @@ export function MainNavbar() {
 
       {/* ==================== MOBILE BOTTOM NAV (unchanged) ==================== */}
       <nav className="fixed bottom-0 inset-x-0 z-50 md:hidden bg-white border-t border-zinc-200 shadow-[0_-4px_20px_rgba(0,0,0,0.07)]">
-        <div className="flex items-center justify-around px-1 h-[62px]">
+        <div className="flex items-center justify-between px-1.5 h-[62px]">
           {/* Home */}
           {(() => {
             const isActive = pathname === "/";
             return (
               <Link
                 href="/"
-                className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
+                className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group"
               >
-                <div className="w-10 h-10 flex items-center justify-center">
+                <div className="w-9 h-9 flex items-center justify-center">
                   <Home
-                    className={`h-5 w-5 transition-colors ${
+                    className={`h-[18px] w-[18px] transition-colors ${
                       isActive
                         ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
@@ -261,7 +255,7 @@ export function MainNavbar() {
                   />
                 </div>
                 <span
-                  className={`text-[10px] font-semibold leading-none ${
+                  className={`text-[9px] font-semibold leading-none ${
                     isActive ? "text-[#4d8c1e]" : "text-zinc-400"
                   }`}
                 >
@@ -271,17 +265,17 @@ export function MainNavbar() {
             );
           })()}
 
-          {/* Project */}
+          {/* About */}
           {(() => {
-            const isActive = pathname.startsWith("/landing/project");
+            const isActive = pathname.startsWith("/landing/about");
             return (
               <Link
-                href="/landing/project"
-                className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
+                href="/landing/about"
+                className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group"
               >
-                <div className="w-10 h-10 flex items-center justify-center">
-                  <FolderGit2
-                    className={`h-5 w-5 transition-colors ${
+                <div className="w-9 h-9 flex items-center justify-center">
+                  <LayoutDashboard
+                    className={`h-[18px] w-[18px] transition-colors ${
                       isActive
                         ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
@@ -289,7 +283,63 @@ export function MainNavbar() {
                   />
                 </div>
                 <span
-                  className={`text-[10px] font-semibold leading-none ${
+                  className={`text-[9px] font-semibold leading-none ${
+                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
+                  }`}
+                >
+                  About
+                </span>
+              </Link>
+            );
+          })()}
+
+          {/* Contact */}
+          {(() => {
+            const isActive = pathname.startsWith("/landing/contact");
+            return (
+              <Link
+                href="/landing/contact"
+                className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group"
+              >
+                <div className="w-9 h-9 flex items-center justify-center">
+                  <Phone
+                    className={`h-[18px] w-[18px] transition-colors ${
+                      isActive
+                        ? "text-[#4d8c1e]"
+                        : "text-zinc-400 group-hover:text-zinc-600"
+                    }`}
+                  />
+                </div>
+                <span
+                  className={`text-[9px] font-semibold leading-none ${
+                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
+                  }`}
+                >
+                  Contact
+                </span>
+              </Link>
+            );
+          })()}
+
+          {/* Project — raised center */}
+          {(() => {
+            const isActive = pathname.startsWith("/landing/project");
+            return (
+              <Link
+                href="/landing/project"
+                className="flex flex-col items-center gap-0.5 pb-1 -mt-3 min-w-[50px] group"
+              >
+                <div
+                  className={`w-[46px] h-[46px] flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${
+                    isActive
+                      ? "bg-gradient-to-br from-[#4d8c1e] to-[#7cc22e]"
+                      : "bg-gradient-to-br from-[#7cc22e] to-[#4d8c1e] group-hover:from-[#4d8c1e] group-hover:to-[#7cc22e]"
+                  }`}
+                >
+                  <FolderGit2 className="h-[18px] w-[18px] text-white" />
+                </div>
+                <span
+                  className={`text-[9px] font-semibold leading-none ${
                     isActive ? "text-[#4d8c1e]" : "text-zinc-400"
                   }`}
                 >
@@ -299,29 +349,29 @@ export function MainNavbar() {
             );
           })()}
 
-          {/* Contact — raised center */}
+          {/* Privacy */}
           {(() => {
-            const isActive = pathname.startsWith("/landing/contact");
+            const isActive = pathname.startsWith("/privacy-policy");
             return (
               <Link
-                href="/landing/contact"
-                className="flex flex-col items-center gap-0.5 pb-1 -mt-3 min-w-[56px] group"
+                href="/privacy-policy"
+                className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group"
               >
-                <div
-                  className={`w-12 h-12 flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${
-                    isActive
-                      ? "bg-gradient-to-br from-[#4d8c1e] to-[#7cc22e]"
-                      : "bg-gradient-to-br from-[#7cc22e] to-[#4d8c1e] group-hover:from-[#4d8c1e] group-hover:to-[#7cc22e]"
-                  }`}
-                >
-                  <User className="h-5 w-5 text-white" />
+                <div className="w-9 h-9 flex items-center justify-center">
+                  <ShieldCheck
+                    className={`h-[18px] w-[18px] transition-colors ${
+                      isActive
+                        ? "text-[#4d8c1e]"
+                        : "text-zinc-400 group-hover:text-zinc-600"
+                    }`}
+                  />
                 </div>
                 <span
-                  className={`text-[10px] font-semibold leading-none ${
+                  className={`text-[9px] font-semibold leading-none ${
                     isActive ? "text-[#4d8c1e]" : "text-zinc-400"
                   }`}
                 >
-                  Contact
+                  Privacy
                 </span>
               </Link>
             );
@@ -333,11 +383,11 @@ export function MainNavbar() {
             return (
               <Link
                 href="/landing/gallery"
-                className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
+                className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group"
               >
-                <div className="w-10 h-10 flex items-center justify-center">
+                <div className="w-9 h-9 flex items-center justify-center">
                   <Images
-                    className={`h-5 w-5 transition-colors ${
+                    className={`h-[18px] w-[18px] transition-colors ${
                       isActive
                         ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
@@ -345,7 +395,7 @@ export function MainNavbar() {
                   />
                 </div>
                 <span
-                  className={`text-[10px] font-semibold leading-none ${
+                  className={`text-[9px] font-semibold leading-none ${
                     isActive ? "text-[#4d8c1e]" : "text-zinc-400"
                   }`}
                 >
@@ -355,104 +405,40 @@ export function MainNavbar() {
             );
           })()}
 
-          {/* More — Premium */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="flex flex-col items-center gap-0.5 py-1 min-w-[56px] group"
-          >
-            <div
-              className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 ${
-                mobileOpen
-                  ? "bg-gradient-to-br from-[#4d8c1e] to-[#7cc22e] shadow-md shadow-[#7cc22e]/30"
-                  : "bg-zinc-100 group-hover:bg-zinc-200"
-              }`}
-            >
-              <Menu
-                className={`h-5 w-5 transition-colors duration-300 ${
-                  mobileOpen
-                    ? "text-white"
-                    : "text-zinc-500 group-hover:text-zinc-700"
-                }`}
-              />
-            </div>
-            <span
-              className={`text-[10px] font-semibold leading-none transition-colors duration-300 ${
-                mobileOpen ? "text-[#4d8c1e]" : "text-zinc-400"
-              }`}
-            >
-              More
-            </span>
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile More Popup */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 md:hidden"
-          onClick={() => setMobileOpen(false)}
-        >
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-          <div
-            className="absolute bottom-[70px] right-4 w-60 bg-white rounded-2xl shadow-2xl border border-zinc-100 overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex flex-col p-2">
+          {/* Login / Dashboard */}
+          {(() => {
+            const href = isAuthenticated ? dashboardHref : "/login";
+            const isActive = isAuthenticated
+              ? pathname.startsWith(dashboardHref)
+              : pathname.startsWith("/login");
+            const Label = isAuthenticated ? "Dashboard" : "Login";
+            const Icon = isAuthenticated ? LayoutDashboard : User;
+            return (
               <Link
-                href="/landing/about"
-                className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition"
+                href={href}
+                className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group"
               >
-                <LayoutDashboard className="h-4 w-4 text-zinc-400" />
-                <span className="text-xs font-bold uppercase tracking-[0.15em]">
-                  About
+                <div className="w-9 h-9 flex items-center justify-center">
+                  <Icon
+                    className={`h-[18px] w-[18px] transition-colors ${
+                      isActive
+                        ? "text-[#4d8c1e]"
+                        : "text-zinc-400 group-hover:text-zinc-600"
+                    }`}
+                  />
+                </div>
+                <span
+                  className={`text-[9px] font-semibold leading-none ${
+                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
+                  }`}
+                >
+                  {Label}
                 </span>
               </Link>
-              <div className="h-px bg-zinc-100 mx-2 my-1" />
-
-              <InstallPWAButton className="mt-0 w-full mb-1" />
-
-              {isAuthenticated ? (
-                <>
-                  <Link
-                    href={dashboardHref}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition"
-                  >
-                    <LayoutDashboard className="h-4 w-4 text-zinc-400" />
-                    <span className="text-xs font-bold uppercase tracking-[0.15em]">
-                      {role === "admin"
-                        ? "Admin"
-                        : role === "partner"
-                          ? "Partner"
-                          : "Investor"}{" "}
-                      Dashboard
-                    </span>
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    disabled={isLoggingOut}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition disabled:opacity-50"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    <span className="text-xs font-bold uppercase tracking-[0.15em]">
-                      {isLoggingOut ? "Logging out…" : "Logout"}
-                    </span>
-                  </button>
-                </>
-              ) : (
-                <Link
-                  href="/login"
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-800 hover:bg-zinc-50 transition"
-                >
-                  <User className="h-4 w-4 text-zinc-400" />
-                  <span className="text-xs font-bold uppercase tracking-[0.15em]">
-                    Login
-                  </span>
-                </Link>
-              )}
-            </div>
-          </div>
+            );
+          })()}
         </div>
-      )}
+      </nav>
     </>
   );
 }

@@ -53,7 +53,7 @@ export default function HomeTestimonials() {
   const visible = [0, 1, 2].map((offset) => (active + offset) % total);
 
   return (
-    <section className="relative bg-[#f6f7f4] home-section overflow-hidden">
+    <section className="relative home-section overflow-hidden">
 
       {/* Decorative blobs */}
       <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[#7cc22e]/8 blur-[80px]" />

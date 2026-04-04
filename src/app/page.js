@@ -6,16 +6,14 @@ import HomeHero from "../components/home/HomeHero";
 import HomeHowItWorks from "../components/home/HomeHowItWorks";
 import HomeLiveKpis from "../components/home/HomeLiveKpis";
 import HomeRecentProjects from "../components/home/HomeRecentProjects";
-import HomeStatsSnapshot from "../components/home/HomeStatsSnapshot";
 import HomeTestimonials from "../components/home/HomeTestimonials";
 import HomeWhyChooseUs from "../components/home/HomeWhyChooseUs";
 import WhatsAppButton from "../components/WhatsAppButton";
 
 export default function Home() {
   const recentProjects = getRecentProjects(4);
-  // bg-[#f6f7f4] aii sectionns er bg coloor hoba ai ta
   return (
-    <main className="min-h-screen space-y-0 bg-[#f6f7f4] mb-10">
+    <main className="min-h-screen space-y-0 bg-[#f6f7f4] [background-image:radial-gradient(circle_at_top,rgba(77,140,30,0.10),transparent_55%)] ">
       <HomeHero />
       {/* <HomeStatsSnapshot /> */}
       <HomeLiveKpis />

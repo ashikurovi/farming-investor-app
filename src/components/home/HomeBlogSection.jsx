@@ -34,8 +34,8 @@ const CSS = `
 
   /* ─── Section ─── */
   .blog-section {
-    background: var(--bg);
-    padding: 72px 0 88px;
+    background: transparent;
+    padding: 44px 0 52px;
     position: relative;
     overflow: hidden;
   }
@@ -44,18 +44,17 @@ const CSS = `
   .blog-section::after {
     content: '';
     position: absolute; inset: 0; pointer-events: none; z-index: 0;
-    background-image: radial-gradient(circle, rgba(77,140,30,.055) 1px, transparent 1px);
-    background-size: 32px 32px;
+    background-image: none;
   }
 
   /* Green glow blobs */
   .blog-blob-tl {
-    position: absolute; top: -100px; left: -100px; z-index: 0; pointer-events: none;
+    display: none;
     width: 500px; height: 500px; border-radius: 50%;
     background: radial-gradient(circle, rgba(124,194,46,.10) 0%, transparent 70%);
   }
   .blog-blob-br {
-    position: absolute; bottom: -120px; right: -80px; z-index: 0; pointer-events: none;
+    display: none;
     width: 420px; height: 420px; border-radius: 50%;
     background: radial-gradient(circle, rgba(77,140,30,.08) 0%, transparent 70%);
   }
@@ -74,7 +73,7 @@ const CSS = `
     align-items: flex-end;
     justify-content: space-between;
     gap: 24px;
-    margin-bottom: 48px;
+    margin-bottom: 28px;
     flex-wrap: wrap;
   }
   .blog-header-left { max-width: 560px; }
@@ -85,7 +84,7 @@ const CSS = `
     background: rgba(255,255,255,.95);
     border: 1.5px solid var(--border-md);
     border-radius: 999px;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
     box-shadow: 0 2px 12px rgba(77,140,30,.08);
   }
   .blog-eyebrow-dot {
@@ -100,12 +99,15 @@ const CSS = `
     letter-spacing: .14em; text-transform: uppercase;
     color: var(--g1);
   }
-
+ 
   .blog-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(26px, 3vw, 36px);
-    font-weight: 600; color: var(--text-1);
-    line-height: 1.18; margin: 0;
+    font-family: inherit;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-1);
+    line-height: 1.2;
+    margin: 0;
   }
   .blog-title em {
     font-style: italic;
@@ -114,6 +116,8 @@ const CSS = `
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  @media (min-width: 768px) { .blog-title { font-size: 30px; } }
 
   .blog-view-all {
     display: inline-flex; align-items: center; gap: 8px;
@@ -350,12 +354,12 @@ const CSS = `
     .blog-number { display: none; }
   }
   @media (max-width: 540px) {
-    .blog-section { padding: 48px 0 60px; }
+    .blog-section { padding: 32px 0 40px; }
     .blog-article { border-radius: 20px; }
     .blog-img-pane { height: 200px; }
     .blog-content-pane { padding: 20px 18px 24px; }
     .blog-excerpt { font-size: 13.5px; }
-    .blog-footer { margin-top: 40px; }
+    .blog-footer { margin-top: 28px; }
     .blog-footer-line { max-width: 50px; }
   }
 `;
@@ -480,16 +484,6 @@ export default function HomeBlogSection() {
                   </article>
                 );
               })}
-            </div>
-
-            {/* ── Footer CTA ── */}
-            <div className="blog-footer">
-              <div className="blog-footer-line" />
-              <Link href="/landing/blog" className="blog-footer-btn">
-                View All Articles
-                <ArrowRight size={15} />
-              </Link>
-              <div className="blog-footer-line r" />
             </div>
           </div>
         </section>

@@ -2,7 +2,7 @@ export default function HomeStatsSnapshot() {
   return (
     <section
       id="discover"
-      className="bg-gradient-to-b from-amber-50/60 via-white to-emerald-50/30 py-12 dark:from-zinc-950 dark:via-black dark:to-emerald-950/20"
+      className="home-section"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
