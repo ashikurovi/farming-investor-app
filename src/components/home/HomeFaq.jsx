@@ -435,11 +435,9 @@ export default function HomeFaq() {
                           className="faq-contact-label"
                           style={{ color: "#7cc22e" }}
                         >
-                          Live Chat
+                          Contact Us
                         </div>
-                        <div className="faq-contact-val">
-                          Start conversation now
-                        </div>
+                        <div className="faq-contact-val">01750977875</div>
                       </div>
                     </button>
                     <button className="faq-contact-btn">
@@ -457,7 +455,7 @@ export default function HomeFaq() {
                           Email Support
                         </div>
                         <div className="faq-contact-val">
-                          support@xinzofarms.com
+                          iamimtiaz132@gmail.com
                         </div>
                       </div>
                     </button>

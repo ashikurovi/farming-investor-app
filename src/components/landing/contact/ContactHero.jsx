@@ -4,11 +4,11 @@ import { MoveRight, Mail } from "lucide-react";
 
 export function ContactHero() {
   return (
-    <div className="relative h-[70vh] min-h-[600px] w-full overflow-hidden bg-zinc-950">
+    <div className="relative h-[70vh] min-h-[520px] w-full overflow-hidden bg-zinc-950 sm:min-h-[600px]">
       {/* Background Image with Parallax-like feel */}
       <div className="absolute inset-0">
         <Image
-          src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          src="/conntact.png"
           alt="Contact Hero - Sustainable Investing Conversation"
           fill
           priority
@@ -20,9 +20,8 @@ export function ContactHero() {
       </div>
 
       {/* Content */}
-      <div className="absolute inset-0 flex items-center justify-center text-center">
+      <div className="absolute inset-0 flex items-center justify-center text-center pt-[calc(env(safe-area-inset-top)+5rem)] pb-[calc(env(safe-area-inset-bottom)+6rem)] sm:pt-0 sm:pb-0">
         <div className="mx-auto max-w-5xl px-6 lg:px-8">
-          
           {/* Badge */}
           <div className="mb-8 inline-flex animate-fade-in-up opacity-0 [animation-delay:200ms] items-center gap-2 rounded-full border border-[color:rgba(77,140,30,0.22)] bg-[color:rgba(77,140,30,0.12)] px-4 py-1.5 text-sm font-medium text-[color:rgba(124,194,46,0.95)] backdrop-blur-md shadow-[0_0_18px_-6px_rgba(124,194,46,0.22)] hover:bg-[color:rgba(77,140,30,0.16)] transition-colors">
             <Mail className="h-4 w-4 text-[color:rgba(124,194,46,0.95)]" />
@@ -58,8 +57,8 @@ export function ContactHero() {
               <MoveRight className="h-4 w-4 transition-transform group-hover:translate-x-1 relative z-10" />
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer" />
             </Link>
-            
-            <Link 
+
+            <Link
               href="/"
               className="group inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-[13px] font-medium text-zinc-300 transition-colors hover:text-white hover:bg-white/5 sm:px-7 sm:py-3 sm:text-sm"
             >
@@ -68,7 +67,7 @@ export function ContactHero() {
           </div>
         </div>
       </div>
-      
+
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-zinc-500/50">
         <div className="h-10 w-6 rounded-full border-2 border-current flex justify-center p-1">

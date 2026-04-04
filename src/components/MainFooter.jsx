@@ -69,7 +69,7 @@ export function MainFooter() {
       />
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-[calc(env(safe-area-inset-bottom)+6rem)] sm:pb-10 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-[calc(env(safe-area-inset-bottom)+70px)] sm:pb-10 relative z-10">
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-12 gap-10 mb-14">
           {/* Brand Section - Full width on mobile, 4 cols on lg */}
           <div className="col-span-2 lg:col-span-4 space-y-6">
@@ -78,7 +78,7 @@ export function MainFooter() {
               <Link href="/" className="flex items-center gap-3 group">
                 <div className="h-12 w-32 transition-transform group-hover:scale-105">
                   <Image
-                    src="/loogo9.png"
+                    src="/logo6.png"
                     alt="Farming Investor"
                     width={128}
                     height={128}

@@ -220,7 +220,6 @@ export default function HomeLiveKpis() {
             </div>
           ))}
         </div>
-        {/* fihjeifi */}
       </div>
     </section>
   );

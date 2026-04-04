@@ -135,7 +135,7 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                   onClick={() => handleShare("facebook")}
                   className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-50 transition-colors"
                 >
-                  <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
+                  <div className="w-8 h-8 rounded-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] flex items-center justify-center text-white">
                     <Facebook className="w-4 h-4" />
                   </div>
                   Facebook
@@ -144,7 +144,7 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                   onClick={() => handleShare("messenger")}
                   className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-50 transition-colors"
                 >
-                  <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                  <div className="w-8 h-8 rounded-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] flex items-center justify-center text-white">
                     <MessageCircle className="w-4 h-4" />
                   </div>
                   Messenger
@@ -174,7 +174,7 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                   {project.name}
                 </h1>
                 <div className="flex items-center gap-2 text-zinc-300 text-sm font-medium">
-                  <MapPin className="w-4 h-4 text-emerald-400" />
+                  <MapPin className="w-4 h-4 text-primary" />
                   {project.location}
                 </div>
               </div>
@@ -207,7 +207,7 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                         onClick={() => handleShare("facebook")}
                         className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-50 transition-colors"
                       >
-                        <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
+                        <div className="w-8 h-8 rounded-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] flex items-center justify-center text-white">
                           <Facebook className="w-4 h-4" />
                         </div>
                         Facebook
@@ -216,7 +216,7 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                         onClick={() => handleShare("messenger")}
                         className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-50 transition-colors"
                       >
-                        <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                        <div className="w-8 h-8 rounded-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] flex items-center justify-center text-white">
                           <MessageCircle className="w-4 h-4" />
                         </div>
                         Messenger
@@ -247,8 +247,8 @@ export function ProjectDetails({ project, similarProjects = [] }) {
           <div className="rounded-2xl sm:rounded-3xl border border-zinc-200 bg-white p-6 sm:p-8 shadow-sm">
             <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-700">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                <div className="inline-flex items-center gap-2 rounded-full border border-[color:rgba(77,140,30,0.18)] bg-secondary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+                  <span className="h-2 w-2 rounded-full bg-primary" />
                   Verified Project
                 </div>
                 <h2 className="text-xl font-bold tracking-tight text-zinc-900 sm:text-2xl">
@@ -262,7 +262,7 @@ export function ProjectDetails({ project, similarProjects = [] }) {
 
               <Link
                 href="/landing/contact"
-                className="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-600 px-6 py-3 text-xs font-bold uppercase tracking-[0.18em] text-white shadow-[0_18px_55px_-40px_rgba(16,185,129,0.75)] transition hover:bg-emerald-500 md:w-auto"
+                className="inline-flex w-full items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-6 py-3 text-xs font-bold uppercase tracking-[0.18em] text-primary-foreground shadow-[0_18px_55px_-40px_rgba(77,140,30,0.55)] transition hover:opacity-95 md:w-auto"
               >
                 Contact Us
               </Link>
@@ -295,7 +295,7 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                   key={title}
                   className="flex items-start gap-3 rounded-2xl border border-zinc-200 bg-zinc-50/60 p-4"
                 >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white text-emerald-700 ring-1 ring-emerald-100">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white text-primary ring-1 ring-[color:rgba(77,140,30,0.14)]">
                     <Icon className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
@@ -314,7 +314,7 @@ export function ProjectDetails({ project, similarProjects = [] }) {
           {/* Project Details */}
           <div className="bg-white rounded-3xl p-8 shadow-sm border border-zinc-100">
             <h3 className="text-lg font-bold text-zinc-900 mb-6 flex items-center gap-2">
-              <Info className="w-5 h-5 text-emerald-600" />
+              <Info className="w-5 h-5 text-primary" />
               Project Details
             </h3>
             <div className="prose prose-zinc max-w-none">
@@ -378,7 +378,7 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                   <Link
                     key={p.id}
                     href={`/landing/project/${p.id}`}
-                    className="group block bg-white rounded-2xl p-4 border border-zinc-200 hover:border-emerald-500/50 transition-all hover:shadow-lg"
+                    className="group block bg-white rounded-2xl p-4 border border-zinc-200 hover:border-[color:rgba(77,140,30,0.35)] transition-all hover:shadow-lg"
                   >
                     <div className="aspect-video rounded-xl bg-zinc-100 mb-4 overflow-hidden relative">
                       <img
@@ -391,11 +391,11 @@ export function ProjectDetails({ project, similarProjects = [] }) {
                         }}
                       />
                     </div>
-                    <h4 className="font-bold text-zinc-900 group-hover:text-emerald-600 transition-colors">
+                    <h4 className="font-bold text-zinc-900 group-hover:text-primary transition-colors">
                       {p.name}
                     </h4>
                     <div className="mt-2">
-                      <span className="text-emerald-600 font-semibold text-sm">
+                      <span className="text-primary font-semibold text-sm">
                         View Details
                       </span>
                     </div>

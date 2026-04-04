@@ -1,5 +1,5 @@
 "use client";
-
+// ihdfij
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -282,28 +282,29 @@ export default function Sidebar() {
         {/* Help card */}
         {!collapsed && (
           <div
-            className="rounded-2xl p-3.5 dark:border dark:border-emerald-900/50"
+            className="rounded-2xl p-3.5 dark:border dark:border-[color:rgba(77,140,30,0.28)]"
             style={{
-              background: "linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)",
-              border: "1px solid #d1fae5",
+              background:
+                "linear-gradient(135deg, rgba(124,194,46,0.14) 0%, rgba(77,140,30,0.08) 100%)",
+              border: "1px solid rgba(77,140,30,0.18)",
             }}
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white text-emerald-600 shadow-sm ring-1 ring-emerald-100 dark:bg-zinc-800 dark:ring-emerald-800">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white text-primary shadow-sm ring-1 ring-[color:rgba(77,140,30,0.14)] dark:bg-zinc-900 dark:ring-[color:rgba(77,140,30,0.22)]">
                 <CircleHelp className="h-5 w-5" />
               </div>
               <div>
-                <div className="text-xs font-semibold text-zinc-800 leading-tight dark:text-zinc-900">
+                <div className="text-xs font-semibold text-zinc-900 leading-tight dark:text-zinc-100">
                   Need help?
                 </div>
-                <div className="text-[11px] text-zinc-500 leading-tight dark:text-zinc-600">
+                <div className="text-[11px] text-zinc-600 leading-tight dark:text-zinc-400">
                   Support center
                 </div>
               </div>
             </div>
             <Link
               href="/admin/contact"
-              className="inline-flex w-full items-center justify-center rounded-xl bg-white px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-emerald-700 ring-1 ring-emerald-200 transition-all hover:bg-emerald-600 hover:text-white hover:ring-emerald-600 shadow-sm dark:bg-zinc-100 dark:text-emerald-800 dark:ring-emerald-300"
+              className="inline-flex w-full items-center justify-center rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-white shadow-sm transition-all hover:opacity-95"
             >
               Open support
             </Link>
