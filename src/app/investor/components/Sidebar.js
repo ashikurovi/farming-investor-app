@@ -9,6 +9,7 @@ import { sidebarNavigation } from "./sidebarNavigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "@/lib/ThemeContext";
+import InstallPWAButton from "@/components/InstallPWAButton";
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -173,6 +174,7 @@ export default function Sidebar() {
               </Link>
             </div>
           )}
+          <InstallPWAButton collapsed={collapsed} />
           <button
             type="button"
             disabled={isLoggingOut}
