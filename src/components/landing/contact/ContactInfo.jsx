@@ -47,7 +47,7 @@ export function ContactInfo() {
                     </div>
                     <h4 className="font-bold text-zinc-900 mb-1.5 text-lg group-hover:text-primary transition-colors">Visit Us</h4>
                     <p className="text-sm text-zinc-500 mb-5">Come say hello at our office.</p>
-                    <span className="text-sm font-medium text-zinc-800 leading-relaxed">Rowmaari, Kurigram,<br />Bangladesh</span>
+                    <span className="text-sm font-medium text-zinc-800 leading-relaxed">Rowmari, Kurigram,<br />Bangladesh</span>
                 </div>
 
                 <div className="group p-6 sm:p-8 rounded-3xl bg-white/80 backdrop-blur-sm border border-zinc-100 shadow-xl shadow-zinc-200/20 hover:shadow-2xl hover:shadow-[0_24px_70px_-55px_rgba(77,140,30,0.35)] hover:border-[color:rgba(77,140,30,0.18)] transition-all duration-500 hover:-translate-y-1.5 relative overflow-hidden">

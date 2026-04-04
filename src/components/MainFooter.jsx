@@ -206,9 +206,9 @@ export function MainFooter() {
                   icon: MapPin,
                   content: (
                     <span>
-                      Level 4, AgriTech Tower,
+                      Rowmari, Kurigram,
                       <br />
-                      Dhaka 1212, Bangladesh
+                      Bangladesh
                     </span>
                   ),
                 },
