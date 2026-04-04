@@ -270,6 +270,7 @@ export default function InvestorProjectsPage() {
   });
 
   const raw = Array.isArray(data) ? data : (data?.items ?? []);
+<<<<<<< HEAD
 
   const filtered = raw.filter((p) => {
     const s = (p.status || "Active").toLowerCase();
@@ -291,6 +292,16 @@ export default function InvestorProjectsPage() {
 
     return matchesStatus && matchesSearch;
   });
+=======
+  const filtered = search
+    ? raw.filter((p) =>
+        [p?.name ?? "", p?.location ?? "", p?.description ?? ""]
+          .join(" ")
+          .toLowerCase()
+          .includes(search.toLowerCase()),
+      )
+    : raw;
+>>>>>>> 3d06787 (update)
 
   const total = filtered.length;
   const pageCount = pageSize > 0 ? Math.max(1, Math.ceil(total / pageSize)) : 1;
