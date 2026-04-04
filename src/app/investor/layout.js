@@ -1,3 +1,4 @@
+import { DevToolsProtector } from "@/components/DevToolsProtector";
 import Sidebar from "./components/Sidebar";
 import TopNavbar from "./components/TopNavbar";
 import { ThemeProvider } from "@/lib/ThemeContext";
@@ -9,6 +10,7 @@ export const metadata = {
 export default function InvestorLayout({ children }) {
   return (
     <ThemeProvider>
+      {/* <DevToolsProtector /> */}
       <div className="flex h-screen overflow-hidden bg-background text-foreground">
         <Sidebar />
         <div className="flex flex-1 flex-col overflow-hidden">
