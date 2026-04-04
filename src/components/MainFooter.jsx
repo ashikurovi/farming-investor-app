@@ -73,33 +73,22 @@ export function MainFooter() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 mb-14">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-4 space-y-6">
-            <div className="sm:col-span-2 lg:col-span-4 space-y-6">
-              <div className="flex flex-col items-start gap-2">
-                {/* Logo */}
-                <Link href="/" className="flex items-center gap-3 group">
-                  <div className="h-12 w-32 transition-transform group-hover:scale-105">
-                    <Image
-                      src="/loogo9.png"
-                      alt="ARTMAN"
-                      width={128}
-                      height={128}
-                      className=""
-                      priority
-                    />
-                  </div>
-                </Link>
-
-                {/* Subtitle - Only this text below the logo */}
-                <div>
-                  <p
-                    className="text-[10px] uppercase tracking-[0.18em]"
-                    style={{ color: "rgba(255,255,255,0.5)" }}
-                  >
-                    Agricultural Investment Platform
-                  </p>
+            <div className="flex flex-col items-start gap-2">
+              {/* Logo */}
+              <Link href="/" className="flex items-center gap-3 group">
+                <div className="h-12 w-32 transition-transform group-hover:scale-105">
+                  <Image
+                    src="/loogo9.png"
+                    alt="ARTMAN"
+                    width={128}
+                    height={128}
+                    className=""
+                    priority
+                  />
                 </div>
               </Link>
 
+              {/* Subtitle - Only this text below the logo */}
               <div>
                 <p
                   className="text-[10px] uppercase tracking-[0.18em]"
