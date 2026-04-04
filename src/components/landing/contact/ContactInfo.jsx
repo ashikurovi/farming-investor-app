@@ -23,7 +23,7 @@ export function ContactInfo() {
                     </div>
                     <h4 className="font-bold text-zinc-900 mb-1.5 text-lg group-hover:text-primary transition-colors">Email Us</h4>
                     <p className="text-sm text-zinc-500 mb-5">Our friendly team is here to help.</p>
-                    <a href="mailto:hello@farming-investor.com" className="inline-flex text-sm font-semibold text-primary hover:text-[color:var(--brand-to)] transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-[color:var(--brand-to)] after:transition-all hover:after:w-full">hello@farming-investor.com</a>
+                    <a href="mailto:iamimtiaz132@gmail.com" className="inline-flex text-sm font-semibold text-primary hover:text-[color:var(--brand-to)] transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-[color:var(--brand-to)] after:transition-all hover:after:w-full">iamimtiaz132@gmail.com</a>
                 </div>
 
                 <div className="group p-6 sm:p-8 rounded-3xl bg-white/80 backdrop-blur-sm border border-zinc-100 shadow-xl shadow-zinc-200/20 hover:shadow-2xl hover:shadow-[0_24px_70px_-55px_rgba(77,140,30,0.35)] hover:border-[color:rgba(77,140,30,0.18)] transition-all duration-500 hover:-translate-y-1.5 relative overflow-hidden">
@@ -35,7 +35,7 @@ export function ContactInfo() {
                     </div>
                     <h4 className="font-bold text-zinc-900 mb-1.5 text-lg group-hover:text-primary transition-colors">Call Us</h4>
                     <p className="text-sm text-zinc-500 mb-5">Mon-Fri from 8am to 5pm.</p>
-                    <a href="tel:+8801234567890" className="inline-flex text-sm font-semibold text-primary hover:text-[color:var(--brand-to)] transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-[color:var(--brand-to)] after:transition-all hover:after:w-full">+880 1234 567 890</a>
+                    <a href="tel:+8801750977875" className="inline-flex text-sm font-semibold text-primary hover:text-[color:var(--brand-to)] transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-[color:var(--brand-to)] after:transition-all hover:after:w-full">01750977875</a>
                 </div>
 
                 <div className="group p-6 sm:p-8 rounded-3xl bg-white/80 backdrop-blur-sm border border-zinc-100 shadow-xl shadow-zinc-200/20 hover:shadow-2xl hover:shadow-[0_24px_70px_-55px_rgba(77,140,30,0.35)] hover:border-[color:rgba(77,140,30,0.18)] transition-all duration-500 hover:-translate-y-1.5 relative overflow-hidden">
@@ -47,7 +47,7 @@ export function ContactInfo() {
                     </div>
                     <h4 className="font-bold text-zinc-900 mb-1.5 text-lg group-hover:text-primary transition-colors">Visit Us</h4>
                     <p className="text-sm text-zinc-500 mb-5">Come say hello at our office.</p>
-                    <span className="text-sm font-medium text-zinc-800 leading-relaxed">Level 4, AgriTech Tower,<br />Dhaka 1212, Bangladesh</span>
+                    <span className="text-sm font-medium text-zinc-800 leading-relaxed">Rowmaari, Kurigram,<br />Bangladesh</span>
                 </div>
 
                 <div className="group p-6 sm:p-8 rounded-3xl bg-white/80 backdrop-blur-sm border border-zinc-100 shadow-xl shadow-zinc-200/20 hover:shadow-2xl hover:shadow-[0_24px_70px_-55px_rgba(77,140,30,0.35)] hover:border-[color:rgba(77,140,30,0.18)] transition-all duration-500 hover:-translate-y-1.5 relative overflow-hidden">
@@ -73,7 +73,7 @@ export function ContactInfo() {
                             <MapPin className="w-3.5 h-3.5" />
                             Headquarters
                         </div>
-                        <p className="text-white font-medium">Dhaka, Bangladesh</p>
+                        <p className="text-white font-medium">Rowmaari, Kurigram</p>
                     </div>
                     <a href="https://maps.google.com" target="_blank" rel="noreferrer" className="h-10 w-10 bg-white text-primary rounded-full flex items-center justify-center hover:bg-secondary transition-colors shadow-lg">
                         <Globe className="w-5 h-5" />

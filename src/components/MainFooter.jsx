@@ -78,7 +78,7 @@ export function MainFooter() {
               <Link href="/" className="flex items-center gap-3 group">
                 <div className="h-12 w-32 transition-transform group-hover:scale-105">
                   <Image
-                    src="/loogo9.png"
+                    src="/logo6.png"
                     alt="Farming Investor"
                     width={128}
                     height={128}

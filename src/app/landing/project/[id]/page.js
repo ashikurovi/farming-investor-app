@@ -20,9 +20,9 @@ export default function ProjectDetailsPage({ params }) {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-50">
+      <div className="flex min-h-screen items-center justify-center bg-background text-foreground">
         <div className="flex flex-col items-center gap-4">
-          <Loader className="h-8 w-8 animate-spin text-emerald-600" />
+          <Loader className="h-8 w-8 animate-spin text-primary" />
           <p className="text-sm font-medium text-zinc-600">
             Loading project details...
           </p>

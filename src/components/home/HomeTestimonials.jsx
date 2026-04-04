@@ -54,13 +54,11 @@ export default function HomeTestimonials() {
 
   return (
     <section className="relative home-section overflow-hidden">
-
       {/* Decorative blobs */}
       <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[#7cc22e]/8 blur-[80px]" />
       <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-[#4d8c1e]/6 blur-[80px]" />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-
         {/* ── Header ── */}
         <div className="mb-10 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
           <div>
@@ -120,8 +118,7 @@ export default function HomeTestimonials() {
                     ? {
                         background:
                           "linear-gradient(135deg, #3d7018, #5fa820, #7cc22e)",
-                        boxShadow:
-                          "0 20px 60px -15px rgba(77,140,30,0.45)",
+                        boxShadow: "0 20px 60px -15px rgba(77,140,30,0.45)",
                       }
                     : {}
                 }
