@@ -57,9 +57,9 @@ export default function LoginPage() {
         </div>
 
         {/* Card */}
-        <div className="w-full max-w-[420px] bg-white p-8 sm:p-10 rounded-3xl shadow-2xl lg:shadow-none lg:bg-transparent lg:p-0 dark:bg-zinc-900">
+        <div className="w-full max-w-[420px] rounded-3xl border border-zinc-200 bg-white/95 p-8 shadow-none backdrop-blur-md sm:p-10 lg:border-0 lg:bg-transparent lg:p-0 dark:border-zinc-800 dark:bg-zinc-900/90">
           <div className="flex flex-col space-y-2 text-center lg:text-left mb-8">
-            <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-lg lg:hidden">
+            <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white ring-1 ring-white/20 lg:hidden">
               <Sprout className="h-7 w-7" />
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-display dark:text-zinc-100">

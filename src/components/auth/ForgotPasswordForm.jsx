@@ -63,7 +63,7 @@
              autoComplete="email"
              autoCapitalize="none"
              autoCorrect="off"
-             className="pl-9 h-11 bg-zinc-50 border-zinc-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+            className="h-11 bg-white/80 border-zinc-200 pl-9 shadow-sm backdrop-blur-md focus:border-[color:rgba(77,140,30,0.45)] focus:ring-[color:rgba(77,140,30,0.18)] dark:bg-zinc-950/60 dark:border-zinc-800"
              required
            />
          </div>
@@ -75,7 +75,7 @@
          </p>
        )}
        {success && (
-         <p className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-md px-3 py-2">
+        <p className="rounded-xl border border-[color:rgba(77,140,30,0.18)] bg-secondary px-4 py-3 text-sm text-primary">
            {success}
          </p>
        )}
@@ -83,7 +83,7 @@
        <Button
          type="submit"
          disabled={isLoading}
-         className="w-full h-11 bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm transition-all hover:shadow-emerald-900/20 text-base font-medium disabled:opacity-70 disabled:cursor-not-allowed"
+        className="h-11 w-full bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-sm transition-all hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-70"
        >
          {isLoading ? "Sending..." : "Send reset instructions"}
        </Button>

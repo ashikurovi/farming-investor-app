@@ -221,7 +221,7 @@ export function MainNavbar() {
                 /* ── Guest: Log in button ── */
                 <Link
                   href="/login"
-                  className="inline-flex items-center justify-center rounded-full px-5 py-2 text-white font-semibold tracking-wide text-sm transition-all duration-200 border border-white/30 bg-white/10 hover:bg-white/20 hover:border-white/50 backdrop-blur-sm"
+                  className="inline-flex items-center justify-center rounded-xl px-5 py-2 text-white font-semibold tracking-wide text-sm transition-all duration-200 border border-white/30 bg-white/10 hover:bg-white/20 hover:border-white/50 backdrop-blur-sm"
                 >
                   Log in
                 </Link>

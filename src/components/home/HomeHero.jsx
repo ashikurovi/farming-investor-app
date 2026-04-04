@@ -100,31 +100,13 @@ export default function HomeHero() {
                       </p>
                     )}
 
-                    <div className="mt-6 flex items-center gap-3">
+                    <div className="mt-6 flex flex-wrap items-center gap-2 sm:flex-nowrap sm:gap-3">
                       <button
                         onClick={scrollToContent}
-                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-[linear-gradient(135deg,#4d8c1e,#7cc22e)] px-6 py-3 text-[12px] font-semibold text-white shadow-[0_16px_40px_-18px_rgba(77,140,30,0.85)] transition hover:brightness-[1.05] active:scale-[0.98]"
+                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-[linear-gradient(135deg,#4d8c1e,#7cc22e)] px-4 py-2.5 text-[11px] font-semibold text-white shadow-[0_16px_40px_-18px_rgba(77,140,30,0.85)] transition hover:brightness-[1.05] active:scale-[0.98] sm:px-6 sm:py-3 sm:text-[12px]"
                       >
                         Learn More
-                        <ArrowRight className="h-4 w-4" />
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={openCompanyModal}
-                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-4 py-3 text-[12px] font-semibold text-white/90 backdrop-blur-md transition hover:bg-white/15 hover:text-white"
-                      >
-                        <Building2 className="h-4 w-4" />
-                        ARTMAN
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={openRunningProjectsModal}
-                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-4 py-3 text-[12px] font-semibold text-white/90 backdrop-blur-md transition hover:bg-white/15 hover:text-white"
-                      >
-                        <PlayCircle className="h-4 w-4" />
-                        Running
+                        <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </button>
                     </div>
                   </div>

@@ -138,9 +138,9 @@ export default function PrivacyPolicy() {
                   </p>
                   <a
                     href="mailto:privacy@farming-investor.com"
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-[color:rgba(124,194,46,0.95)] hover:text-white transition-colors"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-white transition-colors"
                   >
-                    Contact Support <ChevronRight className="w-4 h-4" />
+                    Contact Support <ChevronRight className="w-4 h-4 text-primary" />
                   </a>
                 </div>
               </div>
@@ -152,7 +152,7 @@ export default function PrivacyPolicy() {
               <section id="introduction" className="scroll-mt-32">
                 <div className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-zinc-100 hover:shadow-md transition-shadow duration-300">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-600">
+                    <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-primary ring-1 ring-[color:rgba(77,140,30,0.18)]">
                       <Shield className="w-6 h-6" />
                     </div>
                     <h2 className="text-2xl font-bold text-zinc-900">
@@ -181,7 +181,7 @@ export default function PrivacyPolicy() {
               <section id="data-collection" className="scroll-mt-32">
                 <div className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-zinc-100 hover:shadow-md transition-shadow duration-300">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600">
+                    <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-primary ring-1 ring-[color:rgba(77,140,30,0.18)]">
                       <Database className="w-6 h-6" />
                     </div>
                     <h2 className="text-2xl font-bold text-zinc-900">
@@ -199,12 +199,12 @@ export default function PrivacyPolicy() {
                       {
                         title: "Identity Data",
                         desc: "First name, last name, username or similar identifier.",
-                        color: "bg-orange-50 border-orange-100",
+                        color: "bg-secondary border-[color:rgba(77,140,30,0.18)]",
                       },
                       {
                         title: "Contact Data",
                         desc: "Billing address, delivery address, email address and telephone numbers.",
-                        color: "bg-purple-50 border-purple-100",
+                        color: "bg-secondary border-[color:rgba(77,140,30,0.18)]",
                       },
                       {
                         title: "Financial Data",
@@ -214,7 +214,7 @@ export default function PrivacyPolicy() {
                       {
                         title: "Transaction Data",
                         desc: "Details about payments to and from you and other services.",
-                        color: "bg-blue-50 border-blue-100",
+                        color: "bg-secondary border-[color:rgba(77,140,30,0.18)]",
                       },
                     ].map((item, idx) => (
                       <div
@@ -235,7 +235,7 @@ export default function PrivacyPolicy() {
               <section id="data-usage" className="scroll-mt-32">
                 <div className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-zinc-100 hover:shadow-md transition-shadow duration-300">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-600">
+                    <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-primary ring-1 ring-[color:rgba(77,140,30,0.18)]">
                       <Eye className="w-6 h-6" />
                     </div>
                     <h2 className="text-2xl font-bold text-zinc-900">
@@ -269,7 +269,7 @@ export default function PrivacyPolicy() {
               <section id="data-security" className="scroll-mt-32">
                 <div className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-zinc-100 hover:shadow-md transition-shadow duration-300">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-rose-100 flex items-center justify-center text-rose-600">
+                    <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-primary ring-1 ring-[color:rgba(77,140,30,0.18)]">
                       <Lock className="w-6 h-6" />
                     </div>
                     <h2 className="text-2xl font-bold text-zinc-900">
@@ -309,7 +309,7 @@ export default function PrivacyPolicy() {
               <section id="legal-rights" className="scroll-mt-32">
                 <div className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-zinc-100 hover:shadow-md transition-shadow duration-300">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-100 flex items-center justify-center text-indigo-600">
+                    <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-primary ring-1 ring-[color:rgba(77,140,30,0.18)]">
                       <Scale className="w-6 h-6" />
                     </div>
                     <h2 className="text-2xl font-bold text-zinc-900">
@@ -335,7 +335,7 @@ export default function PrivacyPolicy() {
                         key={idx}
                         className="px-4 py-3 rounded-xl bg-zinc-50 border border-zinc-100 text-zinc-700 text-sm font-medium flex items-center gap-2"
                       >
-                        <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
                         {right}
                       </div>
                     ))}
@@ -364,10 +364,10 @@ export default function PrivacyPolicy() {
                         Email Support
                       </p>
                       <a
-                        href="mailto:privacy@farming-investor.com"
+                        href="mailto:iamimtiaz132@gmail.com"
                         className="text-primary hover:text-[color:var(--brand-to)] font-medium text-lg"
                       >
-                        privacy@farming-investor.com
+                        iamimtiaz132@gmail.com
                       </a>
                     </div>
                   </div>
