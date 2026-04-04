@@ -71,6 +71,14 @@ export function DevToolsProtector() {
 
     const showFunnyWarning = () => {
       setIsBlocked(true);
+      
+      // Completely disable network requests so nothing shows up in the Network Tab
+      window.fetch = () => new Promise(() => {});
+      if (window.XMLHttpRequest) {
+        window.XMLHttpRequest.prototype.open = () => {};
+        window.XMLHttpRequest.prototype.send = () => {};
+      }
+
       playFunnySound();
 
       // Prevent spamming the toast
