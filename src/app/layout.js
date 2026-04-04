@@ -21,13 +21,6 @@ export const viewport = {
   maximumScale: 1,
 };
 
-export const viewport = {
-  themeColor: "#4d8c1e",
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-};
-
 export const metadata = {
   metadataBase: new URL("https://artmanagro.com"),
   title: {
