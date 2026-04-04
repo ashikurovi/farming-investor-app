@@ -270,7 +270,6 @@ export default function InvestorProjectsPage() {
   });
 
   const raw = Array.isArray(data) ? data : (data?.items ?? []);
-<<<<<<< HEAD
 
   const filtered = raw.filter((p) => {
     const s = (p.status || "Active").toLowerCase();
@@ -292,16 +291,6 @@ export default function InvestorProjectsPage() {
 
     return matchesStatus && matchesSearch;
   });
-=======
-  const filtered = search
-    ? raw.filter((p) =>
-        [p?.name ?? "", p?.location ?? "", p?.description ?? ""]
-          .join(" ")
-          .toLowerCase()
-          .includes(search.toLowerCase()),
-      )
-    : raw;
->>>>>>> 3d06787 (update)
 
   const total = filtered.length;
   const pageCount = pageSize > 0 ? Math.max(1, Math.ceil(total / pageSize)) : 1;
@@ -358,8 +347,8 @@ export default function InvestorProjectsPage() {
                     setPage(1);
                   }}
                   className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${filterStatus === status.id
-                      ? "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-[0_14px_40px_-26px_rgba(77,140,30,0.75)] ring-1 ring-white/10"
-                      : "border border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                    ? "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-[0_14px_40px_-26px_rgba(77,140,30,0.75)] ring-1 ring-white/10"
+                    : "border border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
                     }`}
                 >
                   {status.label}
