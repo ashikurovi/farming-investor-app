@@ -1,17 +1,17 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Bug } from "lucide-react";
+import { Bug, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function DevToolsProtector() {
+  const [isBlocked, setIsBlocked] = useState(false);
   const toastIdRef = useRef(null);
   const router = useRouter();
 
   useEffect(() => {
     // Disable in development if needed, but since user requested it, let's keep it active.
-    // If you need to debug, comment out the DevToolsProtector in layout.js
 
     const fallbackSound = () => {
       try {
@@ -70,7 +70,7 @@ export function DevToolsProtector() {
     };
 
     const showFunnyWarning = () => {
-      // Play the sound!
+      setIsBlocked(true);
       playFunnySound();
 
       // Prevent spamming the toast
@@ -136,24 +136,60 @@ export function DevToolsProtector() {
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("contextmenu", handleContextMenu);
 
-    // Advanced: Devtools detection using debugger trap
-    // This will pause execution if devtools is open
-    const devtoolsDetector = setInterval(() => {
+    const checkDevTools = () => {
+      // 1. Window dimension check (for docked DevTools)
+      const threshold = 160;
+      if (
+        window.outerWidth - window.innerWidth > threshold ||
+        window.outerHeight - window.innerHeight > threshold
+      ) {
+        return true;
+      }
+      
+      // 2. Debugger trap check
       const before = new Date().getTime();
       debugger; // eslint-disable-line no-debugger
       const after = new Date().getTime();
       if (after - before > 100) {
-        // Means devtools was open and caught the debugger
+        return true;
+      }
+      
+      return false;
+    };
+
+    const devtoolsDetector = setInterval(() => {
+      if (!isBlocked && checkDevTools()) {
         showFunnyWarning();
       }
-    }, 2000);
+    }, 1000);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("contextmenu", handleContextMenu);
       clearInterval(devtoolsDetector);
     };
-  }, []);
+  }, [isBlocked]); // Re-bind effect if isBlocked changes to stop interval checking if already blocked
+
+  if (isBlocked) {
+    return (
+      <div className="fixed inset-0 z-[99999] bg-[#0a1610] flex flex-col items-center justify-center p-6 text-center select-none backdrop-blur-md">
+        <Bug className="h-16 w-16 text-rose-500 mb-6 animate-bounce" />
+        <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4 tracking-wider">
+          Oops! Access Denied 🕵️‍♂️
+        </h1>
+        <p className="text-white/60 max-w-md text-base md:text-lg mb-8 leading-relaxed">
+          Developer tools are not allowed on this platform. Please close the inspector and refresh the page to continue using the application.
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          className="flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white rounded-xl font-bold shadow-xl shadow-rose-500/20 transition-all hover:-translate-y-1 active:translate-y-0"
+        >
+          <RefreshCw className="h-5 w-5" />
+          Refresh Page
+        </button>
+      </div>
+    );
+  }
 
   return null;
 }
