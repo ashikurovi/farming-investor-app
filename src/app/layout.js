@@ -11,6 +11,8 @@ const baiJamjuree = Bai_Jamjuree({
   weight: ["200", "300", "400", "500", "600", "700"],
 });
 
+import { PWAProvider } from "@/components/PWAProvider";
+
 export const metadata = {
   title: "Framing Investor App | Xinzo",
   description: "Framing Investor App",
@@ -23,6 +25,7 @@ export default function RootLayout({ children }) {
         className={`${baiJamjuree.variable} antialiased font-sans`}
         suppressHydrationWarning={true}
       >
+        <PWAProvider />
         <ReduxProvider>
           <ToasterProvider />
           <AppShell>{children}</AppShell>

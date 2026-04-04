@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useLogoutMutation } from "@/features/auth/authApiSlice";
 import { toast } from "sonner";
+import InstallPWAButton from "@/components/InstallPWAButton";
 
 const NAV_LINKS = [
   { href: "/", label: "Home", icon: Home },
@@ -230,6 +231,7 @@ export function MainNavbar() {
                   Log in
                 </Link>
               )}
+              <InstallPWAButton variant="landing" />
             </div>
           </div>
         </header>
@@ -406,6 +408,8 @@ export function MainNavbar() {
                 </span>
               </Link>
               <div className="h-px bg-zinc-100 mx-2 my-1" />
+
+              <InstallPWAButton className="mt-0 w-full mb-1" />
 
               {isAuthenticated ? (
                 <>

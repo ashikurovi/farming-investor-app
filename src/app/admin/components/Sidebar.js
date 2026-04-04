@@ -15,6 +15,7 @@ import { useLogoutMutation } from "@/features/auth/authApiSlice";
 import { useGetContactsQuery } from "@/features/contact/contactApiSlice";
 import { sidebarNavigation } from "./sidebarNavigation";
 import Link from "next/link";
+import InstallPWAButton from "@/components/InstallPWAButton";
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -308,6 +309,8 @@ export default function Sidebar() {
             </Link>
           </div>
         )}
+
+        <InstallPWAButton collapsed={collapsed} />
 
         {/* Logout */}
         <button

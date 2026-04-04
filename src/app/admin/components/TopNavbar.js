@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useTheme } from "@/lib/ThemeContext";
 import { useSelector } from "react-redux";
+import InstallPWAButton from "@/components/InstallPWAButton";
 
 export default function TopNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -380,6 +381,8 @@ export default function TopNavbar() {
 
           <div className="mt-4 space-y-3">
             <div className="h-px bg-gradient-to-r from-transparent via-zinc-200 to-transparent dark:via-zinc-700" />
+
+            <InstallPWAButton />
 
             {/* Logout */}
             <button
