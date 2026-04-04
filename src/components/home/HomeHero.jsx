@@ -5,7 +5,7 @@ import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Building2, PlayCircle } from "lucide-react";
 import { useGetBannersQuery } from "@/features/admin/banner/bannerApiSlice";
 import { Loader } from "@/components/ui/loader";
 
@@ -34,6 +34,16 @@ export default function HomeHero() {
   const scrollToContent = () => {
     const el = document.getElementById("live-kpis");
     if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const openCompanyModal = () => {
+    if (typeof window === "undefined") return;
+    window.dispatchEvent(new Event("open-company-modal"));
+  };
+
+  const openRunningProjectsModal = () => {
+    if (typeof window === "undefined") return;
+    window.dispatchEvent(new Event("open-running-projects-modal"));
   };
 
   /* ── loading ── */
@@ -97,6 +107,24 @@ export default function HomeHero() {
                       >
                         Learn More
                         <ArrowRight className="h-4 w-4" />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={openCompanyModal}
+                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-4 py-3 text-[12px] font-semibold text-white/90 backdrop-blur-md transition hover:bg-white/15 hover:text-white"
+                      >
+                        <Building2 className="h-4 w-4" />
+                        ARTMAN
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={openRunningProjectsModal}
+                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-4 py-3 text-[12px] font-semibold text-white/90 backdrop-blur-md transition hover:bg-white/15 hover:text-white"
+                      >
+                        <PlayCircle className="h-4 w-4" />
+                        Running
                       </button>
                     </div>
                   </div>

@@ -8,6 +8,7 @@ import HomeLiveKpis from "../components/home/HomeLiveKpis";
 import HomeRecentProjects from "../components/home/HomeRecentProjects";
 import HomeTestimonials from "../components/home/HomeTestimonials";
 import HomeWhyChooseUs from "../components/home/HomeWhyChooseUs";
+import HomeEntryModals from "../components/home/HomeEntryModals";
 import WhatsAppButton from "../components/WhatsAppButton";
 
 export default function Home() {
@@ -26,6 +27,7 @@ export default function Home() {
       <HomeTestimonials />
       <HomeFaq />
       <WhatsAppButton />
+      <HomeEntryModals />
     </main>
   );
 }

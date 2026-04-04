@@ -8,7 +8,7 @@ export function ContactHero() {
       {/* Background Image with Parallax-like feel */}
       <div className="absolute inset-0">
         <Image
-          src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          src="/conntact.png"
           alt="Contact Hero - Sustainable Investing Conversation"
           fill
           priority

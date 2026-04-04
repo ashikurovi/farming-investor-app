@@ -87,7 +87,7 @@ export function AppShell({ children }) {
   return (
     <div className="relative flex min-h-screen flex-col bg-background text-foreground">
       <MainNavbar />
-      <main className="flex-1 pb-[calc(env(safe-area-inset-bottom)+62px)] md:pb-0">
+      <main className="flex-1">
         {children}
       </main>
       <MainFooter />

@@ -8,7 +8,7 @@ export function AboutHero() {
       {/* Background Image with Parallax-like feel */}
       <div className="absolute inset-0">
         <Image
-          src="https://images.pexels.com/photos/1267338/pexels-photo-1267338.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          src="/about3.png"
           alt="About Hero - Farming Team"
           fill
           priority
