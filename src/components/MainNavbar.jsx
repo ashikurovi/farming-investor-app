@@ -29,7 +29,7 @@ const NAV_LINKS = [
   { href: "/landing/about", label: "About", icon: LayoutDashboard },
 ];
 
-/* ── Desktop Nav Link — NO background, only underline indicator ── */
+/* ── Desktop Nav Link ── */
 function NavLink({ href, label }) {
   const pathname = usePathname();
   const isActive = href === "/" ? pathname === href : pathname.startsWith(href);
@@ -37,22 +37,21 @@ function NavLink({ href, label }) {
   return (
     <Link
       href={href}
-      className={`relative group flex items-center gap-1.5 text-sm font-semibold tracking-wider py-1.5 px-5 transition-all duration-300 rounded-xl ${
+      className={`relative group flex items-center gap-1.5 text-sm font-semibold tracking-wider py-1.5 px-4 transition-all duration-300 rounded-xl ${
         isActive ? "text-white" : "text-white/80 hover:text-white"
       }`}
     >
       {label}
-      {/* Green underline indicator only — no background */}
       <span
-        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-[#7cc22e] to-[#4d8c1e] transition-all duration-300 ${
-          isActive ? "w-6" : "w-0 group-hover:w-6"
+        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-white transition-all duration-300 ${
+          isActive ? "w-5" : "w-0 group-hover:w-5"
         }`}
       />
     </Link>
   );
 }
 
-/* ── Premium User Dropdown ── */
+/* ── Premium Compact User Dropdown ── */
 function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -65,53 +64,66 @@ function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  const dashboardLabel =
+    role === "admin"
+      ? "Admin Dashboard"
+      : role === "partner"
+        ? "Partner Dashboard"
+        : "Investor Dashboard";
+
   return (
     <div ref={ref} className="relative">
+      {/* Trigger — Avatar + Name + Chevron only */}
       <button
         onClick={() => setOpen((p) => !p)}
-        className="flex items-center gap-3 pl-2 pr-5 py-2 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 hover:border-[#7cc22e]/40 transition-all duration-300 backdrop-blur-md"
+        className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-white/15 hover:bg-white/25 border border-white/20 hover:border-white/40 transition-all duration-200 backdrop-blur-sm"
       >
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#7cc22e] to-[#4d8c1e] flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-[#7cc22e]/30 ring-1 ring-white/20">
-          {user?.name?.[0] ?? "U"}
+        {/* Avatar */}
+        <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-[#4d8c1e] text-xs font-extrabold shadow-sm select-none">
+          {user?.name?.[0]?.toUpperCase() ?? "U"}
         </div>
-        <div className="text-left">
-          <span className="text-sm font-semibold text-white block leading-none">
-            {user?.name ?? "Account"}
-          </span>
-          <span className="text-[10px] text-white/60 truncate max-w-[140px]">
-            {user?.email ?? ""}
-          </span>
-        </div>
+        {/* Name */}
+        <span className="text-white text-sm font-semibold tracking-wide leading-none">
+          {user?.name ?? "Account"}
+        </span>
         <ChevronDown
-          className={`h-4 w-4 text-white/60 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`h-3.5 w-3.5 text-white/70 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
         />
       </button>
 
+      {/* Dropdown Panel — compact & premium */}
       {open && (
-        <div className="absolute right-0 top-[calc(100%+12px)] w-64 bg-[#0a1610]/95 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl shadow-black/70 overflow-hidden z-50">
-          <div className="px-6 py-5 border-b border-white/10">
-            <p className="text-white font-semibold">{user?.name}</p>
-            <p className="text-white/60 text-sm mt-0.5">{user?.email}</p>
+        <div className="absolute right-0 top-[calc(100%+10px)] w-56 bg-white rounded-2xl shadow-2xl shadow-black/20 border border-zinc-100 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+          {/* User info header */}
+          <div className="px-4 py-3 bg-gradient-to-br from-[#4d8c1e] to-[#7cc22e]">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-full bg-white/25 flex items-center justify-center text-white text-sm font-bold">
+                {user?.name?.[0]?.toUpperCase() ?? "U"}
+              </div>
+              <div>
+                <p className="text-white text-sm font-bold leading-none">
+                  {user?.name ?? "Account"}
+                </p>
+                <p className="text-white/70 text-[10px] mt-0.5 truncate max-w-[140px]">
+                  {user?.email ?? ""}
+                </p>
+              </div>
+            </div>
           </div>
 
-          <div className="p-3">
+          {/* Actions */}
+          <div className="p-1.5">
             <Link
               href={dashboardHref}
               onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-4 py-3 rounded-2xl text-white/80 hover:bg-white/10 hover:text-white transition-all"
+              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-zinc-700 hover:bg-zinc-50 hover:text-[#4d8c1e] transition-all group"
             >
-              <LayoutDashboard className="h-4 w-4 text-[#7cc22e]" />
-              <span className="text-sm font-medium">
-                {role === "admin"
-                  ? "Admin Dashboard"
-                  : role === "partner"
-                    ? "Partner Dashboard"
-                    : "Investor Dashboard"}
-              </span>
-              <ExternalLink className="h-3.5 w-3.5 ml-auto opacity-60" />
+              <LayoutDashboard className="h-3.5 w-3.5 text-[#7cc22e] flex-shrink-0" />
+              <span className="text-xs font-semibold">{dashboardLabel}</span>
+              <ExternalLink className="h-3 w-3 ml-auto text-zinc-300 group-hover:text-[#7cc22e] transition-colors" />
             </Link>
 
-            <div className="h-px bg-white/10 my-2 mx-2" />
+            <div className="h-px bg-zinc-100 my-1" />
 
             <button
               onClick={() => {
@@ -119,11 +131,11 @@ function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
                 onLogout();
               }}
               disabled={isLoggingOut}
-              className="flex items-center gap-3 w-full px-4 py-3 rounded-2xl text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-50"
+              className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-red-500 hover:bg-red-50 transition-all disabled:opacity-50"
             >
-              <LogOut className="h-4 w-4" />
-              <span className="text-sm font-medium">
-                {isLoggingOut ? "Logging out..." : "Sign Out"}
+              <LogOut className="h-3.5 w-3.5 flex-shrink-0" />
+              <span className="text-xs font-semibold">
+                {isLoggingOut ? "Signing out..." : "Sign Out"}
               </span>
             </button>
           </div>
@@ -162,65 +174,54 @@ export function MainNavbar() {
     }
   };
 
-  // Gradient background style
-  const navbarGradient = {
-    background: "linear-gradient(135deg, #4d8c1e, #7cc22e)",
-  };
-
   return (
     <>
       {/* ==================== DESKTOP NAVBAR ==================== */}
       <div className="hidden md:block fixed top-0 inset-x-0 z-50">
-        <header style={navbarGradient} className="shadow-xl shadow-black/20">
-          <div className="mx-auto max-w-7xl px-8 h-20 flex items-center justify-between">
+        <header
+          className="shadow-lg shadow-black/20"
+          style={{ background: "linear-gradient(135deg, #4d8c1e 0%, #6ab82a 50%, #7cc22e 100%)" }}
+        >
+          {/* Subtle top shimmer line */}
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+
+          <div className="mx-auto max-w-7xl px-8 h-[68px] flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-50 h-70 transition-transform group-hover:scale-105">
+            <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
+              <div className="transition-transform duration-200 group-hover:scale-105">
                 <Image
                   src="/logo6.png"
                   alt="ARTMAN"
-                  width={128}
-                  height={128}
-                  className=""
+                  width={120}
+                  height={120}
                   priority
                 />
               </div>
             </Link>
 
-            {/* Navigation Links */}
-            <nav className="flex items-center gap-2">
+            {/* Navigation Links — centered */}
+            <nav className="flex items-center gap-1">
               {NAV_LINKS.map(({ href, label }) => (
                 <NavLink key={href} href={href} label={label} />
               ))}
             </nav>
 
-            {/* Right Side Actions */}
-            <div className="flex items-center gap-4">
+            {/* Right Side — Auth Actions */}
+            <div className="flex items-center gap-3 flex-shrink-0">
               {isAuthenticated ? (
-                <>
-                  {/* Dashboard button — no background, text only with underline on hover */}
-                  <Link
-                    href={dashboardHref}
-                    className="relative group flex items-center gap-2 px-4 py-2.5 text-white text-sm font-semibold tracking-wider transition-all duration-300"
-                  >
-                    <LayoutDashboard className="h-4 w-4" />
-                    Dashboard
-                    <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] w-0 group-hover:w-6 rounded-full bg-gradient-to-r from-[#7cc22e] to-[#4d8c1e] transition-all duration-300" />
-                  </Link>
-
-                  <UserDropdown
-                    user={user}
-                    dashboardHref={dashboardHref}
-                    role={role}
-                    onLogout={handleLogout}
-                    isLoggingOut={isLoggingOut}
-                  />
-                </>
+                /* ── Authenticated: only UserDropdown, NO dashboard button ── */
+                <UserDropdown
+                  user={user}
+                  dashboardHref={dashboardHref}
+                  role={role}
+                  onLogout={handleLogout}
+                  isLoggingOut={isLoggingOut}
+                />
               ) : (
-                /* Log in button — light bg + border */
+                /* ── Guest: Log in button ── */
                 <Link
                   href="/login"
-                  className="inline-flex items-center justify-center rounded-2xl px-6 py-2.5 text-white font-semibold tracking-wider text-sm transition-all duration-300 border border-white/35 bg-white/10 hover:bg-white/15 hover:border-white/50 backdrop-blur-sm"
+                  className="inline-flex items-center justify-center rounded-full px-5 py-2 text-white font-semibold tracking-wide text-sm transition-all duration-200 border border-white/30 bg-white/10 hover:bg-white/20 hover:border-white/50 backdrop-blur-sm"
                 >
                   Log in
                 </Link>
@@ -232,7 +233,7 @@ export function MainNavbar() {
       </div>
 
       {/* Desktop Spacer */}
-      <div className="hidden md:block h-20" />
+      <div className="hidden md:block h-[68px]" />
 
       {/* ==================== MOBILE BOTTOM NAV (unchanged) ==================== */}
       <nav className="fixed bottom-0 inset-x-0 z-50 md:hidden bg-white border-t border-zinc-200 shadow-[0_-4px_20px_rgba(0,0,0,0.07)]">
@@ -241,26 +242,11 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname === "/";
             return (
-              <Link
-                href="/"
-                className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group"
-              >
+              <Link href="/" className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group">
                 <div className="w-9 h-9 flex items-center justify-center">
-                  <Home
-                    className={`h-[18px] w-[18px] transition-colors ${
-                      isActive
-                        ? "text-[#4d8c1e]"
-                        : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
-                  />
+                  <Home className={`h-[18px] w-[18px] transition-colors ${isActive ? "text-[#4d8c1e]" : "text-zinc-400 group-hover:text-zinc-600"}`} />
                 </div>
-                <span
-                  className={`text-[9px] font-semibold leading-none ${
-                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                  }`}
-                >
-                  Home
-                </span>
+                <span className={`text-[9px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"}`}>Home</span>
               </Link>
             );
           })()}
@@ -269,26 +255,11 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/about");
             return (
-              <Link
-                href="/landing/about"
-                className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group"
-              >
+              <Link href="/landing/about" className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group">
                 <div className="w-9 h-9 flex items-center justify-center">
-                  <LayoutDashboard
-                    className={`h-[18px] w-[18px] transition-colors ${
-                      isActive
-                        ? "text-[#4d8c1e]"
-                        : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
-                  />
+                  <LayoutDashboard className={`h-[18px] w-[18px] transition-colors ${isActive ? "text-[#4d8c1e]" : "text-zinc-400 group-hover:text-zinc-600"}`} />
                 </div>
-                <span
-                  className={`text-[9px] font-semibold leading-none ${
-                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                  }`}
-                >
-                  About
-                </span>
+                <span className={`text-[9px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"}`}>About</span>
               </Link>
             );
           })()}
@@ -297,26 +268,11 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/contact");
             return (
-              <Link
-                href="/landing/contact"
-                className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group"
-              >
+              <Link href="/landing/contact" className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group">
                 <div className="w-9 h-9 flex items-center justify-center">
-                  <Phone
-                    className={`h-[18px] w-[18px] transition-colors ${
-                      isActive
-                        ? "text-[#4d8c1e]"
-                        : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
-                  />
+                  <Phone className={`h-[18px] w-[18px] transition-colors ${isActive ? "text-[#4d8c1e]" : "text-zinc-400 group-hover:text-zinc-600"}`} />
                 </div>
-                <span
-                  className={`text-[9px] font-semibold leading-none ${
-                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                  }`}
-                >
-                  Contact
-                </span>
+                <span className={`text-[9px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"}`}>Contact</span>
               </Link>
             );
           })()}
@@ -325,26 +281,11 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/project");
             return (
-              <Link
-                href="/landing/project"
-                className="flex flex-col items-center gap-0.5 pb-1 -mt-3 min-w-[50px] group"
-              >
-                <div
-                  className={`w-[46px] h-[46px] flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${
-                    isActive
-                      ? "bg-gradient-to-br from-[#4d8c1e] to-[#7cc22e]"
-                      : "bg-gradient-to-br from-[#7cc22e] to-[#4d8c1e] group-hover:from-[#4d8c1e] group-hover:to-[#7cc22e]"
-                  }`}
-                >
+              <Link href="/landing/project" className="flex flex-col items-center gap-0.5 pb-1 -mt-3 min-w-[50px] group">
+                <div className={`w-[46px] h-[46px] flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${isActive ? "bg-gradient-to-br from-[#4d8c1e] to-[#7cc22e]" : "bg-gradient-to-br from-[#7cc22e] to-[#4d8c1e] group-hover:from-[#4d8c1e] group-hover:to-[#7cc22e]"}`}>
                   <FolderGit2 className="h-[18px] w-[18px] text-white" />
                 </div>
-                <span
-                  className={`text-[9px] font-semibold leading-none ${
-                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                  }`}
-                >
-                  Project
-                </span>
+                <span className={`text-[9px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"}`}>Project</span>
               </Link>
             );
           })()}
@@ -353,26 +294,11 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/privacy-policy");
             return (
-              <Link
-                href="/privacy-policy"
-                className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group"
-              >
+              <Link href="/privacy-policy" className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group">
                 <div className="w-9 h-9 flex items-center justify-center">
-                  <ShieldCheck
-                    className={`h-[18px] w-[18px] transition-colors ${
-                      isActive
-                        ? "text-[#4d8c1e]"
-                        : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
-                  />
+                  <ShieldCheck className={`h-[18px] w-[18px] transition-colors ${isActive ? "text-[#4d8c1e]" : "text-zinc-400 group-hover:text-zinc-600"}`} />
                 </div>
-                <span
-                  className={`text-[9px] font-semibold leading-none ${
-                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                  }`}
-                >
-                  Privacy
-                </span>
+                <span className={`text-[9px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"}`}>Privacy</span>
               </Link>
             );
           })()}
@@ -381,26 +307,11 @@ export function MainNavbar() {
           {(() => {
             const isActive = pathname.startsWith("/landing/gallery");
             return (
-              <Link
-                href="/landing/gallery"
-                className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group"
-              >
+              <Link href="/landing/gallery" className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group">
                 <div className="w-9 h-9 flex items-center justify-center">
-                  <Images
-                    className={`h-[18px] w-[18px] transition-colors ${
-                      isActive
-                        ? "text-[#4d8c1e]"
-                        : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
-                  />
+                  <Images className={`h-[18px] w-[18px] transition-colors ${isActive ? "text-[#4d8c1e]" : "text-zinc-400 group-hover:text-zinc-600"}`} />
                 </div>
-                <span
-                  className={`text-[9px] font-semibold leading-none ${
-                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                  }`}
-                >
-                  Gallery
-                </span>
+                <span className={`text-[9px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"}`}>Gallery</span>
               </Link>
             );
           })()}
@@ -414,26 +325,11 @@ export function MainNavbar() {
             const Label = isAuthenticated ? "Dashboard" : "Login";
             const Icon = isAuthenticated ? LayoutDashboard : User;
             return (
-              <Link
-                href={href}
-                className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group"
-              >
+              <Link href={href} className="flex flex-col items-center gap-0.5 py-1 min-w-[46px] group">
                 <div className="w-9 h-9 flex items-center justify-center">
-                  <Icon
-                    className={`h-[18px] w-[18px] transition-colors ${
-                      isActive
-                        ? "text-[#4d8c1e]"
-                        : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
-                  />
+                  <Icon className={`h-[18px] w-[18px] transition-colors ${isActive ? "text-[#4d8c1e]" : "text-zinc-400 group-hover:text-zinc-600"}`} />
                 </div>
-                <span
-                  className={`text-[9px] font-semibold leading-none ${
-                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                  }`}
-                >
-                  {Label}
-                </span>
+                <span className={`text-[9px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"}`}>{Label}</span>
               </Link>
             );
           })()}
