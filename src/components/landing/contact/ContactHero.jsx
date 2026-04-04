@@ -20,10 +20,10 @@ export function ContactHero() {
       </div>
 
       {/* Content */}
-      <div className="absolute inset-0 flex items-center justify-center text-center pt-[calc(env(safe-area-inset-top)+5rem)] pb-[calc(env(safe-area-inset-bottom)+6rem)] sm:pt-0 sm:pb-0">
+      <div className="absolute inset-0 flex items-center justify-center text-center pt-[calc(env(safe-area-inset-top)+7rem)] pb-[calc(env(safe-area-inset-bottom)+6rem)] sm:pt-0 sm:pb-0">
         <div className="mx-auto max-w-5xl px-6 lg:px-8">
           {/* Badge */}
-          <div className="mb-8 inline-flex animate-fade-in-up opacity-0 [animation-delay:200ms] items-center gap-2 rounded-full border border-[color:rgba(77,140,30,0.22)] bg-[color:rgba(77,140,30,0.12)] px-4 py-1.5 text-sm font-medium text-[color:rgba(124,194,46,0.95)] backdrop-blur-md shadow-[0_0_18px_-6px_rgba(124,194,46,0.22)] hover:bg-[color:rgba(77,140,30,0.16)] transition-colors">
+          <div className="mt-4 mb-6 inline-flex animate-fade-in-up opacity-0 [animation-delay:200ms] items-center gap-2 rounded-full border border-[color:rgba(77,140,30,0.22)] bg-[color:rgba(77,140,30,0.12)] px-4 py-1.5 text-sm font-medium text-[color:rgba(124,194,46,0.95)] backdrop-blur-md shadow-[0_0_18px_-6px_rgba(124,194,46,0.22)] hover:bg-[color:rgba(77,140,30,0.16)] transition-colors sm:mt-0 sm:mb-8">
             <Mail className="h-4 w-4 text-[color:rgba(124,194,46,0.95)]" />
             <span className="tracking-wide">Get in Touch</span>
           </div>
