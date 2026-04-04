@@ -37,16 +37,14 @@ function NavLink({ href, label }) {
   return (
     <Link
       href={href}
-      className={`relative group flex items-center gap-1.5 text-sm font-semibold tracking-wider py-1.5 px-5 transition-all duration-300 rounded-xl ${
-        isActive ? "text-white" : "text-white/80 hover:text-white"
-      }`}
+      className={`relative group flex items-center gap-1.5 text-sm font-semibold tracking-wider py-1.5 px-5 transition-all duration-300 rounded-xl ${isActive ? "text-white" : "text-white/80 hover:text-white"
+        }`}
     >
       {label}
       {/* Green underline indicator only — no background */}
       <span
-        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-[#7cc22e] to-[#4d8c1e] transition-all duration-300 ${
-          isActive ? "w-6" : "w-0 group-hover:w-6"
-        }`}
+        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-[#7cc22e] to-[#4d8c1e] transition-all duration-300 ${isActive ? "w-6" : "w-0 group-hover:w-6"
+          }`}
       />
     </Link>
   );
@@ -247,17 +245,15 @@ export function MainNavbar() {
               >
                 <div className="w-9 h-9 flex items-center justify-center">
                   <Home
-                    className={`h-[18px] w-[18px] transition-colors ${
-                      isActive
+                    className={`h-[18px] w-[18px] transition-colors ${isActive
                         ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
+                      }`}
                   />
                 </div>
                 <span
-                  className={`text-[9px] font-semibold leading-none ${
-                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                  }`}
+                  className={`text-[9px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"
+                    }`}
                 >
                   Home
                 </span>
@@ -275,17 +271,15 @@ export function MainNavbar() {
               >
                 <div className="w-9 h-9 flex items-center justify-center">
                   <LayoutDashboard
-                    className={`h-[18px] w-[18px] transition-colors ${
-                      isActive
+                    className={`h-[18px] w-[18px] transition-colors ${isActive
                         ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
+                      }`}
                   />
                 </div>
                 <span
-                  className={`text-[9px] font-semibold leading-none ${
-                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                  }`}
+                  className={`text-[9px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"
+                    }`}
                 >
                   About
                 </span>
@@ -303,17 +297,15 @@ export function MainNavbar() {
               >
                 <div className="w-9 h-9 flex items-center justify-center">
                   <Phone
-                    className={`h-[18px] w-[18px] transition-colors ${
-                      isActive
+                    className={`h-[18px] w-[18px] transition-colors ${isActive
                         ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
+                      }`}
                   />
                 </div>
                 <span
-                  className={`text-[9px] font-semibold leading-none ${
-                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                  }`}
+                  className={`text-[9px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"
+                    }`}
                 >
                   Contact
                 </span>
@@ -330,18 +322,16 @@ export function MainNavbar() {
                 className="flex flex-col items-center gap-0.5 pb-1 -mt-3 min-w-[50px] group"
               >
                 <div
-                  className={`w-[46px] h-[46px] flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${
-                    isActive
+                  className={`w-[46px] h-[46px] flex items-center justify-center rounded-full border-[3px] border-white shadow-md transition-all ${isActive
                       ? "bg-gradient-to-br from-[#4d8c1e] to-[#7cc22e]"
                       : "bg-gradient-to-br from-[#7cc22e] to-[#4d8c1e] group-hover:from-[#4d8c1e] group-hover:to-[#7cc22e]"
-                  }`}
+                    }`}
                 >
                   <FolderGit2 className="h-[18px] w-[18px] text-white" />
                 </div>
                 <span
-                  className={`text-[9px] font-semibold leading-none ${
-                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                  }`}
+                  className={`text-[9px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"
+                    }`}
                 >
                   Project
                 </span>
@@ -359,17 +349,15 @@ export function MainNavbar() {
               >
                 <div className="w-9 h-9 flex items-center justify-center">
                   <ShieldCheck
-                    className={`h-[18px] w-[18px] transition-colors ${
-                      isActive
+                    className={`h-[18px] w-[18px] transition-colors ${isActive
                         ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
+                      }`}
                   />
                 </div>
                 <span
-                  className={`text-[9px] font-semibold leading-none ${
-                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                  }`}
+                  className={`text-[9px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"
+                    }`}
                 >
                   Privacy
                 </span>
@@ -387,17 +375,15 @@ export function MainNavbar() {
               >
                 <div className="w-9 h-9 flex items-center justify-center">
                   <Images
-                    className={`h-[18px] w-[18px] transition-colors ${
-                      isActive
+                    className={`h-[18px] w-[18px] transition-colors ${isActive
                         ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
+                      }`}
                   />
                 </div>
                 <span
-                  className={`text-[9px] font-semibold leading-none ${
-                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                  }`}
+                  className={`text-[9px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"
+                    }`}
                 >
                   Gallery
                 </span>
@@ -420,17 +406,15 @@ export function MainNavbar() {
               >
                 <div className="w-9 h-9 flex items-center justify-center">
                   <Icon
-                    className={`h-[18px] w-[18px] transition-colors ${
-                      isActive
+                    className={`h-[18px] w-[18px] transition-colors ${isActive
                         ? "text-[#4d8c1e]"
                         : "text-zinc-400 group-hover:text-zinc-600"
-                    }`}
+                      }`}
                   />
                 </div>
                 <span
-                  className={`text-[9px] font-semibold leading-none ${
-                    isActive ? "text-[#4d8c1e]" : "text-zinc-400"
-                  }`}
+                  className={`text-[9px] font-semibold leading-none ${isActive ? "text-[#4d8c1e]" : "text-zinc-400"
+                    }`}
                 >
                   {Label}
                 </span>
