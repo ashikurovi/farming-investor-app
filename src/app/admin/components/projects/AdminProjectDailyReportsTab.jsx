@@ -2,6 +2,7 @@
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import { Printer } from "lucide-react";
 import { AdminDailyReportFormModal } from "@/app/admin/components/projects/AdminDailyReportFormModal";
 import { useCreateDailyReportMutation } from "@/features/admin/dailyReport/dailyReportApiSlice";
 import { toast } from "sonner";
@@ -91,13 +92,15 @@ export function AdminProjectDailyReportsTab({ project, isBusy, isError }) {
             <p className="text-xs text-zinc-500 dark:text-zinc-400">Track daily progress and expenses</p>
           </div>
         </div>
-        <Button
-          type="button"
-          onClick={openModal}
-          className="w-full rounded-xl px-4 py-2 text-xs font-semibold text-white sm:w-auto bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] hover:brightness-[1.05]"
-        >
-          Add New Report
-        </Button>
+        <div className="flex gap-2 w-full sm:w-auto">
+            <Button
+              type="button"
+              onClick={openModal}
+              className="w-full rounded-xl px-4 py-2 text-xs font-semibold text-white sm:w-auto bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] hover:brightness-[1.05]"
+            >
+              Add New Report
+            </Button>
+        </div>
       </div>
       {isBusy && (
         <div className="flex h-24 items-center justify-center text-xs text-zinc-500 dark:text-zinc-400">Loading daily reports...</div>

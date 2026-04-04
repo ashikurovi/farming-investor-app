@@ -9,9 +9,12 @@ import {
   Calendar,
   Tag,
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
+  Printer,
+  Download
 } from "lucide-react";
 import { formatCurrencyBDT, formatDateUTC } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export function AdminProjectInfoTab({ project, isBusy, isError }) {
   const cleanUrl = (u) => (typeof u === "string" ? u.replace(/`/g, "").trim() : u);
@@ -52,8 +55,128 @@ export function AdminProjectInfoTab({ project, isBusy, isError }) {
 
   const isProfitPositive = profit >= 0;
 
+  const handlePrint = () => {
+    const printWindow = window.open('', '', 'height=700,width=900');
+    if (printWindow) {
+      printWindow.document.write(`<html><head><title>Artman_Invoice_${project?.name || "Project"}</title>`);
+      printWindow.document.write('<style>');
+      printWindow.document.write('body { font-family: system-ui, -apple-system, sans-serif; padding: 32px; color: #18181b; }');
+      printWindow.document.write('.header { text-align: center; margin-bottom: 32px; padding-bottom: 16px; border-bottom: 2px solid #e5e7eb; }');
+      printWindow.document.write('.header h2 { margin: 0; font-size: 24px; }');
+      printWindow.document.write('.header p { margin: 4px 0 0; color: #71717a; font-size: 14px; }');
+      printWindow.document.write('.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }');
+      printWindow.document.write('.stat-card { padding: 16px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; text-align: center; }');
+      printWindow.document.write('.stat-label { font-size: 14px; color: #71717a; margin: 0 0 4px 0; }');
+      printWindow.document.write('.stat-value { font-size: 24px; font-weight: 700; margin: 0; }');
+      printWindow.document.write('.reports-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }');
+      printWindow.document.write('.reports-table th, .reports-table td { padding: 12px; text-align: left; border-bottom: 1px solid #e5e7eb; }');
+      printWindow.document.write('.reports-table th.right, .reports-table td.right { text-align: right; }');
+      printWindow.document.write('.reports-table th { background: #f9fafb; font-weight: 600; color: #52525b; border-top: 1px solid #e5e7eb; }');
+      printWindow.document.write('.total-row td { font-weight: 700; background: #f9fafb; border-top: 2px solid #e5e7eb; }');
+      printWindow.document.write('@media print { body { padding: 0; } }');
+      printWindow.document.write('</style>');
+      printWindow.document.write('</head><body>');
+      
+      printWindow.document.write(`<div class="header"><h2>Artman</h2><div style="margin-top: 12px; margin-bottom: 8px;"><span style="font-size: 20px; font-weight: 700; color: #065f46; background: #ecfdf5; padding: 6px 16px; border-radius: 8px; border: 1px solid #a7f3d0; display: inline-block;">${project?.name || "Project"}</span></div><p>Detailed Invoice</p></div>`);
+      
+      printWindow.document.write('<div class="stats-grid">');
+      printWindow.document.write(`<div class="stat-card"><p class="stat-label">Total Investment</p><p class="stat-value">Tk ${investment.toLocaleString()}</p></div>`);
+      printWindow.document.write(`<div class="stat-card"><p class="stat-label">Total Cost</p><p class="stat-value">Tk ${cost.toLocaleString()}</p></div>`);
+      printWindow.document.write(`<div class="stat-card"><p class="stat-label">Total Sell</p><p class="stat-value">Tk ${sell.toLocaleString()}</p></div>`);
+      printWindow.document.write(`<div class="stat-card"><p class="stat-label">Total Profit</p><p class="stat-value">Tk ${profit.toLocaleString()}</p></div>`);
+      printWindow.document.write('</div>');
+
+      printWindow.document.write('<h3 style="font-size: 18px; margin-bottom: 8px;">Daily Reports Breakdown</h3>');
+      if (!project?.dailyReports || project.dailyReports.length === 0) {
+        printWindow.document.write('<p style="color: #71717a;">No daily reports found for this project.</p>');
+      } else {
+        printWindow.document.write('<table class="reports-table"><thead><tr><th>Date</th><th>Time</th><th>Reason</th><th class="right">Daily Cost</th><th class="right">Daily Sell</th></tr></thead><tbody>');
+        let totalC = 0;
+        let totalS = 0;
+        project.dailyReports.forEach(r => {
+           totalC += Number(r.dailyCost || 0);
+           totalS += Number(r.dailySell || 0);
+           printWindow.document.write(`<tr>
+              <td>${r.date || "-"}</td>
+              <td>${r.time || "-"}</td>
+              <td>${r.reason || "-"}</td>
+              <td class="right">Tk ${Number(r.dailyCost || 0).toLocaleString()}</td>
+              <td class="right">Tk ${Number(r.dailySell || 0).toLocaleString()}</td>
+           </tr>`);
+        });
+        printWindow.document.write(`<tr class="total-row"><td colspan="3" class="right">Totals:</td><td class="right" style="color: #e11d48;">Tk ${totalC.toLocaleString()}</td><td class="right" style="color: #2563eb;">Tk ${totalS.toLocaleString()}</td></tr>`);
+        printWindow.document.write('</tbody></table>');
+      }
+
+      printWindow.document.write('</body></html>');
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+      }, 250);
+    }
+  };
+
+  const handleExportCSV = () => {
+    let csvContent = "";
+    csvContent += "Artman - Project Detailed Invoice\n\n";
+    csvContent += "Project Name," + `"${(project?.name || "Untitled").replace(/"/g, '""')}"` + "\n";
+    csvContent += "Total Investment," + investment + "\n";
+    csvContent += "Total Cost," + cost + "\n";
+    csvContent += "Total Sell," + sell + "\n";
+    csvContent += "Total Profit," + profit + "\n\n";
+
+    csvContent += "Date,Time,Reason,Daily Cost,Daily Sell\n";
+    
+    if (project?.dailyReports?.length) {
+      project.dailyReports.forEach(r => {
+         const sl = `"${r.date || ""}"`;
+         const tm = `"${r.time || ""}"`;
+         const re = `"${(r.reason || "").replace(/"/g, '""')}"`;
+         const dc = r.dailyCost || 0;
+         const ds = r.dailySell || 0;
+         csvContent += `${sl},${tm},${re},${dc},${ds}\n`;
+      });
+    } else {
+      csvContent += "No daily reports found\n";
+    }
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `Artman_Project_${project?.name || "Invoice"}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 border-l-4 border-[color:rgb(77,140,30)] pl-3">Project Statistics</h2>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              onClick={handleExportCSV}
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-white border border-zinc-200 px-5 text-sm font-semibold text-zinc-900 shadow-sm transition-all hover:bg-zinc-50 active:scale-95 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-800"
+            >
+              <Download className="h-4 w-4" />
+              <span>Export Excel</span>
+            </Button>
+            <Button
+              type="button"
+              onClick={handlePrint}
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] px-5 text-sm font-semibold text-white shadow-[0_18px_55px_-40px_rgba(77,140,30,0.7)] transition-all hover:brightness-[1.05] active:scale-95"
+            >
+              <Printer className="h-4 w-4" />
+              <span>Print Invoice</span>
+            </Button>
+          </div>
+      </div>
+
       {/* Key Metrics Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Total Investment */}
