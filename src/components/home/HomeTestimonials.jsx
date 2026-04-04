@@ -118,19 +118,18 @@ export default function HomeTestimonials() {
                 style={
                   isFirst
                     ? {
-                        background:
-                          "linear-gradient(135deg, #3d7018, #5fa820, #7cc22e)",
-                        boxShadow:
-                          "0 20px 60px -15px rgba(77,140,30,0.45)",
-                      }
+                      background:
+                        "linear-gradient(135deg, #3d7018, #5fa820, #7cc22e)",
+                      boxShadow:
+                        "0 20px 60px -15px rgba(77,140,30,0.45)",
+                    }
                     : {}
                 }
               >
                 {/* Large decorative quote icon */}
                 <Quote
-                  className={`absolute top-5 right-6 h-10 w-10 opacity-10 ${
-                    isFirst ? "text-white" : "text-[#4d8c1e]"
-                  }`}
+                  className={`absolute top-5 right-6 h-10 w-10 opacity-10 ${isFirst ? "text-white" : "text-[#4d8c1e]"
+                    }`}
                 />
 
                 {/* Stars */}
@@ -138,46 +137,42 @@ export default function HomeTestimonials() {
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`h-4 w-4 ${
-                        i < t.rating
+                      className={`h-4 w-4 ${i < t.rating
                           ? isFirst
                             ? "fill-white text-white"
                             : "fill-amber-400 text-amber-400"
                           : isFirst
                             ? "fill-white/30 text-white/30"
                             : "fill-zinc-200 text-zinc-200"
-                      }`}
+                        }`}
                     />
                   ))}
                 </div>
 
                 {/* Quote */}
                 <p
-                  className={`text-sm leading-relaxed flex-1 ${
-                    isFirst ? "text-white/90" : "text-zinc-600"
-                  }`}
+                  className={`text-sm leading-relaxed flex-1 ${isFirst ? "text-white/90" : "text-zinc-600"
+                    }`}
                 >
                   &ldquo;{t.quote}&rdquo;
                 </p>
 
                 {/* Author */}
                 <div
-                  className={`flex items-center gap-3 pt-4 border-t ${
-                    isFirst ? "border-white/20" : "border-[#edf0e8]"
-                  }`}
+                  className={`flex items-center gap-3 pt-4 border-t ${isFirst ? "border-white/20" : "border-[#edf0e8]"
+                    }`}
                 >
                   <div
-                    className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold ${
-                      isFirst
+                    className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold ${isFirst
                         ? "bg-white/20 text-white ring-1 ring-white/30"
                         : "text-white"
-                    }`}
+                      }`}
                     style={
                       !isFirst
                         ? {
-                            background:
-                              "linear-gradient(135deg,#4d8c1e,#7cc22e)",
-                          }
+                          background:
+                            "linear-gradient(135deg,#4d8c1e,#7cc22e)",
+                        }
                         : {}
                     }
                   >
@@ -185,16 +180,14 @@ export default function HomeTestimonials() {
                   </div>
                   <div>
                     <p
-                      className={`text-sm font-bold ${
-                        isFirst ? "text-white" : "text-[#1a1f14]"
-                      }`}
+                      className={`text-sm font-bold ${isFirst ? "text-white" : "text-[#1a1f14]"
+                        }`}
                     >
                       {t.name}
                     </p>
                     <p
-                      className={`text-xs mt-0.5 ${
-                        isFirst ? "text-white/70" : "text-[#8a9185]"
-                      }`}
+                      className={`text-xs mt-0.5 ${isFirst ? "text-white/70" : "text-[#8a9185]"
+                        }`}
                     >
                       {t.role}
                     </p>

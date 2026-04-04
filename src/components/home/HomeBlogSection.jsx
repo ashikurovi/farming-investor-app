@@ -34,8 +34,13 @@ const CSS = `
 
   /* ─── Section ─── */
   .blog-section {
+<<<<<<< HEAD
     background: transparent;
     padding: 44px 0 52px;
+=======
+    background: var(--bg);
+    padding: 72px 0 84px;
+>>>>>>> 0ae470e (update home pages)
     position: relative;
     overflow: hidden;
   }
@@ -73,7 +78,11 @@ const CSS = `
     align-items: flex-end;
     justify-content: space-between;
     gap: 24px;
+<<<<<<< HEAD
     margin-bottom: 28px;
+=======
+    margin-bottom: 48px;
+>>>>>>> 0ae470e (update home pages)
     flex-wrap: wrap;
   }
   .blog-header-left { max-width: 560px; }
@@ -346,6 +355,11 @@ const CSS = `
     .blog-number { font-size: 64px; }
   }
   @media (max-width: 820px) {
+<<<<<<< HEAD
+=======
+    .blog-section { padding: 56px 0 68px; }
+    .blog-header { margin-bottom: 40px; }
+>>>>>>> 0ae470e (update home pages)
     .blog-view-all { display: none; }
     .blog-article-inner { grid-template-columns: 1fr; }
     .blog-img-pane { height: 240px; min-height: unset; }
@@ -353,11 +367,32 @@ const CSS = `
     .blog-content-pane { padding: 24px 24px 28px; }
     .blog-number { display: none; }
   }
+<<<<<<< HEAD
   @media (max-width: 540px) {
     .blog-section { padding: 32px 0 40px; }
     .blog-article { border-radius: 20px; }
     .blog-img-pane { height: 200px; }
     .blog-content-pane { padding: 20px 18px 24px; }
+=======
+
+  @media (max-width: 640px) {
+    .blog-section { padding: 44px 0 56px; }
+    .blog-article { border-radius: 18px; margin-bottom: 14px; }
+    .blog-img-pane { height: 210px; }
+    .blog-content-pane { padding: 20px 20px 24px; }
+    .blog-excerpt { font-size: 14px; margin-bottom: 18px; }
+    .blog-meta { gap: 10px; font-size: 10px; }
+    .blog-header { margin-bottom: 36px; }
+    .blog-footer { margin-top: 36px; }
+  }
+
+  @media (max-width: 480px) {
+    .blog-inner { padding: 0 16px; }
+    .blog-article-inner { grid-template-rows: 190px auto; }
+    .blog-img-pane { height: 190px; }
+    .blog-title { font-size: 24px; }
+    .blog-post-title { font-size: 18px; }
+>>>>>>> 0ae470e (update home pages)
     .blog-excerpt { font-size: 13.5px; }
     .blog-footer { margin-top: 28px; }
     .blog-footer-line { max-width: 50px; }

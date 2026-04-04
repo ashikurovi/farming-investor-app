@@ -30,8 +30,8 @@ export default function HomeGalleryPreview() {
     description: item.project?.shortDescription || "",
     date: item.createdAt
       ? new Date(item.createdAt).toLocaleDateString("en-US", {
-          timeZone: "UTC",
-        })
+        timeZone: "UTC",
+      })
       : "",
   }));
 
