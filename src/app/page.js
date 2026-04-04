@@ -27,7 +27,7 @@ export default function Home() {
       <HomeTestimonials />
       <HomeFaq />
       <WhatsAppButton />
-      <HomeEntryModals />
+      {/* <HomeEntryModals /> */}
     </main>
   );
 }
