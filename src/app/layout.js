@@ -13,9 +13,67 @@ const baiJamjuree = Bai_Jamjuree({
 
 import { PWAProvider } from "@/components/PWAProvider";
 
+export const viewport = {
+  themeColor: "#4d8c1e",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export const metadata = {
-  title: "Framing Investor App | Xinzo",
-  description: "Framing Investor App",
+  metadataBase: new URL("https://artmanagro.com"),
+  title: {
+    default: "Artman Agro | Premium Farming Investment Platform",
+    template: "%s | Artman Agro",
+  },
+  description: "Join Artman Agro, the premier platform for agricultural investments. Invest in profitable farming projects, track your portfolio, and earn sustainable returns.",
+  keywords: ["agriculture investment", "farming investment", "Artman Agro", "agri-tech", "sustainable farming", "invest in agriculture"],
+  authors: [{ name: "Artman Agro" }],
+  creator: "Artman Agro",
+  publisher: "Artman Agro",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    title: "Artman Agro | Premium Farming Investment Platform",
+    description: "Join Artman Agro, the premier platform for agricultural investments. Track your portfolio, and earn sustainable returns.",
+    url: "https://artmanagro.com",
+    siteName: "Artman Agro",
+    images: [
+      {
+        url: "/icons/icon-512x512.png",
+        width: 512,
+        height: 512,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Artman Agro | Farming Investment",
+    description: "Join Artman Agro, the premier platform for agricultural investments.",
+    images: ["/icons/icon-512x512.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  manifest: "/manifest.js",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/icons/icon-192x192.png",
+  },
 };
 
 export default function RootLayout({ children }) {

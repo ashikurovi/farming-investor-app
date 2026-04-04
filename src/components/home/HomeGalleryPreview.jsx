@@ -3,7 +3,14 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, X, ChevronLeft, ChevronRight, Calendar, MapPin } from "lucide-react";
+import {
+  ArrowRight,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Calendar,
+  MapPin,
+} from "lucide-react";
 import { useGetGlarryQuery } from "@/features/admin/glarry/glarryApiSlice";
 
 export default function HomeGalleryPreview() {
@@ -22,7 +29,9 @@ export default function HomeGalleryPreview() {
     title: item.projectName || item.project?.title || "Gallery Image",
     description: item.project?.shortDescription || "",
     date: item.createdAt
-      ? new Date(item.createdAt).toLocaleDateString("en-US", { timeZone: "UTC" })
+      ? new Date(item.createdAt).toLocaleDateString("en-US", {
+          timeZone: "UTC",
+        })
       : "",
   }));
 
@@ -37,7 +46,9 @@ export default function HomeGalleryPreview() {
 
   const prevImage = (e) => {
     e?.stopPropagation();
-    setSelectedImageIndex((prev) => (prev - 1 + displayImages.length) % displayImages.length);
+    setSelectedImageIndex(
+      (prev) => (prev - 1 + displayImages.length) % displayImages.length,
+    );
   };
 
   // Keyboard navigation for lightbox
@@ -83,8 +94,7 @@ export default function HomeGalleryPreview() {
 
             <h2 className="home-title leading-tight">
               Life on the <span className="italic">farm</span> in our{" "}
-              <span className="italic text-primary">gallery</span>
-              .
+              <span className="italic text-primary">gallery</span>.
             </h2>
 
             <p className="home-subtitle">
@@ -92,8 +102,6 @@ export default function HomeGalleryPreview() {
               the country.
             </p>
           </div>
-
-         
         </div>
 
         {/* Gallery Grid */}
@@ -137,17 +145,6 @@ export default function HomeGalleryPreview() {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Mobile Bottom Button */}
-        <div className="mt-12 text-center lg:hidden">
-          <Link
-            href="/landing/gallery"
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 text-xs font-bold uppercase tracking-widest text-white bg-zinc-900 rounded-full hover:bg-zinc-800 transition-colors shadow-lg"
-          >
-            View Full Gallery
-            <ArrowRight className="w-4 h-4" />
-          </Link>
         </div>
       </div>
 

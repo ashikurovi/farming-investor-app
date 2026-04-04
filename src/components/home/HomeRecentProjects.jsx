@@ -40,14 +40,14 @@ export default function HomeRecentProjects() {
 
   if (isLoading) {
     return (
-      <section className="home-section bg-zinc-50 flex justify-center">
+      <section className="home-section flex justify-center">
         <Loader size="lg" />
       </section>
     );
   }
 
   return (
-    <section className="home-section bg-[#f6f7f4]">
+    <section className="home-section">
       <div className="home-container">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10">
@@ -59,8 +59,7 @@ export default function HomeRecentProjects() {
 
             <h2 className="home-title leading-tight">
               Latest <span className="italic">investment</span>{" "}
-              <span className="italic text-primary">opportunities</span>
-              .
+              <span className="italic text-primary">opportunities</span>.
             </h2>
 
             <p className="home-subtitle max-w-xl">
@@ -68,8 +67,6 @@ export default function HomeRecentProjects() {
               capital appreciation.
             </p>
           </div>
-
-        
         </div>
 
         {/* Projects Grid */}
@@ -77,17 +74,6 @@ export default function HomeRecentProjects() {
           {projects.map((project) => (
             <ProjectCard key={project.projectId} project={project} />
           ))}
-        </div>
-
-        {/* Mobile View All Button */}
-        <div className="mt-12 text-center md:hidden">
-          <Link
-            href="/landing/project"
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 text-xs font-bold uppercase tracking-widest text-white bg-zinc-900 rounded-full hover:bg-zinc-800 transition-colors shadow-lg shadow-zinc-900/20"
-          >
-            View All Projects
-            <ArrowRight className="w-4 h-4" />
-          </Link>
         </div>
       </div>
     </section>

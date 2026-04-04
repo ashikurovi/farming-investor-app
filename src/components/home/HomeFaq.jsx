@@ -56,31 +56,14 @@ const CSS = `
 
   /* Section background with subtle leaf pattern */
   .faq-section {
-    background: var(--bg);
+    background: transparent;
     padding: 72px 0 84px;
     position: relative;
     overflow: hidden;
   }
 
-  .faq-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(circle at 15% 20%, rgba(124,194,46,.08) 0%, transparent 50%),
-      radial-gradient(circle at 85% 75%, rgba(77,140,30,.07) 0%, transparent 50%);
-    pointer-events: none;
-  }
-
-  /* Decorative grid dots */
-  .faq-section::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: radial-gradient(circle, rgba(77,140,30,.06) 1px, transparent 1px);
-    background-size: 32px 32px;
-    pointer-events: none;
-  }
+  .faq-section::before { display: none; }
+  .faq-section::after { display: none; }
 
   .faq-inner {
     max-width: 1200px;
@@ -113,11 +96,12 @@ const CSS = `
   }
 
   .faq-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 30px;
-    font-weight: 400;
+    font-family: inherit;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     color: var(--text-1);
-    line-height: 1.15;
+    line-height: 1.2;
     margin: 0 0 16px;
   }
   .faq-title em {
@@ -127,6 +111,8 @@ const CSS = `
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  @media (min-width: 768px) { .faq-title { font-size: 30px; } }
 
   .faq-subtitle {
     font-size: 16px; color: var(--text-2); max-width: 520px;
@@ -355,7 +341,6 @@ const CSS = `
     .faq-stats { grid-template-columns: 1fr; border-radius: 14px; }
     .faq-question { padding: 18px 18px 18px 22px; }
     .faq-answer { padding: 0 18px 18px 22px; }
-    .faq-title { font-size: 30px; }
     .faq-help-card { padding: 24px; }
   }
 

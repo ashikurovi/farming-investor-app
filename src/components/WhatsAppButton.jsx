@@ -4,6 +4,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 export default function WhatsAppButton() {
+  const phoneNumber = "01750977875";
+  const whatsappNumber = `88${phoneNumber.replace(/\D/g, "")}`;
+
   return (
     <div className="fixed bottom-[calc(env(safe-area-inset-bottom)+86px)] right-4 z-50 md:bottom-8 md:right-6">
       {/* Pulsing rings */}
@@ -40,7 +43,7 @@ export default function WhatsAppButton() {
           transition={{ type: "spring", stiffness: 400, damping: 15 }}
         >
           <Link
-            href="https://wa.me/1234567890"
+            href={`https://wa.me/${whatsappNumber}`}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat on WhatsApp"

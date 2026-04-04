@@ -11,7 +11,6 @@ import {
   Mail,
   Phone,
   MapPin,
-  Send,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -69,71 +68,65 @@ export function MainFooter() {
         }}
       />
 
-      {/* ── Main Grid ── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 mb-14">
-          {/* Brand */}
-          <div className="sm:col-span-2 lg:col-span-4 space-y-6">
-            <div className="sm:col-span-2 lg:col-span-4 space-y-6">
-              <div className="flex flex-col items-start gap-2">
-                {/* Logo */}
-                <Link href="/" className="flex items-center gap-3 group">
-                  <div className="h-12 w-32 transition-transform group-hover:scale-105">
-                    <Image
-                      src="/loogo9.png"
-                      alt="ARTMAN"
-                      width={128}
-                      height={128}
-                      className=""
-                      priority
-                    />
-                  </div>
-                </Link>
-
-                {/* Subtitle - Only this text below the logo */}
-                <div>
-                  <p
-                    className="text-[10px] uppercase tracking-[0.18em]"
-                    style={{ color: "rgba(255,255,255,0.5)" }}
-                  >
-                    Agricultural Investment Platform
-                  </p>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-[calc(env(safe-area-inset-bottom)+6rem)] sm:pb-10 relative z-10">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-12 gap-10 mb-14">
+          {/* Brand Section - Full width on mobile, 4 cols on lg */}
+          <div className="col-span-2 lg:col-span-4 space-y-6">
+            <div className="flex flex-col items-start gap-2">
+              {/* Logo */}
+              <Link href="/" className="flex items-center gap-3 group">
+                <div className="h-12 w-32 transition-transform group-hover:scale-105">
+                  <Image
+                    src="/loogo9.png"
+                    alt="Farming Investor"
+                    width={128}
+                    height={128}
+                    className=""
+                    priority
+                  />
                 </div>
-              </div>
+              </Link>
 
-              <p
-                className="text-sm leading-relaxed"
-                style={{ color: "rgba(255,255,255,0.78)", maxWidth: "300px" }}
-              >
-                Democratizing agricultural investment — connecting capital with
-                sustainable farming projects for a greener, wealthier future.
-              </p>
-
-              {/* Socials */}
-              <div className="flex items-center gap-2 flex-wrap">
-                {socialLinks.map(({ icon: Icon, href, label }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    aria-label={label}
-                    className="h-9 w-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
-                    style={{
-                      background: "rgba(255,255,255,0.12)",
-                      border: "1px solid rgba(255,255,255,0.22)",
-                    }}
-                  >
-                    <Icon className="w-4 h-4 text-white" />
-                  </a>
-                ))}
+              <div>
+                <p
+                  className="text-[10px] uppercase tracking-[0.18em]"
+                  style={{ color: "rgba(255,255,255,0.5)" }}
+                >
+                  Agricultural Investment Platform
+                </p>
               </div>
+            </div>
+
+            <p
+              className="text-sm leading-relaxed"
+              style={{ color: "rgba(255,255,255,0.78)", maxWidth: "300px" }}
+            >
+              Democratizing agricultural investment — connecting capital with
+              sustainable farming projects for a greener, wealthier future.
+            </p>
+
+            {/* Social Icons */}
+            <div className="flex items-center gap-2 flex-wrap">
+              {socialLinks.map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="h-9 w-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
+                  style={{
+                    background: "rgba(255,255,255,0.12)",
+                    border: "1px solid rgba(255,255,255,0.22)",
+                  }}
+                >
+                  <Icon className="w-4 h-4 text-white" />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Spacer */}
-          <div className="hidden lg:block lg:col-span-1" />
-
           {/* Explore */}
-          <div className="lg:col-span-2">
+          <div className="col-span-1 lg:col-span-2">
             <h3
               className="text-[11px] font-bold uppercase tracking-[0.2em] mb-5 pb-2"
               style={{
@@ -151,7 +144,7 @@ export function MainFooter() {
                     className="flex items-center justify-between text-sm group"
                     style={{ color: "rgba(255,255,255,0.8)" }}
                   >
-                    <span className="group-hover:text-white group-hover:translate-x-1 transition-all duration-200 inline-block">
+                    <span className="group-hover:text-white group-hover:translate-x-1 transition-all duration-200">
                       {label}
                     </span>
                     <ArrowUpRight
@@ -165,7 +158,7 @@ export function MainFooter() {
           </div>
 
           {/* Portals */}
-          <div className="lg:col-span-2">
+          <div className="col-span-1 lg:col-span-2">
             <h3
               className="text-[11px] font-bold uppercase tracking-[0.2em] mb-5 pb-2"
               style={{
@@ -183,7 +176,7 @@ export function MainFooter() {
                     className="flex items-center justify-between text-sm group"
                     style={{ color: "rgba(255,255,255,0.8)" }}
                   >
-                    <span className="group-hover:text-white group-hover:translate-x-1 transition-all duration-200 inline-block">
+                    <span className="group-hover:text-white group-hover:translate-x-1 transition-all duration-200">
                       {label}
                     </span>
                     <ArrowUpRight
@@ -196,8 +189,8 @@ export function MainFooter() {
             </ul>
           </div>
 
-          {/* Contact */}
-          <div className="sm:col-span-2 lg:col-span-3">
+          {/* Contact Us - Full width on mobile */}
+          <div className="col-span-2 lg:col-span-3">
             <h3
               className="text-[11px] font-bold uppercase tracking-[0.2em] mb-5 pb-2"
               style={{
@@ -248,7 +241,7 @@ export function MainFooter() {
           </div>
         </div>
 
-        {/* ── Bottom Bar ── */}
+        {/* Bottom Bar */}
         <div
           className="pt-6"
           style={{ borderTop: "1px solid rgba(255,255,255,0.18)" }}

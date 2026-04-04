@@ -1,13 +1,13 @@
 export const blogPosts = [
   {
     id: 1,
-    title: "Sustainable Farming in 2026: What’s Changing",
+    title: "Sustainable Farming in 2026: What's Changing",
     excerpt:
       "A quick look at the practical changes farmers are adopting—smarter planning, better inputs, and cleaner operations that boost yield without increasing risk.",
     content: `
       <p>Modern agriculture is moving toward predictable operations: better planning, tighter cost control, and more transparent reporting. The goal is simple—produce more consistently while protecting soil health and reducing waste.</p>
 
-      <h3>What you’ll see on well-run farms</h3>
+      <h3>What you'll see on well-run farms</h3>
       <ul>
         <li>Optimized schedules for inputs, irrigation, and harvest timing</li>
         <li>Healthier soil through composting and smarter crop rotation</li>
@@ -16,7 +16,7 @@ export const blogPosts = [
 
       <p>For investors, these changes mean clearer visibility, more stable outcomes, and better decision-making across seasons.</p>
     `,
-    image: "/img_7-2048x1024.jpg",
+    image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&auto=format&fit=crop",
     date: "March 15, 2026",
     time: "09:30 AM",
     author: "Artman Team",
@@ -39,7 +39,7 @@ export const blogPosts = [
 
       <p>On our platform, projects are tracked with clear cost and sell reporting so you can understand performance before and after harvest.</p>
     `,
-    image: "/img_4-2048x1024.jpg",
+    image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=800&auto=format&fit=crop",
     date: "March 10, 2026",
     time: "02:15 PM",
     author: "Artman Team",
@@ -51,7 +51,7 @@ export const blogPosts = [
     excerpt:
       "From field photos to daily updates—monitoring tools help reduce surprises and keep operations accountable throughout the crop cycle.",
     content: `
-      <p>Monitoring isn’t just cameras—it’s consistent reporting. When a project captures daily progress (cost, issues, photos, and actions taken), teams respond faster and outcomes become more predictable.</p>
+      <p>Monitoring isn't just cameras—it's consistent reporting. When a project captures daily progress (cost, issues, photos, and actions taken), teams respond faster and outcomes become more predictable.</p>
 
       <h3>What good monitoring looks like</h3>
       <ul>
@@ -60,7 +60,7 @@ export const blogPosts = [
         <li>Transparent cost and sell reporting</li>
       </ul>
     `,
-    image: "/img_7-2048x1024.jpg",
+    image: "https://images.unsplash.com/photo-1560493676-04071c5f467b?w=800&auto=format&fit=crop",
     date: "March 05, 2026",
     time: "11:45 AM",
     author: "Artman Team",
