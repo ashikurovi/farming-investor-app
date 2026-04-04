@@ -9,12 +9,12 @@ export default function manifest() {
     theme_color: '#4D8C1E',
     icons: [
       {
-        src: '/logo6.png',
+        src: '/atrman.png',
         sizes: '192x192',
         type: 'image/png',
       },
       {
-        src: '/logo6.png',
+        src: '/atrman.png',
         sizes: '512x512',
         type: 'image/png',
       }
