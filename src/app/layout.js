@@ -85,7 +85,11 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning={true}
       >
         <PWAProvider />
+<<<<<<< HEAD
         <DevToolsProtector />
+=======
+        {/* <DevToolsProtector /> */}
+>>>>>>> main
         <ReduxProvider>
           <ToasterProvider />
           <AppShell>{children}</AppShell>
