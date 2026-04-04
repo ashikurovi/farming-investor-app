@@ -46,7 +46,7 @@ export const sidebarNavigation = [
     items: [
       { name: "Glarry", href: "/admin/glarry", icon: Images },
       { name: "Banners", href: "/admin/banner", icon: ImageIcon },
-      { name: "Footer", href: "/admin/footer", icon: Settings2 },
+      // { name: "Footer", href: "/admin/footer", icon: Settings2 },
     ],
   },
 
