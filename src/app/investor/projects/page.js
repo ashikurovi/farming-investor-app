@@ -119,11 +119,16 @@ const ProjectCard = ({ project }) => {
         {/* Dark gradient on hover */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-        {/* Active badge */}
-        <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary shadow-sm backdrop-blur-sm ring-1 ring-[color:rgba(77,140,30,0.14)]">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
-          Active
-        </span>
+        {/* Status badge */}
+        {(() => {
+          const isActive = project.status !== "Deactivated" && project.status !== "Deactive";
+          return (
+            <span className={`absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] shadow-sm backdrop-blur-sm ring-1 ${isActive ? "text-primary ring-[color:rgba(77,140,30,0.14)]" : "text-rose-600 ring-rose-200"}`}>
+              <span className={`h-1.5 w-1.5 rounded-full ${isActive ? "bg-primary animate-pulse" : "bg-rose-600"}`} />
+              {isActive ? "Active" : "Deactivated"}
+            </span>
+          );
+        })()}
 
         {/* Arrow on hover */}
         <span className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-zinc-600 opacity-0 shadow backdrop-blur-sm ring-1 ring-zinc-200 transition-all duration-200 group-hover:opacity-100">
@@ -254,6 +259,7 @@ export default function InvestorProjectsPage() {
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
 
   const user = useSelector((state) => state.auth?.user);
 
@@ -264,14 +270,27 @@ export default function InvestorProjectsPage() {
   });
 
   const raw = Array.isArray(data) ? data : (data?.items ?? []);
-  const filtered = search
-    ? raw.filter((p) =>
-        [p?.name ?? "", p?.location ?? "", p?.description ?? ""]
-          .join(" ")
-          .toLowerCase()
-          .includes(search.toLowerCase()),
-      )
-    : raw;
+  
+  const filtered = raw.filter((p) => {
+    const s = (p.status || "Active").toLowerCase();
+    
+    let matchesStatus = true;
+    if (filterStatus === "active") {
+      matchesStatus = s !== "deactivated" && s !== "deactive";
+    } else if (filterStatus === "deactivated") {
+      matchesStatus = s === "deactivated" || s === "deactive";
+    }
+
+    let matchesSearch = true;
+    if (search) {
+      matchesSearch = [p?.name ?? "", p?.location ?? "", p?.description ?? ""]
+        .join(" ")
+        .toLowerCase()
+        .includes(search.toLowerCase());
+    }
+    
+    return matchesStatus && matchesSearch;
+  });
 
   const total = filtered.length;
   const pageCount = pageSize > 0 ? Math.max(1, Math.ceil(total / pageSize)) : 1;
@@ -312,29 +331,53 @@ export default function InvestorProjectsPage() {
             </div>
           </div>
 
-          {/* Right: search + filter */}
-          <div className="flex items-center gap-2">
-            <div className="relative w-full sm:w-60">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
-              <input
-                type="text"
-                placeholder="Search projects…"
-                value={searchInput}
-                onChange={(e) => handleSearch(e.target.value)}
-                className="h-9 w-full rounded-xl border border-zinc-200 bg-zinc-50 pl-9 pr-8 text-sm text-zinc-800 placeholder-zinc-400 transition focus:border-[color:rgba(77,140,30,0.32)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.14)] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:placeholder-zinc-500 dark:focus:bg-zinc-900"
-              />
-              {searchInput && (
+          {/* Right: filter tabs + search */}
+          <div className="flex flex-col gap-4 sm:items-end w-full sm:w-auto mt-4 sm:mt-0">
+            {/* Filter Tabs */}
+            <div className="flex flex-wrap items-center gap-2">
+              {[
+                { id: "all", label: "All Projects" },
+                { id: "active", label: "Active" },
+                { id: "deactivated", label: "Deactivated" },
+              ].map((status) => (
                 <button
-                  onClick={() => handleSearch("")}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                  key={status.id}
+                  onClick={() => {
+                    setFilterStatus(status.id);
+                    setPage(1);
+                  }}
+                  className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
+                    filterStatus === status.id
+                      ? "bg-[linear-gradient(135deg,var(--brand-from),var(--brand-to))] text-white shadow-[0_14px_40px_-26px_rgba(77,140,30,0.75)] ring-1 ring-white/10"
+                      : "border border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                  }`}
                 >
-                  <X className="h-3.5 w-3.5" />
+                  {status.label}
                 </button>
-              )}
+              ))}
             </div>
-            <button className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-500 transition hover:border-[color:rgba(77,140,30,0.32)] hover:bg-secondary hover:text-primary">
-              <SlidersHorizontal className="h-4 w-4" />
-            </button>
+
+            {/* Search Bar */}
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <div className="relative w-full sm:w-60">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+                <input
+                  type="text"
+                  placeholder="Search projects…"
+                  value={searchInput}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  className="h-9 w-full rounded-xl border border-zinc-200 bg-zinc-50 pl-9 pr-8 text-sm text-zinc-800 placeholder-zinc-400 transition focus:border-[color:rgba(77,140,30,0.32)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[color:rgba(77,140,30,0.14)] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:placeholder-zinc-500 dark:focus:bg-zinc-900"
+                />
+                {searchInput && (
+                  <button
+                    onClick={() => handleSearch("")}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
