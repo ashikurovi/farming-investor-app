@@ -78,11 +78,7 @@ const CSS = `
     align-items: flex-end;
     justify-content: space-between;
     gap: 24px;
-<<<<<<< HEAD
-    margin-bottom: 28px;
-=======
     margin-bottom: 48px;
->>>>>>> 0ae470e (update home pages)
     flex-wrap: wrap;
   }
   .blog-header-left { max-width: 560px; }
