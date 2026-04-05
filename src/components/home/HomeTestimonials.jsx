@@ -74,14 +74,13 @@ export default function HomeTestimonials() {
   const visible = [0, 1, 2].map((offset) => (active + offset) % total);
 
   return (
-    <section className="relative home-section overflow-hidden ">
-      {/* Soft background blobs */}
+    <section className="relative overflow-hidden py-8 md:py-12">
       <div className="pointer-events-none absolute top-0 right-0 h-[500px] w-[500px] rounded-full bg-[#7cc22e]/6 blur-[120px]" />
       <div className="pointer-events-none absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-[#4d8c1e]/5 blur-[100px]" />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        {/* ── Header ── */}
-        <div className="mb-14 flex flex-col items-start gap-5 md:flex-row md:items-end md:justify-between">
+        {/* Header */}
+        <div className="mb-6 md:mb-10 flex flex-col items-start gap-5 md:flex-row md:items-end md:justify-between">
           <div>
             <div className="home-tag w-fit">
               <span className="home-tag-dot" />
@@ -105,8 +104,8 @@ export default function HomeTestimonials() {
             </p>
           </div>
 
-          {/* Nav arrows */}
-          <div className="flex gap-2.5">
+          {/* Nav arrows — desktop only */}
+          <div className="hidden md:flex gap-2.5">
             <button
               onClick={prev}
               className="flex h-11 w-11 items-center justify-center rounded-full border border-[#d4e4c0] bg-white text-[#4d8c1e] shadow-sm transition-all hover:bg-[#4d8c1e] hover:text-white hover:border-[#4d8c1e] hover:shadow-md"
@@ -122,12 +121,11 @@ export default function HomeTestimonials() {
           </div>
         </div>
 
-        {/* ── Desktop: 3 cards ── */}
+        {/* Desktop: 3 cards */}
         <div className="hidden md:grid grid-cols-3 gap-5">
           {visible.map((idx, pos) => {
             const t = testimonials[idx];
             const isFirst = pos === 0;
-
             return (
               <div
                 key={`${idx}-${active}-${pos}`}
@@ -147,39 +145,24 @@ export default function HomeTestimonials() {
                     : {}
                 }
               >
-                {/* Large decorative open-quote */}
                 <span
-                  className={`absolute top-5 right-6 text-[72px] font-serif leading-none select-none ${
-                    isFirst ? "text-white/10" : "text-[#4d8c1e]/8"
-                  }`}
+                  className={`absolute top-5 right-6 text-[72px] font-serif leading-none select-none ${isFirst ? "text-white/10" : "text-[#4d8c1e]/8"}`}
                 >
                   "
                 </span>
-
                 <div className="flex flex-col gap-5">
                   <StarRow rating={t.rating} isActive={isFirst} />
-
                   <p
-                    className={`text-[14px] leading-[1.8] ${
-                      isFirst ? "text-white/90" : "text-zinc-500"
-                    }`}
+                    className={`text-[14px] leading-[1.8] ${isFirst ? "text-white/90" : "text-zinc-500"}`}
                   >
                     &ldquo;{t.quote}&rdquo;
                   </p>
                 </div>
-
-                {/* Author */}
                 <div
-                  className={`mt-6 flex items-center gap-3 pt-5 border-t ${
-                    isFirst ? "border-white/15" : "border-[#f0f3ec]"
-                  }`}
+                  className={`mt-6 flex items-center gap-3 pt-5 border-t ${isFirst ? "border-white/15" : "border-[#f0f3ec]"}`}
                 >
                   <div
-                    className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold tracking-wide ${
-                      isFirst
-                        ? "bg-white/20 text-white ring-1 ring-white/30"
-                        : "text-white"
-                    }`}
+                    className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold tracking-wide ${isFirst ? "bg-white/20 text-white ring-1 ring-white/30" : "text-white"}`}
                     style={
                       !isFirst
                         ? {
@@ -193,28 +176,18 @@ export default function HomeTestimonials() {
                   </div>
                   <div>
                     <p
-                      className={`text-sm font-bold leading-snug ${
-                        isFirst ? "text-white" : "text-[#1a1f14]"
-                      }`}
+                      className={`text-sm font-bold leading-snug ${isFirst ? "text-white" : "text-[#1a1f14]"}`}
                     >
                       {t.name}
                     </p>
                     <p
-                      className={`text-xs mt-0.5 ${
-                        isFirst ? "text-white/65" : "text-[#8a9185]"
-                      }`}
+                      className={`text-xs mt-0.5 ${isFirst ? "text-white/65" : "text-[#8a9185]"}`}
                     >
                       {t.role}
                     </p>
                   </div>
-
-                  {/* Verified badge */}
                   <div
-                    className={`ml-auto flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold ${
-                      isFirst
-                        ? "bg-white/15 text-white"
-                        : "bg-[#edf5e4] text-[#4d8c1e]"
-                    }`}
+                    className={`ml-auto flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold ${isFirst ? "bg-white/15 text-white" : "bg-[#edf5e4] text-[#4d8c1e]"}`}
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-current" />
                     Verified
@@ -225,13 +198,13 @@ export default function HomeTestimonials() {
           })}
         </div>
 
-        {/* ── Mobile: single card with swipe feel ── */}
+        {/* Mobile: single card */}
         <div className="md:hidden">
           {(() => {
             const t = testimonials[active];
             return (
               <div
-                className="relative flex flex-col gap-5 rounded-[1.75rem] p-7 text-white shadow-2xl"
+                className="relative flex flex-col gap-5 rounded-[1.75rem] p-6 text-white shadow-2xl"
                 style={{
                   background:
                     "linear-gradient(145deg, #2f5e10, #4d8c1e, #7cc22e)",
@@ -241,15 +214,12 @@ export default function HomeTestimonials() {
                 <span className="absolute top-4 right-5 text-[72px] font-serif leading-none select-none text-white/10">
                   "
                 </span>
-
                 <StarRow rating={t.rating} isActive={true} />
-
                 <p className="text-[14px] leading-[1.85] text-white/90">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-
                 <div className="flex items-center gap-3 pt-4 border-t border-white/15">
-                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-sm font-bold text-white ring-1 ring-white/30">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-sm font-bold text-white ring-1 ring-white/30">
                     {t.initials}
                   </div>
                   <div>
@@ -265,16 +235,14 @@ export default function HomeTestimonials() {
             );
           })()}
 
-          {/* Mobile swipe arrows */}
-          <div className="mt-5 flex items-center justify-between px-1">
+          {/* Mobile bottom arrows */}
+          <div className="mt-3 flex items-center justify-between px-1">
             <button
               onClick={prev}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d4e4c0] bg-white text-[#4d8c1e] shadow-sm"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#d4e4c0] bg-white text-[#4d8c1e] shadow-sm"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
-
-            {/* Dots */}
             <div className="flex gap-2">
               {testimonials.map((_, i) => (
                 <button
@@ -291,18 +259,17 @@ export default function HomeTestimonials() {
                 />
               ))}
             </div>
-
             <button
               onClick={next}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d4e4c0] bg-white text-[#4d8c1e] shadow-sm"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#d4e4c0] bg-white text-[#4d8c1e] shadow-sm"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
           </div>
         </div>
 
-        {/* ── Desktop dots ── */}
-        <div className="mt-10 hidden md:flex justify-center gap-2">
+        {/* Desktop dots */}
+        <div className="mt-6 hidden md:flex justify-center gap-2">
           {testimonials.map((_, i) => (
             <button
               key={i}
@@ -316,35 +283,6 @@ export default function HomeTestimonials() {
                     : "#d4e0c8",
               }}
             />
-          ))}
-        </div>
-
-        {/* ── Summary stats strip ── */}
-        <div className="mt-14 grid grid-cols-3 gap-4 rounded-[1.5rem] bg-white border border-[#edf0e8] shadow-sm px-6 py-6 sm:px-10">
-          {[
-            { value: "4.9", label: "Average Rating", suffix: "/5" },
-            { value: "200+", label: "Verified Reviews", suffix: "" },
-            { value: "98%", label: "Would Recommend", suffix: "" },
-          ].map((s) => (
-            <div
-              key={s.label}
-              className="flex flex-col items-center text-center gap-1"
-            >
-              <p
-                className="text-2xl sm:text-3xl font-extrabold"
-                style={{
-                  background: "linear-gradient(135deg,#4d8c1e,#7cc22e)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                {s.value}
-                <span className="text-base font-semibold">{s.suffix}</span>
-              </p>
-              <p className="text-[11px] sm:text-xs font-semibold text-[#8a9185] leading-tight">
-                {s.label}
-              </p>
-            </div>
           ))}
         </div>
       </div>
