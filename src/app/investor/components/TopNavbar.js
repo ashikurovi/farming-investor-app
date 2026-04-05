@@ -1,14 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Menu,
-  X,
-  Settings,
-  ChevronDown,
-  Moon,
-  Sun,
-} from "lucide-react";
+import { Menu, X, Settings, ChevronDown, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { sidebarNavigation } from "./sidebarNavigation";
 import { useSelector } from "react-redux";
@@ -37,21 +30,34 @@ export default function TopNavbar() {
   const photoUrl = cleanUrl(user?.photoUrl);
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const formattedDate = currentTime?.toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    timeZone: "UTC",
-  });
-  const formattedTime = currentTime?.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: "UTC",
-  });
+  const tz = "Asia/Dhaka";
+  const formattedDate = currentTime
+    ? (() => {
+        const parts = new Intl.DateTimeFormat("en-US", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          timeZone: tz,
+        }).formatToParts(currentTime);
+        const weekday = parts.find((p) => p.type === "weekday")?.value ?? "";
+        const month = parts.find((p) => p.type === "month")?.value ?? "";
+        const day = parts.find((p) => p.type === "day")?.value ?? "";
+        return `${weekday}, ${month} ${day}`.toUpperCase();
+      })()
+    : null;
+  const formattedTime = currentTime
+    ? new Intl.DateTimeFormat("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+        timeZone: tz,
+      }).format(currentTime)
+    : null;
 
   return (
     <>
@@ -84,7 +90,8 @@ export default function TopNavbar() {
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="hidden xl:flex flex-col items-end mr-2">
+          {/* ✅ CHANGED: removed "hidden xl:flex" → now visible on all screen sizes */}
+          <div className="flex flex-col items-end mr-2">
             <span className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider">
               {formattedDate || "—"}
             </span>
@@ -124,9 +131,12 @@ export default function TopNavbar() {
                     className="h-8 w-8 rounded-full object-cover ring-2 ring-white dark:ring-zinc-900"
                   />
                 ) : (
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[color:var(--brand-from)] to-[color:var(--brand-to)] text-[10px] font-bold text-primary-foreground shadow-sm ring-2 ring-white dark:ring-zinc-900">
-                    {initials}
-                  </span>
+                  // ✅ CHANGED: avatar-man.svg shown instead of initials
+                  <img
+                    src="/avatar-man.svg"
+                    alt="Default avatar"
+                    className="h-8 w-8 rounded-full object-cover ring-2 ring-white dark:ring-zinc-900"
+                  />
                 )}
                 <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-primary dark:border-zinc-900"></span>
               </div>
@@ -153,9 +163,12 @@ export default function TopNavbar() {
                       className="h-10 w-10 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[color:var(--brand-from)] to-[color:var(--brand-to)] flex items-center justify-center text-primary-foreground font-bold text-xs shadow-sm">
-                      {initials}
-                    </div>
+                    // ✅ CHANGED: avatar-man.svg shown in dropdown instead of initials div
+                    <img
+                      src="/avatar-man.svg"
+                      alt="Default avatar"
+                      className="h-10 w-10 rounded-full object-cover"
+                    />
                   )}
                   <div>
                     <p className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
@@ -193,7 +206,9 @@ export default function TopNavbar() {
         >
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-xs font-semibold text-primary-foreground">FI</div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-xs font-semibold text-primary-foreground">
+                FI
+              </div>
               <div>
                 <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
                   Farming

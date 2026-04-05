@@ -1,5 +1,4 @@
 "use client";
-// ihdfij
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -256,10 +255,10 @@ export default function Sidebar() {
           <button
             type="button"
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-            className={`group flex w-full items-center gap-3 rounded-xl px-2.5 py-2 font-medium text-zinc-700 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-900 dark:text-zinc-400 dark:hover:bg-emerald-900/20 dark:hover:text-emerald-300 ${collapsed ? "justify-center" : ""}`}
+            className={`group flex w-full items-center gap-3 rounded-xl px-2.5 py-2 font-medium text-zinc-700 transition-all duration-200 hover:bg-[color:rgba(124,194,46,0.12)] hover:text-[color:rgb(77,140,30)] dark:text-zinc-400 dark:hover:bg-[color:rgba(124,194,46,0.14)] dark:hover:text-[color:rgb(124,194,46)] ${collapsed ? "justify-center" : ""}`}
             onClick={() => setCollapsed((prev) => !prev)}
           >
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-zinc-500 transition-colors shrink-0 group-hover:bg-emerald-100 group-hover:text-emerald-600 dark:bg-zinc-800 dark:text-zinc-400 dark:group-hover:bg-emerald-900/40 dark:group-hover:text-emerald-400">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-zinc-500 transition-colors shrink-0 group-hover:bg-[color:rgba(124,194,46,0.18)] group-hover:text-[color:rgb(77,140,30)] dark:bg-zinc-800 dark:text-zinc-400 dark:group-hover:bg-[color:rgba(124,194,46,0.18)] dark:group-hover:text-[color:rgb(124,194,46)]">
               {collapsed ? (
                 <ChevronsRight className="h-5 w-5" />
               ) : (
@@ -267,7 +266,7 @@ export default function Sidebar() {
               )}
             </span>
             {!collapsed && (
-              <span className="text-[13px] font-semibold text-zinc-500 group-hover:text-emerald-700 dark:text-zinc-400 dark:group-hover:text-emerald-400">
+              <span className="text-[13px] font-semibold text-zinc-500 group-hover:text-[color:rgb(77,140,30)] dark:text-zinc-400 dark:group-hover:text-[color:rgb(124,194,46)]">
                 Collapse
               </span>
             )}
