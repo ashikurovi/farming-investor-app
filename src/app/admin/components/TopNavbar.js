@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useGetContactsQuery } from "@/features/contact/contactApiSlice";
 import { sidebarNavigation } from "./sidebarNavigation";
-import { useLogoutMutation } from "@/features/auth/authApiSlice";
+import { useLogoutMutation, useMeQuery } from "@/features/auth/authApiSlice";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useTheme } from "@/lib/ThemeContext";
@@ -32,7 +32,9 @@ export default function TopNavbar() {
   const { data: contactsData } = useGetContactsQuery();
   const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
   const router = useRouter();
+  const token = useSelector((s) => s.auth?.token);
   const user = useSelector((s) => s.auth?.user);
+  useMeQuery(undefined, { skip: !token, refetchOnMountOrArgChange: true });
 
   const contactsCount = Array.isArray(contactsData) ? contactsData.length : 0;
 
@@ -52,6 +54,7 @@ export default function TopNavbar() {
     cleanUrl(user?.avatarUrl) ||
     cleanUrl(user?.profilePhotoUrl) ||
     "";
+  const fallbackPhotoUrl = "/avatar-man.svg";
 
   const handleLogout = async () => {
     try {
@@ -73,22 +76,35 @@ export default function TopNavbar() {
 
   useEffect(() => {
     setCurrentTime(new Date());
-    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const formattedDate = currentTime?.toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    timeZone: "UTC",
-  });
+  const tz = "Asia/Dhaka";
+  const formattedDate = currentTime
+    ? (() => {
+        const parts = new Intl.DateTimeFormat("en-US", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          timeZone: tz,
+        }).formatToParts(currentTime);
+        const weekday = parts.find((p) => p.type === "weekday")?.value ?? "";
+        const month = parts.find((p) => p.type === "month")?.value ?? "";
+        const day = parts.find((p) => p.type === "day")?.value ?? "";
+        return `${weekday}, ${month} ${day}`.toUpperCase();
+      })()
+    : null;
 
-  const formattedTime = currentTime?.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: "UTC",
-  });
+  const formattedTime = currentTime
+    ? new Intl.DateTimeFormat("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+        timeZone: tz,
+      }).format(currentTime)
+    : null;
 
   return (
     <>
@@ -145,19 +161,15 @@ export default function TopNavbar() {
               }}
             >
               <div className="relative">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-zinc-800">
-                  {photoUrl ? (
-                    <img
-                      src={photoUrl}
-                      alt={displayName}
-                      className="h-full w-full rounded-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.src = "";
-                      }}
-                    />
-                  ) : (
-                    initials
-                  )}
+                <span className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-zinc-800">
+                  <img
+                    src={photoUrl || fallbackPhotoUrl}
+                    alt={displayName}
+                    className="h-full w-full rounded-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = fallbackPhotoUrl;
+                    }}
+                  />
                 </span>
                 <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500 dark:border-zinc-800"></span>
               </div>
@@ -177,19 +189,15 @@ export default function TopNavbar() {
             {profileOpen && (
               <div className="absolute right-0 top-12 z-50 w-64 rounded-2xl border border-zinc-100 bg-white/95 p-1.5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-2xl ring-1 ring-zinc-900/5 animate-in fade-in zoom-in-95 duration-200 dark:border-zinc-800 dark:bg-zinc-900/95 dark:ring-zinc-100/5">
                 <div className="flex items-center gap-3 px-3 py-3 mb-1 bg-zinc-50/50 rounded-xl border border-zinc-100/50 dark:bg-zinc-800/50 dark:border-zinc-700/50">
-                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-xs shadow-sm">
-                    {photoUrl ? (
-                      <img
-                        src={photoUrl}
-                        alt={displayName}
-                        className="h-full w-full rounded-full object-cover"
-                        onError={(e) => {
-                          e.currentTarget.src = "";
-                        }}
-                      />
-                    ) : (
-                      initials
-                    )}
+                  <div className="h-10 w-10 overflow-hidden rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-xs shadow-sm">
+                    <img
+                      src={photoUrl || fallbackPhotoUrl}
+                      alt={displayName}
+                      className="h-full w-full rounded-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = fallbackPhotoUrl;
+                      }}
+                    />
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
