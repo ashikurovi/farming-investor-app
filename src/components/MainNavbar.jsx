@@ -175,15 +175,9 @@ export function MainNavbar() {
   return (
     <>
       {/* ==================== DESKTOP NAVBAR ==================== */}
-      <div className="hidden md:block fixed top-0 inset-x-0 z-50">
-        <header
-          className="shadow-lg shadow-black/20"
-          style={{ background: "linear-gradient(135deg, #4d8c1e 0%, #6ab82a 50%, #7cc22e 100%)" }}
-        >
-          {/* Subtle top shimmer line */}
-          <div className="h-px w-full bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-
-          <div className="mx-auto max-w-7xl px-8 h-[68px] flex items-center justify-between">
+      <div className="hidden md:block fixed top-0 inset-x-0 z-50 bg-white border-b border-zinc-200 shadow-sm">
+        <header className="bg-white">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-[68px] flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
               <div className="transition-transform duration-200 group-hover:scale-105">
@@ -219,7 +213,7 @@ export function MainNavbar() {
                 /* ── Guest: Log in button ── */
                 <Link
                   href="/login"
-                  className="inline-flex items-center justify-center rounded-xl px-5 py-2 text-white font-semibold tracking-wide text-sm transition-all duration-200 border border-white/30 bg-white/10 hover:bg-white/20 hover:border-white/50 backdrop-blur-sm"
+                  className="inline-flex items-center justify-center rounded-xl px-5 py-2 text-[#4d8c1e] font-semibold tracking-wide text-sm transition-all duration-200 border border-[#4d8c1e]/30 bg-[#4d8c1e]/5 hover:bg-[#4d8c1e] hover:text-white"
                 >
                   Log in
                 </Link>

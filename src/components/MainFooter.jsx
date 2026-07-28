@@ -38,36 +38,7 @@ const portalLinks = [
 
 export function MainFooter() {
   return (
-    <footer
-      className="relative text-white overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(135deg, #3a6b14 0%, #4d8c1e 40%, #6ab82a 75%, #7cc22e 100%)",
-      }}
-    >
-      {/* Mesh overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `
-            radial-gradient(ellipse at 10% 50%, rgba(255,255,255,0.07) 0%, transparent 60%),
-            radial-gradient(ellipse at 90% 10%, rgba(255,255,255,0.05) 0%, transparent 50%),
-            radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.15) 0%, transparent 60%)
-          `,
-        }}
-      />
-      {/* Dot pattern */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-          maskImage:
-            "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
-        }}
-      />
-
+    <footer className="relative bg-white text-zinc-800 border-t border-zinc-200 overflow-hidden">
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-[calc(env(safe-area-inset-bottom)+70px)] sm:pb-10 relative z-10">
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-12 gap-10 mb-14">
@@ -82,26 +53,19 @@ export function MainFooter() {
                     alt="Farming Investor"
                     width={128}
                     height={128}
-                    className=""
                     priority
                   />
                 </div>
               </Link>
 
               <div>
-                <p
-                  className="text-[10px] uppercase tracking-[0.18em]"
-                  style={{ color: "rgba(255,255,255,0.5)" }}
-                >
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">
                   Agricultural Investment Platform
                 </p>
               </div>
             </div>
 
-            <p
-              className="text-sm leading-relaxed"
-              style={{ color: "rgba(255,255,255,0.78)", maxWidth: "300px" }}
-            >
+            <p className="text-sm leading-relaxed text-zinc-600 max-w-[300px]">
               Democratizing agricultural investment — connecting capital with
               sustainable farming projects for a greener, wealthier future.
             </p>
@@ -113,13 +77,9 @@ export function MainFooter() {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="h-9 w-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
-                  style={{
-                    background: "rgba(255,255,255,0.12)",
-                    border: "1px solid rgba(255,255,255,0.22)",
-                  }}
+                  className="h-9 w-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 bg-zinc-100 border border-zinc-200 hover:bg-[#4d8c1e]/10 hover:border-[#4d8c1e]"
                 >
-                  <Icon className="w-4 h-4 text-white" />
+                  <Icon className="w-4 h-4 text-zinc-600 hover:text-[#4d8c1e]" />
                 </a>
               ))}
             </div>
@@ -127,13 +87,7 @@ export function MainFooter() {
 
           {/* Explore */}
           <div className="col-span-1 lg:col-span-2">
-            <h3
-              className="text-[11px] font-bold uppercase tracking-[0.2em] mb-5 pb-2"
-              style={{
-                color: "#d4f5a0",
-                borderBottom: "1px solid rgba(255,255,255,0.15)",
-              }}
-            >
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] mb-5 pb-2 text-[#4d8c1e] border-b border-zinc-200">
               Explore
             </h3>
             <ul className="space-y-3">
@@ -141,16 +95,12 @@ export function MainFooter() {
                 <li key={label}>
                   <Link
                     href={href}
-                    className="flex items-center justify-between text-sm group"
-                    style={{ color: "rgba(255,255,255,0.8)" }}
+                    className="flex items-center justify-between text-sm text-zinc-600 hover:text-[#4d8c1e] group"
                   >
-                    <span className="group-hover:text-white group-hover:translate-x-1 transition-all duration-200">
+                    <span className="group-hover:translate-x-1 transition-all duration-200">
                       {label}
                     </span>
-                    <ArrowUpRight
-                      className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all duration-200"
-                      style={{ color: "#d4f5a0" }}
-                    />
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all duration-200 text-[#4d8c1e]" />
                   </Link>
                 </li>
               ))}
@@ -159,13 +109,7 @@ export function MainFooter() {
 
           {/* Portals */}
           <div className="col-span-1 lg:col-span-2">
-            <h3
-              className="text-[11px] font-bold uppercase tracking-[0.2em] mb-5 pb-2"
-              style={{
-                color: "#d4f5a0",
-                borderBottom: "1px solid rgba(255,255,255,0.15)",
-              }}
-            >
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] mb-5 pb-2 text-[#4d8c1e] border-b border-zinc-200">
               Portals
             </h3>
             <ul className="space-y-3">
@@ -173,16 +117,12 @@ export function MainFooter() {
                 <li key={label}>
                   <Link
                     href={href}
-                    className="flex items-center justify-between text-sm group"
-                    style={{ color: "rgba(255,255,255,0.8)" }}
+                    className="flex items-center justify-between text-sm text-zinc-600 hover:text-[#4d8c1e] group"
                   >
-                    <span className="group-hover:text-white group-hover:translate-x-1 transition-all duration-200">
+                    <span className="group-hover:translate-x-1 transition-all duration-200">
                       {label}
                     </span>
-                    <ArrowUpRight
-                      className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all duration-200"
-                      style={{ color: "#d4f5a0" }}
-                    />
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all duration-200 text-[#4d8c1e]" />
                   </Link>
                 </li>
               ))}
@@ -191,13 +131,7 @@ export function MainFooter() {
 
           {/* Contact Us - Full width on mobile */}
           <div className="col-span-2 lg:col-span-3">
-            <h3
-              className="text-[11px] font-bold uppercase tracking-[0.2em] mb-5 pb-2"
-              style={{
-                color: "#d4f5a0",
-                borderBottom: "1px solid rgba(255,255,255,0.15)",
-              }}
-            >
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] mb-5 pb-2 text-[#4d8c1e] border-b border-zinc-200">
               Contact Us
             </h3>
             <ul className="space-y-4">
@@ -220,19 +154,9 @@ export function MainFooter() {
                   ),
                 },
               ].map(({ icon: Icon, content }, i) => (
-                <li
-                  key={i}
-                  className="flex items-start gap-3 text-sm"
-                  style={{ color: "rgba(255,255,255,0.82)" }}
-                >
-                  <div
-                    className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0"
-                    style={{
-                      background: "rgba(255,255,255,0.12)",
-                      border: "1px solid rgba(255,255,255,0.2)",
-                    }}
-                  >
-                    <Icon className="w-3.5 h-3.5 text-white" />
+                <li key={i} className="flex items-start gap-3 text-sm text-zinc-600">
+                  <div className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0 bg-zinc-100 border border-zinc-200">
+                    <Icon className="w-3.5 h-3.5 text-[#4d8c1e]" />
                   </div>
                   <div className="pt-1 leading-relaxed">{content}</div>
                 </li>
@@ -242,53 +166,36 @@ export function MainFooter() {
         </div>
 
         {/* Bottom Bar */}
-        <div
-          className="pt-6"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.18)" }}
-        >
+        <div className="pt-6 border-t border-zinc-200">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div
-              className="flex flex-col sm:flex-row items-center gap-3 text-xs text-center"
-              style={{ color: "rgba(255,255,255,0.55)" }}
-            >
+            <div className="flex flex-col sm:flex-row items-center gap-3 text-xs text-center text-zinc-500">
               <p>
                 © <YearText /> Farming Investor. All rights reserved.
               </p>
-              <div
-                className="hidden sm:block h-3 w-px"
-                style={{ background: "rgba(255,255,255,0.25)" }}
-              />
+              <div className="hidden sm:block h-3 w-px bg-zinc-300" />
               <div className="flex gap-4">
                 <Link
                   href="/privacy-policy"
-                  className="hover:text-white transition-colors"
+                  className="hover:text-[#4d8c1e] transition-colors"
                 >
                   Privacy Policy
                 </Link>
                 <Link
                   href="/terms"
-                  className="hover:text-white transition-colors"
+                  className="hover:text-[#4d8c1e] transition-colors"
                 >
                   Terms of Service
                 </Link>
               </div>
             </div>
 
-            <div
-              className="flex items-center gap-1 text-xs px-4 py-1.5 rounded-full"
-              style={{
-                background: "rgba(255,255,255,0.12)",
-                border: "1px solid rgba(255,255,255,0.2)",
-                color: "rgba(255,255,255,0.8)",
-              }}
-            >
+            <div className="flex items-center gap-1 text-xs px-4 py-1.5 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-600">
               Developed by
               <a
                 href="https://www.nexoviasoft.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:underline font-medium transition-colors ml-1"
-                style={{ color: "#d4f5a0" }}
+                className="hover:underline font-semibold transition-colors ml-1 text-[#4d8c1e]"
               >
                 NexoviaSoft
               </a>

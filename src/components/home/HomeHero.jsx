@@ -5,19 +5,9 @@ import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
-import { ArrowRight, Building2, PlayCircle } from "lucide-react";
+import { ArrowRight, ShieldCheck, Sprout, TrendingUp, Sparkles } from "lucide-react";
 import { useGetBannersQuery } from "@/features/admin/banner/bannerApiSlice";
 import { Loader } from "@/components/ui/loader";
-
-/* ─── tiny trust-pill ──────────────────────────── */
-const TrustPill = ({ Icon, label }) => (
-  <div className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 backdrop-blur-md">
-    <Icon className="h-3.5 w-3.5 shrink-0 text-emerald-300" />
-    <span className="text-[11px] font-semibold text-white/90 whitespace-nowrap">
-      {label}
-    </span>
-  </div>
-);
 
 export default function HomeHero() {
   const { data: bannerData, isLoading } = useGetBannersQuery();
@@ -36,16 +26,6 @@ export default function HomeHero() {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  const openCompanyModal = () => {
-    if (typeof window === "undefined") return;
-    window.dispatchEvent(new Event("open-company-modal"));
-  };
-
-  const openRunningProjectsModal = () => {
-    if (typeof window === "undefined") return;
-    window.dispatchEvent(new Event("open-running-projects-modal"));
-  };
-
   /* ── loading ── */
   if (isLoading) {
     return (
@@ -61,7 +41,7 @@ export default function HomeHero() {
   }
 
   return (
-    <section className="w-full">
+    <section className="w-full relative">
       <div className="relative w-full overflow-hidden bg-zinc-950">
         <Swiper
           modules={[Autoplay, Pagination, EffectFade]}
@@ -69,43 +49,52 @@ export default function HomeHero() {
           fadeEffect={{ crossFade: true }}
           slidesPerView={1}
           loop
-          autoplay={{ delay: 5500, disableOnInteraction: false }}
+          autoplay={{ delay: 6000, disableOnInteraction: false }}
           pagination={{ clickable: true }}
-          className="h-[520px] w-full sm:h-[640px] lg:h-[660px]"
+          className="h-[560px] w-full sm:h-[660px] lg:h-[720px]"
         >
           {slides.map((slide, index) => (
             <SwiperSlide key={index}>
               <div className="relative h-full w-full">
                 <div
-                  className="absolute inset-0 h-full w-full bg-cover bg-center"
+                  className="absolute inset-0 h-full w-full bg-cover bg-center transition-transform duration-10000 scale-105 animate-kenburns"
                   style={{
                     backgroundImage: `url('${slide.image}')`,
                     backgroundPosition: "center",
                   }}
                 />
 
-                <div className="absolute inset-0 bg-black/10" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/30 to-transparent sm:from-black/60 sm:via-black/25" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+                {/* Multi-layered cinematic gradients */}
+                <div className="absolute inset-0 bg-zinc-950/40" />
+                <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/85 via-zinc-950/50 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-transparent to-zinc-950/30" />
 
-                <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col justify-end px-5 pb-20 pt-10 sm:px-8 sm:pb-14 lg:px-8 lg:pb-16">
-                  <div className="max-w-xl">
-                    <h1 className="font-serif text-[38px] font-semibold leading-[1.02] tracking-tight text-white drop-shadow-sm sm:text-6xl lg:text-7xl">
+                <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col justify-end px-5 pb-20 pt-16 sm:px-8 sm:pb-16 lg:px-8 lg:pb-20">
+                  <div className="max-w-2xl">
+                    {/* Badge */}
+                    <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md mb-6 shadow-lg">
+                      <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
+                      <span className="text-xs font-semibold tracking-wide text-white">
+                        Sustainable Agri Investment
+                      </span>
+                    </div>
+
+                    <h1 className="font-serif text-[38px] font-bold leading-[1.08] tracking-tight text-white drop-shadow-md sm:text-6xl lg:text-7xl">
                       {slide.subtitle || slide.title || ""}
                     </h1>
 
                     {slide.description && (
-                      <p className="mt-4 max-w-lg text-sm font-medium leading-relaxed text-white/80 sm:text-base">
+                      <p className="mt-5 max-w-xl text-base font-normal leading-relaxed text-zinc-200 sm:text-lg drop-shadow">
                         {slide.description}
                       </p>
                     )}
 
-                    <div className="mt-6 flex flex-wrap items-center gap-2 sm:flex-nowrap sm:gap-3">
+                    {/* CTA Actions */}
+                    <div className="mt-8 flex flex-wrap items-center gap-4">
                       <button
                         onClick={scrollToContent}
-                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-[linear-gradient(135deg,#4d8c1e,#7cc22e)] px-4 py-2.5 text-[11px] font-semibold text-white shadow-[0_16px_40px_-18px_rgba(77,140,30,0.85)] transition hover:brightness-[1.05] active:scale-[0.98] sm:px-6 sm:py-3 sm:text-[12px]"
+                        className="inline-flex items-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#4d8c1e] to-[#7cc22e] px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-[#4d8c1e]/25 hover:shadow-[#4d8c1e]/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
                       >
-                        Learn More
                         <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </button>
                     </div>
