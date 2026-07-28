@@ -66,7 +66,7 @@ const CSS = `
   .faq-section::after { display: none; }
 
   .faq-inner {
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 0 auto;
     padding: 0 24px;
     position: relative;

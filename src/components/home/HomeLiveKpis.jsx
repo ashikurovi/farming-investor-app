@@ -41,9 +41,7 @@ export default function HomeLiveKpis() {
             </h2>
 
             <p className="home-subtitle max-w-lg">
-              Luctus felis diam lectus in aptent vehicula curabitur duis
-              ultrices. Consequat nulla nostra tempor ridiculus sociosqu maximus
-              laoreet.
+              Empowering farmers with modern technology and transparent investments. We connect capital with high-yield sustainable agriculture for a greener future.
             </p>
 
             {/* Stats row */}
@@ -136,7 +134,7 @@ export default function HomeLiveKpis() {
                   Organic Farming Expertise
                 </p>
                 <p className="text-[12px] text-[#8a9185] leading-relaxed">
-                  Dictumst feugiat mauris conubia et enim pellentesque porttitor.
+                  Adhering to strict international organic farming guidelines for optimal crop yields.
                 </p>
               </div>
 

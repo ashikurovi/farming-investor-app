@@ -77,7 +77,7 @@ export default function HomeTestimonials() {
       <div className="pointer-events-none absolute top-0 right-0 h-[500px] w-[500px] rounded-full bg-[#7cc22e]/6 blur-[120px]" />
       <div className="pointer-events-none absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-[#4d8c1e]/5 blur-[100px]" />
 
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-6 md:mb-10 flex flex-col items-start gap-5 md:flex-row md:items-end md:justify-between">
           <div>

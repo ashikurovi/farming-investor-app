@@ -41,60 +41,62 @@ export default function HomeHero() {
   }
 
   return (
-    <section className="w-full relative">
-      <div className="relative w-full overflow-hidden bg-zinc-950">
-        <Swiper
-          modules={[Autoplay, Pagination, EffectFade]}
-          effect="fade"
-          fadeEffect={{ crossFade: true }}
-          slidesPerView={1}
-          loop
-          autoplay={{ delay: 6000, disableOnInteraction: false }}
-          pagination={{ clickable: true }}
-          className="h-[560px] w-full sm:h-[660px] lg:h-[720px]"
-        >
-          {slides.map((slide, index) => (
-            <SwiperSlide key={index}>
-              <div className="relative h-full w-full">
-                <div
-                  className="absolute inset-0 h-full w-full bg-cover bg-center transition-transform duration-10000 scale-105 animate-kenburns"
-                  style={{
-                    backgroundImage: `url('${slide.image}')`,
-                    backgroundPosition: "center",
-                  }}
-                />
+    <section className="w-full py-4 sm:py-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl bg-zinc-950 shadow-2xl">
+          <Swiper
+            modules={[Autoplay, Pagination, EffectFade]}
+            effect="fade"
+            fadeEffect={{ crossFade: true }}
+            slidesPerView={1}
+            loop
+            autoplay={{ delay: 6000, disableOnInteraction: false }}
+            pagination={{ clickable: true }}
+            className="h-[400px] w-full sm:h-[480px] lg:h-[520px] rounded-2xl sm:rounded-3xl"
+          >
+            {slides.map((slide, index) => (
+              <SwiperSlide key={index}>
+                <div className="relative h-full w-full">
+                  <div
+                    className="absolute inset-0 h-full w-full bg-cover bg-center transition-transform duration-10000 scale-105"
+                    style={{
+                      backgroundImage: `url('${slide.image}')`,
+                      backgroundPosition: "center",
+                    }}
+                  />
 
-                {/* Multi-layered cinematic gradients */}
-                <div className="absolute inset-0 bg-zinc-950/40" />
-                <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/85 via-zinc-950/50 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-transparent to-zinc-950/30" />
+                  {/* Multi-layered cinematic gradients */}
+                  <div className="absolute inset-0 bg-zinc-950/40" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/85 via-zinc-950/50 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-transparent to-zinc-950/30" />
 
-                <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col justify-end px-5 pb-20 pt-16 sm:px-8 sm:pb-16 lg:px-8 lg:pb-20">
+                <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col justify-end px-5 pb-10 pt-10 sm:px-8 sm:pb-12 lg:px-8 lg:pb-14">
                   <div className="max-w-2xl">
                     {/* Badge */}
-                    <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md mb-6 shadow-lg">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1 backdrop-blur-md mb-4 shadow-lg">
                       <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
-                      <span className="text-xs font-semibold tracking-wide text-white">
+                      <span className="text-[11px] sm:text-xs font-semibold tracking-wide text-white">
                         Sustainable Agri Investment
                       </span>
                     </div>
 
-                    <h1 className="font-serif text-[38px] font-bold leading-[1.08] tracking-tight text-white drop-shadow-md sm:text-6xl lg:text-7xl">
+                    <h1 className="font-serif text-[30px] font-bold leading-[1.1] tracking-tight text-white drop-shadow-md sm:text-5xl lg:text-6xl">
                       {slide.subtitle || slide.title || ""}
                     </h1>
 
                     {slide.description && (
-                      <p className="mt-5 max-w-xl text-base font-normal leading-relaxed text-zinc-200 sm:text-lg drop-shadow">
+                      <p className="mt-3 max-w-xl text-sm font-normal leading-relaxed text-zinc-200 sm:text-base drop-shadow line-clamp-2">
                         {slide.description}
                       </p>
                     )}
 
                     {/* CTA Actions */}
-                    <div className="mt-8 flex flex-wrap items-center gap-4">
+                    <div className="mt-5 flex flex-wrap items-center gap-4">
                       <button
                         onClick={scrollToContent}
-                        className="inline-flex items-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#4d8c1e] to-[#7cc22e] px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-[#4d8c1e]/25 hover:shadow-[#4d8c1e]/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+                        className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#4d8c1e] to-[#7cc22e] px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-xl shadow-[#4d8c1e]/25 hover:shadow-[#4d8c1e]/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
                       >
+                        Explore Opportunities
                         <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </button>
                     </div>
@@ -140,6 +142,7 @@ export default function HomeHero() {
             </SwiperSlide>
           ))}
         </Swiper>
+        </div>
       </div>
 
       {/* ── Swiper pagination dot styles ── */}

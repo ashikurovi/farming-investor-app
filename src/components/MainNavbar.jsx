@@ -30,19 +30,27 @@ const NAV_LINKS = [
 ];
 
 /* ── Desktop Nav Link ── */
-function NavLink({ href, label }) {
+function NavLink({ href, label, icon: Icon }) {
   const pathname = usePathname();
   const isActive = href === "/" ? pathname === href : pathname.startsWith(href);
 
   return (
     <Link
       href={href}
-      className={`relative group flex items-center gap-1.5 text-sm font-semibold tracking-wider py-1.5 px-4 transition-all duration-300 rounded-xl ${isActive ? "text-white" : "text-white/80 hover:text-white"
+      className={`relative group flex items-center gap-2 text-sm font-semibold tracking-wide py-2 px-3.5 transition-all duration-200 rounded-xl ${isActive
+          ? "text-[#4d8c1e] bg-[#4d8c1e]/10 shadow-sm"
+          : "text-zinc-700 hover:text-[#4d8c1e] hover:bg-zinc-100/80"
         }`}
     >
-      {label}
+      {Icon && (
+        <Icon
+          className={`h-4 w-4 transition-colors duration-200 ${isActive ? "text-[#4d8c1e]" : "text-zinc-500 group-hover:text-[#4d8c1e]"
+            }`}
+        />
+      )}
+      <span>{label}</span>
       <span
-        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-white transition-all duration-300 ${isActive ? "w-5" : "w-0 group-hover:w-5"
+        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-[#4d8c1e] transition-all duration-300 ${isActive ? "w-5 opacity-100" : "w-0 opacity-0 group-hover:w-5 group-hover:opacity-100"
           }`}
       />
     </Link>
@@ -74,18 +82,18 @@ function UserDropdown({ user, dashboardHref, role, onLogout, isLoggingOut }) {
       {/* Trigger — Avatar + Name + Chevron only */}
       <button
         onClick={() => setOpen((p) => !p)}
-        className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-white/15 hover:bg-white/25 border border-white/20 hover:border-white/40 transition-all duration-200 backdrop-blur-sm"
+        className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-zinc-100 hover:bg-zinc-200/80 border border-zinc-200 transition-all duration-200"
       >
         {/* Avatar */}
-        <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-[#4d8c1e] text-xs font-extrabold shadow-sm select-none">
+        <div className="w-7 h-7 rounded-full bg-[#4d8c1e] flex items-center justify-center text-white text-xs font-extrabold shadow-sm select-none">
           {user?.name?.[0]?.toUpperCase() ?? "U"}
         </div>
         {/* Name */}
-        <span className="text-white text-sm font-semibold tracking-wide leading-none">
+        <span className="text-zinc-800 text-sm font-semibold tracking-wide leading-none">
           {user?.name ?? "Account"}
         </span>
         <ChevronDown
-          className={`h-3.5 w-3.5 text-white/70 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`h-3.5 w-3.5 text-zinc-500 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
         />
       </button>
 
@@ -193,8 +201,8 @@ export function MainNavbar() {
 
             {/* Navigation Links — centered */}
             <nav className="flex items-center gap-1">
-              {NAV_LINKS.map(({ href, label }) => (
-                <NavLink key={href} href={href} label={label} />
+              {NAV_LINKS.map(({ href, label, icon }) => (
+                <NavLink key={href} href={href} label={label} icon={icon} />
               ))}
             </nav>
 

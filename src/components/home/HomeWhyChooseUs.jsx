@@ -92,7 +92,7 @@ export default function HomeWhyChooseUs() {
         </div>
       )}
 
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* ══════════════ VIDEO HERO CARD ══════════════ */}
         <div className="relative overflow-hidden rounded-[28px] shadow-[0_32px_80px_-20px_rgba(77,140,30,0.22)] ring-1 ring-black/6">
           <button
